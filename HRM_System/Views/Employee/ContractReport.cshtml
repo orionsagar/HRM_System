@@ -1,0 +1,342 @@
+﻿@{
+    Layout = null;
+}
+@model EmployeeReport
+@{
+    var hostUrl = StaticData.HostPath;
+    var OrgLogoPath = hostUrl + Model.OrganisationVM.LogoPath;
+    var EmpLogoPath = hostUrl + "/" + Model.Employee.Photograph;
+}
+<html>
+<head>
+</head>
+<style>
+    #pf1 {
+        height: 800px;
+    }
+
+    #pf2 {
+        height: 800px;
+    }
+
+    #pf3 {
+        height: 800px;
+    }
+
+    #pf4 {
+        height: 800px;
+    }
+
+    #pf5 {
+        height: 800px;
+    }
+
+
+    .div100 {
+        width: 100%;
+        display: flex;
+        text-align: center;
+    }
+
+    .div20 {
+        width: 20%;
+    }
+
+    .div60 {
+        width: 60%;
+        text-align: center;
+    }
+
+    div.div60 {
+        text-align: center;
+    }
+
+    .divAll100 {
+    }
+</style>
+<body>
+    <div id="page-container">
+        <div id="pf1" class="pf w0 h0" data-page-no="1" style="height: 1300px;">
+            <div class="div100">
+                <div class="div20">
+
+                    <img src="@OrgLogoPath" class="invoice-to" width="100" />
+                </div>
+                <div class="div60">
+                    <div class="invoice-details">
+                        <h3 style="padding-bottom: 0px;">@Model.OrganisationVM.OrgName</h3>
+                        @Model.OrganisationVM.AddressLine1, @Model.OrganisationVM.AddressLine2<br />
+                        @Model.OrganisationVM.AddressLine3, @Model.OrganisationVM.City<br />
+                        <h2>Contract of Employment</h2>
+                    </div>
+                </div>
+                <div class="div20"></div>
+            </div>
+
+            <div class="divAll100">
+                <div>
+                    <strong>
+                        and the Employee, @Model.Employee.Name <br />
+                        @Model.Employee.Address
+                    </strong>
+                </div>
+                
+
+                <h3>Start of Employment and Duration of Contract</h3>
+                <p>
+                    The employment will start on @Model.Employee.ContactStartDate and the Initial duration of work is a 3 year period. This contract
+                    may be extended in future subject to your performance and subject to immigration control if it is required
+                    for your visa condition.
+                </p>
+                <br />
+
+                <h3>Probationary Period</h3>
+                <p>
+                    The employment is subject to the completion of a 3months probationary period.
+                </p>
+                <p>
+                    If, at the end of the probationary period, the Employee's performance is considered to be of a satisfactory
+                    standard, the appointment will be made permanent.
+                </p>
+                <p>
+                    During the probationary period, one-week's notice may be given by either party to terminate this contract.
+                </p>
+                <p>
+                    In lieu of notice during the probationary period, the Employer may pay the Employee the salary that he
+                    would have earned till the end of probationary period.
+                </p>
+                <br />
+            </div>
+        </div>
+
+        <div id="pf2" class="pf w0 h0" data-page-no="2" style="height: 1300px;">
+            <div class="divAll100">
+                <h3>Job Description</h3>
+                <p>
+                    The Employee is engaged initially to perform the duties of CUSTOMER SERVICE
+                </p>
+                <ul>
+                    <li>
+                        Customer service representatives are responsible for helping customers find products, answering their
+                        questions, and providing information about sales, promotions, and store policies.
+                    </li>
+                    <li>ensuring that customers can return or exchange products within the established guidelines.</li>
+                    <li>provide recommendations, explain product features, and help customers make informed decisions.</li>
+                    <li>handle payments and transactions, especially at the customer service or checkout counters.</li>
+                    <li>plays a role in gathering, analysing, and responding to this feedback to make improvements.</li>
+                    <li>
+                        must ensure that customers are aware of and adhere to store policies, such as mask mandates, store
+                        hours, and safety protocols.
+                    </li>
+                    <li>trained to handle difficult customers and resolve conflicts in a professional and respectful manner.</li>
+                    <li>assist in tracking inventory levels and informing customers about product availability.</li>
+                    <li>they are knowledgeable, efficient, and capable of providing excellent service.</li>
+                    <li>able to convey information clearly and listen actively to customers' needs and concerns.</li>
+                    <li>
+                        When customers have issues, whether they stem from products, services, or policies, customer
+                        service representatives strive to resolve complaints to the customer's satisfaction.
+                    </li>
+
+                </ul>
+                <p>
+                    The Employee will, however, be expected to carry out any other reasonable duties in line with his
+                    responsibilities to assist in the smooth operation of the business.
+                </p>
+                <br />
+                <br />
+                <h3>Qualifications</h3>
+                <p>
+                    If the Employee's employment with the Employer is dependent upon the possession of particular
+                    qualifications or registration with a statutory Body or other Authority, then evidence of this must be
+                    produced on request.
+                </p>
+                <p>Failure to produce such evidence may lead to the termination of the employment.</p>
+                <br />
+                <br />
+                <h3>Place of Work</h3>
+                <p>
+                    The normal place of work will be at the Employer's address shown above.
+                </p>
+                <p>
+                    Following reasonable notice and consultation, however, the Employee would be expected to work at any
+                    other premises if required.
+                </p>
+                <br />
+                <br />
+            </div>
+        </div>
+
+        <div id="pf3" class="pf w0 h0" data-page-no="3" style="height: 1300px;">
+            <div class="divAll100">
+                <h3>Working Hours</h3>
+                <p>
+                    The working hours are 40 per week.
+                </p>
+                <p>
+                    The Employer may require the Employee to vary the pattern of his working hours to meet the needs of the
+                    service.
+                </p>
+                <P>The Employee's entitlement to have paid refreshment breaks.</P>
+                <br />
+                <h4>Remuneration</h4>
+                <P>You are entitled to be paid GBP 2000 per MONTH . Your salary will be paid by BACS .</P>
+                <P>
+                    Your rate of pay will be reviewed in every six months. Your rate of pay will not necessarily increase as a
+                    result of the review.
+                </P>
+                <br />
+                <h3>Overtime payments</h3>
+                <P>Additional payments will be made for overtime worked as per company policy.</P>
+                <br />
+                <h3>Holidays</h3>
+                <P>
+                    The Management's holiday year runs from 1st January to 31st December inclusive. If you work part time
+                    your pro-rata entitlement will be based on the number of hours you work. If you work as a full time
+                    employee you will be entitled to have 28 days paid holiday in each year, in addition to statutory
+                    holidays.You are allowed to take an unpaid holiday subject to special circumstances, but it must be prior
+                    approved by the management.
+                </P>
+                <P>
+                    You must obtain authorization from the Management before making any holiday arrangements. The date of
+                    holidays must be agreed with the Employer and a Holiday Request must be completed and authorized by
+                    the Employer at least 14 days prior to your proposed holiday dates. Any unauthorized absence for more
+                    than 10 days will be notified to the Home Office UKVI if it is required for your visa condition.
+                    Furthermore, disciplinary action may be taken against you. You must inform the management immediately
+                    if there is any change of circumstance,such as change of contact details, change of your immigration status
+                    etc.
+                </P>
+                <br />
+                <h3>Sickness</h3>
+                <P>
+                    Subject to you complying with the above notification and certification requirements, plus any additional
+                    rules introduced from time to time, you will, if eligible, be paid Statutory Sick Pay in accordance with the
+                    legislation applying from time to time.
+                </P>
+                <P>For the purpose of Statutory Sick Pay, your qualifying days are Monday to Friday.</P>
+                <P>The Employer does not operate a sick pay scheme other than Statutory Sick Pay.</P>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            </div>
+        </div>
+
+        <div id="pf4" class="pf w0 h0" data-page-no="4" style="height: 1300px;">
+            <div class="divAll100">
+                <h3>Pension Scheme</h3>
+                <P>
+                    The Company will comply with its employer pension duties in accordance with relevant legislation (if
+                    applicable). Details in this respect will be furnished to you separately.
+                </P>
+                <br />
+                <h3>Notice of Termination</h3>
+                <P>
+                    Where there is just cause for termination, the Employer may terminate the Employee's employment without
+                    notice, as permitted by law.
+                </P>
+                <p>
+                    The Employee and the Employer agree that reasonable and sufficient notice of termination of employment
+                    by the Employer is the greater of four (4) weeks or any minimum notice required by law.
+                </p>
+                <br />
+                <h3>Redundancy</h3>
+                <P>
+                    If the Employer decides to reduce manning levels, suitable volunteers will be asked for.
+                </P>
+                <p>
+                    In addition, the Employer may select other employees for redundancy on the basis of an assessment of
+                    relative capabilities, performance, service length, conduct, reliability, attendance record and suitability for
+                    the remaining work.
+                </p>
+                <p>In the event of redundancy, statutory redundancy terms will apply.</p>
+                <br />
+                <h3>Rules of Conduct</h3>
+                <P>
+                    The Employee must:
+                </P>
+                <ul>
+                    <li>not endanger the health or safety of any employee whilst at work;</li>
+                    <li>at all times use as instructed any protective clothing or equipment which has been issued;</li>
+                    <li>immediately report accidents, no matter how slight;</li>
+                    <li>observe all rules concerning smoking and fire hazards;</li>
+                    <li>act wholeheartedly in the interests of the Employer at all times;</li>
+                    <li>acquaint (himself/herself) with all authorised notices displayed at his place of work;</li>
+                    <li>inform the Employer if he contracts a contagious illness;</li>
+                    <li>not remove any material or equipment from his place of work without prior permission;</li>
+                    <li>not use the Employer's time, material or equipment for unauthorised work;</li>
+                    <li>at all times follow Employer's working and operation procedures.</li>
+
+                </ul>
+                <br />
+                <br />
+            </div>
+        </div>
+
+        <div id="pf5" class="pf w0 h0" data-page-no="5" style="height: 1300px;">
+            <div class="divAll100">
+                <h3>Misconduct Leading to Summary Dismissal Without Notice</h3>
+                <ul>
+                    <li>theft of the Employer's property;</li>
+                    <li>fighting, physical assault or dangerous horseplay;</li>
+                    <li>failure to carry out a direct instruction from a superior during working hours;</li>
+                    <li>use of bad language or aggressive behavior on the Employer's premises or in front of customers;</li>
+                    <li>wilful and/or deliberate damage of the Employer's property;</li>
+                    <li>incapability through alcohol or illegal drugs;</li>
+                    <li>loss of driving licence where driving is an essential part of the job;</li>
+                    <li>endangering the health or safety of another person at the place of work;</li>
+                    <li>deliberately falsifying the Employer's records;</li>
+                    <li>receiving bribes to affect the placing of business with a supplier of goods or services;</li>
+                    <li>falsely claiming to be sick in order to defraud the Employer;</li>
+                    <li>immoral conduct.</li>
+                </ul>
+                <br />
+                <br />
+                <h3>Grievances</h3>
+                <P>
+                    Where the Employee has a grievance relating to any aspect of their employment,they should contact their
+                    immediate manager and give full details of his grievance, in confidence.
+                </P>
+                <p>
+                    The Employee should allow reasonable time for consideration of all the facts before remedial action can be
+                    taken.
+                </p>
+                <br />
+                <br />
+                <p>
+                    Where the Employee's immediate manager is not able satisfactorily to resolve the grievance, the Employee
+                    should refer the matter in writing to the most senior manager available.
+                </p>
+                <p>
+                    The Employee has the right to be accompanied by a work colleague or by another person as in accordance
+                    with the current legislation throughout the grievance procedure.
+                </p>
+
+                <p>
+                    <strong>
+                        If you agree with the above terms and conditions please sign both copies of this Contract, retain one
+                        and return the other to me.
+                    </strong>
+                </p>
+                <table border="0" style="width: 100%;">
+                    <tr>
+                        <td>Signed_______________________________<br />for Widley Express,</td>
+                        <td>Date:________________________________</td>
+                    </tr>
+                    <tr>
+                        <td>Signed_______________________________<br />for Widley Express,</td>
+                        <td>Date:________________________________</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>

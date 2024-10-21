@@ -1,0 +1,787 @@
+﻿@model Deduction
+
+@inject IGlobalHelper _global;
+@{
+    //var action = ViewBag.Action;
+    var title = "Fooding Deduction";
+
+    ViewData["Title"] = $"{title}";
+}
+
+@section PageName {
+    Fooding Deduction
+}
+@section Breadcrumb {
+    <a href="/dashboard/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">Fooding Deduction</span>
+}
+
+@{
+
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+}
+
+<style>
+    label {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    #dt-emp-list {
+        display: block;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>
+
+@Html.AntiForgeryToken()
+<!-- Page-body start -->
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Ajax data source (Arrays) table start -->
+            <div id="loader">
+                <div class="overlay"></div>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row justify-content-center">
+                            <partial name="_Filter" />
+
+                            <div class="col-sm-5">
+
+                                <div class="row mb-2">
+                                    <input type="hidden" asp-for="EmpId" />
+                                    <input type="hidden" asp-for="DeductionID" />
+                                    <input type="hidden" asp-for="Amount" />
+                                    <input type="hidden" asp-for="SelfContribution" />
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group row">
+                                            <label asp-for="DeductionName" class="col-sm-12 col-form-label">Deduction Type</label>
+                                            <div class="col-sm-12">
+                                                <select asp-for="DeductionName" asp-items="ViewBag.DeductionName" required class="form-control form-control-sm">
+                                                    <option value="Lunch">Lunch</option>
+                                                </select>
+                                                <span asp-validation-for="DeductionName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group row">
+                                            <label asp-for="Qty" class="col-sm-12 col-form-label">Number of meal</label>
+                                            <div class="col-sm-12">
+                                                <input asp-for="Qty" type="number" class="form-control form-control-sm" />
+                                                <span asp-validation-for="Qty" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group row">
+                                            <label asp-for="CostPerUnit" class="col-sm-12 col-form-label">Per meal cost</label>
+                                            <div class="col-sm-12">
+                                                <input asp-for="CostPerUnit" type="number" class="form-control form-control-sm" />
+                                                <span asp-validation-for="CostPerUnit" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group row">
+                                            <label asp-for="ServCharge" class="col-sm-12 col-form-label">Service charge</label>
+                                            <div class="col-sm-12">
+                                                <input asp-for="ServCharge" type="number" class="form-control form-control-sm" />
+                                                <span asp-validation-for="ServCharge" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group row">
+                                            <label asp-for="ApplyDate" class="col-sm-12 col-form-label">Apply Date</label>
+                                            <div class="col-sm-12">
+                                                <input asp-for="ApplyDate" required type="text" class="form-control form-control-sm" />
+                                                <span asp-validation-for="ApplyDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-sm-8 text-center">
+                                        <button class="btn btn-sm btn-primary" id="btnSave">Save</button>
+                                        <button class="btn btn-sm btn-warning d-none" id="btnUpdate">Update</button>
+                                        <button class="btn btn-sm btn-danger d-none" id="btnDelete">Delete</button>
+                                        <button class="btn btn-sm btn-light btn-outline-info" id="btnClear">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row m-0 mt-2">
+
+                            <div class="col-sm-12" id="employeeList">
+                                <p class="m-1 font-weight-bold">Employee List</p>
+
+                                <div class="table-responsive dt-responsive">
+
+                                    <table id="dt-emp-list" class="table table-hover table-striped table-bordered nowrap">
+                                        <thead>
+                                            <tr>
+
+                                                <th>
+
+                                                    <div class="checkbox-fade fade-in-primary ml-3">
+                                                        <label class="m-0">
+                                                            <input type="checkbox" id="empAllCheck" name="empAllCheck">
+                                                            <span class="cr">
+                                                                <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </th>
+                                                <th>Employee</th>
+                                                <th>Card No</th>
+                                                <th>Designation</th>
+                                                <th>Self Contribution</th>
+                                                <th>Category</th>
+                                                <th>Department</th>
+                                                <th>Section</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 d-none" id="deductionList">
+                                <p class="m-1 font-weight-bold">Deduction List</p>
+
+                                <div class="table-responsive dt-responsive">
+
+                                    <table id="dt-emp-deduction-list" class="table table-hover table-striped table-bordered nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th class="d-none">DeductionId</th>
+                                                <th>Name</th>
+                                                <th>Card No</th>
+                                                <th>Section</th>
+                                                <th>Designation</th>
+                                                @*<th>Category</th>
+                                                    <th>Department</th>*@
+                                                <th>Type</th>
+                                                <th>Qty</th>
+                                                <th>Cost Price</th>
+                                                <th>Self Contribution</th>
+                                                <th>Srv. Charge</th>
+                                                <th>Amount</th>
+                                                <th>Apply Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Ajax data source (Arrays) table end -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page-body end -->
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+
+
+
+@section Scripts {
+    <script>
+        let empSelectedDeduction = [];
+        let emp_deduction_list_table;
+
+        const emplistColumn = {
+            empId:0,
+            name: 1,
+            cardNo: 2,
+            designation: 3,
+            selfContribution: 4,
+            category: 5,
+            department: 6,
+            section:7,
+        }
+
+        $(document).ready(function () {
+
+            $('#dt-emp-deduction-list tbody').on('click', 'tr', function () {
+                //const tr = $(this).closest('tr')
+                //$(tr).toggleClass('selected');
+
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    clearData();
+                } else {
+                    emp_deduction_list_table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    const deductionId = emp_deduction_list_table.row(this).data()[0];
+                    empDeduction(deductionId);
+                }
+            });
+
+            $("#DeductionName, #Type_Filter").select2();
+
+            $("#FromDate_Filter, #ToDate_Filter, #ApplyDate").datepicker({
+                dateFormat: 'dd-mm-yy',
+                changeYear: true,
+                changeMonth: true,
+            });
+
+            $("#FromDate_Filter, #ToDate_Filter, #ApplyDate").datepicker("setDate", new Date());
+
+            emp_deduction_list_table = $('#dt-emp-deduction-list').DataTable({
+                paging: false,
+                select:true,
+                //scrollY: 250,
+                //searching:false,
+                columnDefs: [
+                    {
+                        targets: 0,
+                        visible: false,
+                        searchable: false,
+                    },
+                ]
+            });
+
+            $("#btnEmpFilter").click(function () {
+                divShow("#employeeList");
+                divHide("#deductionList");
+                let filter = {
+                    //EffectiveDate: $("#EffectiveDate").val(),
+                    EmpCategoryId_Filter: $("#EmpCategoryId_Filter").val(),
+                    DesignationId_Filter: $("#DesignationId_Filter").val(),
+                    SectionId_Filter: $("#SectionId_Filter").val(),
+                    DepartmentId_Filter: $("#DepartmentId_Filter").val(),
+                    CardNo_Filter: $("#CardNo_Filter").val()||"",
+                   // EmpName_Filter: $("#EmpName_Filter").val() || "",
+                    CompId: '@ComId',
+                }
+                //console.log(filter);
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("LoadEmployee", "Deduction")",
+                    data: filter,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        HTMLEmployeeListOverride(response);
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+            });
+
+            $("#btnDeductionFind").click(function () {
+                divShow("#deductionList");
+                divHide("#employeeList");
+                let filter = {
+                    FromDate_Filter: $("#FromDate_Filter").val(),
+                    ToDate_Filter: $("#ToDate_Filter").val(),
+                    Type_Filter: $("#Type_Filter").val(),
+                    CompId: '@ComId',
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("LoadDeduction", "Deduction")",
+                    data: filter,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        HTMLEmpDeductionList(response);
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+            });
+
+            $("#btnDelete").click(function () {
+                if (!confirm("Are you confirm to delete?")) {
+                    return;
+                }
+                const deductionId = $("#DeductionID").val();
+
+                if (deductionId == "" || deductionId == 0) {
+                    WarningPNotify("Please select Deduction data!!");
+                    return;
+                }
+
+                $.ajax({
+                    type: "DELETE",
+                    url: "@Url.Action("Delete", "Deduction")",
+                    data: { deductionId },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                            SuccessPNotify(res.message);
+                            clearData();
+                            showSaveButton();
+                            $("#btnDeductionFind").click();
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+            })
+
+            $("#btnSave").click(function () {
+                let employees = [];
+
+                const DeductionName = $("#DeductionName").val() || "";
+                const Qty = $("#Qty").val() || 0;
+                const CostPerUnit = $("#CostPerUnit").val() || 0;
+                const ServCharge = $("#ServCharge").val() || 0;
+                const ApplyDate = $("#ApplyDate").val();
+
+                if (DeductionName == "" || ApplyDate == "") {
+                    WarningPNotify("Please select Type & Date");
+                    return;
+                }
+
+                if (Qty == "" || Qty<1) {
+                    WarningPNotify("Qty should be greater than 0");
+                    return;
+                }
+
+                $("input[name='empCheckbox']:checked").each(function () {
+                    //console.log($(this).val());
+                    const contribution = emp_list_table.row($(this).closest('tr')).data()[emplistColumn.selfContribution];
+
+                    employees.push(
+                        {
+                            @nameof(Deduction.DeductionID) : 0,
+                            @nameof(Deduction.DeductionName) : DeductionName,
+                            @nameof(Deduction.Qty) : Qty,
+                            @nameof(Deduction.CostPerUnit) : CostPerUnit,
+                            @nameof(Deduction.SelfContribution) : contribution,
+                            @nameof(Deduction.ServCharge) : ServCharge,
+                            @nameof(Deduction.EmpId) : $(this).val(),
+                            @nameof(Deduction.ApplyDate) : ApplyDate,
+                        });
+                });
+
+                if (employees.length<1) {
+                    WarningPNotify("Please select Employee");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Create", "Deduction")",
+                    data: {model:employees},
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                           // SuccessPNotify("Employee Job Calender Updated");
+                            SuccessPNotify(res.message);
+                            clearData();
+                            $("#btnDeductionFind").click();
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+
+            })
+
+            $("#btnUpdate").click(function () {
+                let employees = [];
+
+                const DeductionID = $("#DeductionID").val()||0;
+                const empId = $("#EmpId").val()||"";
+                const DeductionName = $("#DeductionName").val() || 0;
+                const Qty = $("#Qty").val() || 0;
+                const CostPerUnit = $("#CostPerUnit").val() || 0;
+                const ServCharge = $("#ServCharge").val() || 0;
+                const SelfContribution = $("#SelfContribution").val() || 0;
+                const ApplyDate = $("#ApplyDate").val();
+
+                if (DeductionID == 0) {
+                    WarningPNotify("No data found. Please select deduction data again.");
+                    return;
+                }
+
+                if (DeductionName == "" || ApplyDate == "") {
+                    WarningPNotify("Please select Type & Date.");
+                    return;
+                }
+
+                if (Qty == "" || Qty < 1) {
+                    WarningPNotify("Qty should be greater than 0");
+                    return;
+                }
+
+                employees.push(
+                    {
+                         @nameof(Deduction.DeductionID) : DeductionID,
+                         @nameof(Deduction.Qty) : Qty,
+                         @nameof(Deduction.CostPerUnit) : CostPerUnit,
+                         @nameof(Deduction.SelfContribution) : SelfContribution,
+                         @nameof(Deduction.ServCharge) : ServCharge,
+                         @nameof(Deduction.DeductionName) : DeductionName,
+                         @nameof(Deduction.EmpId) : empId,
+                         @nameof(Deduction.ApplyDate) : ApplyDate,
+                    });
+
+
+                if (employees.length<1) {
+                    WarningPNotify("Please select Employee");
+                    return;
+                }
+
+                //console.log(employees);
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Create", "Deduction")",
+                    data: {model:employees},
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                           // SuccessPNotify("Employee Job Calender Updated");
+                            SuccessPNotify(res.message);
+                            clearData();
+                            $("#btnDeductionFind").click();
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+
+             });
+
+            $("#empAllCheck").click(function () {
+                let check = $(this).is(":checked");
+                if (check) {
+                    $("input[name='empCheckbox']").prop('checked', true);
+                } else {
+                    $("input[name='empCheckbox']").prop('checked', false);
+                }
+            });
+
+            $("#btnClear").click(function () {
+                clearData();
+                showSaveButton();
+            });
+
+            $("#btnEmpFilter").click();
+
+            //FixedAmountShowHide();
+            //AmountLableChange();
+
+            divShow("#employeeList");
+            divHide("#deductionList");
+        });
+
+        function HTMLEmployeeListOverride(tr) {
+            tr = tr || [];
+
+            emp_list_table.clear().draw();
+
+            tr.map(a => {
+                emp_list_table.row.add([
+                    a.empId,
+                    a.name,
+                    a.cardNo,
+                    a.designationName,
+                    a.selfContribution,
+                    a.categoryName,
+                    a.departmentName,
+                    a.sectionName,
+                ]);
+            });
+
+            emp_list_table.draw();
+        }
+
+        function HTMLEmpDeductionList(tr) {
+            tr = tr || [];
+            //console.log(tr);
+            emp_deduction_list_table.clear().draw();
+            console.log(tr);
+            tr.map(a => {
+                a.applyDate = getDateString(a.applyDate);
+                emp_deduction_list_table.row.add([
+                    a.deductionID,
+                    a.name,
+                    a.cardNo,
+                    a.sectionName,
+                    a.designationName,
+                   // a.categoryName,
+                   // a.departmentName,
+                    a.deductionName,
+                    a.qty,
+                    a.costPerUnit,
+                    a.selfContribution,
+                    a.servCharge,
+                    a.amount,
+                    a.applyDate
+                ]);
+            });
+
+            emp_deduction_list_table.draw();
+        }
+
+        function AmountLableChange() {
+
+            let rule = $("#RuleID option:selected").text().trim();
+
+            if (rule == "Gross Salary" || rule == "Basic Salary")
+            {
+                if (!$("#forRuleId").hasClass("d-none")) {
+                    $("#forRuleId").addClass("d-none")
+                }
+            }
+            else
+            {
+                if ($("#forRuleId").hasClass("d-none")) {
+                    $("#forRuleId").removeClass("d-none")
+                }
+                rule = rule.replace("Some ","");
+                $("#DeductionAmountLable").text(rule);
+            }
+
+        }
+
+        function FixedAmountShowHide() {
+            //debugger;
+            if ($("#IsFixed").is(":checked")) {
+                $(".forFixed").each(function () {
+                    if ($(this).hasClass("d-none")) {
+                        $(this).removeClass("d-none");
+                    }
+                });
+
+                $(".forNotFixed").each(function () {
+                     if (!$(this).hasClass("d-none")) {
+                         $(this).addClass("d-none");
+                     }
+                });
+            }
+            else
+            {
+                $(".forNotFixed").each(function () {
+                    if ($(this).hasClass("d-none")) {
+                        $(this).removeClass("d-none");
+                    }
+                });
+
+                $(".forFixed").each(function () {
+                     if (!$(this).hasClass("d-none")) {
+                         $(this).addClass("d-none");
+                     }
+                });
+                AmountLableChange();
+            }
+        }
+
+        function divShow(selector) {
+            if ($(selector).hasClass("d-none")) {
+                $(selector).removeClass("d-none");
+            }
+        }
+
+        function divHide(selector) {
+            if (!$(selector).hasClass("d-none")) {
+                $(selector).addClass("d-none");
+            }
+        }
+
+        function getDateString(date) {
+            var d = new Date(date);
+            var day = d.getDate();
+            var month = d.getMonth() + 1;
+            var year = d.getFullYear();
+            if (day < 10) {
+                day = "0" + day;
+            }
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var date = day + "-" + month + "-" + year;
+            return date;
+        }
+
+        function empDeduction(deductionId) {
+
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetById", "Deduction")",
+                data: { deductionId },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                //contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response)
+                {
+                    if (!response.data.isError)
+                    {
+                        SetDeductionData(response.data);
+                    }
+                    else
+                    {
+                        WarningPNotify(response.data.message);
+                        clearData();
+                    }
+                },
+                failure: function (response) {
+                    DangerPNotify(response.responseText);
+                    empSelectedDeduction = [];
+                },
+                error: function (response) {
+                    DangerPNotify(response.responseText);
+                    empSelectedDeduction = [];
+                }
+                });
+
+        }
+
+        function SetDeductionData(deduction) {
+
+            const { empId, deductionID, amount,qty,costPerUnit,servCharge, deductionName, applyDate, } = deduction;
+
+            $("#EmpId").val(empId);
+            $("#DeductionID").val(deductionID);
+            $("#Amount").val(amount);
+            $("#Amount").val("");
+            $("#Qty").val(qty);
+            $("#CostPerUnit").val(costPerUnit);
+            $("#ServCharge").val(servCharge);
+            $("#DeductionName").val(deductionName).change();
+            $("#ApplyDate").val(getDateString(applyDate));
+            showUpdateButton();
+
+
+        }
+
+        function clearData() {
+
+            $("#EmpId").val("");
+            $("#DeductionID").val("");
+            $("#Amount").val("");
+            $("#Qty").val("");
+            $("#CostPerUnit").val("");
+            $("#ServCharge").val("");
+            $("#DeductionName").prop("selectedIndex", 0).change();;
+            $("#ApplyDate").val(getDateString(new Date()));
+            showSaveButton();
+
+
+
+        }
+
+        function showSaveButton() {
+
+            if ($("#btnSave").hasClass("d-none")) {
+                $("#btnSave").removeClass("d-none");
+            }
+
+            if (!$("#btnUpdate").hasClass("d-none")) {
+                $("#btnUpdate").addClass("d-none");
+            }
+
+            if (!$("#btnDelete").hasClass("d-none")) {
+                $("#btnDelete").addClass("d-none");
+            }
+
+
+        }
+
+        function showUpdateButton() {
+
+            if (!$("#btnSave").hasClass("d-none")) {
+                $("#btnSave").addClass("d-none");
+            }
+
+            if ($("#btnUpdate").hasClass("d-none")) {
+                $("#btnUpdate").removeClass("d-none");
+            }
+            if ($("#btnDelete").hasClass("d-none")) {
+                $("#btnDelete").removeClass("d-none");
+            }
+
+        }
+
+    </script>
+}

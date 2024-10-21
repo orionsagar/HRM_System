@@ -1,0 +1,90 @@
+﻿@inject IHttpContextAccessor _accessor
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="~/custom_theme/css/index.css" rel="stylesheet" />
+    <link href="~/custom_theme/css/resLogin.css" rel="stylesheet" />
+    <link href="/custom_theme/css/Solicitor.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.0/css/font-awesome.min.css" integrity="sha512-FEQLazq9ecqLN5T6wWq26hCZf7kPqUbFC9vsHNbXMJtSZZWAcbJspT+/NEAQkBfFReZ8r9QlA9JHaAuo28MTJA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Stylesheet linkings -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+    <title></title>
+</head>
+<body>
+
+
+    @RenderBody()
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <script src="~/custom_theme/js/index.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var speed = 2000;
+            var container = $('.display-animation');
+            container.each(function () {
+                var elements = $(this).children();
+                elements.each(function () {
+                    var elementOffset = $(this).offset();
+                    var offset = elementOffset.left * 0.8 + elementOffset.top;
+                    var delay = parseFloat(offset / speed).toFixed(2);
+                    $(this)
+                        .css("-webkit-animation-delay", delay + 's')
+                        .css("-o-animation-delay", delay + 's')
+                        .css("animation-delay", delay + 's')
+                        .addClass('animated');
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $(".ripple-effect").click(function (e) {
+                var rippler = $(this);
+
+                // create .ink element if it doesn't exist
+                if (rippler.find(".ink").length == 0) {
+                    rippler.append("<span class='ink'></span>");
+                }
+
+                var ink = rippler.find(".ink");
+
+                // prevent quick double clicks
+                ink.removeClass("animate");
+
+                // set .ink diametr
+                if (!ink.height() && !ink.width()) {
+                    var d = Math.max(rippler.outerWidth(), rippler.outerHeight());
+                    ink.css({ height: d, width: d });
+                }
+
+                // get click coordinates
+                var x = e.pageX - rippler.offset().left - ink.width() / 2;
+                var y = e.pageY - rippler.offset().top - ink.height() / 2;
+
+                // set .ink position and add class .animate
+                ink.css({
+                    top: y + 'px',
+                    left: x + 'px'
+                }).addClass("animate");
+            })
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+
+
+

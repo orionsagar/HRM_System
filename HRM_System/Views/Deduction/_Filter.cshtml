@@ -1,0 +1,158 @@
+﻿
+@model DeductionFilter
+
+@*<style>
+    @@media only screen and (min-width : 991px) {
+        label {
+            text-align: right;
+        }
+    }
+</style>*@
+
+<div class="col-sm-4">
+    <div class="form-group row mt-1">
+        <label asp-for="SectionId_Filter" class="col-sm-12 col-form-label"></label>
+        <div class="col-sm-12">
+            <select asp-for="SectionId_Filter" asp-items="ViewBag.Section" class="form-control form-control-sm">
+                <option value="">Select</option>
+            </select>
+            <span asp-validation-for="SectionId_Filter" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mt-1">
+        <label asp-for="DepartmentId_Filter" class="col-sm-12 col-form-label"></label>
+        <div class="col-sm-12">
+            <select asp-for="DepartmentId_Filter" asp-items="ViewBag.Department" class="form-control form-control-sm">
+                <option value="">Select</option>
+            </select>
+            <span asp-validation-for="DepartmentId_Filter" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mt-1">
+        <label asp-for="DesignationId_Filter" class="col-sm-12 col-form-label"></label>
+        <div class="col-sm-12">
+            <select asp-for="DesignationId_Filter" asp-items="ViewBag.Designation" class="form-control form-control-sm">
+                <option value="">Select</option>
+            </select>
+            <span asp-validation-for="DesignationId_Filter" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mt-1">
+        <label asp-for="CardNo_Filter" class="col-sm-12 col-form-label">Card No</label>
+        <div class="col-sm-12">
+            <input asp-for="CardNo_Filter" class="form-control form-control-sm" />
+            <span asp-validation-for="CardNo_Filter" class="text-danger"></span>
+        </div>
+    </div>
+
+    @*<div class="col-sm-3">
+            <div class="form-group row mt-1">
+                <label asp-for="FromDate" class="col-sm-4 col-form-label">From Date</label>
+                <div class="col-sm-8">
+                    <input asp-for="FromDate" type="text" class="form-control" />
+                    <span asp-validation-for="FromDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group row mt-1">
+                <label asp-for="ToDate" class="col-sm-4 col-form-label">To Date</label>
+                <div class="col-sm-8">
+                    <input asp-for="ToDate" type="text" class="form-control" />
+                    <span asp-validation-for="ToDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>*@
+
+    @*<div class="col-sm-3">
+            <div class="form-group row mt-1">
+                <label asp-for="EmpName_Filter" class="col-sm-4 col-form-label">Name</label>
+                <div class="col-sm-8">
+                    <input asp-for="EmpName_Filter" class="form-control" />
+                    <span asp-validation-for="EmpName_Filter" class="text-danger"></span>
+                </div>
+            </div>
+        </div>*@
+
+
+    @*<div class="col-sm-4">
+            <div class="form-group row mt-2 pl-1">
+
+                <div class="col-sm-12 row m-0">
+                    <div class="checkbox-fade fade-in-primary">
+                        <label>
+                            <input type="checkbox" id="HasCheckBox_Filter" name="HasCheckBox_Filter">
+                            <span class="cr">
+                                <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                            </span>
+                        </label>
+                    </div>
+                    <label asp-for="HasCheckBox_Filter" class=" control-label text-left">Show Only  Attendance Missing</label>
+                </div>
+            </div>
+        </div>*@
+
+    <div class="form-group row justify-content-around mt-1 ml-0">
+        <button type="button" id="btnEmpFilter" class="btn btn-sm btn-primary">Search Employee</button>
+    </div>
+
+
+</div>
+
+
+<div class="col-sm-3">
+
+    <div class="form-group row mt-1">
+        <label asp-for="FromDate_Filter" class="col-sm-12 col-form-label">From Date</label>
+        <div class="col-sm-12">
+            <input asp-for="FromDate_Filter" type="text" class="form-control form-control-sm" />
+            <span asp-validation-for="FromDate_Filter" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mt-1">
+        <label asp-for="ToDate_Filter" class="col-sm-12 col-form-label">To Date</label>
+        <div class="col-sm-12">
+            <input asp-for="ToDate_Filter" type="text" class="form-control form-control-sm" />
+            <span asp-validation-for="ToDate_Filter" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row mt-1">
+        <label asp-for="Type_Filter" class="col-sm-12 col-form-label">Type</label>
+        <div class="col-sm-12">
+
+            <select asp-for="Type_Filter" required class="form-control form-control-sm">
+                @if (String.IsNullOrEmpty(ViewBag.DeductionTypeName))
+                {
+                    <option value="TAX">TAX</option>
+                    <option value="Welfare">Welfare</option>
+                    <option value="Stamp">Stamp</option>
+                    <option value="Conpensation">Conpensation</option>
+                    <option value="Others">Others</option>
+                }
+                else if (ViewBag.DeductionTypeName == "Fooding")
+                {
+                    <option value="Lunch">Lunch</option>
+                }
+                else if (ViewBag.DeductionTypeName == "Absent")
+                {
+                    <option value="Absent">Absent</option>
+                }
+
+            </select>
+            <span asp-validation-for="ToDate_Filter" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row justify-content-around mt-1 ml-0">
+        <button type="button" id="btnDeductionFind" class="btn btn-sm btn-primary">Find Deduction</button>
+    </div>
+
+
+
+</div>
+

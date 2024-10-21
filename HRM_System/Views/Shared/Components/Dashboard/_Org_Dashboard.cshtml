@@ -1,0 +1,411 @@
+﻿
+@{ 
+    var empdata = ViewBag.EmpInfo as CardVM;
+}
+<style>
+    .mb20 {
+        margin-bottom: 20px;
+        margin-right: 10px;
+    }
+
+    .mb7 {
+        margin-bottom: 7px;
+        margin-right: 10px;
+    }
+</style>
+
+<!-- New BreadCrum -->
+@* <div class="row">
+    <div class="breadCrumContainer col-xl-12 col-md-12 ">
+        <div class="breadCrumWrapper">
+            <div class="pageName">
+                <span>Organisation Dashboard</span>
+            </div>
+            <div class="breadCrum">
+                <i class="fa fa-home"></i>
+                <span class="Divider">/</span>
+                <span class="section activeCrum">DashBoard</span>
+            </div>
+        </div>
+    </div>
+</div> *@
+<style>
+    .mb20 {
+        margin-bottom: 20px;
+        margin-right: 10px;
+    }
+</style>
+<div class="row">
+    <!-- customar project  start -->
+    <div class="col-xl-3 col-md-6">
+        @*<a href="/dashboard/totalactiveemployee">*@
+            <div class="card">
+                <div class="card-block">
+                    <div class="row align-items-center m-l-0">
+                        <div class="col-auto">
+                            <i class="fa fa-user f-28"></i>
+                        </div>
+                        <div class="col-auto">
+                            <h6 class="text-muted m-b-10">Employees</h6>
+                            <h2 class="m-b-0">@empdata.TotalEmployee</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @*</a>*@
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row align-items-center m-l-0">
+                    <div class="col-auto">
+                        <i class="fa fa-user f-28"></i>
+                    </div>
+                    <div class="col-auto">
+                        <h6 class="text-muted m-b-10">Leave Request</h6>
+                        <h2 class="m-b-0">@empdata.TotalLeaveRequest</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row align-items-center m-l-0">
+                    <div class="col-auto">
+                        <i class="fa fa-street-view f-28"></i>
+                    </div>
+                    <div class="col-auto">
+                        <h6 class="text-muted m-b-10">Late Entry</h6>
+                        <h2 class="m-b-0">@empdata.TotalLateEntry</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row align-items-center m-l-0">
+                    <div class="col-auto">
+                        <i class="fa fa-user-circle f-28"></i>
+                    </div>
+                    <div class="col-auto">
+                        <h6 class="text-muted m-b-10">Document Expiry</h6>
+                        <h2 class="m-b-0">@empdata.TotalDocumentExpiry</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- customar project  end -->
+
+    <!-- task, page, download counter  start -->
+
+
+    <!-- Visa -->
+    <div class="col-xl-12 col-md-12">
+        <div class="card table-card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>Visa Notification</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="dt-docnotification">
+                        <thead>
+                            <tr>
+                                <th>Doc Id</th>
+                                <th>Doc Type</th>
+                                <th>Employee</th>
+                                @*<th>Doc Number</th>*@
+                                <th>Issue Date</th>
+                                <th>Expiry Date</th>
+                                <th>90 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                                <th>60 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                                <th>30 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Passport -->
+    <div class="col-xl-12 col-md-12">
+        <div class="card table-card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>Passport Notification</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="dt-PassportNotification">
+                        <thead>
+                            <tr>
+                                <th>Doc Id</th>
+                                <th>Doc Type</th>
+                                <th>Employee</th>
+                                @*<th>Doc Number</th>*@
+                                <th>Issue Date</th>
+                                <th>Expiry Date</th>
+                                <th>90 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                                <th>60 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                                <th>30 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- DBS -->
+    <div class="col-xl-12 col-md-12">
+        <div class="card table-card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>DBS Notification</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="dt-DBSNotification">
+                        <thead>
+                            <tr>
+                                <th>Doc Id</th>
+                                <th>Doc Type</th>
+                                <th>Employee</th>
+                                @*<th>Doc Number</th>*@
+                                <th>Issue Date</th>
+                                <th>Expiry Date</th>
+                                <th>90 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                                <th>60 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                                <th>30 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- EUSS -->
+    <div class="col-xl-12 col-md-12">
+        <div class="card table-card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>EUSS Notification</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="dt-EUSSNotification">
+                        <thead>
+                            <tr>
+                                <th>Doc Id</th>
+                                <th>Doc Type</th>
+                                <th>Employee</th>
+                                @*<th>Doc Number</th>*@
+                                <th>Issue Date</th>
+                                <th>Expiry Date</th>
+                                <th>90 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                                <th>60 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                                <th>30 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- RTWC -->
+    <div class="col-xl-12 col-md-12">
+        <div class="card table-card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>Right to work check Notification</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="dt-RTWCNotification">
+                        <thead>
+                            <tr>
+                                <th>Doc Id</th>
+                                <th>Doc Type</th>
+                                <th>Employee</th>
+                                @*<th>Doc Number</th>*@
+                                <th>Issue Date</th>
+                                <th>Expiry Date</th>
+                                <th>90 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                                <th>60 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                                <th>30 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Other -->
+    <div class="col-xl-12 col-md-12">
+        <div class="card table-card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>Other Notification</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="dt-OtherNotification">
+                        <thead>
+                            <tr>
+                                <th>Doc Id</th>
+                                <th>Doc Type</th>
+                                <th>Employee</th>
+                                @*<th>Doc Number</th>*@
+                                <th>Issue Date</th>
+                                <th>Expiry Date</th>
+                                <th>90 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                                <th>60 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                                <th>30 Days Reminder</th>
+                                <th>View</th>
+                                <th>Send</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+     <div class="col-xl-8 col-md-8">
+        <div class="card table-card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Reminder / Task</h5>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        @*<a href="#" class="btn btn-info btn-sm"><i class="fa fa-plus"></i>New Task</a>*@
+                        <button type="button" class="btn btn-sm waves-effect waves-dark btn-primary btn-outline-primary" data-toggle="modal" data-target="#large-Modal"><i class="icofont icofont-plus"></i> New Task</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="dt-task">
+                        <thead>
+                            <tr>
+                                <th>Task Id</th>
+                                <th>Task No</th>
+                                <th>Task Date</th>
+                                <th>Task Title</th>
+                                <th>Task Name</th>
+                                <th>Priority</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Quick Link</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="card-block icon-btn text-center">
+                <div>
+                    <a href="#" class="btn waves-effect waves-light btn-primary btn-outline-primary mb7 col-md-8"><i class="icofont icofont-user-alt-3"></i> Leave Manage</a>
+                    <a href="/employee/create" class="btn waves-effect waves-light btn-primary btn-outline-primary mb7 col-md-8"><i class="icofont icofont-user-alt-3"></i> Employee Entry</a>
+                    <a href="/employeeDoc/docentry" class="btn waves-effect waves-light btn-primary btn-outline-primary mb7 col-md-8"><i class="icofont icofont-ui-file"></i> Documents</a>
+                    <a href="#" class="btn waves-effect waves-light btn-primary btn-outline-primary mb7 col-md-8"><i class="icofont icofont-business-man"></i> Sponsor Compliance</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+

@@ -1,0 +1,39 @@
+﻿
+@model OtherAllowanceFilter
+
+<div class="col-sm-6">
+
+    <div class="form-group row">
+        <label asp-for="FromDate_Filter" class="col-sm-12 col-form-label">From Date</label>
+        <div class="col-sm-12">
+            <input asp-for="FromDate_Filter" type="text" class="form-control form-control-sm" />
+            <span asp-validation-for="FromDate_Filter" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="ToDate_Filter" class="col-sm-12 col-form-label">To Date</label>
+        <div class="col-sm-12">
+            <input asp-for="ToDate_Filter" type="text" class="form-control form-control-sm" />
+            <span asp-validation-for="ToDate_Filter" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label id="festivalName" class="col-sm-12 col-form-label">Festival Name</label>
+        <div class="col-sm-12">
+            <select id="typeId" required class="form-control form-control-sm" asp-items="ViewBag.Festival">
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row justify-content-around mt-1 ml-0">
+        <button type="button" id="btnBonusFind" class="btn btn-sm btn-primary">Find Bonus</button>
+    </div>
+
+
+
+</div>
+
+
+
+

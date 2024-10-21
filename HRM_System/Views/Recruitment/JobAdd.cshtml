@@ -1,0 +1,199 @@
+﻿@model Domains.ViewModels.RecruitmentVM.JobVM
+@inject IGlobalHelper _global;
+@{
+    var action = ViewBag.Action;
+    if (action == "Create")
+    {
+        ViewData["Title"] = "Create";
+    }
+    else
+    {
+        ViewData["Title"] = "Edit";
+    }
+}
+
+@{
+    string[] BCText = new string[] { "Module List", "Module Add" };
+    string[] BCLink = new string[] { "module/index", "#" };
+    PageHeaderProps pageHeader = new PageHeaderProps
+            {
+                PageTitle = "Module Add",
+                PageDesc = "Module Add",
+                BreadcrumbText = BCText,
+                BreadcrumbLink = BCLink
+            };
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+    var ClientId = _global.GetClientId();
+}
+
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Basic Inputs Validation start -->
+            <div class="card">
+                <div class="card-header">
+                    @await Component.InvokeAsync("PageHeader", pageHeader)
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                </div>
+                <div class="card-block">
+                    <form id="main" asp-action="Create" method="post" novalidate>
+                        <div class="row">
+                            @if (Model == null)
+                            {
+                                <input type="hidden" asp-for="JobId" value="0" />
+                                <input type="hidden" asp-for="ClientId" value="@ClientId" />
+                                <input type="hidden" asp-for="CompId" value="@ComId" />
+                                <input type="hidden" asp-for="AddedBy" value="@UserId" />
+                                <input type="hidden" asp-for="UpdatedBy" />
+                                <input type="hidden" asp-for="AddedDate" value="@DateTime.Now" />
+                                <input type="hidden" asp-for="UpdatedDate" />
+                            }
+                            else
+                            {
+                                <input type="hidden" asp-for="JobId" />
+                                <input type="hidden" asp-for="CompId" />
+                                <input type="hidden" asp-for="ClientId" />
+                                <input type="hidden" asp-for="AddedBy" />
+                                <input type="hidden" asp-for="UpdatedBy" value="@UserId" />
+                                <input type="hidden" asp-for="AddedDate" />
+                                <input type="hidden" asp-for="UpdatedDate" value="@DateTime.Now" />
+                            }
+                            <div class="col-sm-6 d-none">
+                                <div class="form-group row">
+                                    <label asp-for="OrgId" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <select asp-for="OrgId" asp-items="ViewBag.OrgId" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label asp-for="DeptId" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <select asp-for="DeptId" asp-items="ViewBag.DeptId" class="form-control">
+                                            <option value="">Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label asp-for="JobType" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <select asp-for="JobType" class="form-control">
+                                            <option value="New">New</option>
+                                            <option value="Existing">Existing</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label asp-for="SOCCode" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12" id="socdiv">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label asp-for="JobTitle" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="JobTitle" class="form-control form-control" />
+                                        <span asp-validation-for="JobTitle" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group row">
+                                    <label asp-for="Description" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <textarea asp-for="Description" class="form-control form-control" placeholder="Description" id="editor"></textarea>
+                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group text-center">
+                                    <label class="col-sm-12"></label>
+                                    <div class="col-sm-12">
+                                        <input type="button" value="Submit" id="btnsave" class="btn btn-primary m-b-0" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Basic Inputs Validation end -->
+        </div>
+    </div>
+</div>
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial.cshtml" />
+    }
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Create input element
+            let inputhtml = '<input id="SOCCode" name="SOCCode" class="form-control form-control" />'
+
+            // Append the select list to the 'socdiv'
+            $('#socdiv').empty().append(inputhtml);
+
+            $('#JobType,#DeptId').select2();
+            CKEDITOR.replace('editor');
+        });
+
+        $('#JobType').change(function () {
+            let type = $(this).val();
+            if (type == 'New') {
+                let inputhtml = '<input id="SOCCode" name="SOCCode" class="form-control form-control" />'
+                $('#socdiv').empty().append(inputhtml);
+            } else {
+                let data = getsoccode();
+                console.log(data);
+                var selectHtml = '<select id="SOCCode" name="SOCCode" class="form-control">';
+                selectHtml += '<option value="">Select SOC Code</option>';  // Add default or prompt option
+                selectHtml += '<option value="1">Code 1</option>';
+                selectHtml += '<option value="2">Code 2</option>';
+                selectHtml += '</select>';
+
+                // Append the select list to the 'socdiv'
+                $('#socdiv').empty().append(selectHtml);
+                $('#SOCCode').select2();
+            }
+        })
+
+        $('#btnsave').click(function () {
+            let form = $('#main');
+            form.validate();
+            if (form.valid()) {
+                // Get the CKEditor instance and its content
+                var editorContent = CKEDITOR.instances.editor.getData();
+                var formData = form.serialize() + '&Description=' + encodeURIComponent(editorContent);
+                // Remove the redundant Description parameter
+                formData = formData.replace('Description=&', '');
+                $.post('/recruitment/jobadd', formData, function (data, status, xhs) {
+                    console.log(data);
+                })
+            }
+        })
+        function getsoccode() {
+            $.get('/recuitment/getsoccode', function (data, success, xhr) {
+                if (success == 'success') {
+                    return data;
+                }
+            })
+        }
+    </script>
+}

@@ -1,0 +1,81 @@
+﻿@model Domains.Models.Tasks
+<form method="post" id="form">
+    <div class="modal fade" id="large-Modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Task Entry</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label asp-for="TaskNo" class="control-label col-md-6">Task No</label>
+                                        <div class="col-md-12">
+                                            <input asp-for="TaskNo" class="form-control" required />
+                                            <span asp-validation-for="TaskNo" class="text-danger form-bar"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label asp-for="TaskDate" class="control-label col-md-6">Task Title</label>
+                                        <div class="col-md-12">
+                                            <input asp-for="TaskDate" class="form-control" required />
+                                            <span asp-validation-for="TaskDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label asp-for="TaskTitle" class="control-label col-md-6">Task Title</label>
+                                        <div class="col-md-12">
+                                            <input asp-for="TaskTitle" class="form-control" required />
+                                            <span asp-validation-for="TaskTitle" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label asp-for="TaskName" class="control-label col-md-6">Task Name</label>
+                                        <div class="col-md-12">
+                                            <input asp-for="TaskName" class="form-control" required />
+                                            <span asp-validation-for="TaskName" class="text-danger form-bar"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label asp-for="Priority" class="control-label col-md-6"></label>
+                                        <div class="col-md-12">
+                                            <select asp-for="Priority" class="form-control" required>
+                                                <option value="">Select</option>
+                                                <option value="High">High</option>
+                                                <option value="Medium">Medium</option>
+                                                <option value="Low">Low</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label asp-for="Description" class="control-label col-md-6"></label>
+                                        <div class="col-md-12">
+                                            <textarea asp-for="Description" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect " data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light" id="btntask">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

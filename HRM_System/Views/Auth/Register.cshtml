@@ -1,0 +1,457 @@
+﻿@model ExternalClientVM;
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>@ViewData["Title"]</title>
+    <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 10]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="~/css/login.css">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/minify/css/minifyedpnotify.css" rel="stylesheet" />
+    <link href="~/custom/css/HoldOn.min.css" rel="stylesheet" />
+
+    @*<meta name="description" content="Gradient Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
+        <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
+        <meta name="author" content="Phoenixcoded" />*@
+    <!-- Favicon icon -->
+    @*  <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+         <!-- Google font-->
+         <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+         <!-- Required Fremwork -->
+         <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/css/bootstrap.min.css">
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+         <!-- waves.css -->
+         <link rel="stylesheet" href="/assets/pages/waves/css/waves.min.css" type="text/css" media="all">
+         <!-- themify-icons line icon -->
+         <link rel="stylesheet" type="text/css" href="/assets/icon/themify-icons/themify-icons.css">
+         <!-- ico font -->
+        <link rel="stylesheet" type="text/css" href="/assets/icon/icofont/css/icofont.css">
+         <!-- Font Awesome -->
+         <link rel="stylesheet" type="text/css" href="/assets/icon/font-awesome/css/font-awesome.min.css">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+         <!-- Style.css -->
+         <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+         <link href="~/custom_theme/css/index.css" rel="stylesheet" /> *@
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="/css/login.css">
+
+    <!--Below links are used for Country-Code-->
+    <!--<link rel="stylesheet" href="https://cdn.tutorialjinni.com/intl-tel-input/17.0.19/css/intlTelInput.css" />
+    <script src="https://cdn.tutorialjinni.com/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>-->
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .inputSetup_2 {
+            width: 100%;
+            height: 42px;
+            border: 1px solid var(--PColor);
+            border-radius: 5px;
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="RegisterBodyContainer">
+        <div class="RegisterWrapper">
+            <div class="RegisterContentWrapper">
+                <div class="logo">
+                    <img src="/Images/assets/Logo/WP-l.png" alt="Company Logo">
+                </div>
+                <div class="RegisterContainer">
+                    <div class="RegisterHeader">
+                        <span>Register Here</span>
+                    </div>
+                    <form id="main" asp-action="" asp-controller="" asp-route-ReturnUrl="" autocomplete="off">
+                        <div class="formContainer">
+                            <div class="msg">
+                                @if (ViewBag.errormessage != null)
+                                {
+                                    <Span class="messageServe text-danger" data-Error="ServerError">@ViewBag.errormessage</Span>
+                                }
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            </div>
+
+                            <div class="Idendity">
+                                <span>What is your identity?</span>
+                                <div class="options">
+                                    <div class="val">
+                                        <input type="radio" name="identity" asp-for="IsOrg" value="Organisation" checked data-Radio="OrganizationRadio">
+                                        <span class="checkmark"></span>
+                                        <label asp-for="IsOrg" data-Radio="OrganizationLabel">Organisation</label>
+                                    </div>
+                                    <input type="hidden" asp-for="RegType" value="Organisation" />
+                                    <div class="val">
+                                        <input type="radio" name="identity" asp-for="IsSolicitor" value="Solicitor" data-Radio="SolicitorRadio">
+                                        <span class="checkmark"></span>
+                                        <label asp-for="IsSolicitor" data-Radio="SolicitorLabel">Solicitor</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="SingleField" data-match="Organization">
+                                <div class="registerTextGroup">
+                                    <label asp-for="OrgName">Organization Name</label>
+                                    <div class="inputSetup">
+                                        <input type="text" asp-for="OrgName" placeholder="Organization Name" required />
+                                        <div class="faicons"><i class="fa-regular fa-building fa-sm"></i></div>
+                                    </div>
+                                    <span asp-validation-for="OrgName" class="text-danger form-bar fieldError"></span>
+                                </div>
+                            </div>
+                            <div class="SingleField" data-match="Solicitor">
+                                <div class="registerTextGroup">
+                                    <label asp-for="SRACode">SRA(Solicitor Registration Authority) Number</label>
+                                    <div class="inputSetup">
+                                        <input type="text" asp-for="SRACode" placeholder="SRA membership Number" required />
+                                        <div class="faicons"><i class="fa-regular fa-building fa-sm"></i></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="colbased">
+                                <div class="registerTextGroup">
+                                    <label asp-for="FirstName">First Name</label>
+                                    <div class="inputSetup">
+                                        <input type="text" asp-for="FirstName" placeholder="Your First Name" required />
+                                        <div class="faicons"><i class="fa-regular fa-user fa-2xs"></i></div>
+                                    </div>
+                                    <span asp-validation-for="FirstName" class="text-danger form-bar fieldError"></span>
+                                </div>
+                                <div class="registerTextGroup">
+                                    <label asp-for="LastName">Last Name</label>
+                                    <div class="inputSetup">
+                                        <input type="text" asp-for="LastName" placeholder="Your Last Name" required />
+                                        <div class="faicons"><i class="fa-regular fa-user fa-2xs"></i></div>
+                                    </div>
+                                    <span asp-validation-for="LastName" class="text-danger form-bar fieldError"></span>
+                                </div>
+                            </div>
+
+                            <div class="colbased">
+                                <div class="registerTextGroup">
+                                    <label asp-for="Email">Official Email</label>
+                                    <div class="inputSetup">
+                                        <input type="text" asp-for="Email" placeholder="Official Email" data-Regex="Email" required />
+                                        <div class="faicons"><i class="fa-regular fa-envelope fa-2xs"></i></div>
+                                    </div>
+                                    <span asp-validation-for="Email" class="text-danger form-bar fieldError emailerror"></span>
+                                    <span id="erroremail" class="text-danger fieldError" style="display:none;"></span>
+                                </div>
+                                <div class="registerTextGroup">
+                                    <label asp-for="Phone">Contact Number</label>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6" style="padding-left: 0px">
+                                                <div class="inputSetup_2">
+                                                    <partial name="~/Views/_Dropdown/_CountryCode.cshtml" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6" style="padding-left: 0px; padding-right: 0px;">
+                                                <div class="inputSetup_2">
+                                                    <input type="text" asp-for="Phone" class="form-control PN" placeholder="Contact Number" required />
+                                                </div>
+                                                @*<div class="faicons"><i class="fa-solid fa-phone fa-2xs"></i></div>*@
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="row inputSetup">
+                                        </div>*@
+
+                                    <span asp-validation-for="Phone" class="text-danger form-bar fieldError"></span>
+                                </div>
+
+                            </div>
+                            <div class="colbased">
+                                <div class="registerTextGroup">
+                                    <label>Password</label>
+                                    <div class="inputSetup">
+                                        <input type="password" asp-for="Password" placeholder="Password" required data-toggle="password-toggle" data-password="master" />
+                                        <div class="faicons isInteract" data-toggle="passwordicon-toggle"><i class="fa-regular fa-eye-slash fa-2xs"></i></div>
+                                    </div>
+                                    <span class="fieldError" data-result="Error"></span>
+                                    <div class="PassRegexStyle" hidden>
+                                        <div class="PassRegexContainer">
+                                            <ul id="addRegexList">
+                                                <!-- Password rules will be dynamically added here -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="registerTextGroup IsInputInactive">
+                                    <label>Confirm Password</label>
+                                    <div class="inputSetup">
+                                        <input type="password" asp-for="ConfirmPassword" placeholder="Confirm Password" required data-toggle="password-toggle" data-password="confirm" />
+                                        <div class="faicons isInteract" data-toggle="passwordicon-toggle"><i class="fa-regular fa-eye-slash fa-2xs"></i></div>
+                                    </div>
+                                    <span data-notmatch="Error" id="confirmPasswordError" class="fieldError"></span>
+                                </div>
+                            </div>
+                            <div class="MOUGroup">
+                                <div class="registerCheckGroup">
+                                    <input type="checkbox" asp-for="Privacy_Policy" value="false" required>
+                                    <div class="checkboxContent">
+                                        <label asp-for="Privacy_Policy">I have read the&nbsp; <a href="#">Privacy Policy</a>&nbsp; and I agree to the website&nbsp;<a href="#">Terms of Use</a>&nbsp;and&nbsp;<a href="#"> License Agreement </a></label>
+                                    </div>
+                                    <span asp-validation-for="Privacy_Policy" class="text-danger form-bar fieldError"></span>
+                                </div>
+
+                                <div class="registerCheckGroup">
+                                    <input type="checkbox" asp-for="Understand" value="false" required>
+                                    <div class="checkboxContent">
+                                        <label asp-for="Understand">I understand that they do not, in any way, replace immigration advice</label>
+                                    </div>
+                                    <span asp-validation-for="Understand" class="text-danger form-bar fieldError"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="recaptchaGroup">
+                                <script src='https://www.google.com/recaptcha/api.js'></script>
+                                <div class="g-recaptcha" data-theme="light" data-type="image" data-sitekey="6LfhUYEpAAAAAIkIG4IEcWY6Nuui2EsQidwQXJYo"></div>
+                            </div>
+
+
+                            <div class="RegisterButton">
+                                <button type="button" id="btnreg" data-trigger="Validate">Register</button>
+                                @* <input type="submit" data-trigger="Validate" value="Sign in"/> *@
+                            </div>
+
+                            <div class="accountholder">
+                                <a href="https://workerpermituk.ultimateit-bd.com/auth/login">Already a member?</a>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @section Scripts {
+
+    }
+    @*<script src="~/js/loginValidate.js"></script>
+        <script src="~/js/RegisterValidate.js"></script>*@
+    <script src="~/bower_components/jquery/js/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/minify/js/minifyedpnotify.js"></script>
+    <script src="~/custom/js/HoldOn.min.js"></script>
+
+
+    <script>
+
+        $(document).ready(function () {
+            $('input[name="identity"]').change(function () {
+                var selectedValue = $(this).val();
+                $('#RegType').val(selectedValue);
+            });
+        });
+
+        // Get the radio buttons
+        const orgRadio = document.getElementById('Organization');
+        const solicitorRadio = document.getElementById('Solicitor');
+
+        // Get the divs to show/hide
+        const orgDiv = document.querySelector('div[data-match="Organization"]');
+        const solicitorDiv = document.querySelector('div[data-match="Solicitor"]');
+    </script>
+
+
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            const radioInputs = document.querySelectorAll('input[type="radio"]');
+            const organizationField = document.querySelector('[data-match="Organization"]');
+            const solicitorField = document.querySelector('[data-match="Solicitor"]');
+
+            if (radioInputs.length > 0 && organizationField && solicitorField) {
+                radioInputs.forEach(radioInput => {
+                    radioInput.addEventListener('change', toggleFields);
+                });
+
+                function toggleFields() {
+                    const selectedRadio = document.querySelector('input[type="radio"]:checked');
+                    if (selectedRadio) {
+                        const selectedRadioDataRadio = selectedRadio.getAttribute('data-Radio');
+                        if (selectedRadioDataRadio === 'OrganizationRadio') {
+                            organizationField.style.display = 'block';
+                            solicitorField.style.display = 'none';
+                        } else if (selectedRadioDataRadio === 'SolicitorRadio') {
+                            organizationField.style.display = 'none';
+                            solicitorField.style.display = 'block';
+                        }
+                    } else {
+                        organizationField.style.display = 'none';
+                        solicitorField.style.display = 'none';
+                    }
+                }
+                // Call toggleFields initially to set the correct state
+                toggleFields();
+            } else {
+                console.error('Required HTML elements not found.');
+            }
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#Privacy_Policy').click(function () {
+                let val = $(this).val();
+                if (val === "false") {
+                    $(this).val(true);
+                }
+                if (val === "true") {
+                    $(this).val(false);
+                }
+            });
+            $('#Understand').click(function () {
+                let val = $(this).val();
+                if (val === "false") {
+                    $(this).val(true);
+                }
+                if (val === "true") {
+                    $(this).val(false);
+                }
+            });
+        })
+        //---------------- duplicate email check -----------------//
+        $('#Email').blur(function () {
+            let email = $(this).val();
+            $.get('/client/checkemail', { Email: email }, function (data, success, xhr) {
+                if (success == 'success') {
+                    if (data != "") {
+                        $('#erroremail').text(data).show();
+                        $('#Email').val('');
+
+                    } else {
+                        $('#erroremail').text('');
+                        $('#erroremail').hide();
+                    }
+                }
+            })
+        });
+
+        $('#btnreg').click(function () {
+            let form = $('#main');
+            form.validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+                invalidHandler: function (event, validator) { //display error alert on form submit
+                    // You can implement additional error reporting here if needed
+                },
+                errorPlacement: function (error, element) { // render error placement for each input type
+                    if (element.parent(".input-group").size() > 0) {
+                        error.insertAfter(element.parent(".input-group"));
+                    } else if (element.attr("data-error-container")) {
+                        error.appendTo(element.attr("data-error-container"));
+                    } else {
+                        error.insertAfter(element); // for other inputs, just perform default behavior
+                    }
+                },
+            });
+
+            if (!$('.g-recaptcha-response').val()) {
+                alert('Please check the reCAPTCHA box.');
+                return false; // Stop submission and force attention to reCAPTCHA
+            }
+
+            if (form.valid()) {
+                var serializedData = form.serialize();
+                OpeningHoldon('sk-folding-cube', 'Please wait. Data is Saving...');
+
+                $.post('/auth/register', serializedData, function (data, success, xhr) {
+                    setTimeout(function () {
+                        ClosingHoldon();
+                        if (data.error !== true) {
+                            SuccessPNotify(data.message)
+                            location.href = '/invite/success';
+                        } else {
+                            WarningPNotify(data.message);
+                        }
+                    }, 3000);
+
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    ClosingHoldon();
+                    // Display error message or perform other error handling
+                    $('#erroremail').text('An error occurred: ' + errorThrown);
+                });
+            } else {
+                // Highlight the invalid fields
+                WarningPNotify('validation error')
+                // You can also show a general error message if needed
+            }
+        });
+
+        function SuccessPNotify(msg) {
+            new PNotify({
+                //title: 'Desktop Success',
+                text: '' + msg,
+                addclass: 'bg-success',
+                //hide: true,
+                icon: 'fa fa-check-circle',
+                type: 'success'
+            });
+        }
+        function WarningPNotify(msg) {
+            new PNotify({
+                //title: 'Sticky notice',
+                text: '' + msg,
+                addclass: 'bg-warning',
+                //hide: true,
+                icon: 'icofont icofont-info-circle',
+                type: 'warning'
+            });
+        }
+
+        function OpeningHoldon(themeName, message) {
+            HoldOn.open({
+                theme: themeName,
+                message: `<h4>${message}</h4>` //"<h4>Please wait. Data is Saving...</h4>"
+            });
+        }
+        function ClosingHoldon() {
+            HoldOn.close();
+        };
+        // global phone no validation added by sayed
+        $('.PN').on('input', function (e) {
+            // Remove non-numeric characters except "+" and "-"
+            var sanitized = $(this).val().replace(/[^0-9+-]/g, '');
+            // Update the field value with the sanitized input
+            $(this).val(sanitized);
+        });
+    </script>
+
+    <script src="~/js/loginValidate.js"></script>
+    <script src="~/js/RegisterValidate.js"></script>
+</body>
+</html>

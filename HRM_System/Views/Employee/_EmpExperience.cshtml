@@ -1,0 +1,137 @@
+﻿@model IEnumerable<EmployeeExperience>
+@inject IGlobalHelper _global;
+
+@{
+    //var compId = DataEncryption.DecryptString(_http.HttpContext.Request.Cookies["CompID"]);
+    //var userId = DataEncryption.DecryptString(_http.HttpContext.Request.Cookies["UserID"]);
+    var compId = _global.GetCompID();
+    var userId = _global.GetUserID();
+}
+
+
+<div class="row">
+    <div class="col-sm-4">
+        <form method="post" enctype="multipart/form-data" id="experienceForm" novalidate>
+            <input type="hidden" id="Experience_AddedBy" value="@userId" />
+            <input type="hidden" id="Experience_UpdatedBy" />
+            <input type="hidden" id="Experience_AddedDate" value="@DateTime.Now" />
+            <input type="hidden" id="Experience_UpdatedDate" />
+
+            <input type="hidden" id="EmpExpID" class="form-control form-control-sm" />
+
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Organization</label>
+                <div class="col-sm-12">
+                    <input id="Organization" required name="Organization" data-val-required="The Organization field is required." data-val="true" class="form-control form-control-sm" />
+                    <span for="Organization" class="text-danger" data-valmsg-for="Organization" data-valmsg-replace="true"></span>
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Job Title</label>
+                <div class="col-sm-12">
+                    <input id="Designation" class="form-control form-control-sm" />
+                    <span for="Designation" class="text-danger"></span>
+                    <span class="messages"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Address</label>
+                <div class="col-sm-12">
+                    <input id="OrganizationAddress" class="form-control form-control-sm" />
+                    <span for="OrganizationAddress" class="text-danger"></span>
+                    <span class="messages"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Start Date</label>
+                <div class="col-sm-12">
+                    <input id="JobStartDate" name="JobStartDate" data-val-required="The field is required." data-val="true" class="form-control form-control-sm" />
+                    <span for="JobStartDate" class="text-danger" data-valmsg-for="JobStartDate" data-valmsg-replace="true"></span>
+                    <span class="messages"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">End Date</label>
+                <div class="col-sm-12">
+                    <input id="JobEndDate" name="JobEndDate" data-val-required="The field is required." data-val="true" class="form-control form-control-sm" />
+                    <span for="JobEndDate" class="text-danger" data-valmsg-for="JobEndDate" data-valmsg-replace="true"></span>
+                    <span class="messages"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Remarks</label>
+                <div class="col-sm-12">
+                    <tex id="Experience_Remarks" class="form-control form-control-sm" />
+                    <span for="Remarks" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="form-group row justify-content-center mt-2">
+                <div class="col-sm-12"></div>
+                <div class="col-sm-12">
+                    <input type="button" id="btnExperienceClear" onclick="emptyEmpExperience()" value="Clear" class="btn btn-sm btn-outline-warning m-b-0 mr-2" />
+                    <input type="submit" id="btnExperience" value="Submit" class="btn btn-sm btn-primary m-b-0" />
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+
+    <div class="col-sm-8">
+        <table class="table table-striped" id="tblExperience">
+            <thead>
+                <tr>
+                    <th class="d-none">EmpExpID</th>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Address</th>
+                    <th>Remarks</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="d-none">@item.EmpExpID</td>
+                            <td>@item.Organization</td>
+                            <td>@item.Designation</td>
+                            <td>@item.JobStartDate.ToShortDateString()</td>
+                            <td>@item.JobEndDate.ToShortDateString()</td>
+                            <td>@item.OrganizationAddress</td>
+                            <td>@item.Remarks</td>
+                            <td><a class="text-warning" onclick="getExperience(@item.EmpExpID)"><i class="fa fa-edit fa-lg"></i></a></td>
+                            <td><a class="text-danger" onclick="deleteExperience(@item.EmpExpID)"><i class="fa fa-trash-o fa-lg"></i></a></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+@*<div class="row">
+        <div class="col-sm-12">
+            <div class="form-group row">
+                <label class="col-sm-5"></label>
+                <div class="col-sm-7">
+                    <input type="button" id="btnBasicInfo" value="Submit" class="btn btn-primary m-b-0" />
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+
+
+
+

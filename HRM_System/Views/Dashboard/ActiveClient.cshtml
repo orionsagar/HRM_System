@@ -1,0 +1,69 @@
+﻿@model List<ClientViewModel>
+@{
+    ViewData["Title"] = "Active Client List";
+}
+@section PageName {
+    Active Clients
+}
+@section Breadcrumb {
+    <a href="/dashboard/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">Active Clients</span>
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <!-- Ajax data source (Arrays) table start -->
+        <div class="card">
+            @*<div class="card-header">
+                    <a href="/client/create" class="btn btn-primary @ViewBag.IsAdd">Create New</a>
+                </div>*@
+            <div class="card-block">
+
+                <table id="dt-activeclientlist" class="table table-striped table-bordered nowrap">
+                    <thead>
+                        <tr>
+                            @*<th>ClientID</th>*@
+                            @*<th>#</th>*@
+                            <th>Name</th>
+                            <th>Number of Organisation</th>
+                            <th>Address</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                @*<td>@item.ClientID</td>*@
+                                <td class="text-left">@item.Name</td>
+                                <td class="text-left">@item.Number_Of_Org</td>
+                                <td class="text-left">@item.Address</td>
+                                <td class="text-left">@item.Email1</td>
+                                <td class="text-left">@item.Phone1</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Ajax data source (Arrays) table end -->
+    </div>
+</div>
+
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+
+
+@section Scripts {
+    <script>
+        var isedit = $('#IsEdit').val();
+        console.log(isedit);
+    </script>
+}

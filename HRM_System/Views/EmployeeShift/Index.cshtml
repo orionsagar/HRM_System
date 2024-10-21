@@ -1,0 +1,709 @@
+﻿@model EmployeeShift
+
+@inject IGlobalHelper _global;
+@{
+    //var action = ViewBag.Action;
+    var title = "Employee Shift";
+
+    ViewData["Title"] = $"{title}";
+}
+
+@{
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+}
+
+<style>
+    label {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    table {
+        display: block;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>
+@section PageName {
+    Employee Shift
+}
+@section Breadcrumb {
+    <a href="/employeeshift/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">Employee Shift</span>
+}
+
+@Html.AntiForgeryToken()
+<!-- Page-body start -->
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="loader">
+                <div class="overlay"></div>
+                <div class="card">
+                    <div class="card-block ml-3">
+                        @await Component.InvokeAsync("EmployeeFilter", new EmployeeFilterVM { HasCheckBox_Filter = true, CheckBoxName_Filter = "Employees who have no Shift" })
+                        <hr />
+                        <div class="row mt-2">
+                            <div class="col-sm-6">
+                                <div class="p-3">
+                                    <div class="row mb-2">
+                                        <input type="hidden" asp-for="EmpId" />
+                                        <input type="hidden" asp-for="EmpShiftId" />
+                                        <div class="col-sm-5 mr-1">
+                                            <div class="form-group row">
+                                                <label asp-for="ScheduleId" class="col-sm-6 col-form-label"></label>
+                                                <div class="col-sm-12 p-0">
+                                                    <select asp-for="ScheduleId" asp-items="ViewBag.Schedule" required class="form-control form-control-sm">
+                                                        <option value="">-- Select --</option>
+                                                    </select>
+                                                    <span asp-validation-for="ScheduleId" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5 ml-1">
+                                            <div class="form-group row">
+                                                <label asp-for="ShiftId" class="col-sm-6 col-form-label"></label>
+                                                <div class="col-sm-12 p-0">
+                                                    <select asp-for="ShiftId" asp-items="ViewBag.Shift" class="form-control form-control-sm" required></select>
+                                                    <span asp-validation-for="ShiftId" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5 mr-1">
+                                            <div class="form-group row">
+                                                <label asp-for="EffectiveFrom" class="col-sm-6 col-form-label"></label>
+                                                <div class="col-sm-12 p-0">
+                                                    <input asp-for="EffectiveFrom" type="text" class="form-control form-control-sm" required />
+                                                    <span asp-validation-for="EffectiveFrom" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5 ml-1">
+                                            <div class="form-group row">
+                                                <label asp-for="EffectiveTo" class="col-sm-6 col-form-label"></label>
+                                                <div class="col-sm-12 p-0">
+                                                    <input asp-for="EffectiveTo" type="text" class="form-control form-control-sm" required />
+                                                    <span asp-validation-for="EffectiveTo" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5 mr-1">
+                                            <div class="form-group row">
+                                                <label asp-for="OTStartAfter" class="col-sm-6 col-form-label"></label>
+                                                <div class="col-sm-12 p-0">
+                                                    <input asp-for="OTStartAfter" value="0" min="0" class="form-control form-control-sm" required />
+                                                    <span asp-validation-for="OTStartAfter" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-sm-12 pl-1 pt-1">
+                                                    Minutes
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5 ml-1">
+                                            <div class="form-group row">
+                                                <label asp-for="Remarks" class="col-sm-6 col-form-label"></label>
+                                                <div class="col-sm-12 p-0">
+                                                    <textarea asp-for="Remarks" class="form-control form-control-sm"></textarea>
+                                                    <span asp-validation-for="Remarks" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="">
+                                            <button class="btn btn-sm btn-success" id="btnSave">Save</button>
+                                            <button class="btn btn-sm btn-warning d-none" id="btnUpdate">Update</button>
+                                            <button class="btn btn-sm btn-danger" id="btnDelete">Delete</button>
+                                            <button class="btn btn-sm btn-light btn-outline-info" id="btnClear">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="m-1 font-weight-bold">Assign Shift</p>
+                                <div class="table-responsive dt-responsive">
+                                    <table id="dt-emp-shift" class="table table-hover table-striped table-bordered nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Schedule</th>
+                                                <th>Shift</th>
+                                                <th>From</th>
+                                                <th>To</th>
+                                                <th>OT Start</th>
+                                                <th>Rmarks</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="table-responsive dt-responsive">
+                                    <table id="dt-emp-list" class="table table-hover table-striped  table-bordered nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <div class="checkbox-fade fade-in-primary ml-3">
+                                                        <label class="m-0">
+                                                            <input type="checkbox" id="empAllCheck" name="empAllCheck">
+                                                            <span class="cr">
+                                                                <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </th>
+                                                <th>Employee</th>
+                                                <th>Card No</th>
+                                                <th>Designation</th>
+                                                <th>Current Shift</th>
+                                                <th>Joining Date</th>
+                                                <th>Section</th>
+                                                <th>Department</th>
+                                                <th>Category</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ajax data source (Arrays) table end -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page-body end -->
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        let empSelectedShift = [];
+        let shiftIdForSelectOption="0";
+
+        $(document).ready(function () {
+
+            $('#dt-emp-list tbody').on('click', 'tr td:not(:first-child)', function () {
+                const tr = $(this).closest('tr')
+
+                if ($(this).hasClass('selected')) {
+                    //$(tr).find('td:not(:first-child)').removeClass('selected');
+                } else {
+                    emp_list_table.$('tr').find('td:not(:first-child)').removeClass('selected');
+                    $(tr).find('td:not(:first-child)').addClass('selected');
+                    const currRow = $(this).closest('tr');
+                    const empid = emp_list_table.row(currRow).data()[0];
+                    //const empid = $(this).closest('tr').find("td:eq(0)").find("input[name='empCheckbox']").val();
+                    empShift(empid);
+                }
+
+            });
+
+            $("#ShiftId,#ScheduleId").select2();
+
+            $("#EffectiveFrom, #EffectiveTo").datepicker({
+                dateFormat: 'dd-mm-yy',
+                changeYear: true,
+                changeMonth: true,
+            });
+            $("#EffectiveFrom").datepicker("setDate", new Date());
+
+
+            $("#btnDelete").click(function () {
+                if (!confirm("Are you confirm to delete?")) {
+                    return;
+                }
+
+                let employees = [];
+                $("input[name='empCheckbox']:checked").each(function () {
+                    //console.log($(this).val());
+                    employees.push($(this).val());
+                })
+
+                if (employees.length<1) {
+                    WarningPNotify("Please select Employee");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("DeleteByEmpId", "EmployeeShift")",
+                    data: { empIds: employees },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                            SuccessPNotify(res.message);
+                            clearData();
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+
+            })
+
+            $("#btnSave").click(function () {
+                let employees = [];
+                const effFrom = $("#EffectiveFrom").val()||"";
+                const effTo = $("#EffectiveTo").val()||"";
+                const ShiftId = $("#ShiftId").val()||"";
+                const ScheduleId = $("#ScheduleId").val()||"";
+                const otStartAfter = $("#OTStartAfter").val() || 0;
+                if (effFrom == "" || effTo == "" || ScheduleId =="" || ShiftId=="") {
+                    WarningPNotify("Please select Effective Date & Schedule & Shift");
+                    return;
+                }
+
+                $("input[name='empCheckbox']:checked").each(function () {
+                    //console.log($(this).val());
+                    employees.push(
+                        {
+                            @nameof(EmployeeShift.EffectiveFrom) : effFrom,
+                            @nameof(EmployeeShift.EffectiveTo) : effTo,
+                            @nameof(EmployeeShift.EmpId) : $(this).val(),
+                            @nameof(EmployeeShift.OTStartAfter) : otStartAfter,
+                            @nameof(EmployeeShift.ScheduleId) : ScheduleId,
+                            @nameof(EmployeeShift.ShiftId) : ShiftId,
+                            @nameof(EmployeeShift.Remarks) : $("#Remarks").val(),
+                        });
+                })
+
+                if (employees.length<1) {
+                    WarningPNotify("Please select Employee");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Create", "EmployeeShift")",
+                    data: {model:employees},
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                           // SuccessPNotify("Employee Job Calender Updated");
+                            SuccessPNotify(res.message);
+                            clearData();
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+
+            })
+
+            $("#btnUpdate").click(function () {
+                let employees = [];
+                const effFrom = $("#EffectiveFrom").val()||"";
+                const effTo = $("#EffectiveTo").val()||"";
+                const otStartAfter = $("#OTStartAfter").val()||0;
+                const ShiftId = $("#ShiftId").val()||"";
+                const ScheduleId = $("#ScheduleId").val()||"";
+                const empId = $("#EmpId").val() || "";
+                const empShiftId = $("#EmpShiftId").val() || "";
+
+                if (effFrom == "" || effTo == "" || ScheduleId == "" || ShiftId == "") {
+                    WarningPNotify("Please select Effective Date & Schedule & Shift");
+                    return;
+                }
+
+                employees.push(
+                    {
+                            @nameof(EmployeeShift.EmpId) : empId,
+                            @nameof(EmployeeShift.EmpShiftId) : empShiftId,
+                            @nameof(EmployeeShift.EffectiveFrom) : effFrom,
+                            @nameof(EmployeeShift.EffectiveTo) : effTo,
+                            @nameof(EmployeeShift.OTStartAfter) : otStartAfter,
+                            @nameof(EmployeeShift.ScheduleId) : ScheduleId,
+                            @nameof(EmployeeShift.ShiftId) : ShiftId,
+                            @nameof(EmployeeShift.Remarks) : $("#Remarks").val(),
+                        });
+
+
+                if (employees.length<1) {
+                    WarningPNotify("Please select Employee");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Create", "EmployeeShift")",
+                    data: {model:employees},
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                           // SuccessPNotify("Employee Job Calender Updated");
+                            SuccessPNotify(res.message);
+                            clearData();
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+             });
+
+            $("#btnEmpFilter").click(function () {
+                let filter = {
+                    ScheduleId: $("#ScheduleId").val(),
+                    ShiftId: $("#ShiftId").val(),
+                    EffectiveDate: $("#EffectiveDate").val(),
+                    IsNoShift: $("#HasCheckBox_Filter").is(":checked"),
+                    EmpCategoryId_Filter: $("#EmpCategoryId_Filter").val(),
+                    DesignationId_Filter: $("#DesignationId_Filter").val(),
+                    SectionId_Filter: $("#SectionId_Filter").val(),
+                    DepartmentId_Filter: $("#DepartmentId_Filter").val(),
+                    CardNo_Filter: $("#CardNo_Filter").val()||"",
+                    EmpName_Filter: $("#EmpName_Filter").val() || "",
+                    CompId: '@ComId',
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("LoadEmployee", "EmployeeShift")",
+                    data: filter,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        HTMLEmployeeShiftList(response)
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+            });
+
+            $("#empAllCheck").click(function () {
+                let check = $(this).is(":checked");
+                if (check) {
+                    $("input[name='empCheckbox']").prop('checked', true);
+                } else {
+                    $("input[name='empCheckbox']").prop('checked', false);
+                }
+            });
+
+            $("#btnClear").click(function () {
+                clearData();
+                showSaveButton();
+            });
+
+            $("#ScheduleId").change(function () {
+                shiftIdForSelectOption = 0;
+                CasecadeShifbySchedule()
+            });
+
+            $("#btnEmpFilter").click();
+
+            CasecadeShifbySchedule();
+
+        });
+
+        function HTMLEmployeeShiftList(tr) {
+            tr = tr || [];
+
+            emp_list_table.clear().draw();
+
+            tr.map(a => {
+                a.joiningDate = getDateString(a.joiningDate);
+                emp_list_table.row.add([
+                    a.empId,
+                    a.name,
+                    a.cardNo,
+                    a.designationName,
+                    a.currentShift,
+                    a.joiningDate,
+                    a.sectionName,
+                    a.departmentName,
+                    a.categoryName,
+                ]);
+            });
+
+            emp_list_table.draw();
+        }
+
+        function CasecadeShifbySchedule(scheduleId) {
+
+            if (scheduleId == undefined || scheduleId == null) {
+                scheduleId = $("#ScheduleId").val();
+            }
+
+            $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("GetShiftByScheduleId", "Shift")",
+                    data: { scheduleId },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        $("#ShiftId").empty();
+                        //debugger;
+                        if (res != null) {
+                            let options = "";
+                            for (const shift of res) {
+                                options+=`<option value="${shift.value}">${shift.text}</option>`
+                            }
+                            $("#ShiftId").append(options);
+
+                            if (shiftIdForSelectOption!=0) {
+                                $("#ShiftId").val(`${shiftIdForSelectOption}`).change();
+                            }
+                        }
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+        }
+
+        function HTMLShift(shifts) {
+            shifts = shifts || [];
+            $('#dt-emp-shift tbody').html("");
+            let tr = "";
+            for (var data of shifts) {
+                tr += `<tr>
+                          <td>${data.schedule.name}</td>
+                          <td>${data.shift.name}</td>
+                          <td>${getDateString(data.effectiveFrom)}</td>
+                          <td>${getDateString(data.effectiveTo)}</td>
+                          <td>${data.otStartAfter}</td>
+                          <td>${data.remarks}</td>
+                          <td>
+                                <button class="btn btn-sm text-info" data-toggle="tooltip" data-placement="top" title="Edit" onclick="SetShiftData(${data.empShiftId})"><i class="fa fa-edit"></i></button>
+                                <button class="btn btn-sm text-danger" data-toggle="tooltip" data-placement="top" title="Delete" onclick="DeleteShiftData(${data.empShiftId})"><i class="fa fa-remove"></i></button>
+                           </td>
+                      </tr>`
+            }
+            //if (data!=null) {
+            //    tr = `<tr>
+            //              <td class="d-none">${data.empId}</td>
+            //              <td class="d-none">${data.empShitId}</td>
+            //              <td>${data.shift.name}</td>
+            //              <td>${getDateString(data.effectiveFrom)}</td>
+            //              <td>${getDateString(data.effectiveTo)}</td>
+            //              <td>${data.otStartAfter}</td>
+            //              <td>${data.remarks}</td>
+            //              <td><button class="btn btn-outline-info btn-sm" data-toggle="tooltip" data-placement="top" title="Edit" onclick="SetShiftData(${data.empShiftId})"><i class="fa fa-edit"></i></button></td>
+
+            //          </tr>`
+            //}
+
+            $('#dt-emp-shift tbody').append(tr);
+
+        }
+
+        function DeleteShiftData(empShiftid) {
+            if (!confirm("Are you confirm to delete?")) {
+                return;
+            }
+
+            $.ajax({
+                type: "DELETE",
+                url: "@Url.Action("Delete", "EmployeeShift")",
+                data: { empShiftid },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (!response.isError) {
+                            SuccessPNotify(response.message);
+                            empSelectedShift = empSelectedShift.filter(a => a.empShiftId != empShiftid);
+                            HTMLShift(empSelectedShift);
+                        } else {
+                            DangerPNotify(response.message);
+                        }
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+        }
+
+        function getDateString(date) {
+            var d = new Date(date);
+            var day = d.getDate();
+            var month = d.getMonth() + 1;
+            var year = d.getFullYear();
+            if (day < 10) {
+                day = "0" + day;
+            }
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var date = day + "-" + month + "-" + year;
+            return date;
+        }
+
+
+        function empShift(empId) {
+
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetByEmpId", "EmployeeShift")",
+                data: { empId },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        HTMLShift(response.data)
+                        empSelectedShift = response.data;
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                        empSelectedShift = [];
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                        empSelectedShift = [];
+                    }
+                });
+
+        }
+
+
+
+        function SetShiftData(eShiftId) {
+
+            const { empId, empShiftId, shiftId, scheduleId, otStartAfter, effectiveFrom, effectiveTo, remarks } = empSelectedShift.find(a => a.empShiftId == eShiftId);
+            $("#EmpId").val(empId);
+            $("#EmpShiftId").val(empShiftId);
+            $("#ScheduleId").val(scheduleId).change();
+            //$("#ShiftId").val(shiftId).change();
+            shiftIdForSelectOption = shiftId; // the shift id change in CasecadeShifbySchedule function
+            $("#OTStartAfter").val(otStartAfter);
+            $("#EffectiveFrom").val(getDateString(effectiveFrom));
+            $("#EffectiveTo").val(getDateString(effectiveTo));
+            $("#Remarks").val(remarks);
+
+            //$("#EmpId").val(empSelectedShift.empId);
+            //$("#EmpShiftId").val(empSelectedShift.empShiftId);
+            //$("#ShiftId").val(empSelectedShift.shiftId).change();
+            //$("#OTStartAfter").val(empSelectedShift.otStartAfter);
+            //$("#EffectiveFrom").val(getDateString(empSelectedShift.effectiveFrom));
+            //$("#EffectiveTo").val(getDateString(empSelectedShift.effectiveTo));
+            //$("#Remarks").val(empSelectedShift.remarks);
+
+            showUpdateButton();
+        }
+
+        function clearData() {
+            $("#EmpId").val("");
+            $("#EmpShiftId").val("");
+            $("#ScheduleId").val("").change();
+            $("#ShiftId").val("");
+            $("#OTStartAfter").val("");
+            $("#OTStartAfter").val("");
+            $("#EffectiveFrom").val("");
+            $("#EffectiveTo").val("");
+            $("#Remarks").val("");
+
+            shiftIdForSelectOption = 0;
+
+            empSelectedShift = [];
+
+            $("#dt-emp-shift tbody").html("");
+
+            showSaveButton();
+
+            // recall employee list for update emp history id
+            $("#btnEmpFilter").click();
+        }
+
+        function showSaveButton() {
+
+            if ($("#btnSave").hasClass("d-none")) {
+                $("#btnSave").removeClass("d-none");
+            }
+
+            if (!$("#btnUpdate").hasClass("d-none")) {
+                $("#btnUpdate").addClass("d-none");
+            }
+        }
+
+        function showUpdateButton() {
+
+            if (!$("#btnSave").hasClass("d-none")) {
+                $("#btnSave").addClass("d-none");
+            }
+
+            if ($("#btnUpdate").hasClass("d-none")) {
+                $("#btnUpdate").removeClass("d-none");
+            }
+        }
+
+    </script>
+}

@@ -1,0 +1,478 @@
+﻿@model PromotionVM
+
+@inject IGlobalHelper _global;
+@{
+    //var action = ViewBag.Action;
+    var title = "Employee Promotion";
+
+    ViewData["Title"] = $"{title}";
+}
+
+@{
+
+    string[] BCText = new string[] { $"{title}" };
+    string[] BCLink = new string[] { $"Promotion/index" };
+    //string createlink = "Section/create";
+    //string linkname = "Add New";
+    PageHeaderProps pageHeader = new PageHeaderProps
+    {
+        PageTitle = $"{title} List",
+        PageDesc = $"{title} List",
+        //PageCreateLink = createlink,
+        //PageCreateLinkName = linkname,
+        BreadcrumbText = BCText,
+        BreadcrumbLink = BCLink
+    };
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+}
+
+<style>
+    label {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    table {
+        display: block;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>
+
+@Html.AntiForgeryToken()
+<!-- Page-body start -->
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Ajax data source (Arrays) table start -->
+            <div id="loader">
+                <div class="overlay"></div>
+                <div class="card">
+                    <div class="card-header">
+                        @await Component.InvokeAsync("PageHeader", pageHeader)
+                    </div>
+                    <div class="card-block">
+                        @await Component.InvokeAsync("EmployeeFilter")
+                        <hr />
+
+                        <div class="row mt-2 justify-content-center">
+
+                            <div class="col-sm-6">
+                                <div class="p-3">
+                                    <div class="row mb-2 ">
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group row">
+                                                <label asp-for="DesignationId" class="col-sm-4 col-form-label">Designation</label>
+                                                <div class="col-sm-8">
+                                                    <select asp-for="DesignationId" asp-items="ViewBag.Designation" required class="form-control form-control-sm">
+                                                        <option>-- Select --</option>
+                                                    </select>
+                                                    <span asp-validation-for="DesignationId" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group row">
+                                                <label asp-for="PayScaleId" class="col-sm-4 col-form-label">Pay Scale</label>
+                                                <div class="col-sm-8">
+                                                    <select asp-for="PayScaleId" asp-items="ViewBag.PayScale" required class="form-control form-control-sm">
+                                                        <option>-- Select --</option>
+                                                    </select>
+                                                    <span asp-validation-for="PayScaleId" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group row">
+                                                <label asp-for="Salary" class="col-sm-4 col-form-label">Salary</label>
+                                                <div class="col-sm-8">
+                                                    <input asp-for="Salary" type="number" min="0" class="form-control form-control-sm" required />
+                                                    <span asp-validation-for="Salary" class="text-danger"></span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group row">
+                                                <label asp-for="EffectiveDate" class="col-sm-4 col-form-label">Effective Date</label>
+                                                <div class="col-sm-8">
+                                                    <input asp-for="EffectiveDate" type="text" class="form-control form-control-sm" required />
+                                                    <span asp-validation-for="EffectiveDate" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group row">
+                                                <label asp-for="Remarks" class="col-sm-4 col-form-label"></label>
+                                                <div class="col-sm-8">
+                                                    <textarea asp-for="Remarks" class="form-control form-control-sm"></textarea>
+                                                    <span asp-validation-for="Remarks" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-center">
+                                        <div class="">
+                                            <button class="btn btn-sm btn-success" id="btnSave">Save</button>
+                                            @*<button class="btn btn-sm btn-warning d-none" id="btnUpdate">Update</button>*@
+                                            @*<button class="btn btn-sm btn-danger" id="btnDelete">Delete</button>*@
+                                            <button class="btn btn-sm btn-light btn-outline-info" id="btnClear">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-12">
+                                @*<p class="m-1 font-weight-bold">Employee List</p>*@
+
+                                <div class="table-responsive dt-responsive">
+
+                                    <table id="dt-emp-list" class="table table-hover table-striped  table-bordered nowrap w-100">
+                                        <thead>
+                                            <tr>
+                                                @*<th>All<input type="checkbox" id="empAllCheck" /></th>*@
+                                                <th>
+
+                                                    <div class="checkbox-fade fade-in-primary ml-3">
+                                                        <label class="m-0">
+                                                            <input type="checkbox" id="empAllCheck" name="empAllCheck">
+                                                            <span class="cr">
+                                                                <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </th>
+                                                <th>HistoryId</th>
+                                                <th>Employee</th>
+                                                <th>Card No</th>
+                                                <th>Designation</th>
+                                                <th>Salary</th>
+                                                <th>Joining Date</th>
+                                                <th>Section</th>
+                                                <th>Department</th>
+                                                <th>Category</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Ajax data source (Arrays) table end -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page-body end -->
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        let empSelectedShift = [];
+        let shiftIdForSelectOption="0";
+
+        $(document).ready(function () {
+            emp_list_table.column(1).visible(false); // Emp History Id hide
+            //$('#dt-emp-list tbody').on('click', 'tr td:not(:first-child)', function () {
+            //    const tr = $(this).closest('tr')
+
+            //    if ($(this).hasClass('selected')) {
+            //        //$(tr).find('td:not(:first-child)').removeClass('selected');
+            //    } else {
+            //        emp_list_table.$('tr').find('td:not(:first-child)').removeClass('selected');
+            //        $(tr).find('td:not(:first-child)').addClass('selected');
+            //        const currRow = $(this).closest('tr');
+            //        const empid = emp_list_table.row(currRow).data()[0];
+            //        //const empid = $(this).closest('tr').find("td:eq(0)").find("input[name='empCheckbox']").val();
+            //        empShift(empid);
+            //    }
+
+            //});
+
+            $("#DesignationId,#PayScaleId").select2();
+
+            $("#EffectiveDate").datepicker({
+                dateFormat: 'dd-mm-yy',
+                changeYear: true,
+                changeMonth: true,
+            });
+
+            $("#DesignationId").change(function () {
+                const desigId = $(this).val() || 0;
+
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("GetPayScaleByDesigId", "PayScale")",
+                    data: { desigId },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        //console.log(response);
+                        if (response != null) {
+                            $("#PayScaleId").val(response.payScaleID).change();
+                            $("#Salary").val(response.initialPay);
+                        } else {
+                            $("#PayScaleId").prop("selectedIndex", 0).change();
+                            $("#Salary").val("");
+                        }
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+            });
+
+            $("#EffectiveDate").datepicker("setDate", new Date());
+
+            $("#btnSave").click(function () {
+                let employees = [];
+                const DesignationId = $("#DesignationId").val()||0;
+                const PayScaleId = $("#PayScaleId").val()||0;
+                const EffectiveDate = $("#EffectiveDate").val()||"";
+                const Salary = $("#Salary").val()||0;
+
+                if (DesignationId == 0 || PayScaleId == 0 || EffectiveDate == "" || Salary == 0) {
+                    WarningPNotify("Please select Designation, Payscale, Effective Date & Salary");
+                    return;
+                }
+
+                $("input[name='empCheckbox']:checked").each(function () {
+                    //console.log($(this).val());
+                    let currRow = $(this).closest('tr');
+                    let historyId = emp_list_table.row(currRow).data()[1];
+                    employees.push(
+                        {
+                            @nameof(PromotionVM.EmpId) : $(this).val(),
+                            @nameof(PromotionVM.EmpHistoryId) : historyId,
+                            @nameof(PromotionVM.EffectiveDate) : EffectiveDate,
+                            @nameof(PromotionVM.DesignationId) : DesignationId,
+                            @nameof(PromotionVM.PayScaleId) : PayScaleId,
+                            @nameof(PromotionVM.Salary) : Salary,
+                            @nameof(EmployeeShift.Remarks) : $("#Remarks").val(),
+                        });
+                })
+
+                if (employees.length<1) {
+                    WarningPNotify("Please select Employee");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Create", "Promotion")",
+                    data: {model:employees},
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                           // SuccessPNotify("Employee Job Calender Updated");
+                            SuccessPNotify(res.message);
+                            clearData();
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+
+            })
+
+            $("#btnEmpFilter").click(function () {
+                let filter = {
+                    ScheduleId: $("#ScheduleId").val(),
+                    ShiftId: $("#ShiftId").val(),
+                    EffectiveDate: $("#EffectiveDate").val(),
+                    IsNoShift: $("#HasCheckBox_Filter").is(":checked"),
+                    EmpCategoryId_Filter: $("#EmpCategoryId_Filter").val(),
+                    DesignationId_Filter: $("#DesignationId_Filter").val(),
+                    SectionId_Filter: $("#SectionId_Filter").val(),
+                    DepartmentId_Filter: $("#DepartmentId_Filter").val(),
+                    CardNo_Filter: $("#CardNo_Filter").val()||"",
+                    EmpName_Filter: $("#EmpName_Filter").val() || "",
+                    CompId: '@ComId',
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("LoadEmployee", "Promotion")",
+                    data: filter,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        HTMLEmployeeShiftList(response)
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+            });
+
+            $("#empAllCheck").click(function () {
+                let check = $(this).is(":checked");
+                if (check) {
+                    $("input[name='empCheckbox']").prop('checked', true);
+                } else {
+                    $("input[name='empCheckbox']").prop('checked', false);
+                }
+            });
+
+            $("#btnClear").click(function () {
+                clearData();
+                //showSaveButton();
+            });
+
+            $("#btnEmpFilter").click();
+
+        });
+
+        function HTMLEmployeeShiftList(tr) {
+            tr = tr || [];
+
+            emp_list_table.clear().draw();
+            //console.log(tr);
+            tr.map(a => {
+                a.joiningDate = getDateString(a.joiningDate);
+                emp_list_table.row.add([
+                    a.empId,
+                    a.empHistoryId,
+                    a.name,
+                    a.cardNo,
+                    a.designationName,
+                    a.salary,
+                    a.joiningDate,
+                    a.sectionName,
+                    a.departmentName,
+                    a.categoryName,
+                ]);
+            });
+
+            emp_list_table.draw();
+        }
+
+
+
+        //function getDateString(date) {
+        //    var d = new Date(date);
+        //    var day = d.getDate();
+        //    var month = d.getMonth() + 1;
+        //    var year = d.getFullYear();
+        //    if (day < 10) {
+        //        day = "0" + day;
+        //    }
+        //    if (month < 10) {
+        //        month = "0" + month;
+        //    }
+        //    var date = day + "-" + month + "-" + year;
+        //    return date;
+        //}
+
+
+        @*function empShift(empId) {
+
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetByEmpId", "EmployeeShift")",
+                data: { empId },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        HTMLShift(response.data)
+                        empSelectedShift = response.data;
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                        empSelectedShift = [];
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                        empSelectedShift = [];
+                    }
+                });
+
+        }*@
+
+
+
+        function clearData() {
+            $("#DesignationId").prop("selectedIndex", 0).change();
+            $("#PayScaleId").prop("selectedIndex", 0).change();
+            $("#Salary").val("");
+            $("#EffectiveDate").val("");
+            $("#Remarks").val("");
+
+            // recall employee list for update emp history id
+            $("#btnEmpFilter").click();
+        }
+
+        function showSaveButton() {
+
+            if ($("#btnSave").hasClass("d-none")) {
+                $("#btnSave").removeClass("d-none");
+            }
+
+            if (!$("#btnUpdate").hasClass("d-none")) {
+                $("#btnUpdate").addClass("d-none");
+            }
+        }
+
+        function showUpdateButton() {
+
+            if (!$("#btnSave").hasClass("d-none")) {
+                $("#btnSave").addClass("d-none");
+            }
+
+            if ($("#btnUpdate").hasClass("d-none")) {
+                $("#btnUpdate").removeClass("d-none");
+            }
+        }
+
+    </script>
+}

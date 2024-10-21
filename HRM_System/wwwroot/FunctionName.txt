@@ -1,0 +1,39 @@
+﻿
+
+SELECT dbo.F_Absent_Amount(54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Absent_Days](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Advance_Deduction](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Attendance_Bonus](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Att_Pay_Days](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Basic_Salary](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Conveyance](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Fooding](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Gross_Payable](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Gross_Salary](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_HoliDay_Present_Days](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Holidays](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_House_Rent](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_IncomeTAX](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Late_Deduction_Amount](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_LatePresent_Days](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_LatePresent_Hours](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Leave_Days](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Loan_Deduction](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Lunch_Deduction](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Medical](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_OneDay_Salary](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_OT_Amount](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_OT_Hour](54,'12/01/2019', '12/31/2019',1)
+
+SELECT [dbo].[F_OT_RATE](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_PF_Deduction](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Present_Days](54,'12/01/2019', '12/31/2019',1)
+--SELECT [dbo].[F_Production_Amount](54,'12/01/2019', '12/31/2019',1) -- need to create vw_P_Transaction
+--SELECT [dbo].[F_Production_Bonus](54,'12/01/2019', '12/31/2019',1) -- need to create vw_P_Transaction
+--SELECT [dbo].[F_Production_Qty](54,'12/01/2019', '12/31/2019',1) -- need to create vw_P_Transaction
+
+SELECT [dbo].[F_Stamp](54,'12/01/2019', '12/31/2019',1)
+SELECT [dbo].[F_Total_Deduction](54,'12/01/2019', '12/31/2019',1)
+--SELECT [dbo].[F_Total_Wages](54,'12/01/2019', '12/31/2019',1) -- need to create vw_P_Transaction
+SELECT [dbo].[F_TTL_Working_Days](54,'12/01/2019', '12/31/2019',1)
+

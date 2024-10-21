@@ -1,0 +1,63 @@
+﻿@model OtherAllowanceFilter
+
+
+<div class="row">
+    <div class="col-sm-12">
+
+        <div class="form-group row">
+            <label asp-for="SectionId_Filter" class="col-sm-12 col-form-label"></label>
+            <div class="col-sm-12">
+                <select asp-for="SectionId_Filter" asp-items="ViewBag.Section" class="form-control form-control-sm">
+                    <option value="">Select</option>
+                </select>
+                <span asp-validation-for="SectionId_Filter" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="DepartmentId_Filter" class="col-sm-12 col-form-label"></label>
+            <div class="col-sm-12">
+                <select asp-for="DepartmentId_Filter" asp-items="ViewBag.Department" class="form-control form-control-sm">
+                    <option value="">Select</option>
+                </select>
+                <span asp-validation-for="DepartmentId_Filter" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="DesignationId_Filter" class="col-sm-12 col-form-label"></label>
+            <div class="col-sm-12">
+                <select asp-for="DesignationId_Filter" asp-items="ViewBag.Designation" class="form-control form-control-sm">
+                    <option value="">Select</option>
+                </select>
+                <span asp-validation-for="DesignationId_Filter" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="CardNo_Filter" class="col-sm-12">Card No</label>
+            <div class="col-sm-12">
+                <input asp-for="CardNo_Filter" class="form-control form-control-sm" />
+                <span asp-validation-for="CardNo_Filter" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row justify-content-around">
+            <button type="button" id="btnEmpFilter" class="btn btn-sm btn-primary">Search Employee</button>
+
+            @*<button type="button" id="btnEmpBonusSetUpFilter" class="btn btn-sm btn-primary">Find Bonus Set Up</button>*@
+        </div>
+
+        <div class="form-group row justify-content-around">
+            @*<button type="button" id="btnEmpFilter" class="btn btn-sm btn-primary">Search Employee</button>*@
+
+            <button type="button" id="btnEmpBonusSetUpFilter" class="btn btn-sm btn-primary">Find Bonus Set Up</button>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+

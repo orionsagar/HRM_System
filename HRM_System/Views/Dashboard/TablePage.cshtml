@@ -1,0 +1,287 @@
+﻿@*
+==================================================================================================================
+========= This is the Table Page. Appears in Dashboard Controller and has _Main_Layout.cshtml ==============
+==================================================================================================================
+*@
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Main_Layout.cshtml";
+}
+
+<div class="page-wrapper">
+    <!-- Page-body start -->
+    <div class="page-body">
+
+        <!-- New BreadCrum -->
+        <div class="row">
+            <div class="breadCrumContainer col-xl-12 col-md-12 ">
+                <div class="breadCrumWrapper">
+                    <div class="pageName">
+                        <span>Foo-Table</span>
+                    </div>
+                    <div class="breadCrum">
+                        <i class="fa fa-home"></i>
+                        <span class="Divider">/</span>
+                        <span class="section activeCrum">TablePage</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Filtering Foo-table card start -->
+        <div class="card">
+            <div class="card-header">
+
+                <!-- Styling to this available at ManualUpdate.CSS /StyleSheet ==================-->
+                <div class="tableHeaderSelection">
+                    <div class="SelectWithLabel">
+                        <label for="">Select One:</label>
+                        <select>
+                            <option value="one">Select</option>
+                            <option value="two">Second</option>
+                            <option value="three">Third</option>
+                        </select>
+                    </div>
+
+                    <div class="SelectNoLabel">
+                        <select>
+                            <option value="one">Select</option>
+                            <option value="two">Second</option>
+                            <option value="three">Third</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-block">
+                <table id="demo-foo-filtering" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th data-breakpoints="xs">Last Name</th>
+                            <th data-breakpoints="xs">Job Title</th>
+                            <th data-breakpoints="xs">BOB</th>
+                            <th class="tableActionCol">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tiger Nixon</td>
+                            <td>System Architect</td>
+                            <td>Edinburgh</td>
+                            <td>61</td>
+                            <!-- styles could be found in ManualUpdate.CSS stylesheet -->
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Garrett</td>
+                            <td>Accountant</td>
+                            <td>Tokyo</td>
+                            <td>63</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Cox</td>
+                            <td>Author</td>
+                            <td>San</td>
+                            <td>66</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Kelly</td>
+                            <td>Brielle</td>
+                            <td>Edinburgh</td>
+                            <td>22</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Airi Satou</td>
+                            <td>Accountant</td>
+                            <td>Tokyo</td>
+                            <td>33</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Brielle</td>
+                            <td>Specialist</td>
+                            <td>New York</td>
+                            <td>61</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Herrod Chandler</td>
+                            <td>Sales Assistant</td>
+                            <td>San</td>
+                            <td>59</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Rhona Davidson</td>
+                            <td>Specialist</td>
+                            <td>Tokyo</td>
+                            <td>55</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Colleen Hurst</td>
+                            <td>Javascript Developer</td>
+                            <td>San</td>
+                            <td>39</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sonya Frost</td>
+                            <td>Software</td>
+                            <td>Edinburgh</td>
+                            <td>23</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Jena Gaines</td>
+                            <td>Office Manager</td>
+                            <td>London</td>
+                            <td>30</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Flynn</td>
+                            <td>Support Lead</td>
+                            <td>Edinburgh</td>
+                            <td>22</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Charde Marshall</td>
+                            <td>Regional Director</td>
+                            <td>San</td>
+                            <td>36</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Haley Kennedy</td>
+                            <td>Senior Marketing Designer</td>
+                            <td>London</td>
+                            <td>43</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tatyana Fitzpatrick</td>
+                            <td>Regional Director</td>
+                            <td>London</td>
+                            <td>19</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Michael Silva</td>
+                            <td>Marketing Designer</td>
+                            <td>London</td>
+                            <td>66</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Paul Byrd</td>
+                            <td>(CFO)</td>
+                            <td>New York</td>
+                            <td>64</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Gloria Little</td>
+                            <td>Systems Administrator</td>
+                            <td>New York</td>
+                            <td>59</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Bradley Greer</td>
+                            <td>Software</td>
+                            <td>London</td>
+                            <td>41</td>
+                            <td class="tableActionIcon footable-sortable footable-last-visible">
+                                <i class="fa fa-minus-circle"></i>
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-eye"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Filtering Foo-table card end -->
+    </div>
+    <!-- Page-body end -->
+</div>

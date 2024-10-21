@@ -1,0 +1,396 @@
+﻿@model LeaveSetup
+
+@inject IGlobalHelper _global;
+@{
+    var action = ViewBag.Action;
+    var title = "Leave Setup";
+    ViewData["Title"] = $"{title}";
+}
+
+@section PageName {
+    Leave Setup List
+}
+@section Breadcrumb {
+    <a href="/leavesetup/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">Leave Setup List</span>
+}
+@{
+    var ComId = _global.GetCompID();
+    var OrgId = _global.GetOrgId();
+    var UserId = _global.GetUserID();
+    var date = DateTime.Now;
+}
+
+<style>
+    table {
+        display: block;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>
+@Html.AntiForgeryToken()
+<!-- Page-body start -->
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="loader">
+                <div class="overlay"></div>
+                <div class="card">
+                    <div class="card-block">
+                        @await Component.InvokeAsync("EmployeeFilter", new EmployeeFilterVM { HasCheckBox_Filter = true, CheckBoxName_Filter = "Employees Who have no Leave" })
+                        <hr />
+
+                        <input type="hidden" asp-for="LeaveSetupId" value="0" />
+                        <input type="hidden" asp-for="AddedBy" value="@UserId" />
+                        <input type="hidden" asp-for="UpdatedBy" value="@UserId" />
+                        <input type="hidden" asp-for="AddedDate" value="@date" />
+                        <input type="hidden" asp-for="UpdatedDate" value="@date" />
+                        <input type="hidden" asp-for="CompId" value="@ComId" />
+                        <input type="hidden" asp-for="OrgId" value="@OrgId" />
+
+                        <div class="row mt-2">
+                            <div class="col-sm-6" id="loader">
+                                <div class="table-responsive dt-responsive">
+                                    <p class="m-1 font-weight-bold">Employee List</p>
+                                    <table id="dt-emp-list" class="table table-hover table-striped table-bordered nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <div class="checkbox-fade fade-in-primary ml-3">
+                                                        <label class="m-0">
+                                                            <input type="checkbox" id="empAllCheck" name="empAllCheck">
+                                                            <span class="cr">
+                                                                <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </th>
+                                                <th>Employee</th>
+                                                <th>Card No</th>
+                                                <th>Designation</th>
+                                                <th>Category</th>
+                                                <th>Department</th>
+                                                <th>Section</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-12 ">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label text-right">Fiscal Year:</label>
+                                        <div class="col-sm-8">
+                                            <select asp-items="ViewBag.FiscalYear" class="form-control form-control-sm" id="fiscalyearid">
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 mb-1">
+                                    <table id="tblAppendGrid" class="table table-responsive" style="display: inline-table;"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-block">
+                    <div class="row actionBtnRight">
+                        <div class="col-12 col-sm-12">
+                            <button class="btn btn-primary waves-effect waves-light m-r-20" id="btnSave">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page-body end -->
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+<script>
+        var myAppendGrid;
+        let selectedEmpId = 0;
+        const initialRow = [
+            {
+                leaveTypeId: 0,
+                leaveTypeId: "0",
+                leaveDays: "",
+                remark: "",
+            }];
+
+        $(document).ready(function () {
+            $(".OrgId").select2();
+            $("#fiscalyearid").select2();
+            $("#EffectiveDate").datepicker({
+                dateFormat: 'dd-mm-yy',
+                changeYear: true,
+                changeMonth: true,
+            });
+            $("#EffectiveDate").datepicker("setDate", new Date());
+            myAppendGrid = new AppendGrid({
+                element: "tblAppendGrid",
+                uiFramework: "bootstrap4",
+                iconFramework: "fontawesome5",
+                columns: [
+                    {
+                        name: "leaveTypeId",
+                        type: 'select',
+                        display: "Leave Type",
+                        ctrlCss: { width: '100%' },
+                        ctrlOptions: { @Html.Raw(ViewBag.LeaveType)},
+                                    },
+            {
+                name: "leaveDays",
+                type: 'number',
+                ctrlAttr: { required: "required", min: '1', max: '365' },
+                display: "Leave Days",
+                ctrlCss: { width: '100%' }
+            },
+            {
+                name: "remark",
+                display: "Remark",
+                ctrlCss: { width: '100%' }
+            },
+            {
+                name: "LeaveSetupId",
+                type: "hidden"
+            }                                                                ],
+            // Optional CSS classes, to make table slimmer!
+            sectionClasses: {
+                table: "table-sm",
+                control: "form-control-sm",
+                buttonGroup: "btn-group-sm"
+            },
+                initData: initialRow,
+                hideButtons: {
+                removeLast: false,
+                moveUp: true,
+                moveDown: true,
+                insert: true,
+                removeLast: true
+            },
+            afterRowAppended: function (caller, parentRowIndex, addedRowIndex) {
+                $(`#tblAppendGrid_leaveTypeId_${addedRowIndex}`).select2();
+
+                $(`#tblAppendGrid_leaveTypeId_${addedRowIndex}`).change(function () {
+                    var leaveTypeId = $(this).val();
+                    getLeaveDaysByType(leaveTypeId, addedRowIndex);                    
+                });
+            }
+
+        });
+
+        function getLeaveDaysByType(leaveTypeId, index) {
+            var leaveDays = 0;
+            // Dummy data for demonstration
+            $.get('/leavesetup/getleavedaysbyid', { LeaveTypeId: leaveTypeId }, function (data, status) {
+                // Set the leaveDays value in the grid
+                $(`#tblAppendGrid_leaveDays_${index}`).val(data);
+            })
+            return leaveDays;
+        }
+
+        $("#btnSave").click(function () {
+            let leaveSetup = {};
+
+            const fiscalyearid = $("#fiscalyearid").val() || "";
+            const orgId = $("#OrgId").val() || "";
+
+            if (orgId == "") {
+                WarningPNotify("Please select Organisation");
+                return;
+            };
+            if (fiscalyearid == "0") {
+                WarningPNotify("Please select Fiscal Year");
+                return;
+            };
+
+            let ltype = [];
+            var rowCount = myAppendGrid.getRowCount();
+            for (var i = 1; i <= rowCount; i++) {
+                var LeaveTypeId = $('#tblAppendGrid_leaveTypeId_' + i).val().trim();
+                var LeaveSetupId = $('#tblAppendGrid_LeaveSetupId_' + i).val().trim();
+                var LeaveDays = $('#tblAppendGrid_leaveDays_' + i).val().trim();
+                var Remark = $('#tblAppendGrid_remark_' + i).val().trim();
+                ltype.push(
+                    {
+                        LeaveTypeId: parseInt(LeaveTypeId),
+                        LeaveDays: parseInt(LeaveDays),
+                        Remark: Remark,
+                    }
+                )
+            }
+            leaveSetup = {
+                FiscalYearId: fiscalyearid,
+                OrgId: orgId,
+                EmpIds: [],
+                LeaveTypes: ltype,
+            }
+
+            $("input[name='empCheckbox']:checked").each(function () {
+                leaveSetup.EmpIds.push($(this).val());
+            });
+
+            if (leaveSetup.EmpIds.length < 1) {
+                WarningPNotify("Please select Employee");
+                return;
+            }
+            //console.log(leaveSetup);
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Create", "LeaveSetup")",
+                data: { leaveSetup: leaveSetup },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                dataType: "json",
+                success: function (res) {
+                    if (!res.isError) {
+                        SuccessPNotify(res.message);
+                        window.location.reload();
+                    } else {
+                        DangerPNotify(res.message);
+                    }
+                },
+                failure: function (response) {
+                    DangerPNotify(response.responseText);
+                },
+                error: function (response) {
+                    DangerPNotify(response.responseText);
+                }
+            });
+        })
+
+        $("#btnEmpFilter").click(function () {
+            let filter = {
+                LeaveSetupId: $("#LeaveSetupId").val(),
+                EffectiveDate: $("#EffectiveDate").val(),
+                IsNoLeave: $("#HasCheckBox_Filter").is(":checked"),
+                EmpCategoryId_Filter: $("#EmpCategoryId_Filter").val(),
+                DesignationId_Filter: $("#DesignationId_Filter").val(),
+                SectionId_Filter: $("#SectionId_Filter").val(),
+                DepartmentId_Filter: $("#DepartmentId_Filter").val(),
+                CardNo_Filter: $("#CardNo_Filter").val() || "",
+                EmpName_Filter: $("#EmpName_Filter").val() || "",
+                CompId: '@ComId',                
+            }
+
+            selectedEmpId = 0;
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("LoadEmployee", "LeaveSetup")",
+                data: filter,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                dataType: "json",
+                success: function (response) {
+                    HTMLEmployeeList(response)
+                },
+                failure: function (response) {
+                    DangerPNotify(response.responseText);
+                },
+                error: function (response) {
+                    DangerPNotify(response.responseText);
+                }
+            });
+
+        });
+
+        $("#empAllCheck").click(function () {
+            let check = $(this).is(":checked");
+            if (check) {
+                $("input[name='empCheckbox']").prop('checked', true);
+            } else {
+                $("input[name='empCheckbox']").prop('checked', false);
+            }
+        });
+
+        $('#dt-emp-list tbody').on('click', 'tr td:not(:first-child)', function () {
+            const empid = $(this).closest('tr').find("td:eq(0)").find("input[name='empCheckbox']").val();
+            const fiscalYearId = $("#fiscalyearid").val();
+            const tr = $(this).closest('tr')
+            if ($(this).hasClass('selected')) {
+                $(tr).find('td:not(:first-child)').removeClass('selected');
+                selectedEmpId = 0;
+            } else {
+                emp_list_table.$('tr').find('td:not(:first-child)').removeClass('selected');
+                $(tr).find('td:not(:first-child)').addClass('selected');
+                selectedEmpId = empid;
+            }
+            getEmployeeLeaveBalance(empid, fiscalYearId)
+        });
+
+        $("#fiscalyearid").on('change', function () {
+
+            //const empid = selectedEmpId; // emp_list_table.rows().find(".selected").data(); //.find("td:eq(0)").find("input[name='empCheckbox']").val()
+
+            // var data1 = emp_list_table.columns('.selected').data();
+            debugger;
+            //const empid = $(this).closest('tr').find("td:eq(0)").find("input[name='empCheckbox']").val()||0;
+            const fiscalYearId = $("#fiscalyearid").val() || 0;
+            getEmployeeLeaveBalance(selectedEmpId, fiscalYearId);
+        });
+
+        $("#btnEmpFilter").click();
+
+        function getEmployeeLeaveBalance(empid, fiscalYearId) {
+            $.get('/leavesetup/getemployeeleave', { EmpId: empid, fiscalYearId }, function (data, status) {
+
+                if (data.length < 1) {
+                    myAppendGrid.load(initialRow);
+                    select2WithAppendGrid();
+                } else {
+                    myAppendGrid.load(data);
+                    select2WithAppendGrid();
+                }
+
+            })
+        }
+                        });
+
+        function select2WithAppendGrid() {
+            let gridrow = myAppendGrid.getRowCount();
+            if (gridrow >= 1) {
+                for (var i = 1; i <= gridrow; i++) {
+                    $(`#tblAppendGrid_leaveTypeId_${i}`).select2();
+                }
+            } else {
+                $(`#tblAppendGrid_leaveTypeId_1`).select2();
+            }
+        }
+
+        function getDateString(date) {
+            var d = new Date(date);
+            var day = d.getDate();
+            var month = d.getMonth() + 1;
+            var year = d.getFullYear();
+            if (day < 10) {
+                day = "0" + day;
+            }
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var date = day + "-" + month + "-" + year;
+            return date;
+        }
+</script>
+}

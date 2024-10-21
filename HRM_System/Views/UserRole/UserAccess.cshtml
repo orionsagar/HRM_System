@@ -1,0 +1,391 @@
+﻿@model RoleWiseUserAccessToolsVM
+@inject IGlobalHelper _global;
+@{
+    ViewData["Title"] = "UserAccess";
+}
+@{
+
+    string[] BCText = new string[] { "User Role List", "User Access" };
+    string[] BCLink = new string[] { "userrole", "#" };
+    string createlink = "userrole/index";
+    string linkname = "Role List";
+    PageHeaderProps pageHeader = new PageHeaderProps
+    {
+        PageTitle = "User Access List",
+        PageDesc = "User Access List",
+        PageCreateLink = createlink,
+        PageCreateLinkName = linkname,
+        BreadcrumbText = BCText,
+        BreadcrumbLink = BCLink
+    };
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+}
+
+<style type="text/css">
+    .tableFixHead {
+        overflow: auto;
+        height: 100px;
+        width: 240px;
+    }
+
+        .tableFixHead thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .tableFixHead tbody th {
+            position: sticky;
+            left: 0;
+        }
+
+    /* Just common table stuff. Really. */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+    th {
+        background: #eee;
+    }
+</style>
+
+
+<div class="pcoded-inner-content">
+    <!-- Main-body start -->
+    <div class="main-body">
+        <div class="page-wrapper">
+            <!-- Page-body start -->
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <!-- Ajax data source (Arrays) table start -->
+                        <div class="card">
+                            <form id="main" asp-action="UserAccess" method="post" >
+                                <div class="card-header">
+                                    @await Component.InvokeAsync("PageHeader", pageHeader)
+                                </div>
+                                <div class="card-block">
+                                    @if (ViewBag.ErrorMsg != null)
+                                    {
+                                        <div class="alert alert-danger background-danger">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <i class="icofont icofont-close-line-circled text-white"></i>
+                                            </button>
+                                            <strong>@ViewBag.ErrorMsg!</strong>
+                                        </div>
+                                    }
+                                    <div class="row pb-2">
+                                        <div class="col-md-3">
+                                            <h5>Role : @ViewBag.RoleName</h5>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-12 col-form-label">Module</label>
+                                                <div class="col-sm-12">
+                                                    <select asp-for="ModuleID" class="form-control" asp-items="ViewBag.ModuleId">
+                                                        @*<option value="0">Select</option>*@
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label class="col-sm-12 col-form-label">Sub Module</label>
+                                                <div class="col-sm-12">
+                                                    <select asp-for="SubModuleID" class="form-control" asp-items="ViewBag.SubModuleId">
+                                                    </select>
+                                                    <span asp-validation-for="SubModuleID" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" value="@ViewBag.RoleId" id="IsRoleId" asp-for="RoleID" />
+                                        @* <input type="hidden" asp-for="CompId" value="@ComId" />*@
+                                        <input type="hidden" asp-for="AddedBy" value="@UserId" />
+                                        <input type="hidden" asp-for="UpdatedBy" />
+                                        <input type="hidden" asp-for="AddedDate" value="@DateTime.Now" />
+                                        <input type="hidden" asp-for="UpdatedDate" />
+                                    </div>
+                                    <div class="row">
+                                        <div class="table-responsive dt-responsive">
+                                            @{
+                                                @ViewBag.Msg
+                                            }
+                                            <table id="tblAppendGrid" class="table-bordered table table-striped" style="width:100%;">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th style="display:none;">ID</th>
+                                                        <th>Sub Menu Name</th>
+                                                        <th>Page Name</th>
+                                                        <th><input type="checkbox" id="ViewCheckBoxAll" class="custom-checkbox" /> View</th>
+                                                        <th><input type="checkbox" id="EditCheckBoxAll" class="custom-checkbox" /> Edit</th>
+                                                        <th><input type="checkbox" id="SaveCheckBoxAll" class="custom-checkbox" /> Save</th>
+                                                        <th><input type="checkbox" id="DeleteCheckBoxAll" class="custom-checkbox" /> Delete</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tableBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <input type="submit" value="Save" class="btn btn-primary m-b-0" id="submit" />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </form>
+                        </div>
+                        <!-- Ajax data source (Arrays) table end -->
+                    </div>
+                </div>
+            </div>
+            <!-- Page-body end -->
+        </div>
+    </div>
+    <!-- Main-body end -->
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/custom/js/menu.js"></script>
+    <script type="text/javascript">
+        var isViewChecked = '';
+        var isViewCheckedValue = '0';
+        var isEditChecked = '';
+        var isEditCheckedValue = '0';
+        var isSaveChecked = '';
+        var isSaveCheckedValue = '0';
+        var isDeleteChecked = '';
+        var isDeleteCheckedValue = '0';
+        var isApprovedChecked = '';
+        var isApprovedCheckedValue = '';
+        var isApproved = '';
+        $(document).ready(function () {
+            
+            //window.onload = function () {
+            //    var moduleid = $('#ModuleID').val();
+            //    bindSubModuleDropdown(moduleid)
+            //};
+            
+            $('#ModuleID').select2();
+            $('#SubModuleID').select2();
+            //$('#DataTable').DataTable();
+            $('#submit').on('click', function () {
+                //var SubModuleID = $('#SubModuleID option:selected').val();
+                //if (SubModuleID != '0') {
+                //    $('#main').submit();
+                //} else {
+                //    DangerPNotify('SubModue not selected');
+                //    return true
+                //}
+            })
+            $('#ViewCheckBoxAll').click(function () {
+                if ($(this).is(":checked")) {
+                    $(".chkViewId").prop("checked", true)
+                    $(".chkViewId").val("1")
+                }
+                else {
+                    $(".chkViewId").prop("checked", false)
+                    $(".chkViewId").val("0")
+                }
+            });
+
+            $('#EditCheckBoxAll').click(function () {
+                if ($(this).is(":checked")) {
+                    $(".chkEditId").prop("checked", true)
+                    $(".chkEditId").val("1")
+                }
+                else {
+                    $(".chkEditId").prop("checked", false)
+                    $(".chkEditId").val("0")
+                }
+            });
+
+            $('#SaveCheckBoxAll').click(function () {
+                if ($(this).is(":checked")) {
+                    $(".chkSaveId").prop("checked", true)
+                    $(".chkSaveId").val('1');
+                }
+                else {
+                    $(".chkSaveId").prop("checked", false)
+                    $(".chkSaveId").val('1');
+                }
+            });
+
+            $('#DeleteCheckBoxAll').click(function () {
+                if ($(this).is(":checked")) {
+                    $(".chkDeleteId").prop("checked", true)
+                    $(".chkDeleteId").val('1');
+                }
+                else {
+                    $(".chkDeleteId").prop("checked", false)
+                    $(".chkDeleteId").val('0');
+                }
+            });
+        });
+        $('#SubModuleID').change(function () {
+            GetData();
+        });
+        function ChkApproveValueChgById(UID) {
+            var dvApprove = document.getElementById("Approved_" + UID);
+            if (dvApprove.checked) {
+                dvApprove.value = "1"
+            } else {
+                dvApprove.value = "0"
+            }
+            //dvPassport.val = chkPassport.checked ? "block" : "none";
+        }
+
+        function ChkViewValueChgById(UID) {
+            var dvView = document.getElementById("View_" + UID);
+            if (dvView.checked) {
+                dvView.value = "1"
+            } else {
+                dvView.value = "0"
+            }
+            //dvPassport.val = chkPassport.checked ? "block" : "none";
+        }
+
+        function ChkEditValueChgById(UID) {
+            var dvEdit = document.getElementById("Edit_" + UID);
+            if (dvEdit.checked) {
+                dvEdit.value = "1"
+            } else {
+                dvEdit.value = "0"
+            }
+            //dvPassport.val = chkPassport.checked ? "block" : "none";
+        }
+
+        function ChkSaveValueChgById(UID) {
+            var dvSave = document.getElementById("Save_" + UID);
+            if (dvSave.checked) {
+                dvSave.value = "1"
+            } else {
+                dvSave.value = "0"
+            }
+            //dvPassport.val = chkPassport.checked ? "block" : "none";
+        }
+
+        function ChkDeleteValueChgById(UID) {
+            var dvDelete = document.getElementById("Delete_" + UID);
+            if (dvDelete.checked) {
+                dvDelete.value = "1"
+            } else {
+                dvDelete.value = "0"
+            }
+            //dvPassport.val = chkPassport.checked ? "block" : "none";
+        }
+        function GetData() {
+            $.ajax({
+                type: "POST",
+                url: "/UserRole/ModuleLoadData",
+                data: { "RoleId": $("#IsRoleId").val(), "ModuleId": $("#ModuleID").val(), "SubModuleId": $("#SubModuleID").val() },
+                success: function (response) {
+                    //alert("Hello: " + response.Name + " .\nCurrent Date and Time: " + response.DateTime);
+                    //console.log(response);
+                    var JsonData = "";
+
+                    $('#tableBody').empty();
+                    if (response !== null) {
+                        //myAppendGrid.load(response);
+                        $.each(response, function () {
+                            //console.log(this.GradeID + ' ' + this.GradeName);
+
+                            //$("#lstaddfeature").append($("<option></option>").val(this.ModelId).html(this.ModelName));
+                            //$('#tableBody').append('<option value="' + this.GradeID + '">' + this.GradeName + '</option>');
+
+
+
+                            if (this.isView == true) {
+                                isViewChecked = 'checked';
+                                isViewCheckedValue = '1';
+                            } else {
+                                isViewChecked = '';
+                                isViewCheckedValue = '0';
+                            }
+
+                            if (this.isEdit == true) {
+                                isEditChecked = 'checked';
+                                isEditCheckedValue = '1';
+                            } else {
+                                isEditChecked = '';
+                                isEditCheckedValue = '0';
+                            }
+
+                            if (this.isSave == true) {
+                                isSaveChecked = 'checked';
+                                isSaveCheckedValue = '1';
+                            } else {
+                                isSaveChecked = '';
+                                isSaveCheckedValue = '0';
+                            }
+
+                            if (this.isDelete == true) {
+                                isDeleteChecked = 'checked';
+                                isDeleteCheckedValue = '1';
+                            } else {
+                                isDeleteChecked = '';
+                                isDeleteCheckedValue = '0';
+                            }
+
+                            if (this.isApproved == true) {
+                                isApprovedChecked = 'checked';
+                                isApprovedCheckedValue = '1';
+                            } else {
+                                isApprovedChecked = '';
+                                isApprovedCheckedValue = '0';
+                            }
+
+
+                            if (this.pageName == 'invoice/index' || this.pageName == 'challan/index' || this.pageName == 'customerpayment/index') {
+                                isApproved = '<input type="checkbox" id="Approved_' + this.uaToolID + '" name="Approved_' + this.uaToolID + '" ' + isApprovedChecked + ' value="' + isApprovedCheckedValue + '" onclick="ChkApproveValueChgById(' + this.uaToolID + ')" class="custom-checkbox chkViewId" /> <b>Approve</b>';
+                            } else {
+                                isApproved = '';
+                            }
+                            var pagename = (this.pageName != null) ? this.pageName : '';
+                            var genStr = '<tr>' +
+                                '   <td style="display:none;"><input type="hidden" id="ID" name="ID"  value="' + this.uaToolID + '"></td>' +
+                                '   <td><input type="hidden" id="SubMenu_' + this.uaToolID + '" name="SubMenu_' + this.uaToolID + '"  value="' + this.subMenu + '">' + this.subMenu + '</td>' +
+                                '   <td><input type="hidden" id="PageName_' + this.uaToolID + '" name="PageName_' + this.uaToolID + '"  value="' + this.pageName + '">' + pagename + '<br/>' + isApproved + '</td>' +
+                                '   <td><input type="checkbox" id="View_' + this.uaToolID + '"  name = "View_' + this.uaToolID + '" ' + isViewChecked + ' onclick="ChkViewValueChgById(' + this.uaToolID + ')" value = "' + isViewCheckedValue + '" class="custom-checkbox chkViewId" /></td > ' +
+                                '   <td><input type="checkbox" id="Edit_' + this.uaToolID + '" name="Edit_' + this.uaToolID + '" ' + isEditChecked + ' onclick="ChkEditValueChgById(' + this.uaToolID + ')" value="' + isEditCheckedValue + '" class="custom-checkbox chkEditId" /></td>' +
+                                '   <td><input type="checkbox" id="Save_' + this.uaToolID + '" name="Save_' + this.uaToolID + '" ' + isSaveChecked + ' onclick="ChkSaveValueChgById(' + this.uaToolID + ')" value="' + isSaveCheckedValue + '" class="custom-checkbox chkSaveId" /></td>' +
+                                '   <td><input type="checkbox" id="Delete_' + this.uaToolID + '" name="Delete_' + this.uaToolID + '" ' + isDeleteChecked + ' onclick="ChkDeleteValueChgById(' + this.uaToolID + ')" value="' + isDeleteCheckedValue + '" class="custom-checkbox chkDeleteId" /></td>' +
+                                '</tr>';
+                            $('#tableBody').append(genStr);
+                        });
+
+
+                    } else {
+                        //myAppendGrid.load([{
+                        //    UAToolID: "0",
+                        //    SubMenu: "",
+                        //    PageName: "",
+                        //    isView: false,
+                        //    isEdit: false,
+                        //    isSave: true,
+                        //    isDelete: false
+                        //}]);
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+        }
+    </script>
+}

@@ -1,0 +1,207 @@
+﻿@model UserRoleModuleIViewModel;
+@inject IGlobalHelper _global;
+@{
+    var userid = _global.GetUserID();
+}
+@{
+    ViewData["Title"] = "User Role List";
+    Layout = "~/Views/Shared/_Main_Layout.cshtml";
+}
+@{
+
+    string[] BCText = new string[] { "User Role List" };
+    string[] BCLink = new string[] { "userrole/index" };
+    string createlink = "userrole/create";
+    string linkname = "Add New";
+    PageHeaderProps pageHeader = new PageHeaderProps
+            {
+                PageTitle = "User Role List",
+                PageDesc = "User Role List",
+                PageCreateLink = createlink,
+                PageCreateLinkName = linkname,
+                BreadcrumbText = BCText,
+                BreadcrumbLink = BCLink,
+                IsAdd = ViewBag.IsAdd
+            };
+
+}
+
+
+<style>
+    .table td, .table th {
+        padding: 0.25rem 0.5rem;
+    }
+</style>
+
+<input type="hidden" id="roleid" name="roleid" />
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Ajax data source (Arrays) table start -->
+            <div class="card">
+                <div class="card-header">
+                    @await Component.InvokeAsync("PageHeader", pageHeader)
+                </div>
+
+                <!--<div class="pcoded-content">
+                    <div class="pcoded-inner-content">-->
+                <!-- Main-body start -->
+                <!--<div class="main-body m-t-15">
+                        </div>
+                    </div>
+                </div>-->
+
+                <div class="card-block">
+                    <div class="table-responsive dt-responsive">
+                        <table id="dt-UserRole" class="table table-striped table-bordered nowrap">
+                            <thead>
+                                <tr>
+                                    <th>RoleID</th>
+                                    <th>RoleName</th>
+                                    <th>LandingPage</th>
+                                    <th>Module Access</th>
+                                    <th>SubModule Access</th>
+                                    <th>Report Access</th>
+                                    <th>User Access</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Ajax data source (Arrays) table end -->
+        </div>
+    </div>
+</div>
+
+@{
+    await Html.RenderPartialAsync("_ReportAccess");
+}
+
+<!-- Main-body end -->
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.HasUAEdit" />
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.HasUAView" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.HasUADelete" />
+<input type="hidden" id="IsSave" name="IsSave" value="@ViewBag.HasUASave" />
+
+
+
+@section Scripts {
+    <script type="text/javascript">
+        let ispermited = '';
+        let userid = @userid;
+        $(document).ready(function () {
+            $('#ReportTypeId').select2();
+        })
+        $('#ReportTypeId').change(function () {
+            var rtypeid = $(this).val();
+            getReportByReportType(rtypeid)
+        });
+        $('#permissionall').click(function () {
+            if ($(this).is(':checked')) {
+                $('.permissionid').prop('checked', true);
+            } else {
+                $('.permissionid').prop('checked', false);
+            }
+        })
+
+        $('#btnclose').click(function () {
+            $('#ReportTypeId').val(0).change();
+        })
+
+        $('#btnrsave').click(function () {
+            reportAccess = reportAccessList();
+            if (reportAccess != '[]') {
+                saveReportAccess(reportAccess);
+            } else {
+                WarningPNotify('Please Checked Permission');
+            }
+        })
+        $(function () {
+            $("#btnSubmit").click(function () {
+                var checked_checkboxes = $("#tblFruits input[type=checkbox]:checked");
+                if (checked_checkboxes.length == 0) {
+                    $(".error").show();
+                    return false;
+                }
+                return true;
+            });
+        });
+
+        function OpenReportModal(roleid) {
+            $('#roleid').val(roleid);
+            $('#reportmodal').modal('show');
+        }
+
+        function getReportByReportType(rtypeid) {
+            let roleid = $('#roleid').val();
+            $.get('/report/getreportbytypeid', { ReportTypeId: rtypeid, RoleId: roleid }, function (data, status, xhr) {
+                if (status == 'success') {
+                    if (data !== null) {
+                        bindTableBody(data);
+                    } else {
+                        $('#rptlist tbody').empty().html()
+                    }
+                }
+            })
+        }
+
+        function bindTableBody(data) {
+            console.log(data);
+            let body = '';
+            for (var i = 0; i < data.length; i++) {
+                ispermited = data[i].isPermission ? 'checked' : '';
+                body += `<tr>
+                                    <td style='display:none' id='rptid'>${data[i].reportId}</td>
+                                    <td style='display:none' id='menuid'>${data[i].menuId}</td>
+                                    <td>${data[i].slNo}</td>
+                                    <td>${data[i].reportName}</td>
+                                    <td id='rtypename'>${data[i].reportTypeName}</td>
+                                    <td>${data[i].useraccesstoolNM}</td>
+                                    <td><input type="checkbox" class="custom-checkbox permissionid" ${ispermited}/></td>
+                                </tr>`
+            }
+            $('#rptlist tbody').empty().html(body)
+        }
+
+        function reportAccessList() {
+            let reportAccess = [];
+            let roleid = parseInt($('#roleid').val());
+            $('#rptlist tbody tr').each(function () {
+                var reportid = parseInt($(this).find('#rptid').html());
+                var menuid = parseInt($(this).find('#menuid').html());
+                var rtypename = $(this).find('#rtypename').html();
+                var ispermit = $(this).find(`.permissionid`).is(':checked');
+                if (ispermit) {
+                    let report = {
+                        roleId: roleid,
+                        reportId: reportid,
+                        menuId: menuid,
+                        isPermission: ispermit,
+                        userId: userid,
+                        reportTypeName: rtypename
+                    }
+                    reportAccess.push(report);
+                }
+            });
+            return reportAccess;
+        }
+        function saveReportAccess(reportacces) {
+            $.post('/userrole/addreportaccess', { reportAccess: JSON.stringify(reportacces) }, function (data, status, xhr) {
+                if (status == 'success') {
+                    $('#ReportTypeId').val(0).change();
+                }
+            })
+        }
+    </script>
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+        </script>
+    }
+}

@@ -1,0 +1,851 @@
+﻿
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_ModuleLayout.cshtml";
+}
+
+<style>
+    .d-flex-row-center{
+        display: flex;
+        flex-direction:row;
+        flex-wrap: wrap;
+        justify-content: start;
+        align-items: start;
+        gap: 10px;
+    }
+
+    .FlipCardContainer {
+        width: 100%;
+    }
+
+    .FlipCardWrapper{
+        width: 95%;
+    }
+    .outer-card {
+        width: 220px;
+        height: 200px;
+        perspective: 1000px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .inner-card {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+    }
+
+    .outer-card:hover .inner-card {
+        transform: rotateY(180deg);
+    }
+
+    .card-front,
+    .card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 5px;
+
+    }
+
+    .card-front {
+        background-color: #2c80e3;
+        color: #ffff;
+    }
+
+    .card-back {
+        background-color: #ffff;
+        transform: rotateY(180deg);
+        border-radius: 5px;
+    }
+
+    .card-front-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .card-front-content img{
+        width: 50px;
+        height: 50px;
+        filter: invert(100%);
+    }
+
+    .moduleBackHeading{
+        margin-top: 10px;
+        text-align: center;
+        width: 100%;
+        height: 20px;
+        color: #2c80e3;
+        border-left: 2px solid #2c80e3;
+        border: 5px;
+    }
+
+    .card-back-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .link-list{
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+    }
+    .link-list > ul{
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: start;
+    }
+
+    .linkitem{
+        width: 100%;
+        height: 30px;
+    }
+
+    .BackCardButton{
+        margin-top: 15px;
+    }
+
+    .BackCardButton a{
+            background-color: #2c80e3;
+            padding: 5px 10px;
+            border-radius: 10px;
+            color: #fff;
+    }
+
+
+</style>
+
+
+<section>
+
+    <div class="FlipCardContainer d-flex flex-row justify-content-center align-items-center">
+        <div class="FlipCardWrapper d-flex-row-center">
+            <div class="outer-card">
+                <div class="inner-card">
+                    <div class="card-front card-front-content">
+                        <div class="card-front-content">
+                            <img src="~/img/module_img/organizationicon.png" />
+                            <p><h5>Organization <br />Profile</h5></p>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-back-content">
+                            <div class="moduleBackHeading"><h5>Organization</h5></div>
+                            <div class="link-list">
+                                <ul>
+                                    <li class="linkitem"><a href="">Create</a></li>
+                                    <li class="linkitem"><a href="">Profile Status</a></li>
+                                    <li class="linkitem"><a href="">View Profile</a></li>
+                                </ul>
+                            </div>
+                            <div class="BackCardButton">
+                                <a href="">View More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outer-card">
+                <div class="inner-card">
+                    <div class="card-front card-front-content">
+                        <div class="card-front-content">
+                            <img src="~/img/module_img/organizationicon.png" />
+                            <p><h5>Setup</h5></p>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-back-content">
+                            <div class="moduleBackHeading"><h5>Setup</h5></div>
+                            <div class="link-list">
+                                <ul>
+                                    <li class="linkitem"><a href="">Create</a></li>
+                                    <li class="linkitem"><a href="">Profile Status</a></li>
+                                    <li class="linkitem"><a href="">View Profile</a></li>
+                                </ul>
+                            </div>
+                            <div class="BackCardButton">
+                                <a href="">View More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outer-card">
+                <div class="inner-card">
+                    <div class="card-front card-front-content">
+                        <div class="card-front-content">
+                            <img src="~/img/module_img/organizationicon.png" />
+                            <p><h5>Employee</h5></p>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-back-content">
+                            <div class="moduleBackHeading"><h5>Employee</h5></div>
+                            <div class="link-list">
+                                <ul>
+                                    <li class="linkitem"><a href="">Create</a></li>
+                                    <li class="linkitem"><a href="">Profile Status</a></li>
+                                    <li class="linkitem"><a href="">View Profile</a></li>
+                                </ul>
+                            </div>
+                            <div class="BackCardButton">
+                                <a href="">View More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outer-card">
+                <div class="inner-card">
+                    <div class="card-front card-front-content">
+                        <div class="card-front-content">
+                            <img src="~/img/module_img/organizationicon.png" />
+                            <p><h5>ROTA</h5></p>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-back-content">
+                            <div class="moduleBackHeading"><h5>ROTA</h5></div>
+                            <div class="link-list">
+                                <ul>
+                                    <li class="linkitem"><a href="">Create</a></li>
+                                    <li class="linkitem"><a href="">Profile Status</a></li>
+                                    <li class="linkitem"><a href="">View Profile</a></li>
+                                </ul>
+                            </div>
+                            <div class="BackCardButton">
+                                <a href="">View More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outer-card">
+                <div class="inner-card">
+                    <div class="card-front card-front-content">
+                        <div class="card-front-content">
+                            <img src="~/img/module_img/organizationicon.png" />
+                            <p><h5>Leave <br />Holiday</h5></p>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-back-content">
+                            <div class="moduleBackHeading"><h5>Leave & Holiday</h5></div>
+                            <div class="link-list">
+                                <ul>
+                                    <li class="linkitem"><a href="">Create</a></li>
+                                    <li class="linkitem"><a href="">Profile Status</a></li>
+                                    <li class="linkitem"><a href="">View Profile</a></li>
+                                </ul>
+                            </div>
+                            <div class="BackCardButton">
+                                <a href="">View More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outer-card">
+                <div class="inner-card">
+                    <div class="card-front card-front-content">
+                        <div class="card-front-content">
+                            <img src="~/img/module_img/organizationicon.png" />
+                            <p><h5>Attendance</h5></p>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-back-content">
+                            <div class="moduleBackHeading"><h5>Attendance</h5></div>
+                            <div class="link-list">
+                                <ul>
+                                    <li class="linkitem"><a href="">Create</a></li>
+                                    <li class="linkitem"><a href="">Profile Status</a></li>
+                                    <li class="linkitem"><a href="">View Profile</a></li>
+                                </ul>
+                            </div>
+                            <div class="BackCardButton">
+                                <a href="">View More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outer-card">
+                <div class="inner-card">
+                    <div class="card-front card-front-content">
+                        <div class="card-front-content">
+                            <img src="~/img/module_img/organizationicon.png" />
+                            <p><h5>Documents</h5></p>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-back-content">
+                            <div class="moduleBackHeading"><h5>Documents</h5></div>
+                            <div class="link-list">
+                                <ul>
+                                    <li class="linkitem"><a href="">Create</a></li>
+                                    <li class="linkitem"><a href="">Profile Status</a></li>
+                                    <li class="linkitem"><a href="">View Profile</a></li>
+                                </ul>
+                            </div>
+                            <div class="BackCardButton">
+                                <a href="">View More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outer-card">
+                <div class="inner-card">
+                    <div class="card-front card-front-content">
+                        <div class="card-front-content">
+                            <img src="~/img/module_img/organizationicon.png" />
+                            <p><h5>Sponsor <br /> Compliance</h5></p>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-back-content">
+                            <div class="moduleBackHeading"><h5>Sponsor Compliance</h5></div>
+                            <div class="link-list">
+                                <ul>
+                                    <li class="linkitem"><a href="">Create</a></li>
+                                    <li class="linkitem"><a href="">Profile Status</a></li>
+                                    <li class="linkitem"><a href="">View Profile</a></li>
+                                </ul>
+                            </div>
+                            <div class="BackCardButton">
+                                <a href="">View More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outer-card">
+                <div class="inner-card">
+                    <div class="card-front card-front-content">
+                        <div class="card-front-content">
+                            <img src="~/img/module_img/organizationicon.png" />
+                            <p><h5>Payroll</h5></p>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-back-content">
+                            <div class="moduleBackHeading"><h5>Payroll</h5></div>
+                            <div class="link-list">
+                                <ul>
+                                    <li class="linkitem"><a href="">Create</a></li>
+                                    <li class="linkitem"><a href="">Profile Status</a></li>
+                                    <li class="linkitem"><a href="">View Profile</a></li>
+                                </ul>
+                            </div>
+                            <div class="BackCardButton">
+                                <a href="">View More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outer-card">
+                <div class="inner-card">
+                    <div class="card-front card-front-content">
+                        <div class="card-front-content">
+                            <img src="~/img/module_img/organizationicon.png" />
+                            <p><h5>Billing</h5></p>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-back-content">
+                            <div class="moduleBackHeading"><h5>Billing</h5></div>
+                            <div class="link-list">
+                                <ul>
+                                    <li class="linkitem"><a href="">Create</a></li>
+                                    <li class="linkitem"><a href="">Profile Status</a></li>
+                                    <li class="linkitem"><a href="">View Profile</a></li>
+                                </ul>
+                            </div>
+                            <div class="BackCardButton">
+                                <a href="">View More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outer-card">
+                <div class="inner-card">
+                    <div class="card-front card-front-content">
+                        <div class="card-front-content">
+                            <img src="~/img/module_img/organizationicon.png" />
+                            <p><h5>Employee <br /></brr> Corner</h5></p>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-back-content">
+                            <div class="moduleBackHeading"><h5>Employee Corner</h5></div>
+                            <div class="link-list">
+                                <ul>
+                                    <li class="linkitem"><a href="">Create</a></li>
+                                    <li class="linkitem"><a href="">Profile Status</a></li>
+                                    <li class="linkitem"><a href="">View Profile</a></li>
+                                </ul>
+                            </div>
+                            <div class="BackCardButton">
+                                <a href="">View More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    
+
+    
+
+
+
+    
+
+
+        @* <div class="display-animation">
+
+        <div class="col-sm-4">
+        <div class="card card-flip h-100">
+        <div class="card-front text-white bg-dark">
+        <div class="card-body">
+        <i class="fa fa-search fa-5x float-right"></i>
+        <h3 class="card-title">Front</h3>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        </div>
+        <div class="card-back bg-white">
+        <div class="card-body">
+        <h3 class="card-title">Back</h3>
+        <p class="card-text">Suprise this one has more more more more content on the back!</p>
+        <a href="#" class="btn btn-outline-secondary">Action</a>
+        </div>
+        </div>
+        </div>
+        </div>
+
+        </div> *@
+
+
+
+
+
+        @* <a href="underconstruction.html">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front" style="display: flex; flex-direction: row; justify-content: center;align-items: center;">
+                        <img src="../Icons/assets/organizationicon.png" alt="Organization Card" style="width:100px;height:100px;" style="filter: invert(1);">
+                    </div>
+                    <div class="flip-card-back">
+                        <span style="font-size: .9rem;">Organization Management</span>
+                        <p style="font-size: .5rem;">Here you can find everything about Organization.</p>
+                        <p style="color: #5cb85c">All Good</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+
+        <a href="underconstruction.html">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front" style="display: flex; flex-direction: row; justify-content: center;align-items: center;">
+                        <img src="../Icons/assets/workericon.png" alt="Worker Management Icon" style="width:100px;height:100px;" style="filter: invert(1);">
+                    </div>
+                    <div class="flip-card-back">
+                        <span style="font-size: .9rem;">Worker Management</span>
+                        <p style="font-size: .5rem;">Here you can find everything about Organization.</p>
+                        <p style="color: #5cb85c">All Good</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <!--
+                    <a href="underconstruction.html">
+                    <div class="eachModuleTiles ripple-effect">
+                        <div class="eachModuleContents">
+                            <div class="eachModuleTilesHeader">
+                                <span></span>
+                            </div>
+                            <div class="eachModulesImage">
+                                <img src="../Icons/assets/workericon.png" alt="Worker Management Icon">
+                            </div>
+                             <div class="eachModuleKPI">
+                                <span>Total Package Sold: 10</span>
+                                <span>Today Package Sold: 10</span>
+                            </div>
+
+                        </div>
+                    </div>
+                    </a>  -->
+
+
+        <a href="underconstruction.html">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front" style="display: flex; flex-direction: row; justify-content: center;align-items: center;">
+                        <img src="../Icons/assets/agreementicon.png" alt="Worker Icon" style="width:100px;height:100px;" style="filter: invert(1);">
+                    </div>
+                    <div class="flip-card-back">
+                        <span style="font-size: .9rem;">Worker Management</span>
+                        <p style="font-size: .5rem;">Here you can find everything about Workers.</p>
+                        <p style="color: #5cb85c">All Good</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href="underconstruction.html">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front" style="display: flex; flex-direction: row; justify-content: center;align-items: center;">
+                        <img src="../Icons/assets/payrollicon.png" alt="Payroll Icon" style="width:100px;height:100px;" style="filter: invert(1);">
+                    </div>
+                    <div class="flip-card-back">
+                        <span style="font-size: .9rem;">PayRoll Management</span>
+                        <p style="font-size: .5rem;">Here you can find everything about Payroll.</p>
+                        <p style="color: #5cb85c">All Good</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href="underconstruction.html">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front" style="display: flex; flex-direction: row; justify-content: center;align-items: center;">
+                        <img src="../Icons/assets/legaldocumenticon.png" alt="Legal Doc Icon" style="width:100px;height:100px;" style="filter: invert(1);">
+                    </div>
+                    <div class="flip-card-back">
+                        <span style="font-size: .9rem;">Legal Docs Management</span>
+                        <p style="font-size: .5rem;">Here you can find everything about Legal Docs.</p>
+                        <p style="color: #5cb85c">All Good</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+
+        <!-- <a href="underconstruction.html">
+        <div class="eachModuleTiles ripple-effect">
+            <div class="eachModuleContents">
+                <div class="eachModuleTilesHeader">
+                    <span>Agreement Management</span>
+                </div>
+                <div class="eachModulesImage">
+                    <img src="../Icons/assets/agreementicon.png" alt="Agreement Management Icon">
+                </div>
+                <div class="eachModuleKPI">
+                    <span>Total Package Sold: 10</span>
+                    <span>Today Package Sold: 10</span>
+                </div>
+
+            </div>
+        </div>
+        </a> -->
+        <!-- <a href="underconstruction.html">
+            <div class="eachModuleTiles ripple-effect">
+                <div class="eachModuleContents">
+                    <div class="eachModuleTilesHeader">
+                        <span>Legal Docs Management</span>
+                    </div>
+                    <div class="eachModulesImage">
+                        <img src="../Icons/assets/payrollicon.png" alt="Payroll Management Icon">
+                    </div>
+                    <div class="eachModuleKPI">
+                        <span>Total Package Sold: 10</span>
+                        <span>Today Package Sold: 10</span>
+                    </div>
+
+                </div>
+            </div>
+            </a> -->
+        <!-- <a href="underconstruction.html">
+        <div class="eachModuleTiles ripple-effect">
+            <div class="eachModuleContents">
+                <div class="eachModuleTilesHeader">
+                    <span>Payroll Management</span>
+                </div>
+                <div class="eachModulesImage">
+                    <img src="../Icons/assets/payrollicon.png" alt="Payroll Management Icon">
+                </div>
+                <div class="eachModuleKPI">
+                    <span>Total Package Sold: 10</span>
+                    <span>Today Package Sold: 10</span>
+                </div>
+
+            </div>
+        </div>
+        </a> -->
+        <!-- <a href="underconstruction.html">
+            <div class="eachModuleTiles ripple-effect">
+                <div class="eachModuleContents">
+                    <div class="eachModuleTilesHeader">
+                        <span>Legal Docs Management</span>
+                    </div>
+                    <div class="eachModulesImage">
+                        <img src="../Icons/assets/legaldocumenticon.png" alt="Legal Docs Management Icon">
+                    </div>
+                    <div class="eachModuleKPI">
+                        <span>Total Package Sold: 10</span>
+                        <span>Today Package Sold: 10</span>
+                    </div>
+
+                </div>
+            </div>
+            </a> -->
+
+        <a href="underconstruction.html">
+            <div class="eachModuleTiles ripple-effect">
+                <div class="eachModuleContents">
+                    <div class="eachModuleTilesHeader">
+                        <span>Legal Docs Management</span>
+                    </div>
+                    <div class="eachModulesImage">
+                        <img src="../Icons/assets/legaldocumenticon.png" alt="Legal Docs Management Icon">
+                    </div>
+                    <!-- <div class="eachModuleKPI">
+                        <span>Total Package Sold: 10</span>
+                        <span>Today Package Sold: 10</span>
+                    </div> -->
+
+                </div>
+            </div>
+        </a>
+
+        <a href="underconstruction.html">
+            <div class="eachModuleTiles ripple-effect">
+                <div class="eachModuleContents">
+                    <div class="eachModuleTilesHeader">
+                        <span>Credential Management</span>
+                    </div>
+                    <div class="eachModulesImage">
+                        <img src="../Icons/assets/credentialicon.png" alt="Credential Management Icon">
+                    </div>
+                    <!-- <div class="eachModuleKPI">
+                        <span>Total Package Sold: 10</span>
+                        <span>Today Package Sold: 10</span>
+                    </div> -->
+
+                </div>
+            </div>
+        </a>
+
+        <a href="underconstruction.html">
+            <div class="eachModuleTiles ripple-effect">
+                <div class="eachModuleContents">
+        //             <div class="eachModuleTilesHeader">
+        //                 <span>Leave Management</span>
+        //             </div>
+        //             <div class="eachModulesImage">
+        //                 <img src="../Icons/assets/leaveicon.png" alt="Leave Icon">
+        //             </div>
+        //             <!-- <div class="eachModuleKPI">
+        //                 <span>Total Package Sold: 10</span>
+        //                 <span>Today Package Sold: 10</span>
+        //             </div> -->
+
+        //         </div>
+        //     </div>
+        // </a>
+
+        // <a href="underconstruction.html">
+        //     <div class="eachModuleTiles ripple-effect">
+        //         <div class="eachModuleContents">
+        //             <div class="eachModuleTilesHeader">
+        //                 <span>ROTA Management</span>
+        //             </div>
+        //             <div class="eachModulesImage">
+        //                 <img src="../Icons/assets/rota.webp" alt="ROTA Icon" style="filter: invert(1);">
+        //             </div>
+        //             <!-- <div class="eachModuleKPI">
+        //                 <span>Total Package Sold: 10</span>
+        //                 <span>Today Package Sold: 10</span>
+        //             </div> -->
+
+        //         </div>
+        //     </div>
+        // </a>
+
+        // <a href="underconstruction.html">
+        //     <div class="eachModuleTiles ripple-effect">
+        //         <div class="eachModuleContents">
+        //             <div class="eachModuleTilesHeader">
+        //                 <span>Visitor Management</span>
+        //             </div>
+        //             <div class="eachModulesImage">
+        //                 <img src="../Icons/assets/visitoricon.png" alt="Visitor Icon">
+        //             </div>
+        //             <!-- <div class="eachModuleKPI">
+        //                 <span>Total Package Sold: 10</span>
+        //                 <span>Today Package Sold: 10</span>
+        //             </div> -->
+
+        //         </div>
+            </div>
+        </a>
+
+        <a href="underconstruction.html">
+            <div class="eachModuleTiles ripple-effect">
+                <div class="eachModuleContents">
+                    <div class="eachModuleTilesHeader">
+                        <span>In-House Management</span>
+                    </div>
+                    <div class="eachModulesImage">
+                        <img src="../Icons/assets/inhouseicon.webp" alt="In-House Icon">
+                    </div>
+                    <!-- <div class="eachModuleKPI">
+                        <span>Total Package Sold: 10</span>
+                        <span>Today Package Sold: 10</span>
+                    </div> -->
+
+                </div>
+            </div>
+        </a>
+
+
+        <a href="underconstruction.html">
+            <div class="eachModuleTiles ripple-effect">
+                <div class="eachModuleContents">
+                    <div class="eachModuleTilesHeader">
+                        <span>Reports Management</span>
+                    </div>
+                    <div class="eachModulesImage">
+                        <img src="../Icons/assets/reporticon.png" alt="Reports Icon">
+                    </div>
+                    <!-- <div class="eachModuleKPI">
+                        <span>Total Package Sold: 10</span>
+                        <span>Today Package Sold: 10</span>
+                    </div> -->
+
+                </div>
+            </div>
+        </a>
+
+
+        <a href="underconstruction.html">
+            <div class="eachModuleTiles ripple-effect">
+                <div class="eachModuleContents">
+                    <div class="eachModuleTilesHeader">
+                        <span>Customer Service</span>
+                    </div>
+                    <div class="eachModulesImage">
+                        <img src="../Icons/assets/customerserviceicon.png" alt="Customer Service Icon">
+                    </div>
+                    <!-- <div class="eachModuleKPI">
+                        <span>Total Package Sold: 10</span>
+                        <span>Today Package Sold: 10</span>
+                    </div> -->
+
+                </div>
+            </div>
+        </a>
+
+        <a href="underconstruction.html">
+            <div class="eachModuleTiles ripple-effect">
+                <div class="eachModuleContents">
+                    <div class="eachModuleTilesHeader">
+                        <span>Logs</span>
+                    </div>
+                    <div class="eachModulesImage">
+                        <img src="../Icons/assets/logsicon.png" alt="Logs Icon" style="filter: invert(1);">
+                    </div>
+                    <!-- <div class="eachModuleKPI">
+                        <span>Total Package Sold: 10</span>
+                        <span>Today Package Sold: 10</span>
+                    </div> -->
+
+                </div>
+            </div>
+        </a>
+
+        <a href="underconstruction.html">
+            <div class="eachModuleTiles ripple-effect">
+                <div class="eachModuleContents">
+                    <div class="eachModuleTilesHeader">
+                        <span>Social Media</span>
+                    </div>
+                    <div class="eachModulesImage">
+                        <img src="../Icons/assets/socialmediaicon.png" alt="Social Media Icon">
+                    </div>
+                    <!-- <div class="eachModuleKPI">
+                        <span>Total Package Sold: 10</span>
+                        <span>Today Package Sold: 10</span>
+                    </div> -->
+
+                </div>
+            </div>
+        </a>
+
+        <a href="underconstruction.html">
+            <div class="eachModuleTiles ripple-effect">
+                <div class="eachModuleContents">
+                    <div class="eachModuleTilesHeader">
+                        <span>Financials</span>
+                    </div>
+                    <div class="eachModulesImage">
+        //                 <img src="../Icons/assets/finacialsicon.png" alt="Financial Icon">
+        //             </div>
+        //             <!-- <div class="eachModuleKPI">
+        //                 <span>Total Package Sold: 10</span>
+        //                 <span>Today Package Sold: 10</span>
+        //             </div> -->
+
+        //         </div>
+        //     </div>
+        // </a>
+
+        // <a href="underconstruction.html">
+        //     <div class="eachModuleTiles ripple-effect">
+        //         <div class="eachModuleContents">
+        //             <div class="eachModuleTilesHeader">
+        //                 <span>Settings</span>
+        //             </div>
+        //             <div class="eachModulesImage">
+        //                 <img src="../Icons/assets/settingsicon.png" alt="Settings Icon" style="filter: invert(1);">
+        //             </div>
+        //             <!-- <div class="eachModuleKPI">
+        //                 <span>Total Package Sold: 10</span>
+        //                 <span>Today Package Sold: 10</span>
+                    </div> -->
+
+                </div>
+            </div>
+        </a> 
+
+    // </div>*@
+</section>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+
+
+

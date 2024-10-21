@@ -1,0 +1,114 @@
+﻿@* 
+==================================================================================================================
+========= This is the Single form Page. Appears in Dashboard Controller and has _Main_Layout.cshtml ==============
+==================================================================================================================
+*@
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Main_Layout.cshtml";
+}
+
+<div class="page-wrapper">
+
+    <!-- Page body start -->
+    <div class="page-body">
+
+        <!-- New BreadCrum -->
+        <div class="row">
+            <div class="breadCrumContainer col-xl-12 col-md-12 ">
+                <div class="breadCrumWrapper">
+                    <div class="pageName">
+                        <span>One Form Page</span>
+                    </div>
+                    <div class="breadCrum">
+                        <i class="fa fa-home"></i>
+                        <span class="Divider">/</span>
+                        <span class="section activeCrum">Form Page</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            
+            <div class="col-md-8 container container-table">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>User form with validation</h5>
+                    </div>
+                    <div class="card-block">
+                        <form class="form-material">
+                            <div class="form-group form-default">
+                                <input type="text" name="footer-email" class="form-control" required="">
+                                <span class="form-bar"></span>
+                                <label class="float-label">Username</label>
+                            </div>
+                            <div class="form-group form-default form-danger">
+                                <input type="email" name="footer-email" class="form-control" required="">
+                                <span class="form-bar"></span>
+                                <label class="float-label">Email</label>
+                            </div>
+                            <div class="form-group form-default">
+                                <input type="password" name="footer-email" class="form-control" required="">
+                                <span class="form-bar"></span>
+                                <label class="float-label">Password</label>
+                            </div>
+                            <div class="form-group form-default preFilledText">
+                                <input type="text" name="footer-email" class="form-control" required="" value="My value">
+                                <span class="form-bar"></span>
+                                <label class="float-label">Predefine value</label>
+                            </div>
+                            <div class="form-group form-default disabledField">
+                                <input type="text" name="footer-email" class="form-control" required="" disabled>
+                                <span class="form-bar"></span>
+                                <label class="float-label">Disabled</label>
+                            </div>
+
+
+                            <div class="form-group form-default">
+                                <label class="form-label">Select field below</label>
+                                <select name="select" class="form-control ">
+                                    <option value="opt1">Select One Value Only</option>
+                                    <option value="opt2">Type 2</option>
+                                    <option value="opt3">Type 3</option>
+                                    <option value="opt4">Type 4</option>
+                                    <option value="opt5">Type 5</option>
+                                    <option value="opt6">Type 6</option>
+                                    <option value="opt7">Type 7</option>
+                                    <option value="opt8">Type 8</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group form-default">
+                                <label class="form-label">Select a Date</label>
+                                <input class="form-control" type="date" />
+                                <label class="form-label text-danger">Should be 18 years old</label>
+                            </div>
+
+
+
+                            <div class="form-group form-default">
+                                <input type="text" name="footer-email" class="form-control" required="" maxlength="6">
+                                <span class="form-bar"></span>
+                                <label class="float-label">Max length 6 char</label>
+                            </div>
+                            <div class="form-group form-default">
+                                <textarea class="form-control" required=""></textarea>
+                                <span class="form-bar"></span>
+                                <label class="float-label">Text area Input</label>
+                            </div>
+
+                            <!-- manual code to this action btn are available in the Manual Update CSS -->
+                            <div class="card-block actionBtnRight">
+                                <button class="btn btn-primary waves-effect waves-light">Save</button>
+                                <button type="button" class="btn text-danger btn-link">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

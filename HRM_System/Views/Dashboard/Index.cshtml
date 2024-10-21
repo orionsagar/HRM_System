@@ -1,0 +1,1170 @@
+﻿@inject IGlobalHelper _global;
+@model Domains.Models.Tasks;
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Main_Layout.cshtml";
+
+    var pagename = "";
+    var roletype = _global.GetRoleType();
+
+    if (roletype == "Platform_Role")
+    {
+        pagename = "System Dashboard";
+    }
+    if (roletype == "Org_Role")
+    {
+        pagename = "Organisation Dashboard";
+    }
+    if (roletype == "Client_Role")
+    {
+        pagename = "Client/Solicitor Dashboard";
+    }
+
+}
+
+<style>
+    .custom-button-client:hover {
+        background-color: #138496;
+        border-color: #138496;
+        /* text-decoration-color: white;*/
+        cursor: pointer;
+    }
+
+    #updateLeadPipeModal, #LeadUpdateUserAssign {
+        position: fixed;
+        z-index: 1050;
+    }
+
+    tr td {
+        page-break-inside: avoid;
+        white-space: nowrap;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    .custom-button {
+        background-color: transparent; /* Set the background to transparent */
+        border: none; /* Remove the border */
+        padding: 0; /* Remove padding */
+        cursor: pointer; /* Add cursor pointer on hover */
+    }
+
+        .custom-button .view-details {
+            /* Apply any additional styles to the eye icon here */
+            /* For example, you can change the color or size of the icon */
+            color: #2A9385; /* Change the color to your desired color */
+            font-size: 18px; /* Adjust the font size as needed */
+        }
+
+    .bs-canvas-overlay {
+        opacity: 0;
+        z-index: -1;
+    }
+
+        .bs-canvas-overlay.show {
+            opacity: 0.85;
+            z-index: 1100;
+        }
+
+    .bs-canvas {
+        top: 0;
+        width: 0;
+        z-index: 1110;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .bs-canvas-left {
+        left: 0;
+    }
+
+    .bs-canvas-right {
+        right: 0;
+    }
+
+    .bs-canvas-anim {
+        transition: all .4s ease-out;
+        -webkit-transition: all .4s ease-out;
+        -moz-transition: all .4s ease-out;
+        -ms-transition: all .4s ease-out;
+    }  
+
+
+    @@media (max-width: 767.98px) { /* Adjust the breakpoint as needed */
+        #bs-canvas-right[data-width="60%"] {
+            width: 100%; /* Set width to 100% on smaller screens */
+        }
+    }
+</style>
+
+@*
+
+    ===================================================
+    ========The new index Dashboard Codes==============
+    ===================================================
+
+
+
+*@
+@section PageName {
+    @pagename
+}
+
+
+@await Component.InvokeAsync("Dashboard")
+
+<div id="bs-canvas-right" class="bs-canvas bs-canvas-anim bs-canvas-right position-fixed bg-light h-100 " style="box-shadow: 2px 0 123px 2px rgba(0,0,0,.56);">
+
+    <header class="bs-canvas-header p-3 bg-success" style="height: 57px; background-color: #448AFF !important ">
+        <div class="row">
+            <div class="col-1">
+                <button type="button" class="bs-canvas-close close" aria-label="Close"><span aria-hidden="true" class="text-light" style="font-size:21px;">&times;</span></button>
+            </div>
+            <div class="col-8">
+                <h4 class="d-inline-block text-light mb-0">Client Details</h4>
+            </div>
+        </div>
+    </header>
+    <div class="bs-canvas-content p-2" id="dataContainer" style="overflow-y: auto;overflow-x:hidden">
+        <partial name="~/Views/Client/_ClientDetails.cshtml" />
+    </div>
+</div>
+
+<div id="bs-canvas-right-org" class="bs-canvas bs-canvas-anim bs-canvas-right position-fixed bg-light h-100 " style="box-shadow: 2px 0 123px 2px rgba(0,0,0,.56);">
+
+    <header class="bs-org-canvas-header p-3 bg-success" style="height: 57px; background-color: #448AFF !important ">
+        <div class="row">
+            <div class="col-1">
+                <button type="button" class="bs-canvas-org-close close" aria-label="Close"><span aria-hidden="true" class="text-light" style="font-size:21px;">&times;</span></button>
+            </div>
+            <div class="col-8">
+                <h4 class="d-inline-block text-light mb-0">Organisation Details</h4>
+            </div>
+        </div>
+    </header>
+    <div class="bs-org-canvas-content p-2" id="orgdataContainer" style="overflow-y: auto;overflow-x:hidden">
+        <partial name="~/Views/Organisation/_OrgDetails.cshtml" />
+    </div>
+</div>
+<partial name="_TaskAdd.cshtml" model="@Model" />
+<partial name="_InviteClient.cshtml" model="@Model" />
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial.cshtml"/>
+    <script>
+        $(document).ready(function () {
+            $('#Priority').select2();
+            TaskList();
+            DocNotificationList();
+        })
+        
+        ///---------------- Task Todo List -------------------///
+        function TaskList() {
+            $('#dt-task').DataTable({
+                "processing": true, // for show progress bar    
+                "serverSide": true, // for process server side    
+                "filter": true, // this is for disable filter (search box)    
+                'info': false,
+                'scrollY': false,
+                "lengthChange": false,
+                //"pageLength": 10,
+                //"displayStart": 10,
+                //'paging': true,
+                "ajax": {
+                    "url": "/tasks/LoadData",
+                    "type": "POST",
+                    "datatype": "json",
+                },
+                "columnDefs": [{
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+                "order": [[0, "desc"]],
+
+                buttons: [
+                    'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "columns": [
+                    { "data": "taskId" },
+                    { "data": "taskNo" },
+                    { "data": "taskDate" },
+                    { "data": "taskTitle" },
+                    { "data": "taskName" },
+                    { "data": "priority" },
+                    { "data": "description" },
+                    //{
+                    //    "render": function (data, type, full, meta) {
+                    //        var IsEdit = $('#IsEdit').val();
+                    //        return `<a class="${IsEdit}" href="/tasks/Edit/${full.taskId}"><i class="fa fa-edit"></i></a>`;
+                    //    }
+                    //},
+                    //{
+                    //    "render": function (data, type, full, meta) {
+                    //        var IsEdit = $('#IsDelete').val();
+                    //        return `<a class="${IsEdit}" href="/tasks/Delete/${full.taskId}"><i class="fa fa-trash"></i></a>`;
+                    //    }
+                    //}
+                ]
+            });
+        }
+        ///---------------- Document Notification List -------------------///
+        function DocNotificationList() {
+            $('#dt-docnotification').DataTable({
+                "processing": true, // for show progress bar    
+                "serverSide": true, // for process server side    
+                "filter": true, // this is for disable filter (search box)    
+                'info': false,
+                'scrollY': false,
+                "lengthChange": false,
+                "pageLength": 5,
+                //"displayStart": 10,
+                //'paging': true,
+                "ajax": {
+                    "url": "/employeedoc/DT_Doc_Notification_Data",
+                    "type": "POST",
+                    "datatype": "json",
+                },
+                "columnDefs": [{
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+                "order": [[0, "desc"]],
+
+                buttons: [
+                    'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "columns": [
+                    { "data": "empNewDocumentsID" },
+                    { "data": "documentType", "className": "text-left" },
+                    { "data": "name", "className": "text-left" },
+                    { "data": "issuedDate" },
+                    { "data": "expiryDate" },
+                    {
+                        render: function (data,type,full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.ninetyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data,type,full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_firstletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data,type,full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.sixtyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_secondletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.thirtyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_thirdletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                ]
+            });
+
+
+
+            /// ------------------ Passport -------------------\\\
+            $('#dt-PassportNotification').DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                'info': false,
+                'scrollY': false,
+                "lengthChange": false,
+                "pageLength": 5,
+                //"displayStart": 10,
+                //'paging': true,
+                "ajax": {
+                    "url": "/employeedoc/DT_Passport_Notification_Data",
+                    "type": "POST",
+                    "datatype": "json",
+                },
+                "columnDefs": [{
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+                "order": [[0, "desc"]],
+
+                buttons: [
+                    'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "columns": [
+                    { "data": "empNewDocumentsID" },
+                    { "data": "documentType", "className": "text-left" },
+                    { "data": "name", "className": "text-left" },
+                    { "data": "issuedDate" },
+                    { "data": "expiryDate" },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.ninetyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_firstletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.sixtyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_secondletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.thirtyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_thirdletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                ]
+            });
+
+
+            /// ------------------ DBS -------------------\\\
+            $('#dt-DBSNotification').DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                'info': false,
+                'scrollY': false,
+                "lengthChange": false,
+                "pageLength": 5,
+                //"displayStart": 10,
+                //'paging': true,
+                "ajax": {
+                    "url": "/employeedoc/DT_DBS_Notification_Data",
+                    "type": "POST",
+                    "datatype": "json",
+                },
+                "columnDefs": [{
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+                "order": [[0, "desc"]],
+
+                buttons: [
+                    'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "columns": [
+                    { "data": "empNewDocumentsID" },
+                    { "data": "documentType", "className": "text-left" },
+                    { "data": "name", "className": "text-left" },
+                    { "data": "issuedDate" },
+                    { "data": "expiryDate" },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.ninetyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_firstletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.sixtyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_secondletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.thirtyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_thirdletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                ]
+            });
+
+
+
+            /// ------------------ EUSS -------------------\\\
+            $('#dt-EUSSNotification').DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                'info': false,
+                'scrollY': false,
+                "lengthChange": false,
+                "pageLength": 5,
+                //"displayStart": 10,
+                //'paging': true,
+                "ajax": {
+                    "url": "/employeedoc/DT_EUSS_Notification_Data",
+                    "type": "POST",
+                    "datatype": "json",
+                },
+                "columnDefs": [{
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+                "order": [[0, "desc"]],
+
+                buttons: [
+                    'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "columns": [
+                    { "data": "empNewDocumentsID" },
+                    { "data": "documentType", "className": "text-left" },
+                    { "data": "name", "className": "text-left" },
+                    { "data": "issuedDate" },
+                    { "data": "expiryDate" },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.ninetyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_firstletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.sixtyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_secondletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.thirtyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_thirdletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                ]
+            });
+
+
+
+            /// ------------------ RTWC -------------------\\\
+            $('#dt-RTWCNotification').DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                'info': false,
+                'scrollY': false,
+                "lengthChange": false,
+                "pageLength": 5,
+                //"displayStart": 10,
+                //'paging': true,
+                "ajax": {
+                    "url": "/employeedoc/DT_RWC_Notification_Data",
+                    "type": "POST",
+                    "datatype": "json",
+                },
+                "columnDefs": [{
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+                "order": [[0, "desc"]],
+
+                buttons: [
+                    'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "columns": [
+                    { "data": "empNewDocumentsID" },
+                    { "data": "documentType", "className": "text-left" },
+                    { "data": "name", "className": "text-left" },
+                    { "data": "issuedDate" },
+                    { "data": "expiryDate" },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.ninetyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_firstletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.sixtyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_secondletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.thirtyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_thirdletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                ]
+            });
+
+
+
+            /// ------------------ Other -------------------\\\
+            $('#dt-OtherNotification').DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                'info': false,
+                'scrollY': false,
+                "lengthChange": false,
+                "pageLength": 5,
+                //"displayStart": 10,
+                //'paging': true,
+                "ajax": {
+                    "url": "/employeedoc/DT_Others_Notification_Data",
+                    "type": "POST",
+                    "datatype": "json",
+                },
+                "columnDefs": [{
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+                "order": [[0, "desc"]],
+
+                buttons: [
+                    'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "columns": [
+                    { "data": "empNewDocumentsID" },
+                    { "data": "documentType", "className": "text-left" },
+                    { "data": "name", "className": "text-left" },
+                    { "data": "issuedDate" },
+                    { "data": "expiryDate" },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.ninetyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_firstletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.sixtyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_secondletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<span class='text-danger'>${full.thirtyDaysNotify}</span>`
+                            return result;
+                        }
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="/employeedoc/doc_thirdletter/${full.empNewDocumentsID}" target="_blank"><i class="fas fa-eye"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                    {
+                        render: function (data, type, full) {
+                            //console.log(full.ninetyDaysNotify);
+                            let result = `<a href="#"><i class="fas fa-paper-plane"></i></a>`
+                            return result;
+                        }, "className": "text-center"
+                    },
+                ]
+            });
+        }
+
+        ///-------------- Client Canvas Slider -------------------///
+        $('#dt-client-sysdashboard').on('click', 'tr td .custom-button-user', function () {
+            var ClientID = $(this).data('clientid');
+            //OpeningDataHoldon('sk-folding-cube');
+
+            $.ajax({
+                url: '/client/GetClientById', // Replace with the actual URL
+                method: 'POST',
+                data: { ClientId: ClientID },
+                dataType: 'json',
+                success: function (data) {
+                    renderPartial(data);
+                    //ClosingHoldon();
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                    //ClosingHoldon();
+                }
+            });
+            const canvaSlide = document.querySelectorAll('.canvasslide');
+            function renderPartial(data) {
+                var container = $('#dataContainer'); // Replace with your container element's ID or class
+                // Clear the existing content in the container
+                container.empty();
+                // Render the partial view with the retrieved data
+                $.post('@Url.Action("_ClientDetails", "Client")', { data: data }, function (result) {
+                    container.html(result);
+                });
+            }
+            for (let elem of canvaSlide) {
+                var bsDefaults = {
+                    offset: false,
+                    overlay: true,
+                    width: '60%',
+                };
+                var bsMain = $('.bs-offset-main');
+                var bsOverlay = $('.bs-canvas-overlay');
+                var canvas = elem.attributes[5].nodeValue;
+                var canvasHeader = $('.bs-canvas-header');
+                if (elem.attributes[4].nodeValue == "canvas") {
+                    var isMobile = window.innerWidth <= 700;
+                    if (isMobile) {
+                        bsDefaults.width = '100%';
+                        bsDefaults.overlay = false;
+                        bsOverlay.removeClass('show');
+                        // Fix the header
+                        canvasHeader.css('position', 'fixed');
+                        canvasHeader.css('top', 0);
+                        canvasHeader.css('right', 0); // Set right instead of left
+                        canvasHeader.css('z-index', 1);
+                        // Set the same width for the header and body
+                        canvasHeader.css('width', bsDefaults.width);
+                    } else {
+                        bsDefaults.width = '60%';
+                        bsDefaults.overlay = true;
+                        bsOverlay.addClass('show');
+                        // Fix the header
+                        canvasHeader.css('position', 'fixed');
+                        canvasHeader.css('top', 0);
+                        canvasHeader.css('right', 0); // Set right instead of left
+                        canvasHeader.css('z-index', 1);
+                        // Set the same width for the header and body
+                        canvasHeader.css('width', bsDefaults.width);
+                    }
+                    var opts = $.extend({}, bsDefaults, $(canvas).data());
+                    var prop = $(canvas).hasClass('bs-canvas-right') ? 'margin-right' : 'margin-left';
+                    if (opts.width === '100%')
+                        opts.offset = false;
+                    $(canvas).css('width', opts.width);
+                    if (opts.offset && bsMain.length)
+                        bsMain.css(prop, opts.width);
+                    $(canvas + ' .bs-canvas-close').attr('aria-expanded', "true");
+                    $('[data-toggle="canvas"][data-target="' + canvas + '"]').attr('aria-expanded', "true");
+                    return false;
+                }
+            }
+        });
+        jQuery(document).ready(function ($) {
+            var bsDefaults = {
+                offset: false,
+                overlay: true,
+                width: '530px'
+            },
+                bsMain = $('.bs-offset-main'),
+                bsOverlay = $('.bs-canvas-overlay');
+
+            $('[data-toggle="canvas"][aria-expanded="false"]').on('click', function () {
+                var canvas = $(this).data('target'),
+                    opts = $.extend({}, bsDefaults, $(canvas).data()),
+                    prop = $(canvas).hasClass('bs-canvas-right') ? 'margin-right' : 'margin-left';
+
+                if (opts.width === '100%')
+                    opts.offset = false;
+
+                $(canvas).css('width', opts.width);
+                if (opts.offset && bsMain.length)
+                    bsMain.css(prop, opts.width);
+
+                $(canvas + ' .bs-canvas-close').attr('aria-expanded', "true");
+                $('[data-toggle="canvas"][data-target="' + canvas + '"]').attr('aria-expanded', "true");
+                if (opts.overlay && bsOverlay.length)
+                    bsOverlay.addClass('show');
+                return false;
+            });
+
+            $('.bs-canvas-close, .bs-canvas-overlay').on('click', function () {
+                var canvas, aria;
+                if ($(this).hasClass('bs-canvas-close')) {
+                    canvas = $(this).closest('.bs-canvas');
+                    aria = $(this).add($('[data-toggle="canvas"][data-target="#' + canvas.attr('id') + '"]'));
+                    if (bsMain.length)
+                        bsMain.css(($(canvas).hasClass('bs-canvas-right') ? 'margin-right' : 'margin-left'), '');
+                    // If the header is open and this close button is clicked, close the header
+                    var canvasHeader = canvas.find('.bs-canvas-header');
+                    if (canvasHeader.length && canvasHeader.css('position') === 'fixed') {
+                        canvasHeader.css('position', 'static');
+                    }
+                } else {
+                    canvas = $('.bs-canvas');
+                    aria = $('.bs-canvas-close, [data-toggle="canvas"]');
+                    if (bsMain.length)
+                        bsMain.css({
+                            'margin-left': '',
+                            'margin-right': ''
+                        });
+                }
+                canvas.css('width', '');
+                aria.attr('aria-expanded', "false");
+                if (bsOverlay.length)
+                    bsOverlay.removeClass('show');
+                return false;
+            });
+        });
+
+        ///-------------- Organisation Canvas Slider -------------------///
+        $('#dt-dashOrg').on('click', 'tr td .custom-button-org', function () {
+            var orgid = $(this).data('orgid');
+            OpeningHoldon('sk-folding-cube','Data is loading...');
+
+            $.ajax({
+                url: '/Organisation/GetOrganisationById', // Replace with the actual URL
+                method: 'POST',
+                data: { OrgId: orgid },
+                dataType: 'json',
+                success: function (data) {
+                    renderPartial(data);
+                    ClosingHoldon();
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                    ClosingHoldon();
+                }
+            });
+            const canvaSlide = document.querySelectorAll('.canvas-org-slide');
+            function renderPartial(data) {
+                var container = $('#orgdataContainer'); // Replace with your container element's ID or class
+                // Clear the existing content in the container
+                container.empty();
+                // Render the partial view with the retrieved data
+                $.post('@Url.Action("_OrgDetails", "Organisation")', { data: data }, function (result) {
+                    container.html(result);
+                });
+            }
+            for (let elem of canvaSlide) {
+                var bsDefaults = {
+                    offset: false,
+                    overlay: true,
+                    width: '60%',
+                };
+                var bsMain = $('.bs-offset-main');
+                var bsOverlay = $('.bs-canvas-overlay');
+                var canvas = elem.attributes[5].nodeValue;
+                var canvasHeader = $('.bs-org-canvas-header');
+                if (elem.attributes[4].nodeValue == "canvas") {
+                    var isMobile = window.innerWidth <= 700;
+                    if (isMobile) {
+                        bsDefaults.width = '100%';
+                        bsDefaults.overlay = false;
+                        bsOverlay.removeClass('show');
+                        // Fix the header
+                        canvasHeader.css('position', 'fixed');
+                        canvasHeader.css('top', 0);
+                        canvasHeader.css('right', 0); // Set right instead of left
+                        canvasHeader.css('z-index', 1);
+                        // Set the same width for the header and body
+                        canvasHeader.css('width', bsDefaults.width);
+                    } else {
+                        bsDefaults.width = '60%';
+                        bsDefaults.overlay = true;
+                        bsOverlay.addClass('show');
+                        // Fix the header
+                        canvasHeader.css('position', 'fixed');
+                        canvasHeader.css('top', 0);
+                        canvasHeader.css('right', 0); // Set right instead of left
+                        canvasHeader.css('z-index', 1);
+                        // Set the same width for the header and body
+                        canvasHeader.css('width', bsDefaults.width);
+                    }
+                    var opts = $.extend({}, bsDefaults, $(canvas).data());
+                    var prop = $(canvas).hasClass('bs-canvas-right-org') ? 'margin-left' : 'margin-right';
+                    if (opts.width === '100%')
+                        opts.offset = false;
+                    $(canvas).css('width', opts.width);
+                    if (opts.offset && bsMain.length)
+                        bsMain.css(prop, opts.width);
+                    $(canvas + ' .bs-canvas-org-close').attr('aria-expanded', "true");
+                    $('[data-toggle="canvas"][data-target="' + canvas + '"]').attr('aria-expanded', "true");
+                    return false;
+                }
+            }
+        });
+
+
+
+        jQuery(document).ready(function ($) {
+            var bsDefaults = {
+                offset: false,
+                overlay: true,
+                width: '530px'
+            },
+            bsMain = $('.bs-offset-main'),
+            bsOverlay = $('.bs-canvas-overlay');
+
+            $('[data-toggle="canvas"][aria-expanded="false"]').on('click', function () {
+                var canvas = $(this).data('target'),
+                    opts = $.extend({}, bsDefaults, $(canvas).data()),
+                    prop = $(canvas).hasClass('bs-canvas-right-org') ? 'margin-right' : 'margin-left';
+
+                if (opts.width === '100%')
+                    opts.offset = false;
+
+                $(canvas).css('width', opts.width);
+                if (opts.offset && bsMain.length)
+                    bsMain.css(prop, opts.width);
+
+                $(canvas + ' .bs-canvas-org-close').attr('aria-expanded', "true");
+                $('[data-toggle="canvas"][data-target="' + canvas + '"]').attr('aria-expanded', "true");
+                if (opts.overlay && bsOverlay.length)
+                    bsOverlay.addClass('show');
+                return false;
+            });
+
+            $('.bs-canvas-org-close, .bs-canvas-overlay').on('click', function () {
+                var canvas, aria;
+                if ($(this).hasClass('bs-canvas-org-close')) {
+                    canvas = $(this).closest('.bs-canvas');
+                    aria = $(this).add($('[data-toggle="canvas"][data-target="#' + canvas.attr('id') + '"]'));
+                    if (bsMain.length)
+                        bsMain.css(($(canvas).hasClass('bs-canvas-right-org') ? 'margin-right' : 'margin-left'), '');
+                    // If the header is open and this close button is clicked, close the header
+                    var canvasHeader = canvas.find('.bs-org-canvas-header');
+                    if (canvasHeader.length && canvasHeader.css('position') === 'fixed') {
+                        canvasHeader.css('position', 'static');
+                    }
+                } else {
+                    canvas = $('.bs-canvas');
+                    aria = $('.bs-canvas-org-close, [data-toggle="canvas"]');
+                    if (bsMain.length)
+                        bsMain.css({
+                            'margin-left': '',
+                            'margin-right': ''
+                        });
+                }
+                canvas.css('width', '');
+                aria.attr('aria-expanded', "false");
+                if (bsOverlay.length)
+                    bsOverlay.removeClass('show');
+                return false;
+            });
+        });
+
+        //---------------- duplicate email check -----------------//
+        $('#Email').blur(function () {
+            let email = $(this).val();
+            $.get('/client/checkemail', { Email: email }, function (data, success, xhr) {
+                if (success == 'success') {
+                    if (data != "") {
+                        $('#erroremail').text(data).show();
+                        $('#Email').val('');
+
+                    } else {
+                        $('#erroremail').text('');
+                        $('#erroremail').hide();
+                    }
+                }
+            })
+        });
+
+        //--------------- submit client invitation ---------------//
+        $('#btnsave').click(function () {
+            let form = $('#main');
+            form.validate();
+            var invite = {
+                UserName: $('#UserName').val(),
+                Email: $('#Email').val()
+            }
+            if (form.valid()) {
+                $.post('/client/inviteclient', { invite }, function (data, success, xhr) {
+                    if (success == 'success') {
+                        setTimeout(function () {
+                            $('#invite').modal('hide');
+                        }, 3000);
+                        SuccessPNotify(data);
+                        $('#UserName').val('')
+                        $('#Email').val('')
+                    }
+                })
+            }
+        })
+
+        $(document).on('click', '#btntask', function () {
+            let form = $('#form');
+            form.validate();
+            let tasks = {
+                TaskNo : $('#TaskNo').val()
+            }
+            if (form.valid()) {
+                let formdata = form.serialize(); //new FormData(form[0]);
+                OpeningHoldon('sk-folding-cube', 'Please wait. Data is Saving...');
+                $.post('/tasks/create', formdata, function (data, success, xhr) {
+                    if (success == 'success') {
+                        setTimeout(function () {
+                            $('#large-Modal').modal('hide');
+                            ClosingHoldon();
+                            SuccessPNotify('Data Saved Successfully');
+                            cleartask()
+                        }, 3000);
+                    }
+                }).fail(function (xhr, status, error) {
+                    // Handle the error here
+                    ClosingHoldon();
+                    console.log('Error:', error);
+                    // Display an error message to the user, or perform any other actions
+                });
+            } else {
+                //alert('not valid')
+                ClosingHoldon();
+            }
+        })
+        function cleartask() {
+            $('#TaskNo').val('');
+            $('#TaskTitle').val('');
+            $('#TaskName').val('');
+            $('#Description').val('');
+            $('#Priority').val('').trigger('change');
+
+        }
+    </script>
+
+    @*@{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }*@
+}

@@ -1,0 +1,143 @@
+﻿@model IEnumerable<Department>
+@{
+    ViewData["Title"] = "Department List";
+}
+
+@section PageName {
+    Department List
+}
+@section Breadcrumb {
+    <a href="/department/index" class="breadcrumb-home">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="divider">/</span>
+    <span class="section activeCrum">Department List</span>
+}
+
+<style>
+/*     .breadcrumb-home {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+        .breadcrumb-home:hover {
+            text-decoration: underline;
+        }
+
+    .divider {
+        margin: 0 5px;
+        color: #999;
+    }
+
+    .page-body {
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: none;
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        padding: 15px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .card-header .btn {
+            background-color: #ffc107;
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+            .card-header .btn:hover {
+                background-color: #e0a800;
+            }
+
+    .table-responsive {
+        padding: 15px;
+    }
+
+    #dt-department {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        #dt-department thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+            #dt-department thead th {
+                border: none;
+                padding: 10px;
+            }
+
+        #dt-department tbody tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        #dt-department tbody tr:hover {
+            background-color: #ddd;
+        }
+
+        #dt-department tbody td {
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+            #dt-department tbody td:last-child,
+            #dt-department tbody td:nth-last-child(2) {
+                text-align: center;
+            } */
+</style>
+
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Ajax data source (Arrays) table start -->
+            <div class="card">
+                <div class="card-header">
+                   @*  <span>Department List</span> *@
+                    <a asp-action="create" class="btn waves-effect waves-light btn-sm btn-outline-primary @ViewBag.IsAdd"><i class="icofont icofont-ui-add"></i> Add New</a>
+                </div>
+                <div class="card-block">
+                    <div class="table-responsive dt-responsive">
+                        <table id="dt-department" class="table table-striped table-bordered nowrap">
+                            <thead>
+                                <tr>
+                                    <th>DeptId</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be populated here by JavaScript or backend code -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Ajax data source (Arrays) table end -->
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    <!-- Add your JavaScript code here if needed -->
+}

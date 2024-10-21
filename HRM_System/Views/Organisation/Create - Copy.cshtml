@@ -1,0 +1,559 @@
+﻿@model Domains.ViewModels.OrganisationVM
+@{
+    Layout = "~/Views/Shared/_Main_Layout.cshtml";
+}
+@section PageName {
+    Organisation
+}
+@*@Html.AntiForgeryToken()*@
+<div class="page-body">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Organisation Form</h5>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="wizardb">
+                                <section>
+                                    <form asp-action="Create" asp-controller="Organisation" class="wizard-form j-pro border-0 wizard clearfix vertical" id="verticle-wizard" method="post" enctype="multipart/form-data">
+                                        @{
+                                            if (Model != null)
+                                            {
+                                                <input asp-for="OrgId" type="hidden" />
+                                                <input asp-for="AddedBy" type="hidden" />
+                                                <input asp-for="AddedDate" type="hidden" />
+                                                <input asp-for="LogoPath" type="hidden" />
+                                                <input asp-for="AP_NIdPath" type="hidden" />
+                                                <input asp-for="SA_NIdPath" type="hidden" />
+                                                <input asp-for="AP_NIdPath" type="hidden" />
+                                            }
+                                        }
+                                        <h3> Organisation Basic Data </h3>
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="ClientId" class="form-label"></label>
+                                                        <select asp-for="ClientId" asp-items="ViewBag.Client" class="form-control-lg col-lg-12" required>
+                                                            <option value="">Select</option>
+                                                        </select>
+                                                        <span asp-validation-for="ClientId" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="OrgName" class="form-label"></label>
+                                                        <input asp-for="OrgName" class="form-control-lg col-lg-12" required />
+                                                        <span asp-validation-for="OrgName" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="OrgType" class="form-label"></label>
+                                                        <select asp-for="OrgType" class="form-control-lg col-lg-12" required>
+                                                            <option value="Private Company Limited by shares">Private Company Limited by shares</option>
+                                                            <option value="Charitable Incorporated Organisation">Charitable Incorporated Organisation</option>
+                                                            <option value="Industrial and Provident Society "> Industrial and Provident Society </option>
+                                                            <option value="General Partnership">General Partnership</option>
+                                                            <option value="Limited Liability Partnership-LLP">Limited Liability Partnership-LLP</option>
+                                                            <option value="Scottish limited partnerships">Scottish limited partnerships</option>
+                                                            <option value="Limited Partnership-LP">Limited Partnership-LP</option>
+                                                            <option value="Community Interest Company "> Community Interest Company </option>
+                                                            <option value="Private Company Limited by guarantee">Private Company Limited by guarantee</option>
+                                                            <option value="Public Limited Company-PLC">Public Limited Company-PLC</option>
+                                                            <option value="Sole Proprietorship" selected="">Sole Proprietorship</option>
+                                                            <option value="others-type">Others</option>
+                                                        </select>
+                                                        <span asp-validation-for="OrgType" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6" id="divorgtype">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="OrgType1" class="form-label"></label>
+                                                        <input asp-for="OrgType1" class="form-control-lg col-lg-12" required />
+                                                        <span asp-validation-for="OrgType1" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="RegNo" class="form-label"></label>
+                                                        <input asp-for="RegNo" class="form-control-lg col-lg-12 PN" required />
+                                                        <span asp-validation-for="RegNo" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="ContactNo" class="form-label"></label>
+                                                        <input asp-for="ContactNo" class="form-control-lg col-lg-12 PN" required />
+                                                        <span asp-validation-for="ContactNo" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="OrgEmail" class="form-label"></label>
+                                                        <input asp-for="OrgEmail" class="form-control-lg col-lg-12 email" required />
+                                                        <span asp-validation-for="OrgEmail" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="Website" class="form-label"></label>
+                                                        <input asp-for="Website" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="Website" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="LandlineNumber" class="form-label"></label>
+                                                        <input asp-for="LandlineNumber" class="form-control-lg col-lg-12 PN" />
+                                                        <span asp-validation-for="LandlineNumber" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="TradingName" class="form-label"></label>
+                                                        <input asp-for="TradingName" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="TradingName" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="TradingPeriod" class="form-label"></label>
+                                                        <select asp-for="TradingPeriod" class="form-control-lg col-lg-12" required>
+                                                            <option value="0 to 6 months">0 to 6 months</option>
+                                                            <option value="Over 12 to 18 months" selected="">Over 12 to 18 months</option>
+                                                            <option value="Over 18 to 36 months">Over 18 to 36 months</option>
+                                                            <option value="Over 36 months+">Over 36 months+</option>
+                                                        </select>
+                                                        <span asp-validation-for="TradingPeriod" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="SectorName" class="form-label"></label>
+                                                        <select asp-for="SectorName" class="form-control-lg col-lg-12" required>
+                                                            <option value="Accommodation and Food Service Activities">Accommodation and Food Service Activities</option>
+                                                            <option value="Activities of extraterritorial organisations and bodies">Activities of extraterritorial organisations and bodies</option>
+                                                            <option value="Activities of households as employers; undifferentiated goods- and services- producing activities of households for own use">Activities of households as employers; undifferentiated goods- and services- producing activities of households for own use</option>
+                                                            <option value="Administrative and Support Service Activities">Administrative and Support Service Activities</option>
+                                                            <option value="Agriculture, Forestry and Fishing">Agriculture, Forestry and Fishing</option>
+                                                            <option value="Arts, Entertainment and Recreation">Arts, Entertainment and Recreation</option>
+                                                            <option value="Construction">Construction</option>
+                                                            <option value="Education">Education</option>
+                                                            <option value="Electricity, Gas, Steam and Air Conditioning Supply">Electricity, Gas, Steam and Air Conditioning Supply</option>
+                                                            <option value="Human Health and Social Work Activities">Human Health and Social Work Activities</option>
+                                                            <option value="Information and Communication">Information and Communication</option>
+                                                            <option value="Manufacturing">Manufacturing</option>
+                                                            <option value="Mining and Quarrying">Mining and Quarrying</option>
+                                                            <option value="Professional, Scientific and Technical Activities">Professional, Scientific and Technical Activities</option>
+                                                            <option value="Public Administration and Defence; Compulsory social security">Public Administration and Defence; Compulsory social security</option>
+                                                            <option value="Real Estate Activities">Real Estate Activities</option>
+                                                            <option value="Transportation and Storage">Transportation and Storage</option>
+                                                            <option value="Water supply, sewerage, waste management and remediation activities">Water supply, sewerage, waste management and remediation activities</option>
+                                                            <option value="Wholesale and Retail trade; Repair of motor vehicles and Motorcycles">Wholesale and Retail trade; Repair of motor vehicles and Motorcycles</option>
+                                                            <option value="Other service activities" selected="">Other service activities</option>
+                                                        </select>
+                                                        <span asp-validation-for="SectorName" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6" id="divsectorname">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="SectorName1" class="form-label"></label>
+                                                        <input asp-for="SectorName1" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="SectorName1" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label asp-for="Logofile" class="form-label"></label>
+                                                    <div class="input-group">
+                                                        <input type="file" asp-for="Logofile" class="custom-file-input form-control-lg" accept="image/*" onchange="return fileValidation('Logofile')">
+                                                        <label class="custom-file-label" for="Logo">Upload image</label>
+                                                    </div>
+                                                    <span asp-validation-for="Logofile" class="text-danger form-bar"></span>
+
+                                                </div>
+
+                                            </div>
+                                        </fieldset>
+                                        <h3> Authorised Person Details </h3>
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="AP_FirstName" class="form-label"></label>
+                                                        <input asp-for="AP_FirstName" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="AP_FirstName" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="AP_LastName" class="form-label"></label>
+                                                        <input asp-for="AP_LastName" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="AP_LastName" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="AP_DesignationID" class="form-label"></label>
+                                                        <select asp-for="AP_DesignationID" asp-items="@ViewBag.Designation" class="form-control-lg col-lg-12" required>
+                                                            <option value="0">Select</option>
+                                                        </select>
+                                                        <span asp-validation-for="AP_DesignationID" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="AP_PhoneNo" class="form-label"></label>
+                                                        <input asp-for="AP_PhoneNo" class="form-control-lg col-lg-12 PN" />
+                                                        <span asp-validation-for="AP_PhoneNo" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="AP_Email" class="form-label"></label>
+                                                        <input asp-for="AP_Email" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="AP_Email" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label asp-for="AP_NId" class="form-label"></label>
+                                                    <div class="input-group">
+                                                        <input type="file" asp-for="AP_NId" class="custom-file-input form-control-lg" accept="image/*" onchange="return fileValidation('AP_NId')">
+                                                        <label class="custom-file-label" for="Logo">Upload image</label>
+                                                    </div>
+                                                    <span asp-validation-for="AP_NId" class="text-danger form-bar"></span>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="AP_IsCriminalHistory" class="form-label"></label>
+                                                        <select asp-for="AP_IsCriminalHistory" class="form-control-lg col-lg-12" required>
+                                                            <option value="Yes">Yes</option>
+                                                            <option value="No" selected="">No</option>
+                                                        </select>
+                                                        <span asp-validation-for="AP_IsCriminalHistory" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </fieldset>
+                                        <h3> Key Contact </h3>
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="KC_FirstName" class="form-label"></label>
+                                                        <input asp-for="KC_FirstName" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="KC_FirstName" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="KC_LastName" class="form-label"></label>
+                                                        <input asp-for="KC_LastName" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="KC_LastName" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="KC_DesignationID" class="form-label"></label>
+                                                        <select asp-for="KC_DesignationID" asp-items="@ViewBag.Designation" class="form-control-lg col-lg-12">
+                                                            <option value="0">Select</option>
+                                                        </select>
+                                                        <span asp-validation-for="KC_DesignationID" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="KC_PhoneNo" class="form-label"></label>
+                                                        <input asp-for="KC_PhoneNo" class="form-control-lg col-lg-12 PN" />
+                                                        <span asp-validation-for="KC_PhoneNo" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="KC_Email" class="form-label"></label>
+                                                        <input asp-for="KC_Email" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="KC_Email" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label asp-for="KC_NId" class="form-label"></label>
+                                                    <div class="input-group">
+                                                        <input type="file" asp-for="KC_NId" class="custom-file-input form-control-lg" accept="image/*" onchange="return fileValidation('KC_NId')">
+                                                        <label class="custom-file-label" for="Logo">Upload image</label>
+                                                    </div>
+                                                    <span asp-validation-for="KC_NId" class="text-danger form-bar"></span>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="KC_IsCriminalHistory" class="form-label"></label>
+                                                        <select asp-for="KC_IsCriminalHistory" class="form-control-lg col-lg-12" required>
+                                                            <option value="Yes">Yes</option>
+                                                            <option value="No" selected="">No</option>
+                                                        </select>
+                                                        <span asp-validation-for="KC_IsCriminalHistory" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </fieldset>
+                                        <h3> Organisation Address </h3>
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="PostCode" class="form-label"></label>
+                                                        <input asp-for="PostCode" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="PostCode" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="AddressLine1" class="form-label"></label>
+                                                        <input asp-for="AddressLine1" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="AddressLine1" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="AddressLine2" class="form-label"></label>
+                                                        <input asp-for="AddressLine2" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="AddressLine2" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="AddressLine3" class="form-label"></label>
+                                                        <input asp-for="AddressLine3" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="AddressLine3" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="City" class="form-label"></label>
+                                                        <input asp-for="City" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="City" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="CountryId" class="form-label"></label>
+                                                        <select asp-for="CountryId" asp-items="@ViewBag.Country" class="form-control-lg col-lg-12" required>
+                                                            <option value="0">Select</option>
+                                                        </select>
+                                                        <span asp-validation-for="CountryId" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <h3> Super Admin User </h3>
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="SA_FirstName" class="form-label"></label>
+                                                        <input asp-for="SA_FirstName" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="SA_FirstName" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="SA_LastName" class="form-label"></label>
+                                                        <input asp-for="SA_LastName" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="SA_LastName" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-default">
+                                                        <label asp-for="SA_Email" class="form-label"></label>
+                                                        <input asp-for="SA_Email" class="form-control-lg col-lg-12" />
+                                                        <span asp-validation-for="SA_Email" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            SuccessPNotify('ok');
+            $('#divorgtype').hide();
+        })
+        $(document).on('change', '#OrgType', function () {
+            let OrgType = $(this).val();
+            if (OrgType == 'others-type') {
+                $('#divorgtype').show();
+            } else {
+                $('#divorgtype').hide();
+            }
+        })
+        $(document).on('change', '#SectorName', function () {
+            let sectname = $(this).val();
+            if (sectname == 'Other service activities') {
+                $('#divsectorname').show();
+            } else {
+                $('#divsectorname').hide();
+            }
+        })
+
+        $(document).on('click', '#Finish', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            let form = $('#verticle-wizard'); // Get the form element
+            //let validator = form.validate(); // Initialize the form validation
+            let formData = new FormData(form[0]); // Create FormData object with form data
+            /*if (form.valid()) {*/
+                // Append additional data to FormData
+                formData.append('OrgId', $("#OrgId").val() || 0);
+                formData.append('OrgName', $("#OrgName").val());
+                formData.append('OrgType', $("#OrgType").val());
+                formData.append('RegNo', $("#RegNo").val());
+                formData.append('OrgEmail', $("#OrgEmail").val());
+                formData.append('ContactNo', $("#ContactNo").val());
+                formData.append('PostCode', $("#PostCode").val());
+                formData.append('AddressLine1', $("#AddressLine1").val());
+                formData.append('AddressLine2', $("#AddressLine2").val());
+                formData.append('AddressLine3', $("#AddressLine3").val());
+                formData.append('City', $("#City").val());
+                formData.append('CountryId', $("#CountryId").val());
+                formData.append('Website', $("#Website").val());
+                formData.append('LandlineNumber', $("#LandlineNumber").val());
+                formData.append('TradingName', $("#TradingName").val());
+                formData.append('TradingPeriod', $("#TradingPeriod").val());
+                formData.append('SectorName', $("#SectorName").val());
+
+                formData.append('AP_FirstName', $("#AP_FirstName").val());
+                formData.append('AP_LastName', $("#AP_LastName").val());
+                formData.append('AP_DesignationID', $("#AP_DesignationID").val());
+                formData.append('AP_PhoneNo', $("#AP_PhoneNo").val());
+                formData.append('AP_Email', $("#AP_Email").val());
+                formData.append('AP_IsCriminalHistory', $("#AP_IsCriminalHistory").val());
+
+                formData.append('KC_FirstName', $("#AP_FirstName").val());
+                formData.append('KC_LastName', $("#AP_LastName").val());
+                formData.append('KC_DesignationID', $("#AP_DesignationID").val());
+                formData.append('KC_PhoneNo', $("#AP_PhoneNo").val());
+                formData.append('KC_Email', $("#AP_Email").val());
+                formData.append('KC_IsCriminalHistory', $("#AP_IsCriminalHistory").val());
+
+                formData.append('SA_FirstName', $("#AP_FirstName").val());
+                formData.append('SA_LastName', $("#AP_LastName").val());
+                formData.append('SA_Email', $("#AP_Email").val());
+
+                // Append other form fields as needed...
+
+                // Append file input
+                var LogoPath = document.getElementById('Logofile');
+                if (LogoPath.files[0]) {
+                    formData.append('Logofile', LogoPath.files[0]);
+                }
+
+                // Append file input
+                let AP_NId = document.getElementById('AP_NId'); // Assuming you have a file input with id "fileInput"
+                if (AP_NId.files[0]) {
+                    formData.append('AP_NIdPath', AP_NId.files[0]);
+                }
+
+                // Append file input
+                let KC_NId = document.getElementById('KC_NId'); // Assuming you have a file input with id "fileInput"
+                if (KC_NId.files[0]) {
+                    formData.append('KC_NIdPath', KC_NId.files[0]);
+                }
+
+                // Send AJAX request
+                $.ajax({
+                    url: '/organisation/Create',
+                    type: 'POST',
+                    data: formData,
+                    processData: false, // Prevent jQuery from processing the data
+                    contentType: false, // Prevent jQuery from setting Content-Type
+                    success: function (data, status, xhr) {
+                        if (data.isError == false) {
+                            SuccessPNotify(data.message);
+                            window.location.href = '/organisation/index';
+                        } else {
+                            WarningPNotify(data.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error
+                        console.error(xhr.responseText);
+                    }
+                });
+            //} else {
+            //    WarningPNotify('Form Not Valid');
+            //}
+        });
+
+
+        var form = $("#contact");
+        form.validate({
+            errorPlacement: function errorPlacement(error, element) { element.before(error); },
+            rules: {
+                confirm: {
+                    equalTo: "#password"
+                }
+            }
+        });
+        form.children("div").steps({
+            headerTag: "h3",
+            bodyTag: "section",
+            transitionEffect: "slideLeft",
+            onStepChanging: function (event, currentIndex, newIndex) {
+                form.validate().settings.ignore = ":disabled,:hidden";
+                return form.valid();
+            },
+            onFinishing: function (event, currentIndex) {
+                form.validate().settings.ignore = ":disabled";
+                return form.valid();
+            },
+            onFinished: function (event, currentIndex) {
+                alert("Submitted!");
+            }
+        });
+
+        function fileValidation(name) {
+            var fileInput = document.getElementById(`${name}`);
+            var filePath = fileInput.value;
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+            if (!allowedExtensions.exec(filePath)) {
+                alert('Please upload file having extensions .jpeg/.jpg/.png only.');
+                fileInput.value = '';
+                return false;
+            } else {
+                //Image preview
+                //if (fileInput.files && fileInput.files[0]) {
+                //    var reader = new FileReader();
+                //    reader.onload = function (e) {
+                //        document.getElementById('imagePreview').innerHTML = '<img src="' + e.target.result + '"/>';
+                //    };
+                //    reader.readAsDataURL(fileInput.files[0]);
+                //}
+            }
+        }
+    </script>
+}

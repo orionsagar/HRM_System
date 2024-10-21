@@ -1,0 +1,239 @@
+﻿@model Reports
+
+@{
+    string[] BCText = new string[] { "Report List", "Report Add" };
+    string[] BCLink = new string[] { "report/index", "#" };
+
+    PageHeaderProps pageHeader = new PageHeaderProps
+    {
+        BreadcrumbText = BCText,
+        BreadcrumbLink = BCLink
+    };
+}
+
+<div class="page-body">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <form id="main" asp-action="Create" method="post" novalidate>
+                    <div class="card-header">
+                        @await Component.InvokeAsync("PageHeader", pageHeader)
+                        <input type="hidden" asp-for="ReportId" />
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <div class="col-md-4">
+                                @*<div class="form-group row">
+            <label asp-for="RoleId" class="col-md-3 col-form-label">Role:</label>
+            <div class="col-md-9">
+                <select asp-for="RoleId" class="form-control form-control-sm" asp-items="@ViewBag.RoleId" required>
+                    <option>Select</option>
+                </select>
+                <span asp-validation-for="RoleId" class="text-danger"></span>
+            </div>
+        </div>*@
+                                <div class="form-group row">
+                                    <label asp-for="ReportTypeId" class="col-md-3 col-form-label">Report Type:</label>
+                                    <div class="col-md-9">
+                                        <select asp-for="ReportTypeId" class="form-control form-control-sm" asp-items="@ViewBag.ReportTypeId" required>
+                                            <option>Select</option>
+                                        </select>
+                                        <span asp-validation-for="ReportTypeId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="MenuId" class="col-md-3 col-form-label">Menu:</label>
+                                    <div class="col-md-9">
+                                        <select asp-for="MenuId" class="form-control form-control-sm" asp-items="@ViewBag.MenuId" required>
+                                            <option>Select</option>
+                                        </select>
+                                        <span asp-validation-for="MenuId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="ReportName" class="col-md-3 col-form-label">Rpt Name:</label>
+                                    <div class="col-md-9">
+                                        <input type="text" asp-for="ReportName" class="form-control form-control-sm" required />
+                                        <span asp-validation-for="ReportName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="ShortName" class="col-md-3 col-form-label">Short Name:</label>
+                                    <div class="col-md-9">
+                                        <input type="text" asp-for="ShortName" class="form-control form-control-sm"/>
+                                        <span asp-validation-for="ShortName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label asp-for="IdName" class="col-md-3 col-form-label">Id Name:</label>
+                                    <div class="col-md-9">
+                                        <input type="text" asp-for="IdName" class="form-control form-control-sm" />
+                                        <span asp-validation-for="IdName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label asp-for="ClassName" class="col-md-3 col-form-label">Class Name:</label>
+                                    <div class="col-md-9">
+                                        <input type="text" asp-for="ClassName" class="form-control form-control-sm" />
+                                        <span asp-validation-for="ClassName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label asp-for="ReportLink" class="col-md-3 col-form-label">Report Link:</label>
+                                    <div class="col-md-9">
+                                        <input type="text" asp-for="ReportLink" class="form-control form-control-sm" required />
+                                        <span asp-validation-for="ReportLink" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="Remarks" class="col-md-3 col-form-label">Remarks:</label>
+                                    <div class="col-md-9">
+                                        <input type="text" asp-for="Remarks" class="form-control form-control-sm"/>
+                                        <span asp-validation-for="Remarks" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label asp-for="SLNo" class="col-md-3 col-form-label">SL No:</label>
+                                    <div class="col-md-9">
+                                        <input type="text" asp-for="SLNo" class="form-control form-control-sm" required />
+                                        <span asp-validation-for="SLNo" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-info btn-sm text-white" data-toggle="modal" data-target="#reporttype" id="btnshowmodal">Add ReportType</button>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-2">
+                                <button class="btn btn-info" accesskey="s">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="reporttype" tabindex="-1" role="dialog" aria-labelledby="reporttype" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                @*data-keyboard="false"*@
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Report Type</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="ReportTypeName" class="col-md-4 col-form-label">ReportType Name:</label>
+                                        <div class="col-md-8">
+                                            <input type="text" id="ReportTypeName" class="form-control form-control-sm" required />
+                                            <span id="ReportTypeName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="slno" class="col-md-4 col-form-label">SL No:</label>
+                                        <div class="col-md-8">
+                                            <input type="number" min="0" id="slno" class="form-control form-control-sm" required />
+                                            <span id="slno" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary btn-sm" id="btnrtype">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $('#ReportTypeId').select2();
+        $('#RoleId').select2();
+        $('#MenuId').select2();
+        //var rtypelist = @Html.Raw(Json.Serialize(ViewBag.ReportTypeId));
+        $(document).ready(function () {
+            //if (rtypelist != '') {
+            //    bindReportType(rtypelist)
+            //}
+        })
+        $('#btnshowmodal').click(function () {
+            maxReportTypeSlno();
+        })
+
+        $('#btnrtype').on('click', function () {
+            let rtypename = $('#ReportTypeName').val();
+            let slno = $('#slno').val();
+            let reportTypes = {
+                ReportTypeName: rtypename,
+                SLNo: slno
+            }
+            if (rtypename == '') {
+                WarningPNotify("reporttype can't be empty")
+            } else if (slno == 0) {
+                WarningPNotify("slno can't be 0")
+            }
+            else {
+                saveReportType(reportTypes);
+            }
+        })
+
+        $(`#ReportTypeId`).change(function () {
+            let rtypeid = $(this).val();
+            maxReportSlno(rtypeid)
+        })
+
+        function saveReportType(reportTypes) {
+            $.post('/report/createreporttype', { reportTypes: reportTypes }, function (data, status, xhr) {
+                if (status == 'success') {
+                    $('.modal').modal('hide');
+                    $('#ReportTypeName').val('');
+                    $('#slno').val('');
+                    bindReportType(data);
+                }
+            })
+        }
+        function maxReportTypeSlno() {
+            $.get('/report/MaxReportTypeSlno', function (data, status, xhr) {
+                if (status == 'success') {
+                    $('#slno').val(data);
+                }
+            })
+        }
+        function maxReportSlno(rtypeid) {
+            $.get('/report/MaxReportSlno',{ rtypeid: rtypeid }, function (data, status, xhr) {
+                if (status == 'success') {
+                    $('#SLNo').val(data);
+                }
+            })
+        }
+
+        function bindReportType(rtypelist) {
+            let option = `<option value='0'>select</option>`;
+            rtypelist.map(r => {
+                option += `<option value='${r.value}'>${r.text}</option>`;
+            });
+            $('#ReportTypeId').html(option);
+        }
+
+    </script>
+}

@@ -1,0 +1,86 @@
+﻿@model DocLetterViewModel
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <table style="max-width:900px;width:100%;margin:auto;font-family: calibri;margin: auto;
+    font-family: calibri;
+    border: 5px solid #add5f7;
+    padding: 10px;">
+        <tbody>
+            <tr>
+                <td><h3>@Model.EmployeeName</h3></td>
+                <td> <img width="100" src="@Model.OrgLogo" alt=""> </td>
+            </tr>
+            <tr>
+                <td colspan="2">@Model.EmpAddress</td>
+
+            </tr>
+            <tr>
+                <td colspan="2">Date : @Model.DocDate</td>
+
+            </tr>
+
+            <tr>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>
+                        <b>Subject: Right to Work Documentation – Temporary @Model.DocType @Model.LetterDays-day Reminder.</b>
+                    </p><p>
+                        Further to your employment on a temporary @Model.DocType, I am writing to remind you that this @Model.DocType is due to
+                        expire on @Model.DocExpiryDate. You are therefore requested to make arrangements to renew your right to
+                        work documentation in order for you to remain in employment.
+                    </p>
+                    <p>Examples of the documents we require are as follows:</p>
+                    <ul>
+                        <li> A copy of your completed application; and</li>
+                        <li> Proof of postage; and/or</li>
+                        <li> An acknowledgement letter from the Home Office confirming receipt of your application</li>
+                        <li>
+                            Where a Certificate of Application provides you with the right to work it is your responsibility
+                            to ensure your certificate of application is always dated within 6 months
+                        </li>
+                    </ul>
+                    <p>
+                        Widley Express  will complete a check with the Home Office Employer Checking Service to
+                        obtain confirmation of any application at the time of your @Model.DocType expiring or at 5 monthly intervals
+                        dependent on the checking requirements for the right to work documents you provide to us. Where
+                        a negative verification notice is received, we cannot continue to employ you, unless you are able to
+                        provide alternative evidence to satisfy us that you have the right to work.
+                    </p>
+
+                    <p>
+                        As previously advised, the immigration, Asylum and the Nationality Act 2006 requires all employers
+                        to make documentation checks at the start of every new colleague’s employment. This legislation
+                        also requires employers to carry out follow-up checks where the documents provided only give a
+                        colleague the temporary right to work in the UK. This also forms part of the employment with
+                        Widley Express
+                    </p>
+                    <p>
+                        Please bring your original documents into the HR team without delay or no later than &amp; 15 days of
+                        issuance of letter;. Otherwise, we will have no option but to review your ongoing right to work
+                        when your current @Model.DocType expires. A failure to provide sufficient document evidencing your ongoing
+                        right to work in the UK could result Widley Express taking action, which may include
+                        considering the summary termination of your employment.
+                        Please do not hesitate to contact me if you have any concern or would like to discuss this further.
+                    </p>
+
+                    <p>Please do not hesitate to contact me if you have any concern or would like to discuss this further.</p>
+
+                    <p>Yours sincerely</p><p>@Model.SendedBy</p>
+                    <p>@Model.SenderDesignation</p>
+                </td>
+            </tr>
+
+            <tr><td colspan="2"><input type="button" value="Print this page" onclick="window.print()"></td></tr>
+
+        </tbody>
+    </table>
+</body>
+</html>

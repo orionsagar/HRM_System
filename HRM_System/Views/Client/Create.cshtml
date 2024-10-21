@@ -1,0 +1,312 @@
+﻿@model ClientViewModel
+@inject IGlobalHelper _global;
+
+@{
+    ViewData["Title"] = "Create";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+    var action = ViewBag.Action;
+}
+<style type="text/css">
+    .hr-text {
+        border: 0;
+        line-height: 1em;
+        position: relative;
+        text-align: center;
+        height: 1.5em;
+        font-size: 18px;
+        margin: 30px 15px;
+        width: 100%;
+    }
+
+        .hr-text::before {
+            content: "";
+            background: linear-gradient(to right, transparent, blue, transparent);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+        }
+
+        .hr-text::after {
+            content: attr(data-content);
+            position: relative;
+            padding: 0 7px;
+            line-height: 1.5em;
+            color: black;
+            background-color: white;
+            /*1a1a1a*/
+        }
+</style>
+
+@section PageName {
+    New Client
+}
+@section Breadcrumb {
+    <a href="/dashboard/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">New Client</span>
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-block">
+                <p>(<span class="text-danger">*</span>) marked are all madatory fields.</p>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <form id="main" asp-action="Create" method="post" enctype="multipart/form-data" class="j-pro border-0" novalidate>
+                    @*<h4 class="sub-title">Basic Information</h4>*@
+                    <hr class="hr-text gradient" data-content="Basic Information">
+                    <input type="hidden" asp-for="ClientID" />
+                    <div class="form-group row">
+                        <div class="col-sm-12" id="divclienttype">
+                            <label asp-for="ClientType" class="form-label"></label><span class="text-danger"> *</span>
+                            <select asp-for="ClientType" class="form-control form-control">
+                                <option selected>Law Firm</option>
+                                <option>Individual Solicitor</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <span asp-validation-for="ClientType" class="text-danger form-bar"></span>
+                        </div>
+                        <div class="col-sm-6 d-none" id="divclienttype1">
+                            <label asp-for="ClientType1" class="float-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="ClientType1" class="form-control form-control" />
+                            <span asp-validation-for="ClientType1" class="text-danger form-bar"></span>
+                            <span id="erroremail" class="text-danger" style="display:none;"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label asp-for="Name" class="float-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="Name" class="form-control form-control" />
+                            <span asp-validation-for="Name" class="text-danger form-bar"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label asp-for="Phone1" class="float-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="Phone1" class="form-control form-control PN" />
+                            <span asp-validation-for="Phone1" class="text-danger form-bar"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label asp-for="Email1" class="float-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="Email1" class="form-control form-control" />
+                            <span asp-validation-for="Email1" class="text-danger form-bar"></span>
+                            <span id="erroremail" class="text-danger" style="display:none;"></span>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label asp-for="Country" class="form-label"></label>
+                            <select class="form-control form-control" asp-for="Country">
+                                <option value="Austria">Austria</option>
+                                <option value="Belgium">Belgium</option>
+                                <option value="Denmark">Denmark</option>
+                                <option value="Finland">Finland</option>
+                                <option value="France">France</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Ireland">Ireland</option>
+                                <option value="Italy">Italy</option>
+                                <option value="Liechtenstein">Liechtenstein</option>
+                                <option value="Lithuania">Lithuania</option>
+                                <option value="Luxembourg">Luxembourg</option>
+                                <option value="Netherlands">Netherlands</option>
+                                <option value="Norway">Norway</option>
+                                <option value="Poland">Poland</option>
+                                <option value="Portugal">Portugal</option>
+                                <option value="Spain">Spain</option>
+                                <option value="Sweden">Sweden</option>
+                                <option value="Switzerland">Switzerland</option>
+                                <option value="United Kingdom" selected>United Kingdom</option>
+                            </select>
+                            <span asp-validation-for="Country" class="text-danger form-bar"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-sm-6">
+                            <label asp-for="City" class="form-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="City" class="form-control form-control" />
+                            <span asp-validation-for="City" class="text-danger form-bar"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label asp-for="PostCode" class="form-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="PostCode" class="form-control form-control PN" />
+                            <span asp-validation-for="PostCode" class="text-danger form-bar"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label asp-for="Email2" class="form-label"></label>
+                            <input type="email" asp-for="Email2" class="form-control form-control" />
+                            <span asp-validation-for="Email2" class="text-danger form-bar"></span>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label asp-for="Phone2" class="form-label"></label>
+                            <input asp-for="Phone2" class="form-control form-control PN" />
+                            <span asp-validation-for="Phone2" class="text-danger form-bar"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label asp-for="Address" class="form-label"></label><span class="text-danger"> *</span>
+                            <textarea asp-for="Address" class="form-control form-control"></textarea>
+                            <span asp-validation-for="Address" class="text-danger form-bar"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-sm-6">
+                            <label class="form-label" asp-for="Establishment_Year"></label>
+                            <input asp-for="Establishment_Year" class="form-control form-control" />
+                            <span asp-validation-for="Establishment_Year" class="text-danger form-bar"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row justify-content-center mb-2">
+                                <label class="col-sm-12 control-label">Image</label>
+                                <div class="col-sm-12">
+                                    <img id="image-preview" onclick="HandleBrowseClick('Logofile');"
+                                         onerror="this.onerror=null;this.src='@Url.Content("~/img/empty.jpg")'"
+                                         class="img-rounded img-thumbnail" for="input-image-hidden" style="height:120px; width:120px;"
+                                         src="/@(Model?.Logo?? "nothing")">
+
+                                    <input style="display:none" asp-for="Logofile" onchange="document.getElementById('image-preview').src = window.URL.createObjectURL(this.files[0])" type="file" accept="image/jpeg, image/png">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="hr-text gradient" data-content="Bank Information">
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label asp-for="AcHolderName" class="form-label">Account Holder Name</label>
+                            <input asp-for="AcHolderName" class="form-control form-control" />
+                            <span asp-validation-for="AcHolderName" class="text-danger form-bar"></span>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label asp-for="SortCode" class="form-label">Sort Code</label>
+                            <input asp-for="SortCode" class="form-control form-control" />
+                            <span asp-validation-for="SortCode" class="text-danger form-bar"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label asp-for="AccountNumber" class="form-label">Account Number</label>
+                            <input asp-for="AccountNumber" class="form-control form-control PN" />
+                            <span asp-validation-for="AccountNumber" class="text-danger form-bar"></span>
+                        </div>
+                    </div>
+                    <hr class="hr-text gradient" data-content="Super Admin Information">
+                    <h4 class="sub-title">
+                        @*Super Admin<br />*@
+                        <small>(An invitation will be sent to this email. You have the option to leave it blank for now and fill it in later.)</small>
+                    </h4>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label asp-for="ClientSAEmail" class="float-label"></label>
+                            <input type="email" asp-for="ClientSAEmail" class="form-control form-control" />
+                            <span asp-validation-for="ClientSAEmail" class="text-danger form-bar"></span>
+                            <span id="errorsaemail" class="text-c-red" style="display:none;"></span>
+                        </div>
+                    </div>
+
+                    <!-- manual code to this action btn are available in the Manual Update CSS -->
+                    <div class="card-block actionBtnRight">
+                        @*<button type="button" class="btn text-danger btn-link">Cancel</button>*@
+                        <input type="submit" value="Save" class="btn btn-primary waves-effect waves-light" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+</div>
+<div class="row">
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+            if ('@action' == 'Edit') {
+                $('#Email1').attr('readonly', true);
+                $('#ClientSAEmail').attr('readonly', true);
+            }
+        })
+        $(document).on('change', '#ClientType', function () {
+            let Type = $(this).val();
+            if (Type == 'Others') {
+                $('#divclienttype').removeClass('col-sm-12').show();
+                $('#divclienttype').addClass('col-sm-6').show();
+                $('#divclienttype1').removeClass('d-none').show();
+            } else {
+                $('#divclienttype1').addClass('d-none').hide();
+                $('#divclienttype').removeClass('col-sm-6').show();
+                $('#divclienttype').addClass('col-sm-12').show();
+            }
+        })
+
+        function HandleBrowseClick(input_image) {
+            var fileinput = document.getElementById(input_image);
+            fileinput.click();
+        }
+
+        //---------------- duplicate email check -----------------//
+        $('#Email1').blur(function () {
+            let email = $(this).val();
+            if ('@action' == 'Create') {
+                PrimaryEmailCheck(email);
+            } else {
+                $(this).attr('readonly', true);
+            }
+        });
+        $('#ClientSAEmail').blur(function () {
+            let email = $(this).val();
+            if ('@action' == 'Create') {
+                SAEmailCheck(email);
+            }
+        });
+
+        function PrimaryEmailCheck(email) {
+            $.get('/client/checkemail', { Email: email }, function (data, success, xhr) {
+                if (success == 'success') {
+                    if (data != "") {
+                        $('#erroremail').text(data).show();
+                        $('#Email1').val('');
+
+                    } else {
+                        $('#erroremail').text('');
+                        $('#erroremail').hide();
+                    }
+                }
+            })
+        }
+        function SAEmailCheck(email) {
+            $.get('/client/checkemail', { Email: email }, function (data, success, xhr) {
+                if (success == 'success') {
+                    if (data != "") {
+                        $('#errorsaemail').text(data).show();
+                        $('#ClientSAEmail').val('');
+
+                    } else {
+                        $('#errorsaemail').text('');
+                        $('#errorsaemail').hide();
+                    }
+                }
+            })
+        }
+    </script>
+}

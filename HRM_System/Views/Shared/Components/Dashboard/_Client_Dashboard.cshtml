@@ -1,0 +1,140 @@
+﻿@{
+    var empdata = ViewBag.EmpInfo as CardVM;
+}
+
+
+<div class="row">
+    <!-- customar project  start -->
+    <div class="col-xl-3 col-md-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row align-items-center m-l-0">
+                    <div class="col-auto">
+                        <i class="fa fa-building f-28"></i>
+                    </div>
+                    <div class="col-auto">
+                        <h6 class="text-muted m-b-10">Number Of Org</h6>
+                        <h2 class="m-b-0">@empdata.TotalEmployee</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row align-items-center m-l-0">
+                    <div class="col-auto">
+                        <i class="fa fa-user f-28"></i>
+                    </div>
+                    <div class="col-auto">
+                        <h6 class="text-muted m-b-10">Active Org</h6>
+                        <h2 class="m-b-0">@empdata.TotalLeaveRequest</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row align-items-center m-l-0">
+                    <div class="col-auto">
+                        <i class="fa fa-street-view f-28"></i>
+                    </div>
+                    <div class="col-auto">
+                        <h6 class="text-muted m-b-10">Due Org</h6>
+                        <h2 class="m-b-0">@empdata.TotalLateEntry</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row align-items-center m-l-0">
+                    <div class="col-auto">
+                        <i class="fa fa-user-circle f-28"></i>
+                    </div>
+                    <div class="col-auto">
+                        <h6 class="text-muted m-b-10">Upcomming Org</h6>
+                        <h2 class="m-b-0">@empdata.TotalDocumentExpiry</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- customar project  end -->
+    <!--  project and team member start -->
+    <div class="col-xl-6 col-md-6">
+        <div class="card table-card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Organisation Information</h5>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a href="/organisation/create" class="btn btn-sm waves-effect waves-dark btn-primary btn-outline-primary"><i class="icofont icofont-plus"></i>New Organisation</a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="dt-dashOrg">
+                        <thead>
+                            <tr>                                
+                                <th></th>
+                                <th>Org Name</th>
+                                <th>Subscription Type</th>
+                                <th>Number of Employee</th>
+                                <th>Contact</th>
+                                <th>Status</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="col-md-12 text-right" style="padding: 7px">
+                    <a href="/organisation/index" class="btn btn-sm waves-effect waves-dark btn-primary btn-outline-primary">View All</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6 col-md-6">
+        <div class="card table-card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Reminder / Task</h5>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button type="button" class="btn btn-sm waves-effect waves-dark btn-primary btn-outline-primary" data-toggle="modal" data-target="#large-Modal"><i class="fa fa-plus"></i>New Task</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="dt-task">
+                        <thead>
+                            <tr>
+                                <th>Task Id</th>
+                                <th>Task No</th>
+                                <th>Task Date</th>
+                                <th>Task Title</th>
+                                <th>Task Name</th>
+                                <th>Priority</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

@@ -1,0 +1,46 @@
+﻿
+@model Domains.Models.InviteClient
+    <form id="main" method="post">
+        <div class="modal fade" id="invite" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Client Invitation</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label asp-for="UserName" class="control-label col-md-6">Client Name<span class="text-danger"> *</span></label>
+                                            <div class="col-md-12">
+                                                <input asp-for="UserName" class="form-control" required />
+                                                <span asp-validation-for="UserName" class="text-danger form-bar"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="Email" class="control-label col-md-6">Email<span class="text-danger"> *</span></label>
+                                            <div class="col-md-12">
+                                                <input asp-for="Email" class="form-control" required />
+                                                <span asp-validation-for="Email" class="text-danger form-bar"></span>
+                                                <span id="erroremail" class="text-c-red" style="display:none;"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default waves-effect " data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary waves-effect waves-light" id="btnsave">Invite</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+

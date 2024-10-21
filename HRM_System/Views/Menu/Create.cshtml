@@ -1,0 +1,189 @@
+﻿@model UserAccessTools
+@inject IGlobalHelper _global;
+@{
+    var action = ViewBag.Action;
+    if (action == "Create")
+    {
+        ViewData["Title"] = "Create";
+    }
+    else
+    {
+        ViewData["Title"] = "Edit";
+    }
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+
+    string[] BCText = new string[] { "Menu List", "Menu Add" };
+    string[] BCLink = new string[] { "menu/index", "#" };
+    PageHeaderProps pageHeader = new PageHeaderProps
+    {
+        PageTitle = "Menu Add",
+        PageDesc = "Menu Add",
+        BreadcrumbText = BCText,
+        BreadcrumbLink = BCLink
+    };
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+    var RoleId = _global.GetRoleID();
+}
+
+
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <!-- Basic Inputs Validation start -->
+            <div class="card">
+                <form id="main" asp-action="Create" method="post" novalidate>
+                    <div class="card-header">
+                        @await Component.InvokeAsync("PageHeader", pageHeader)
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    </div>
+                    <div class="card-block">
+                        @if (Model == null)
+                        {
+                            <input type="hidden" asp-for="UAToolid" value="0" />
+                            <input type="hidden" asp-for="CompId" value="@ComId" />
+                            <input type="hidden" asp-for="AddedBy" value="@UserId" />
+                            <input type="hidden" asp-for="UpdatedBy" />
+                            <input type="hidden" asp-for="RoleID" value="@RoleId" />
+                            <input type="hidden" asp-for="AddedDate" value="@DateTime.Now" />
+                            <input type="hidden" asp-for="UpdatedDate" />
+                        }
+                        else
+                        {
+                            <input type="hidden" asp-for="UAToolid" />
+                            <input type="hidden" asp-for="CompId" />
+                            <input type="hidden" asp-for="AddedBy" />
+                            <input type="hidden" asp-for="UpdatedBy" value="@UserId" />
+                            <input type="hidden" asp-for="AddedDate" />
+                            <input type="hidden" asp-for="RoleID" />
+                            <input type="hidden" asp-for="UpdatedDate" value="@DateTime.Now" />
+                        }
+                        <div class="row justify-content-center">
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label asp-for="ModuleID" class="col-sm-4 col-form-label text-right">Module</label>
+                                    <div class="col-sm-8">
+                                        <select asp-for="ModuleID" class="form-control form-control-sm" asp-items="@ViewBag.ModuleId" required>
+                                            <option value="">Select</option>
+                                        </select>
+                                        <span asp-validation-for="ModuleID" class="text-danger messages"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="SubModuleID" class="col-sm-4 col-form-label text-right">Sub Module </label>
+                                    <div class="col-sm-8">
+                                        <select asp-for="SubModuleID" class="form-control form-control-sm" asp-items="@ViewBag.SubModuleId">
+                                            <option>Select</option>
+                                        </select>
+                                        <span asp-validation-for="SubModuleID" class="text-danger messages"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label asp-for="UAPage" class="col-sm-4 col-form-label text-right">Page Name</label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="UAPage" class="form-control form-control-sm" placeholder="exemple/page" required />
+                                        <span asp-validation-for="UAPage" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="UseraccesstoolNM" class="col-sm-4 col-form-label text-right">Menu Name  <span asp-validation-for="UseraccesstoolNM" class="text-danger messages"></span></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="UseraccesstoolNM" id="name" name="UseraccesstoolNM" class="form-control form-control-sm" placeholder="Menu Name" required />
+                                        <span asp-validation-for="UseraccesstoolNM" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label asp-for="ClassName" class="col-sm-4 col-form-label text-right"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="ClassName" class="form-control form-control-sm" placeholder="Class Name" />
+                                        <span asp-validation-for="ClassName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="SortIndex" class="col-sm-4 col-form-label text-right"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="SortIndex" class="form-control form-control-sm" placeholder="Sort Index" />
+                                        <span asp-validation-for="SortIndex" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="checkbox-fade fade-in-primary mr-5" style="margin-left:198px;">
+                                        <label asp-for="ismenu" class="check-task">
+                                            <span>Is Menu</span>
+                                            <input asp-for="ismenu" type="checkbox">
+                                            <span class="cr">
+                                                <i class="cr-icon fa fa-check form-txt-info"></i>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-6"></label>
+                                    <div class="col-sm-6">
+                                        <input type="submit" value="Submit" class="btn btn-primary btn-sm m-b-0" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Basic Inputs Validation end -->
+        </div>
+    </div>
+</div>
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $('#ModuleID').select2();
+        $('#SubModuleID').select2();
+        $('#ModuleID').on('change', function () {
+            var moduleid = $(this).val();
+            bindSubModuleDropdown(moduleid)
+            $('#SortIndex').val('');
+
+        })
+        $('#SubModuleID').on('change', function () {
+            var submoduleid = $(this).val();
+            var moduleid = $('#ModuleID').val();
+            getsortindexbymoduleid(moduleid, submoduleid)
+        })
+
+        function bindSubModuleDropdown(moduleid) {
+            var submoduleid = $('#SubModuleID').val();
+            $.get('/submodule/GetSubModuleByModuleId', { ModuleId: parseInt(moduleid) }, function (data, status, xhr) {
+                if (status == 'success') {
+                    console.log(data);
+                    $('#SubModuleID').empty()
+                    var asset = [
+                        '<option>Select</option>'
+                    ]
+                    data.map(x => (asset.push(`<option value="${x.subModuleID}">${x.subModuleName}</option>`)));
+                    $('#SubModuleID').append(asset);
+
+                }
+            })
+        }
+
+        function getsortindexbymoduleid(moduleid, submoduleid) {
+            $.get('/menu/GetMenuSortIndex', { ModuleId: moduleid, SubModuleId: submoduleid }, function (data, status, xhr) {
+                if (status == 'success') {
+                    console.log(data);
+                    $('#SortIndex').val(data);
+                }
+            })
+        }
+    </script>
+}

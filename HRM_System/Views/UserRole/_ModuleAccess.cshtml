@@ -1,0 +1,285 @@
+﻿@model UserRoleModuleIViewModel;
+@inject IGlobalHelper _global;
+@{
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 10]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>@ViewData["Title"] - ProtidinerBazar</title>
+    <meta name="author" content="Phoenixcoded" />
+    <!-- Favicon icon -->
+    <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+    <!-- waves.css -->
+    <link rel="stylesheet" href="assets/pages/waves/css/waves.min.css" type="text/css" media="all">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/css/bootstrap.min.css">
+    <!-- waves.css -->
+    <link rel="stylesheet" href="/assets/pages/waves/css/waves.min.css" type="text/css" media="all">
+    <!-- themify icon -->
+    <link rel="stylesheet" type="text/css" href="/assets/icon/themify-icons/themify-icons.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="/assets/icon/font-awesome/css/font-awesome.min.css">
+    <!-- scrollbar.css -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/jquery.mCustomScrollbar.css">
+    <!-- am chart export.css -->
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <!-- radial chart.css -->
+    <link rel="stylesheet" href="/assets/pages/chart/radial/css/radial.css" type="text/css" media="all">
+
+    <!-- Data Table Css -->
+    <link rel="stylesheet" type="text/css" href="/bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/pages/data-table/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="/bower_components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css">
+
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+
+    <link href="~/assets/pages/waves/css/waves.min.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div>
+        <div class="">
+            <div class="page-wrapper">
+                <!-- tabbed form modal start -->
+                <div id="tabbed-form" class="mixed-form" role="dialog">
+                    <div class="">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs md-tabs nav-justified" role="tablist">
+                                    <li class="nav-item waves-effect waves-dark">
+                                        <a class="nav-link active" data-toggle="tab" href="#regi" role="tab">
+                                            <h6 class="m-b-0">Module Access</h6>
+                                        </a>
+                                        <div class="slide"></div>
+                                    </li>
+                                </ul>
+                                <!-- Tab panes -->
+                                <div class="tab-content p-t-30">
+                                    <div class="tab-pane active" id="regi" role="tabpanel">
+                                        <form class="md-float-material form-material" method="post" asp-action="ModuleAccess">
+                                            @{
+                                                if (ViewBag.Msg != null)
+                                                {
+                                                    <div class="alert alert-success background-success">
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <i class="icofont icofont-close-line-circled text-white"></i>
+                                                        </button>
+                                                        <strong>Success!</strong> <code> Inserted</code>
+                                                    </div>
+                                                }
+                                            }
+                                            @if (Model == null)
+                                            {
+                                                <input type="hidden" asp-for="RoleID" value="0" />
+                                                @*<input type="hidden" asp-for="CompId" value="@ComId" />*@
+                                                <input type="hidden" asp-for="AddedBy" value="@UserId" />
+                                                <input type="hidden" asp-for="UpdatedBy" />
+                                                <input type="hidden" asp-for="AddedDate" value="@DateTime.Now" />
+                                                <input type="hidden" asp-for="UpdatedDate" />
+                                            }
+                                            else
+                                            {
+                                                <input type="hidden" asp-for="RoleID" />
+                                                @*<input type="hidden" asp-for="CompId" />*@
+                                                <input type="hidden" asp-for="AddedBy" />
+                                                <input type="hidden" asp-for="UpdatedBy" value="@UserId" />
+                                                <input type="hidden" asp-for="AddedDate" />
+                                                <input type="hidden" asp-for="UpdatedDate" value="@DateTime.Now" />
+                                            }
+                                            <table style="display:none;">
+                                                @for (var i = 0; i < Model.selectListItems.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <input class="border-checkbox" type="checkbox" asp-for="@Model.selectListItems[i].Selected" />
+                                                            <input type="hidden" asp-for="@Model.selectListItems[i].Value" />
+                                                            <input type="hidden" asp-for="@Model.selectListItems[i].Text" />
+
+                                                        </td>
+                                                        <td>
+                                                            <label class="border-checkbox-label" asp-for="@Model.selectListItems[i].Selected">@Model.selectListItems[i].Text</label>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </table>
+
+                                            <div class="table-responsive dt-responsive">
+                                                <table id="tblAppendGrid"></table>
+                                            </div>
+                                            <br />
+                                            <div class="row m-t-30">
+                                                <div class="col-md-8"></div>
+                                                <div class="col-md-4">
+                                                    <input type="submit" value="Submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20" />
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- tabbed form modal end -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Required Jquery -->
+    <script type="text/javascript" src="/bower_components/jquery/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/bower_components/jquery-ui/js/jquery-ui.min.js "></script>
+    <script type="text/javascript" src="/bower_components/popper.js/js/popper.min.js"></script>
+    <script type="text/javascript" src="/bower_components/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/assets/pages/widget/excanvas.js "></script>
+
+    <!-- waves js -->
+    @* <script src="/assets/pages/waves/js/waves.min.js"></script>*@
+
+    <!-- jquery slimscroll js -->
+    <script type="text/javascript" src="/bower_components/jquery-slimscroll/js/jquery.slimscroll.js "></script>
+
+    <!-- modernizr js -->
+    <script type="text/javascript" src="/bower_components/modernizr/js/modernizr.js "></script>
+    @*<script type="text/javascript" src="../files/bower_components/modernizr/js/css-scrollbars.js"></script>*@
+
+    <!-- slimscroll js -->
+    <script type="text/javascript" src="/assets/js/SmoothScroll.js"></script>
+    <script src="/assets/js/jquery.mCustomScrollbar.concat.min.js "></script>
+
+    <!-- menu js -->
+    <script src="/assets/js/pcoded.min.js"></script>
+    <script src="/assets/js/vertical/vertical-layout.min.js "></script>
+
+    <!--appendGrid JS library-->
+    <script src="https://cdn.jsdelivr.net/npm/jquery.appendgrid@2/dist/AppendGrid.js"></script>
+
+    <!-- Validation js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script type="text/javascript" src="/assets/pages/form-validation/validate.js"></script>
+
+
+    <script type="text/javascript">
+        var myAppendGrid = new AppendGrid({
+            element: "tblAppendGrid",
+            uiFramework: "bootstrap4",
+            iconFramework: "fontawesome5",
+            columns: [
+                {
+                    name: "moduleID",
+                    display: "Module ID",
+                    type: "hidden",
+                },
+                {
+                    name: "moduleName",
+                    display: "Module Name",
+                    type: "readonly"
+                },
+                {
+                    name: "description",
+                    display: "Description",
+                    type: "readonly"
+                },
+                {
+                    name: "isStatus",
+                    // Use a function to generate the header text of NPO column
+                    display: function (holder) {
+                        $("<input/>")
+                            .attr({ type: "checkbox", id: "npo-tick-all" })
+                            .appendTo(holder)
+                            .on("click", function () {
+                                // Tick or untick checkboxes of rows
+                                var rowCount = myAppendGrid.getRowCount();
+                                for (var r = 0; r < rowCount; r++) {
+                                    myAppendGrid.setCtrlValue("isStatus", r, this.checked);
+                                }
+                            });
+                        $("<label></label>")
+                            .addClass("pl-1 mb-0")
+                            .text("Status")
+                            .attr("for", "npo-tick-all")
+                            .appendTo(holder);
+                    },
+                    type: "checkbox",
+                    // Set nowrap to make sure checkbox in header and the label are on the same line
+                    displayCss: { "white-space": "nowrap" },
+                    // Add `text-center` class to center checkboxes generated align center
+                    cellClass: "text-center"
+                }
+            ],
+            initData: [
+                {
+                    moduleID: "BANK BOOK",
+                    moduleName: "BankBook.aspx",
+                    description: "",
+                    isStatus: true
+                },
+                {
+                    moduleID: "BANK BOOK",
+                    moduleName: "BankBook.aspx",
+                    description: "",
+                    isStatus: true
+                }],
+            hideButtons: {
+                // Hide the move up and move down button on each row
+                moveUp: true,
+                moveDown: true,
+                insert: true,
+                remove: true,
+                removeLast: true,
+                append: true
+            }
+        });
+
+        window.onload = function () {
+            GetData();
+        };
+
+        function GetData() {
+            $.ajax({
+                type: "POST",
+                url: "/UserRole/MainModuleLoadData",
+                data: { "RoleId": $("#RoleID").val() },
+                success: function (response) {
+                    //alert("Hello: " + response.Name + " .\nCurrent Date and Time: " + response.DateTime);
+                    console.log(response);
+                    var JsonData = "";
+                    if (response !== null) {
+                        myAppendGrid.load(response);
+                    } else {
+                        myAppendGrid.load([{
+                            ModuleID: "0",
+                            ModuleName: "",
+                            Description: "",
+                            isStatus: true
+
+                        }]);
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

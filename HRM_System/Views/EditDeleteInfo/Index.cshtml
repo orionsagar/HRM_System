@@ -1,0 +1,154 @@
+﻿@model EditDeleteInfoFilterVM
+@{
+    ViewData["Title"] = "Edit Delete Info List";
+}
+
+@{
+    string[] BCText = new string[] { "Edit Delete Info List" };
+    string[] BCLink = new string[] { "EditDeleteInfo/index" };
+
+    PageHeaderProps pageHeader = new PageHeaderProps
+    {
+        PageTitle = "Edit Delete Info Info",
+        PageDesc = "Edit Delete Info Info",
+        BreadcrumbText = BCText,
+        BreadcrumbLink = BCLink,
+    };
+
+
+}
+
+
+<div class="row m-b-10">
+    <div class="col-sm-12">
+        <!-- Column Rendering table start -->
+        <div class="card">
+            <div class="card-header">
+                @await Component.InvokeAsync("PageHeader", pageHeader)
+            </div>
+            <div class="card-block">
+                <div class="row labelRight">
+                    @*<div class="col-sm-3">
+            <div class="form-group row mt-1">
+                <label asp-for="EmpCategoryId_Filter" class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-8">
+                    <select asp-for="EmpCategoryId_Filter" asp-items="ViewBag.EmpCategory" class="form-control form-control-sm">
+                        <option value="">Select</option>
+                    </select>
+                    <span asp-validation-for="EmpCategoryId_Filter" class="text-danger"></span>
+                </div>
+            </div>
+        </div>*@
+
+
+                    <div class="col-sm-3">
+                        <div class="form-group row mt-1">
+                            <label asp-for="FromDate" class="col-sm-4 col-form-label">From Date</label>
+                            <div class="col-sm-8">
+                                <input asp-for="FromDate" type="text" class="form-control form-control-sm" />
+                                <span asp-validation-for="FromDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group row mt-1">
+                            <label asp-for="ToDate" class="col-sm-4 col-form-label">To Date</label>
+                            <div class="col-sm-8">
+
+                                <input asp-for="ToDate" type="text" class="form-control form-control-sm" />
+                                <span asp-validation-for="ToDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group row mt-1">
+                            <label asp-for="UserId" class="col-sm-4 col-form-label">User</label>
+                            <div class="col-sm-8">
+                                <select asp-for="UserId" asp-items="ViewBag.User" class="form-control form-control-sm">
+                                    <option value="">Select</option>
+                                </select>
+                                <span asp-validation-for="UserId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group row mt-1">
+                            <label asp-for="CommandType" class="col-sm-4 col-form-label">Command</label>
+                            <div class="col-sm-8">
+                                <select asp-for="CommandType" asp-items="ViewBag.CommandType" class="form-control form-control-sm">
+                                    <option value="">Select</option>
+                                </select>
+                                <span asp-validation-for="CommandType" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group row mt-1 ml-0">
+                            <button type="button" id="btnLogFilter" class="btn btn-sm btn-info">Search</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!--<pre--> @*id="json-viewer"*@ <!--onloadstart="myFunction(this)"></pre>-->
+
+
+                <div class="table-responsive dt-responsive mt-5">
+                    <table id="dt_edit_delete_list" class="table table-hover nowrap">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Statement / Command</th>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Device</th>
+                                <th>Link</th>
+                                <th>Doc Refference</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Column Rendering table end -->
+    </div>
+</div>
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+
+@section Scripts {
+
+   
+
+    <script>
+
+        $("#FromDate, #ToDate").datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeYear: true,
+            changeMonth: true,
+        });
+        $("#FromDate, #ToDate").datepicker("setDate", new Date());
+
+        $("#UserId,#CommandType").select2();
+
+        $(document).ready(function () {
+
+            //let d = { "LeaveTransactionId": 3, "EmpId": 318, "Employee": null, "LeaveTypeId": 1, "LeaveType": { "LeaveTypeId": 1, "LTypeName": "Casual (Probation)", "MaxLength": 10, "Remark": "Before Confirm", "CompId": 1, "Company": null, "AddedBy": "6", "UpdatedBy": "6", "AddedDate": "2022-07-02T14:08:34", "UpdatedDate": "2022-08-21T06:43:15" }, "LeaveTypeName": "SelectCasual (Probation) [10]Accident [0]Sick [14]", "GrantDate": "2022-10-06T00:00:00", "StartDate": "2022-10-08T00:00:00", "EndDate": "2022-10-08T00:00:00", "DOJ": "2021-11-17T00:00:00", "TotalDays": 1, "LeavePayMethodId": 1, "LeavePayMethod": null, "Remark": null, "CompId": 1, "Company": null, "AddedBy": "6", "UpdatedBy": null, "AddedDate": "2022-10-12T08:59:01", "UpdatedDate": null };
+            //var options = {
+            //    collapsed: true, // $('#collapsed').is(':checked'),
+            //    //rootCollapsable: $('#root-collapsable').is(':checked'),
+            //    //withQuotes: $('#with-quotes').is(':checked'),
+            //    //withLinks: $('#with-links').is(':checked')
+            //};
+
+            //$('#json-viewer').jsonViewer(d, options);
+
+
+        });
+
+    </script>
+}

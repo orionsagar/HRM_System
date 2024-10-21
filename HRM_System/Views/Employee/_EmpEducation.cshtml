@@ -1,0 +1,164 @@
+﻿@model IEnumerable<EmployeeEducation>
+@inject IGlobalHelper _global;
+
+@{
+    //var compId = DataEncryption.DecryptString(_http.HttpContext.Request.Cookies["CompID"]);
+    //var userId = DataEncryption.DecryptString(_http.HttpContext.Request.Cookies["UserID"]);
+    var compId = _global.GetCompID();
+    var userId = _global.GetUserID();
+}
+
+<div class="row">
+    <div class="col-sm-4">
+        <form method="post" enctype="multipart/form-data" id="educationForm" novalidate>
+
+            <input type="hidden" id="Education_AddedBy" value="@userId" />
+            <input type="hidden" id="Education_UpdatedBy" value="" />
+            <input type="hidden" id="Education_AddedDate" value="@DateTime.Now" />
+            <input type="hidden" id="Education_UpdatedDate" value="" />
+
+            <input type="hidden" id="EmpEducationId" value="" class="form-control form-control-sm" />
+
+            @*<div class="col-sm-8">
+            <input class="form-control form-control-sm valid" type="text" data-val="true" data-val-length="The field Name must be a string with a maximum length of 30." data-val-length-max="30" data-val-required="The Name field is required." id="Name" maxlength="30" name="Name" value="Abu Hasnat" aria-describedby="Name-error" aria-invalid="false">
+            <span class="text-danger field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+            </div>
+            <div class="col-sm-8">
+            <input class="form-control form-control-sm input-validation-error" type="text" data-val="true" data-val-length="The field Name must be a string with a maximum length of 30." data-val-length-max="30" data-val-required="The Name field is required." id="Name" maxlength="30" name="Name" value="Abu Hasnat" aria-describedby="Name-error" aria-invalid="true">
+            <span class="text-danger field-validation-error" data-valmsg-for="Name" data-valmsg-replace="true"><span id="Name-error" class="">The Name field is required.</span></span>
+            </div>*@
+
+
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Qualification</label>
+                <div class="col-sm-12">
+                    <input id="DegreeName" name="DegreeName" required data-val-required="Qualification is required." data-val="true" class="form-control form-control-sm" />
+                    <span for="DegreeName" class="text-danger" data-valmsg-for="DegreeName" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Subject</label>
+                <div class="col-sm-12">
+                    <input id="Subject" name="Subject" required data-val-required="Subject field is required." data-val="true" class="form-control form-control-sm" />
+                    <span for="Subject" class="text-danger" data-valmsg-for="Subject" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Institution Name</label>
+                <div class="col-sm-12">
+                    <input id="InstitutionName" required name="InstitutionName" data-val-required="The Institution field is required." data-val="true" class="form-control form-control-sm" />
+                    <span for="InstitutionName" class="text-danger" data-valmsg-for="InstitutionName" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Awarding Body/ University</label>
+                <div class="col-sm-12">
+                    <input id="AwardingBodyUniversity" required name="AwardingBodyUniversity" data-val-required="Awarding Body/ University is required." data-val="true" class="form-control form-control-sm" />
+                    <span for="AwardingBodyUniversity" class="text-danger" data-valmsg-for="AwardingBodyUniversity" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Year of Passing</label>
+                <div class="col-sm-12">
+                    <input id="PassingYear" required type="number" name="PassingYear" data-val-required="The Passing Year field is required." data-val="true" class="form-control form-control-sm" />
+                    <span for="PassingYear" class="text-danger messages" data-valmsg-for="PassingYear" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Percentage</label>
+                <div class="col-sm-12">
+                    <input id="Percentage" required type="number" name="Percentage" data-val-required="The Passing Year field is required." data-val="true" class="form-control form-control-sm" />
+                    <span for="Percentage" class="text-danger messages" data-valmsg-for="Percentage" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Grade/Division</label>
+                <div class="col-sm-12">
+                    <input id="CGPAOrDivision" required name="CGPAOrDivision" data-val-required="Grade/Division field is required." data-val="true" class="form-control form-control-sm" />
+                    <span for="CGPAOrDivision" class="text-danger" data-valmsg-for="CGPAOrDivision" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group row d-none">
+                <label class="col-sm-12 col-form-label">Degree (BNG)</label>
+                <div class="col-sm-12">
+                    <input id="DegreeNameBNG" class="form-control form-control-sm" />
+                    <span for="DegreeNameBNG" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row justify-content-center mt-2">
+                <div class="col-sm-12"></div>
+                <div class="col-sm-12">
+                    <input type="button" id="btnEducationClear" onclick="emptyEmpEducation()" value="Clear" class="btn btn-sm btn-outline-warning m-b-0 mr-2" />
+                    <input type="submit" id="btnEducation" value="Submit" class="btn btn-sm btn-primary m-b-0" />
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <div class="col-sm-8">
+        <table class="table table-striped" id="tblEducation">
+            <thead>
+                <tr>
+                    <th class="d-none"></th>
+                    <th>Qualification</th>
+                    <th>Subject</th>
+                    <th>Institute</th>
+                    <th>Grade/Division</th>
+                    <th>Year of Passing</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="d-none">@item.EmpEducationId</td>
+                            <td>@item.DegreeName</td>
+                            <td>@item.Subject</td>
+                            <td>@item.InstitutionName</td>
+                            <td>@item.CGPAOrDivision</td>
+                            <td>@item.PassingYear</td>
+
+                            <td><a class="text-warning" onclick="getEducation(@item.EmpEducationId)"><i class="fa fa-edit fa-lg"></i></a></td>
+                            <td><a class="text-danger" onclick="deleteEducation(@item.EmpEducationId)"><i class="fa fa-trash-o fa-lg"></i></a></td>
+
+                        </tr>
+                    }
+                }
+            </tbody>
+
+        </table>
+    </div>
+
+
+
+</div>
+@*<div class="row">
+        <div class="col-sm-12">
+            <div class="form-group row">
+                <label class="col-sm-5"></label>
+                <div class="col-sm-7">
+                    <input type="button" id="btnBasicInfo" value="@(Model==null ? "Create":"Update")" class="btn btn-primary m-b-0" />
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+
+
+
+

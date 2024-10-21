@@ -1,0 +1,132 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<!-- Page-header start -->
+@*<div class="page-header">
+    <div class="page-block">
+    <div class="row align-items-center">
+    <div class="col-md-8">
+    <div class="page-header-title">
+    @{
+    var data = ViewBag.PageHeaderBagData;
+    <h5 class="m-b-10">@data.PageTitle</h5>
+    <p class="m-b-0">@data.PageDesc</p>
+    }
+
+    </div>
+    </div>
+    <div class="col-md-4">
+    <ul class="breadcrumb">
+    <li class="breadcrumb-item">
+    <a href="/"> <i class="fa fa-home"></i> </a>
+    </li>
+    @{
+    var bcdata = ViewBag.PageHeaderBagData;
+    if (bcdata.BreadcrumbText != null && bcdata.BreadcrumbLink != null)
+    {
+    for (var i = 0; i < bcdata.BreadcrumbText.Length; i++)
+    {
+    <li class="breadcrumb-item">
+    <a href="/@bcdata.BreadcrumbLink[i]">@bcdata.BreadcrumbText[i]</a>
+    </li>
+    }
+    }
+
+    }
+
+    </ul>
+    </div>
+    </div>
+    </div>
+    </div>*@
+<!-- Page-header end -->
+<!-- Page-New-header start -->
+<!-- Page-New-header end -->
+@*<div class="card m-t-20 m-b-10">
+        <div class="card-block">
+            <div class="row col-md-12">
+                <div class="col-md-5">
+                    @{
+                        var data = ViewBag.PageHeaderBagData;
+                        if (!string.IsNullOrEmpty(data.PageTitle))
+                        {
+                            <h5>@data.PageTitle</h5>
+                        }
+                    }
+                </div>
+                <div class="col-md-5">
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb lnr-text-align-left">
+                            <li class="breadcrumb-item">
+                                <a href="/"> <i class="fa fa-home"></i> </a>
+                            </li>
+                            @{
+                                var bcdata = ViewBag.PageHeaderBagData;
+                                if (bcdata.BreadcrumbText != null && bcdata.BreadcrumbLink != null)
+                                {
+                                    for (var i = 0; i < bcdata.BreadcrumbText.Length; i++)
+                                    {
+                                        <li class="breadcrumb-item">
+                                            <a href="/@bcdata.BreadcrumbLink[i]">@bcdata.BreadcrumbText[i]</a>
+                                        </li>
+                                    }
+                                }
+
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>*@
+@{
+    PageHeaderProps bcdata = ViewBag.PageHeaderBagData;
+}
+<div class="row m-0">
+    @*<h5 class="col-5"></h5>*@
+    @{ if (!string.IsNullOrEmpty(bcdata?.PageCreateLink))
+        {
+            <div class="col-md-4">
+                <a href="~/@bcdata?.PageCreateLink" class="btn btn-sm btn-primary m-b-0 @bcdata.IsAdd">@bcdata.PageCreateLinkName</a>
+            </div>
+        }
+    }
+
+    <div class="col-md-4 minimized-box text-center">
+        <strong> @ViewBag.Title</strong>
+    </div>
+    <div class="col-md-4">
+        <div class="justify-content-end m-0 page-header-breadcrumb row">
+            <ul class="breadcrumb lnr-text-align-left">
+                <li class="breadcrumb-item">
+                    <a href="/dashboard/index"> <i class="fa fa-home"></i> </a>
+                </li>
+                @{
+
+                    if (bcdata.BreadcrumbText != null && bcdata.BreadcrumbLink != null)
+                    {
+                        for (var i = 0; i < bcdata.BreadcrumbText.Length; i++)
+                        {
+                                <li class="breadcrumb-item">
+                                    @if (bcdata.BreadcrumbLink[i] == "#")
+                                    {
+                                        <a href="@Url.PageLink()">@bcdata.BreadcrumbText[i]</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="~/@bcdata.BreadcrumbLink[i]">@bcdata.BreadcrumbText[i]</a>
+                                    }
+                                </li>
+                        }
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,534 @@
+﻿@inject IGlobalHelper _global;
+@model EmpDocumentsVM;
+@{
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+}
+
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+<form id="main" asp-action="DocEntry" method="post" asp-controller="EmployeeDoc" novalidate enctype="multipart/form-data">
+    <div class="modal-body">
+        <div class="card-block">
+            <div class="row">
+                @if (Model == null)
+                {
+                    <input type="hidden" asp-for="EmpNewDocumentsID" value="0" />
+                    <input type="hidden" asp-for="AddedBy" value="@UserId" />
+                    <input type="hidden" asp-for="UpdatedBy" />
+                    <input type="hidden" asp-for="AddedDate" value="@DateTime.Now" />
+                    <input type="hidden" asp-for="UpdatedDate" />
+                }
+                else
+                {
+                    <input type="hidden" asp-for="EmpNewDocumentsID" />
+                    <input type="hidden" asp-for="AddedBy" />
+                    <input type="hidden" asp-for="UpdatedBy" value="@UserId" />
+                    <input type="hidden" asp-for="AddedDate" />
+                    <input type="hidden" asp-for="UpdatedDate" value="@DateTime.Now" />
+                }
+                <div class="col-sm-4">
+                    <div class="form-group form-default">
+                        <label asp-for="EmpID" class="form-label"></label>
+
+                        <select asp-for="EmpID" asp-items="ViewBag.Employee" required class="form-control form-control-sm AllSelect2">
+                            <option value="0">Select</option>
+                        </select>
+                        <span asp-validation-for="EmpID" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group form-default">
+                        <label class="form-label">Employee Code</label>
+
+                        <input id="CardNo" asp-for="CardNo" class="form-control " readonly required placeholder="" tabindex="1" />
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group form-default">
+                        <label class="form-label">Job Title</label>
+
+                        <input id="Designation" asp-for="Designation" class="form-control " readonly required placeholder="" tabindex="1" />
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group form-default">
+                        <label asp-for="DocumentType" class="form-label">Document Type</label>
+                        <select asp-for="DocumentType" class="form-control form-control-sm AllSelect2">
+                            <option value="Passport">Passport</option>
+                            <option value="Visa">Visa/BRP</option>
+                            <option value="Euss_Time_limit">EUSS/Time limit</option>
+                            <option value="DBS">Disclosure and Barring Service (DBS)</option>
+                            <option value="NationalID">National ID</option>
+                            <option value="RWC">Right to work check (RWC)</option>
+                            <option value="Pension">Pension</option>
+                            <option value="Contract Agreement">Contract Agreement</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <span asp-validation-for="DocumentType" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group form-default">
+                        <label asp-for="PostCode" id="PostCode" class="form-label">Post Code/Passport No/Visa No/Ref No</label>
+                        <input asp-for="PostCode" class="form-control " required placeholder="" tabindex="1" />
+                        <span asp-validation-for="PostCode" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-4">
+                    <div class="form-group form-default">
+                        <label asp-for="Nationality" class="form-label">Nationality</label>
+                        <select asp-for="Nationality" class="form-control form-control-sm AllSelect2">
+                            <option value="">&nbsp;</option>
+                            <option value="Afghanistan">Afghanistan</option>
+                            <option value="Albania">Albania</option>
+                            <option value="America">America</option>
+                            <option value="Argentina">Argentina</option>
+                            <option value="Aruba">Aruba</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Azerbaijan">Azerbaijan</option>
+                            <option value="Bahamas">Bahamas</option>
+                            <option value="Bahrain">Bahrain</option>
+                            <option value="Bangladesh">Bangladesh</option>
+                            <option value="Barbados">Barbados</option>
+                            <option value="Belarus">Belarus</option>
+                            <option value="Belgium">Belgium</option>
+                            <option value="Beliz">Beliz</option>
+                            <option value="Bermuda">Bermuda</option>
+                            <option value="Bolivia">Bolivia</option>
+                            <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                            <option value="Botswana">Botswana</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="Brunei Darussalam">Brunei Darussalam</option>
+                            <option value="Bulgaria">Bulgaria</option>
+                            <option value="Cambodia">Cambodia</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Cayman Islands">Cayman Islands</option>
+                            <option value="Chile">Chile</option>
+                            <option value="China">China</option>
+                            <option value="Colombia">Colombia</option>
+                            <option value="Costa Rica">Costa Rica</option>
+                            <option value="Croatia">Croatia</option>
+                            <option value="Cuba">Cuba</option>
+                            <option value="Cyprus">Cyprus</option>
+                            <option value="Czech Republic">Czech Republic</option>
+                            <option value="Denmark">Denmark</option>
+                            <option value="Dominican Republic">Dominican Republic</option>
+                            <option value="East Caribbean">East Caribbean</option>
+                            <option value="Egypt">Egypt</option>
+                            <option value="El Salvador">El Salvador</option>
+                            <option value="Eritrea">Eritrea</option>
+                            <option value="Euro">Euro</option>
+                            <option value="Falkland Islands">Falkland Islands</option>
+                            <option value="Fiji">Fiji</option>
+                            <option value="France">France</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Ghana">Ghana</option>
+                            <option value="Gibraltar">Gibraltar</option>
+                            <option value="Guatemala">Guatemala</option>
+                            <option value="Guernsey">Guernsey</option>
+                            <option value="Guyana">Guyana</option>
+                            <option value="Hellas (Greece)">Hellas (Greece)</option>
+                            <option value="Holland (Netherlands)">Holland (Netherlands)</option>
+                            <option value="Honduras">Honduras</option>
+                            <option value="Hong Kong">Hong Kong</option>
+                            <option value="Hungary">Hungary</option>
+                            <option value="Iceland">Iceland</option>
+                            <option value="India">India</option>
+                            <option value="Indonesia">Indonesia</option>
+                            <option value="Iran">Iran</option>
+                            <option value="Iraq">Iraq</option>
+                            <option value="Ireland">Ireland</option>
+                            <option value="Isle of Man">Isle of Man</option>
+                            <option value="Israel">Israel</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Jamaica">Jamaica</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Jersey">Jersey</option>
+                            <option value="Kazakhstan">Kazakhstan</option>
+                            <option value="Korea (North)">Korea (North)</option>
+                            <option value="Korea (South)">Korea (South)</option>
+                            <option value="Kyrgyzstan">Kyrgyzstan</option>
+                            <option value="Laos">Laos</option>
+                            <option value="Latvia">Latvia</option>
+                            <option value="Lebanon">Lebanon</option>
+                            <option value="Liberia">Liberia</option>
+                            <option value="Libya">Libya</option>
+                            <option value="Liechtenstein">Liechtenstein</option>
+                            <option value="Lithuania">Lithuania</option>
+                            <option value="Luxembourg">Luxembourg</option>
+                            <option value="Macedonia">Macedonia</option>
+                            <option value="Malaysia">Malaysia</option>
+                            <option value="Malta">Malta</option>
+                            <option value="Mauritius">Mauritius</option>
+                            <option value="Mexico">Mexico</option>
+                            <option value="Mongolia">Mongolia</option>
+                            <option value="Morocco">Morocco</option>
+                            <option value="Mozambique">Mozambique</option>
+                            <option value="Myanmar">Myanmar</option>
+                            <option value="Namibia">Namibia</option>
+                            <option value="Nepal">Nepal</option>
+                            <option value="Netherlands">Netherlands</option>
+                            <option value="Netherlands Antilles">Netherlands Antilles</option>
+                            <option value="New Zealand">New Zealand</option>
+                            <option value="Nicaragua">Nicaragua</option>
+                            <option value="Nigeria">Nigeria</option>
+                            <option value="North Korea">North Korea</option>
+                            <option value="Norway">Norway</option>
+                            <option value="Oman">Oman</option>
+                            <option value="Pakistan">Pakistan</option>
+                            <option value="Panama">Panama</option>
+                            <option value="Paraguay">Paraguay</option>
+                            <option value="Peru">Peru</option>
+                            <option value="Philippines">Philippines</option>
+                            <option value="Poland">Poland</option>
+                            <option value="Portugal">Portugal</option>
+                            <option value="Qatar">Qatar</option>
+                            <option value="Republic of Uganda">Republic of Uganda</option>
+                            <option value="Romania">Romania</option>
+                            <option value="Russia">Russia</option>
+                            <option value="Saint Helena">Saint Helena</option>
+                            <option value="Saudi Arabia">Saudi Arabia</option>
+                            <option value="Serbia">Serbia</option>
+                            <option value="Seychelles">Seychelles</option>
+                            <option value="Singapore">Singapore</option>
+                            <option value="Slovakia">Slovakia</option>
+                            <option value="Slovenia">Slovenia</option>
+                            <option value="Solomon Islands">Solomon Islands</option>
+                            <option value="Somalia">Somalia</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="South Korea">South Korea</option>
+                            <option value="Spain">Spain</option>
+                            <option value="Sri Lanka">Sri Lanka</option>
+                            <option value="Sudan">Sudan</option>
+                            <option value="Suriname">Suriname</option>
+                            <option value="Sweden">Sweden</option>
+                            <option value="Switzerland">Switzerland</option>
+                            <option value="Syria">Syria</option>
+                            <option value="Taiwan">Taiwan</option>
+                            <option value="Thailand">Thailand</option>
+                            <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                            <option value="Tunisia">Tunisia</option>
+                            <option value="Turkey">Turkey</option>
+                            <option value="Turkey">Turkey</option>
+                            <option value="Tuvalu">Tuvalu</option>
+                            <option value="Ukraine">Ukraine</option>
+                            <option value="United Arab Emirates">United Arab Emirates</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="United States of America">United States of America</option>
+                            <option value="Uruguay">Uruguay</option>
+                            <option value="Uzbekistan">Uzbekistan</option>
+                            <option value="Vatican City">Vatican City</option>
+                            <option value="Venezuela">Venezuela</option>
+                            <option value="Vietnam">Vietnam</option>
+                            <option value="Yemen">Yemen</option>
+                            <option value="Zimbabwe">Zimbabwe</option>
+
+                        </select>
+                        <span asp-validation-for="Nationality" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-4">
+                    <div class="form-group form-default">
+                        <label asp-for="CountryOfResidence" class="form-label">Country of Residence</label>
+                        <select asp-for="CountryOfResidence" class="form-control form-control-sm AllSelect2">
+                            <option value="">&nbsp;</option>
+                            <option value="Afghanistan">Afghanistan</option>
+                            <option value="Albania">Albania</option>
+                            <option value="America">America</option>
+                            <option value="Argentina">Argentina</option>
+                            <option value="Aruba">Aruba</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Azerbaijan">Azerbaijan</option>
+                            <option value="Bahamas">Bahamas</option>
+                            <option value="Bahrain">Bahrain</option>
+                            <option value="Bangladesh">Bangladesh</option>
+                            <option value="Barbados">Barbados</option>
+                            <option value="Belarus">Belarus</option>
+                            <option value="Belgium">Belgium</option>
+                            <option value="Beliz">Beliz</option>
+                            <option value="Bermuda">Bermuda</option>
+                            <option value="Bolivia">Bolivia</option>
+                            <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                            <option value="Botswana">Botswana</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="Brunei Darussalam">Brunei Darussalam</option>
+                            <option value="Bulgaria">Bulgaria</option>
+                            <option value="Cambodia">Cambodia</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Cayman Islands">Cayman Islands</option>
+                            <option value="Chile">Chile</option>
+                            <option value="China">China</option>
+                            <option value="Colombia">Colombia</option>
+                            <option value="Costa Rica">Costa Rica</option>
+                            <option value="Croatia">Croatia</option>
+                            <option value="Cuba">Cuba</option>
+                            <option value="Cyprus">Cyprus</option>
+                            <option value="Czech Republic">Czech Republic</option>
+                            <option value="Denmark">Denmark</option>
+                            <option value="Dominican Republic">Dominican Republic</option>
+                            <option value="East Caribbean">East Caribbean</option>
+                            <option value="Egypt">Egypt</option>
+                            <option value="El Salvador">El Salvador</option>
+                            <option value="Eritrea">Eritrea</option>
+                            <option value="Euro">Euro</option>
+                            <option value="Falkland Islands">Falkland Islands</option>
+                            <option value="Fiji">Fiji</option>
+                            <option value="France">France</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Ghana">Ghana</option>
+                            <option value="Gibraltar">Gibraltar</option>
+                            <option value="Guatemala">Guatemala</option>
+                            <option value="Guernsey">Guernsey</option>
+                            <option value="Guyana">Guyana</option>
+                            <option value="Hellas (Greece)">Hellas (Greece)</option>
+                            <option value="Holland (Netherlands)">Holland (Netherlands)</option>
+                            <option value="Honduras">Honduras</option>
+                            <option value="Hong Kong">Hong Kong</option>
+                            <option value="Hungary">Hungary</option>
+                            <option value="Iceland">Iceland</option>
+                            <option value="India">India</option>
+                            <option value="Indonesia">Indonesia</option>
+                            <option value="Iran">Iran</option>
+                            <option value="Iraq">Iraq</option>
+                            <option value="Ireland">Ireland</option>
+                            <option value="Isle of Man">Isle of Man</option>
+                            <option value="Israel">Israel</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Jamaica">Jamaica</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Jersey">Jersey</option>
+                            <option value="Kazakhstan">Kazakhstan</option>
+                            <option value="Korea (North)">Korea (North)</option>
+                            <option value="Korea (South)">Korea (South)</option>
+                            <option value="Kyrgyzstan">Kyrgyzstan</option>
+                            <option value="Laos">Laos</option>
+                            <option value="Latvia">Latvia</option>
+                            <option value="Lebanon">Lebanon</option>
+                            <option value="Liberia">Liberia</option>
+                            <option value="Libya">Libya</option>
+                            <option value="Liechtenstein">Liechtenstein</option>
+                            <option value="Lithuania">Lithuania</option>
+                            <option value="Luxembourg">Luxembourg</option>
+                            <option value="Macedonia">Macedonia</option>
+                            <option value="Malaysia">Malaysia</option>
+                            <option value="Malta">Malta</option>
+                            <option value="Mauritius">Mauritius</option>
+                            <option value="Mexico">Mexico</option>
+                            <option value="Mongolia">Mongolia</option>
+                            <option value="Morocco">Morocco</option>
+                            <option value="Mozambique">Mozambique</option>
+                            <option value="Myanmar">Myanmar</option>
+                            <option value="Namibia">Namibia</option>
+                            <option value="Nepal">Nepal</option>
+                            <option value="Netherlands">Netherlands</option>
+                            <option value="Netherlands Antilles">Netherlands Antilles</option>
+                            <option value="New Zealand">New Zealand</option>
+                            <option value="Nicaragua">Nicaragua</option>
+                            <option value="Nigeria">Nigeria</option>
+                            <option value="North Korea">North Korea</option>
+                            <option value="Norway">Norway</option>
+                            <option value="Oman">Oman</option>
+                            <option value="Pakistan">Pakistan</option>
+                            <option value="Panama">Panama</option>
+                            <option value="Paraguay">Paraguay</option>
+                            <option value="Peru">Peru</option>
+                            <option value="Philippines">Philippines</option>
+                            <option value="Poland">Poland</option>
+                            <option value="Portugal">Portugal</option>
+                            <option value="Qatar">Qatar</option>
+                            <option value="Republic of Uganda">Republic of Uganda</option>
+                            <option value="Romania">Romania</option>
+                            <option value="Russia">Russia</option>
+                            <option value="Saint Helena">Saint Helena</option>
+                            <option value="Saudi Arabia">Saudi Arabia</option>
+                            <option value="Serbia">Serbia</option>
+                            <option value="Seychelles">Seychelles</option>
+                            <option value="Singapore">Singapore</option>
+                            <option value="Slovakia">Slovakia</option>
+                            <option value="Slovenia">Slovenia</option>
+                            <option value="Solomon Islands">Solomon Islands</option>
+                            <option value="Somalia">Somalia</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="South Korea">South Korea</option>
+                            <option value="Spain">Spain</option>
+                            <option value="Sri Lanka">Sri Lanka</option>
+                            <option value="Sudan">Sudan</option>
+                            <option value="Suriname">Suriname</option>
+                            <option value="Sweden">Sweden</option>
+                            <option value="Switzerland">Switzerland</option>
+                            <option value="Syria">Syria</option>
+                            <option value="Taiwan">Taiwan</option>
+                            <option value="Thailand">Thailand</option>
+                            <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                            <option value="Tunisia">Tunisia</option>
+                            <option value="Turkey">Turkey</option>
+                            <option value="Turkey">Turkey</option>
+                            <option value="Tuvalu">Tuvalu</option>
+                            <option value="Ukraine">Ukraine</option>
+                            <option value="United Arab Emirates">United Arab Emirates</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="United States of America">United States of America</option>
+                            <option value="Uruguay">Uruguay</option>
+                            <option value="Uzbekistan">Uzbekistan</option>
+                            <option value="Vatican City">Vatican City</option>
+                            <option value="Venezuela">Venezuela</option>
+                            <option value="Vietnam">Vietnam</option>
+                            <option value="Yemen">Yemen</option>
+                            <option value="Zimbabwe">Zimbabwe</option>
+
+                        </select>
+                        <span asp-validation-for="CountryOfResidence" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-4">
+                    <div class="form-group form-default">
+                        <label asp-for="IssueBy" class="form-label">Issued By</label>
+                        <input asp-for="IssueBy" class="form-control " required placeholder="" tabindex="1" />
+                        <span asp-validation-for="IssueBy" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-4">
+                    <div class="form-group form-default">
+                        <label asp-for="IssuedDate" class="form-label">Issued Date</label>
+                        <input asp-for="IssuedDate" type="text" id="IssuedDate" class="form-control " required placeholder="DD-MM-YYYY" tabindex="1" />
+                        <span asp-validation-for="IssuedDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-4">
+                    <div class="form-group form-default">
+                        <label asp-for="ExpiryDate" class="form-label">Expiry Date</label>
+                        <input asp-for="ExpiryDate" type="text" id="ExpiryDate" class="form-control " required placeholder="DD-MM-YYYY" tabindex="1" />
+                        <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-4">
+                    <div class="form-group form-default">
+                        <label asp-for="EligibleReviewDate" class="form-label">Eligible Review Date</label>
+                        <input asp-for="EligibleReviewDate" id="EligibleReviewDate" type="text" class="form-control " required placeholder="DD-MM-YYYY" tabindex="1" />
+                        <span asp-validation-for="EligibleReviewDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-4">
+                    <div class="form-group form-default form-radio">
+                        <label asp-for="IsCurrentPassport" id="IsCurrentPassport" class="form-label">Is this your current passport?</label>
+                        <div class="radio radio-inline">
+                            <label>
+                                <input asp-for="IsCurrentPassport" type="radio" value="Yes" name="IsCurrentPassport">
+                                <i class="helper"></i>Yes
+                            </label>
+                        </div>
+                        <div class="radio radio-inline ">
+                            <label>
+                                <input asp-for="IsCurrentPassport" type="radio" value="No" name="IsCurrentPassport">
+                                <i class="helper"></i>No
+                            </label>
+                        </div>
+                        <span asp-validation-for="IsCurrentPassport" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-4" id="dbsTypehide">
+                    <div class="form-group form-default">
+                        <label asp-for="DBSType" class="form-label">DBS Type</label>
+                        <select asp-for="DBSType" class="form-control form-control-sm AllSelect2">
+                            <option value="0">Select</option>
+                            <option value="Basic">Basic</option>
+                            <option value="Standard">Standard</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                        <span asp-validation-for="DBSType" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-4">
+                    <div class="form-group form-default">
+                        <label name="Files" class="form-label">Upload Document</label>
+
+                        <input asp-for="Files" type="file" class="form-control " multiple placeholder="" tabindex="1" />
+                        <span asp-validation-for="Files" class="text-danger"></span>
+                        <p>Please select single/multi files which size not up to 2mb</p>
+                        @{
+                            if (Model != null)
+                            {
+                                if (Model.AllFiles != null)
+                                {
+                                    if (Model.AllFiles.Count > 0)
+                                    {
+                                        var i = 1;
+                                        foreach (var item in Model.AllFiles)
+                                        {
+
+                                            <a href="/@item.DocFiles" class="ml-5" style="color: blue;" download="download">@i Download @item.DocName</a>
+
+                                            <a href="javascript:;" onclick="ConfirmDelete(@item.DocID);"><i class="icofont icofont-ui-delete"></i></a>
+                                            <br />
+                                            i += 1;
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group form-default">
+                        <label asp-for="Remarks" class="form-label"></label>
+
+                        <input asp-for="Remarks" class="form-control " required placeholder="" tabindex="1" />
+                        <span asp-validation-for="Remarks" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            @*                         <div id="div_aca"></div>
+            <button class="btn btn-gray m-t-10" id="btnAdd_aca" onclick="getAddform('aca','');"><i class="icon-plus"></i>&nbsp;Add Education (If Required)</button> *@
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default waves-effect " data-dismiss="modal">Close</button>
+        @* <button type="button" class="btn btn-primary waves-effect waves-light ">Save changes</button> *@
+        <input type="submit" value="Submit" class="btn btn-primary m-b-0 waves-effect waves-light" />
+    </div>
+    
+
+   @*  <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group row  text-right">
+                <label class="col-sm-6"></label>
+                <div class="col-sm-10">
+                    
+                </div>
+            </div>
+        </div>
+    </div> *@
+</form>

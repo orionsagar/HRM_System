@@ -1,0 +1,181 @@
+﻿@model LeavePayMethod
+
+@inject IGlobalHelper _global;
+@{
+    //var action = ViewBag.Action;
+    var title = "Leave PayMethod";
+
+    ViewData["Title"] = $"{title}";
+}
+@section PageName {
+    Leave PayMethod List
+}
+@section Breadcrumb {
+    <a href="/leavepaymethod/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum"> Leave PayMethod List</span>
+}
+@{
+
+    var ComId = _global.GetCompID();
+    var OrgId = _global.GetOrgId();
+    var UserId = _global.GetUserID();
+    var date = DateTime.Now;
+}
+
+@Html.AntiForgeryToken()
+<!-- Page-body start -->
+<div class="page-body">
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-block">
+                    <form id="main" class="" novalidate>
+                        @if (Model == null)
+                        {
+                            <input type="hidden" asp-for="LeavePayMethodId" value="0" />
+                            <input type="hidden" asp-for="AddedBy" value="@UserId" />
+                            <input type="hidden" asp-for="UpdatedBy" />
+                            <input type="hidden" asp-for="AddedDate" value="@date" />
+                            <input type="hidden" asp-for="UpdatedDate" />
+                            <input type="hidden" asp-for="CompId" value="@ComId" />
+                            <input type="hidden" asp-for="OrgId" value="@OrgId" />
+                        }
+                        else
+                        {
+                            <input type="hidden" asp-for="LeavePayMethodId" />
+                            <input type="hidden" asp-for="AddedBy" />
+                            <input type="hidden" asp-for="UpdatedBy" value="@UserId" />
+                            <input type="hidden" asp-for="AddedDate" />
+                            <input type="hidden" asp-for="UpdatedDate" value="@date" />
+                            <input type="hidden" asp-for="CompId" value="@ComId" />
+                            <input type="hidden" asp-for="OrgId"/>
+                        }
+
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label asp-for="PayMethodName" class="float-label">Leave Type</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <input asp-for="PayMethodName" class="form-control" required />
+                                <span asp-validation-for="PayMethodName" class="text-danger form-bar"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label asp-for="Remark" class="float-label">Description</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <textarea asp-for="Remark" class="form-control"></textarea>
+                                <span asp-validation-for="Remark" class="text-danger form-bar"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="row actionBtnRight">
+                            <div class="col-12 col-sm-12">
+                                <button class="btn btn-primary waves-effect waves-light m-r-20" id="btnSave">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="card">
+                @* <div class="card-header">
+                    <h5>Leave PayMethod List</h5>
+                    <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
+                </div> *@
+                <div class="card-block">
+                    <div class="table-responsive dt-responsive">
+                        <table id="dt-leavepaymethod" class="table table-hover table-striped table-bordered nowrap">
+                            <thead>
+                                <tr>
+                                    <th>LeavePayMethodId</th>
+                                    <th>PayMethod Name</th>
+                                    <th>Description</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Page-body end -->
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $("#btnSave").click(function () {
+                let leavePayMethod = {
+                    '@nameof(LeavePayMethod.LeavePayMethodId)': $("#LeavePayMethodId").val(),
+                    '@nameof(LeavePayMethod.PayMethodName)': $("#PayMethodName").val(),
+                    '@nameof(LeavePayMethod.Remark)': $("#Remark").val(),
+                    '@nameof(LeavePayMethod.AddedBy)': $("#AddedBy").val(),
+                    '@nameof(LeavePayMethod.UpdatedBy)': $("#UpdatedBy").val(),
+                    '@nameof(LeavePayMethod.UpdatedDate)': $("#UpdatedDate").val(),
+                    '@nameof(LeavePayMethod.AddedDate)': $("#AddedDate").val(),
+                    '@nameof(LeavePayMethod.CompId)': $("#CompId").val(),
+                    '@nameof(LeavePayMethod.OrgId)': $("#OrgId").val(),
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("create", "leavepaymethod")",
+                    data: leavePayMethod,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                            SuccessPNotify(res.message);
+                            $('#dt-leavepaymethod').DataTable().draw();
+                            cleardata();
+                            window.location.replace('/leavepaymethod/index');
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+            })
+        });
+        function cleardata() {
+            $("#LeavePayMethodId").val(0);
+            $("#PayMethodName").val('');
+            $("#Remark").val('');
+        }
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

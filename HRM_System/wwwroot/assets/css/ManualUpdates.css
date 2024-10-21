@@ -1,0 +1,181 @@
+.HeaderRecreated{
+    background-color: #ffffff !important; 
+    border-bottom: 5px solid #448aff !important; 
+    box-shadow: 5px 0px 5px #448aff !important;
+}
+.LogoContainerRecreated{
+    width: 240px !important; 
+    height: 60px !important;
+}
+.LogoRecreated{
+    width: 140px !important; 
+    height: 50px !important; 
+    -webkit-filter: drop-shadow(0px 0px 15px #f2f2f2) !important; 
+    filter: drop-shadow(0px 0px 15px #f2f2f2) !important;
+}
+.colorPriority{
+    color: #448aff !important;
+}
+.breadCrumContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.breadCrumContainer .breadCrumWrapper{
+    width: 100%;
+    height: 50px;
+    background-color: #448aff;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.pageName span{
+    color: #ffffff;
+    margin-left: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+.breadCrum{
+    margin-right: 20px;
+    color: #ffffff;
+}
+.activeCrum{
+    color: #c8dcff;
+}
+
+
+/* =============================================
+====== Foo-Tables Two selection Styling ========
+================================================ */
+
+.tableHeaderSelection{
+    width: 99%;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.tableHeaderSelection .SelectWithLabel{
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    flex-wrap: wrap;
+    /* border: 1px solid green; */
+}
+.tableHeaderSelection .SelectWithLabel label{
+    font-size: .8rem;
+    font-weight: 500;
+    margin-bottom: 0px !important;
+}
+.tableHeaderSelection .SelectWithLabel select{
+    margin-left: 20px;
+    padding-left: 10px;
+    width: 30%;
+    height: 40px;
+    border-radius: 5px;
+    background-color: #448aff;
+    color: #ffffff;
+    font-size: .9rem;
+}
+
+.SelectNoLabel{
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+}
+
+.SelectNoLabel select{
+    margin-right: 20px;
+    padding-left: 10px;
+    width: 30%;
+    height: 40px;
+    border-radius: 5px;
+    background-color: #448aff;
+    color: #ffffff;
+    font-size: .9rem;
+}
+
+.tableActionIcon {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: start !important;
+    align-items: center !important;
+    gap: 10px;
+    /* border: 1px solid black; */
+}
+.tableActionIcon i{
+    width: 20px;
+    height: 20px;
+    font-size: 1rem;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    transition: 300ms ease-in-out;
+    /* border: 1px solid green; */
+}
+.tableActionIcon i:hover{
+    cursor: pointer;
+    color: #448aff;
+
+}
+
+.tableActionCol{
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: end !important;
+    align-items: center !important;
+    /* border: 1px solid green; */
+}
+
+
+/* ======================================
+====== Form Page Styling here ========
+====================================== */
+
+.preFilledText{
+    background-color: #f0f5fe;
+}
+.preFilledText > input{
+    
+    color: #448aff;
+}
+.preFilledText > input:focus{
+    color: #448aff;
+}
+
+
+.disabledField > input, .disabledField label{
+    color: #c0d7fe;
+}
+
+.disabledField > input:focus, .disabledField label{
+    color: #c8dcff;
+}
+
+.actionBtnRight{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: end;
+}
+
+
+.manual-p-sz {
+    padding: 10px 0px 8px 12px !important;
+}
+

@@ -1,0 +1,320 @@
+﻿
+@model Domains.ViewModels.UserInfoViewModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_LoginLayout_WPboard.cshtml";
+    //Layout = null;
+}
+<!-- Register New User form -->
+
+<div class="EntrybodyContainer">
+    <div class="mainContainer">
+
+        @await Html.PartialAsync("/Views/Auth/_CompDescription.cshtml")
+
+        <div class="loginColContainer ">
+            <div class="loginBox">
+                <div class="logintab">
+                    <ul>
+                        <li id="login">Login</li>
+                        <li id="register" class="listactive">Register</li>
+                    </ul>
+                </div>
+
+
+                <div class="RegisterContainer">
+
+                    <div class="RegisterinputFieldContainer">
+                        <div class="registerContainer">
+                            <div class="modalheader" style="margin-left: 0px !important;">
+                                <span>Register Here</span>
+                                <p>Please Enter your Details</p>
+                                <!-- <p class="text-danger">Server Error Message</p> -->
+                            </div>
+                            <form method="post" id="main" novalidate>
+
+                                <div class="RegTextGroup">
+                                    <label asp-for="CompanyName">Company Name</label>
+                                    <div class="regInputWrapper">
+                                        <div class="input">
+                                            <input type="text" asp-for="CompanyName" placeholder="Company Name">
+                                            <i class="fa-sharp fa-solid fa-building fa-sm"></i>
+                                        </div>
+                                        <div class="errorIcon" id="compErrorMsg" style="display: none;">
+                                            <i class="text-danger fa-solid fa-xmark fa-lg"></i>
+                                            <span class="text-danger errorMessage">Incorrect Company Name</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="RegTextGroup">
+                                    <label asp-for="Phone">Phone</label>
+                                    <div class="regInputWrapper">
+                                        <div class="input">
+                                            <input type="text" asp-for="Phone" placeholder="Phone Number">
+                                            <i class="fa-sharp fa-solid fa-building fa-sm"></i>
+                                        </div>
+                                        <div class="errorIcon" id="compErrorMsg" style="display: none;">
+                                            <i class="text-danger fa-solid fa-xmark fa-lg"></i>
+                                            <span class="text-danger errorMessage">Incorrect Company Name</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="RegTextGroup">
+                                    <label asp-for="UserName">Email ID</label>
+                                    <div class="regInputWrapper">
+                                        <div class="input">
+                                            <input type="email" asp-for="UserName" placeholder="E-Mail ID">
+                                            <i class="fa-sharp fa-regular fa-envelope fa-sm"></i>
+                                        </div>
+                                        <div class="errorIcon" id="RegEmailerrorMsg" style="display: none;">
+                                            <i class="text-danger fa-solid fa-xmark fa-lg"></i>
+                                            <span class="text-danger errorMessage">Incorrect User Name</span>
+                                        </div>
+                                        <div class="errorIcon" id="errorMsg" style="display: none;">
+                                            <i class="text-danger fa-solid fa-xmark fa-lg"></i>
+                                            <span class="text-danger errorMessage">Incorrect User Name</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="RegTextGroup">
+                                    <label asp-for="FirstName">First Name</label>
+                                    <div class="regInputWrapper">
+                                        <div class="input">
+                                            <input type="text" asp-for="FirstName" placeholder="First Name">
+                                            <i class="fa-sharp fa-regular fa-user fa-sm"></i>
+                                        </div>
+                                        <div class="errorIcon" id="nameErrorMsg" style="display: none;">
+                                            <i class="text-danger fa-solid fa-xmark fa-lg"></i>
+                                            <span class="text-danger errorMessage">Incorrect Name</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="RegTextGroup">
+                                    <label asp-for="LastName">Last Name</label>
+                                    <div class="regInputWrapper">
+                                        <div class="input">
+                                            <input type="text" asp-for="LastName" placeholder="Last Name">
+                                            <i class="fa-sharp fa-regular fa-user fa-sm"></i>
+                                        </div>
+                                        <div class="errorIcon" id="nameErrorMsg" style="display: none;">
+                                            <i class="text-danger fa-solid fa-xmark fa-lg"></i>
+                                            <span class="text-danger errorMessage">Incorrect Name</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="RegTextGroup">
+                                    <label asp-for="Password">Password</label>
+                                    <div class="regInputWrapper">
+                                        <div class="input">
+                                            <input type="password" asp-for="Password" placeholder="Password" data-name="Password">
+                                            <i class="fa fa-eye" id="Password"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="RegTextGroup">
+                                    <label asp-for="ConfirmPassword">Confirm Password</label>
+                                    <div class="regInputWrapper">
+                                        <div class="input">
+                                            <input type="password" asp-for="ConfirmPassword" placeholder="Confirm Password" data-name="ConfirmPassword">
+                                            <i class="fa fa-eye" id="confirmPassword"></i>
+                                        </div>
+                                        <div class="errorIcon" id="confirmPasswordErrorMsg" data-contain = "ErrorMsg">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="resbtnPrimary">
+                                    <button type="submit" id="btnReg">Register <i class="fa-sharp fa-solid fa-right-to-bracket fa-lg"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="resMainContainer">
+    <div class="reslogoWrapper">
+        <div class="reslogo">
+            <img src="img/module_img/WP-l-rb.png" alt="Workers Permit Logo">
+
+        </div>
+    </div>
+
+    <div class="resLoginFormContainer">
+        <div class="resLoginContainer">
+            <div class="resModalheader">
+                <span>Register Here</span>
+                <p style="margin-top: 10px;">Please Enter your Details</p>
+                <p class="text-danger" style="margin-top: 5px; color: brown;">Server Error Message</p>
+            </div>
+
+            <div class="reslogininputFieldContainer">
+                <form method="post" id="resMain" novalidate>
+
+                    <div class="resFormCotainer">
+
+                        <div class="resformTextGroup">
+                            <label asp-for="CompanyName">Company Name</label>
+                            <div class="input">
+                                <input type="text" asp-for="CompanyName" placeholder="Company Name">
+                                <i class="fa-sharp fa-solid fa-building fa-sm"></i>
+                            </div>
+                        </div>
+
+                        <div class="resformTextGroup">
+                            <label asp-for="Phone">Phone</label>
+                            <div class="input">
+                                <input type="text" asp-for="Phone" placeholder="Phone Number">
+                                <i class="fa-sharp fa-solid fa-building fa-sm"></i>
+                            </div>
+                        </div>
+
+                        <div class="resformTextGroup">
+                            <label asp-for="UserName">Email</label>
+                            <div class="input">
+                                <input type="email" asp-for="UserName" placeholder="E-Mail ID">
+                                <i class="fa-sharp fa-regular fa-envelope fa-sm"></i>
+                            </div>
+                        </div>
+
+                        <div class="resformTextGroup">
+                            <label asp-for="FirstName">First Name</label>
+                            <div class="input">
+                                <input type="text" asp-for="FirstName" placeholder="Fist Name">
+                                <i class="fa-sharp fa-regular fa-user fa-sm"></i>
+                            </div>
+                        </div>
+
+                        <div class="resformTextGroup">
+                            <label asp-for="LastName">Last Name</label>
+                            <div class="input">
+                                <input type="text" asp-for="LastName" placeholder="Last Name">
+                                <i class="fa-sharp fa-regular fa-user fa-sm"></i>
+                            </div>
+                        </div>
+
+                         <div class="resformTextGroup">
+                            <label asp-for="Password">Password</label>
+                            <div class="input">
+                                <input type="password" asp-for="Password" placeholder="Password">
+                                <i class="fa fa-eye" id="Password"></i>
+                            </div>
+                        </div>
+
+                        <div class="resformTextGroup">
+                            <label asp-for="ConfirmPassword">Confirm Password</label>
+                            <div class="input">
+                                <input type="password" asp-for="ConfirmPassword" placeholder="Confirm Password">
+                                <i class="fa fa-eye" id="Password"></i>
+                            </div>
+                        </div>
+
+
+                        <div class="resbtnPrimary" style="width: 93%;">
+                            <button type="submit" id="btnResReg">Register <i class="fa-sharp fa-solid fa-right-to-bracket fa-lg"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="resCompanyContents">
+        <div class="resCompanyDiscription">
+            <span class="resDiscHeading">Know us</span>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Placeat quo eligendi accusantium maxime ipsam quam esse
+                animi deleniti nobis sit. Quibusdam ex iusto eos molestiae
+                maxime cumque sed amet nam.
+                Beatae, iusto expedita nesciunt adipisci unde cumque culpa
+                ipsum aliquid porro ipsam ratione! Animi facilis mollitia,
+                facere similique exercitationem nostrum, ad voluptate quisquam beatae
+                reprehenderit saepe laboriosam deserunt, a dolor?
+            </p>
+        </div>
+
+        <div class="resCompanyVideo">
+            <div class="resVideo">
+                <img src="~/img/module_img/VideoIcon.png" alt="">
+            </div>
+            <div class="resPlaybutton">
+                <img src="~/img/module_img/play-button.svg" alt="">
+            </div>
+        </div>
+
+    
+
+        <div class="resDownLoadBtn">
+            <button type="submit">Download PDF <i class="fa-solid fa-download fa-xl"></i></button>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+@section Scripts {   
+
+    <script src="~/custom_theme/js/index.js"></script>
+
+    <script>
+         $("#btnReg").click(function () {
+             let form = $('#main');
+             let formData = new FormData(form[0]);
+             $.ajax({
+                 url: '/userinfo/create',
+                 type: 'POST',
+                 data: formData,
+                 processData: false,
+                 contentType: false,
+                 cache: false,
+                 enctype: 'multipart/form-data',// Set to false, the browser will set the correct content type
+                 success: function (data, status, xhr) {
+                     console.log(data);
+                     window.location.href = 'login1'
+                 },
+                 error: function (xhr, status, error) {
+                    console.log(error)
+                 },
+                 complete: function () {
+                 }
+             });
+         });
+    </script>
+}
+
+<script>
+    $("#btnResReg").click(function () {
+        let form = $('#resMain');
+        let formData = new FormData(form[0]);
+        $.ajax({
+            url: '/userinfo/create',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            enctype: 'multipart/form-data',// Set to false, the browser will set the correct content type
+            success: function (data, status, xhr) {
+                console.log(data);
+                window.location.href = '/auth/login1'
+            },
+            error: function (xhr, status, error) {
+                console.log(error)
+            },
+            complete: function () {
+            }
+        });
+    });
+</script>

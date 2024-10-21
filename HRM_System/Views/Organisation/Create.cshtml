@@ -1,0 +1,872 @@
+﻿@model OrganisationVM
+@inject IGlobalHelper _global;
+
+@* @{
+    ViewData["Title"] = "Create";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    var rolename = _global.GetRoleName();
+    var action = ViewBag.Action;
+}
+@section PageName {
+    New Organisation
+}
+@section Breadcrumb {
+    <a href="/dashboard/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">New Organisation</span>
+} *@
+
+@{
+    var rolename = _global.GetRoleName();
+    var action = ViewBag.Action;
+    if (action == "Add")
+    {
+        ViewData["Title"] = "Organisation  Add";
+
+
+    }
+    else
+    {
+        ViewData["Title"] = "Organisation  Edit";
+    }
+    Layout = "~/Views/Shared/_Main_Layout.cshtml";
+}
+
+@section PageName {
+    @ViewData["Title"]
+}
+@section Breadcrumb {
+    <a href="/dashboard/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <a href="organisation/index">Organisation  List</a>
+
+    <span class="Divider">/</span>
+    @* <span class="section activeCrum">Organisation  Add</span> *@
+    <span class="section activeCrum">@ViewData["Title"]</span>
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-block">
+                <p>(<span class="text-danger">*</span>) marked are all madatory fields.</p>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <form id="main" asp-action="Create" method="post" enctype="multipart/form-data" class="j-pro border-0" novalidate>
+
+                    @{
+                        if (Model != null)
+                        {
+                            <input asp-for="OrgId" type="hidden" />
+                            <input asp-for="AddedBy" type="hidden" />
+                            <input asp-for="AddedDate" type="hidden" />
+                            <input asp-for="LogoPath" type="hidden" />
+                            <input asp-for="AP_NIdPath" type="hidden" />
+                            <input asp-for="SA_NIdPath" type="hidden" />
+                            <input asp-for="AP_NIdPath" type="hidden" />
+                        }
+                    }
+                    <h4 class="sub-title">Organisation Basic Data</h4>
+                    <div class="form-group row">
+                        @{
+                            if (rolename == "Org_SuperAdmin" || rolename == "Main_SuperAdmin" || rolename == "Client_SuperAdmin" || rolename == "Platform_Admin")
+                            {
+                                <div class="col-sm-6">
+                                    <div class="form-group form-default">
+                                        <label asp-for="ClientId" class="form-label">Client</label><span class="text-danger"> *</span>
+                                        <select asp-for="ClientId" asp-items="ViewBag.Client" class="form-control form-control-lg" required>
+                                            <option value="">Select</option>
+                                        </select>
+                                        <span asp-validation-for="ClientId" class="text-danger form-bar"></span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="PackageId" class="form-label">Package</label><span class="text-danger"> *</span>
+                                <select asp-for="PackageId" asp-items="ViewBag.PackageId" class="form-control form-control-lg" required>
+                                    @*<option value="">Select</option>*@
+                                </select>
+                                <span asp-validation-for="PackageId" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="OrgType" class="form-label"></label><span class="text-danger"> *</span>
+                                <select asp-for="OrgType" class="form-control form-control-lg" required>
+                                    <option value="Private Company Limited by shares">Private Company Limited by shares</option>
+                                    <option value="Charitable Incorporated Organisation">Charitable Incorporated Organisation</option>
+                                    <option value="Industrial and Provident Society "> Industrial and Provident Society </option>
+                                    <option value="General Partnership">General Partnership</option>
+                                    <option value="Limited Liability Partnership-LLP">Limited Liability Partnership-LLP</option>
+                                    <option value="Scottish limited partnerships">Scottish limited partnerships</option>
+                                    <option value="Limited Partnership-LP">Limited Partnership-LP</option>
+                                    <option value="Community Interest Company "> Community Interest Company </option>
+                                    <option value="Private Company Limited by guarantee">Private Company Limited by guarantee</option>
+                                    <option value="Public Limited Company-PLC">Public Limited Company-PLC</option>
+                                    <option value="Sole Proprietorship" selected="">Sole Proprietorship</option>
+                                    <option value="others-type">Others</option>
+                                </select>
+                                <span asp-validation-for="OrgType" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" id="divorgtype">
+                            <div class="form-group form-default">
+                                <label asp-for="OrgType1" class="float-label"></label><span class="text-danger"> *</span>
+                                <input asp-for="OrgType1" class="form-control form-control-lg" />
+                                <span asp-validation-for="OrgType1" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="OrgCode" class="float-label"></label><span class="text-danger"> *</span>
+                                <input asp-for="OrgCode" class="form-control form-control-lg" />
+                                <span asp-validation-for="OrgCode" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="OrgName" class="float-label"></label>
+                                &nbsp;<a href="https://find-and-update.company-information.service.gov.uk/" target="_blank" style="color: white; background-color: darkblue; padding: .1rem .2rem; border-radius: 3px;">Find</a>
+                                <span class="text-danger"> *</span>
+                                <input asp-for="OrgName" class="form-control form-control-lg" required />
+                                <span asp-validation-for="OrgName" class="text-danger form-bar"></span>
+                                <span id="orgerror" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="RegNo" class="float-label"></label>
+                                &nbsp;<a href="https://find-and-update.company-information.service.gov.uk/" target="_blank" style="color: white; background-color: darkblue; padding: .1rem .2rem; border-radius: 3px;">Find</a>
+                                <span class="text-danger"></span>
+                                <input asp-for="RegNo" class="form-control form-control-lg" />
+                                <span asp-validation-for="RegNo" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="ContactNo" class="form-label"></label><span class="text-danger"> *</span>
+                                <input asp-for="ContactNo" class="form-control form-control-lg PN" required />
+                                <span asp-validation-for="ContactNo" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="OrgEmail" class="form-label"></label>
+                                <input asp-for="OrgEmail" class="form-control form-control-lg" />
+                                <span asp-validation-for="OrgEmail" class="text-danger form-bar"></span>
+                                <span id="erroremail" class="text-danger" style="display:none;"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="Website" class="form-label"></label>
+                                <input asp-for="Website" class="form-control form-control-lg" />
+                                <span asp-validation-for="Website" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="LandlineNumber" class="form-label"></label>
+                                <input asp-for="LandlineNumber" class="form-control form-control-lg PN" />
+                                <span asp-validation-for="LandlineNumber" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="TradingName" class="form-label"></label>
+                                <input asp-for="TradingName" class="form-control form-control-lg" />
+                                <span asp-validation-for="TradingName" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="TradingPeriod" class="form-label"></label>
+                                <select asp-for="TradingPeriod" class="form-control form-control-lg" required>
+                                    <option value="0 to 6 months">0 to 6 months</option>
+                                    <option value="Over 12 to 18 months" selected="">Over 12 to 18 months</option>
+                                    <option value="Over 18 to 36 months">Over 18 to 36 months</option>
+                                    <option value="Over 36 months+">Over 36 months+</option>
+                                </select>
+                                <span asp-validation-for="TradingPeriod" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="SectorName" class="form-label"></label><span class="text-danger"> *</span>
+                                <select asp-for="SectorName" class="form-control form-control-lg" required>
+                                    <option value="Accommodation and Food Service Activities">Accommodation and Food Service Activities</option>
+                                    <option value="Activities of extraterritorial organisations and bodies">Activities of extraterritorial organisations and bodies</option>
+                                    <option value="Activities of households as employers; undifferentiated goods- and services- producing activities of households for own use">Activities of households as employers; undifferentiated goods- and services- producing activities of households for own use</option>
+                                    <option value="Administrative and Support Service Activities">Administrative and Support Service Activities</option>
+                                    <option value="Agriculture, Forestry and Fishing">Agriculture, Forestry and Fishing</option>
+                                    <option value="Arts, Entertainment and Recreation">Arts, Entertainment and Recreation</option>
+                                    <option value="Construction">Construction</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Electricity, Gas, Steam and Air Conditioning Supply">Electricity, Gas, Steam and Air Conditioning Supply</option>
+                                    <option value="Human Health and Social Work Activities">Human Health and Social Work Activities</option>
+                                    <option value="Information and Communication">Information and Communication</option>
+                                    <option value="Manufacturing">Manufacturing</option>
+                                    <option value="Mining and Quarrying">Mining and Quarrying</option>
+                                    <option value="Professional, Scientific and Technical Activities">Professional, Scientific and Technical Activities</option>
+                                    <option value="Public Administration and Defence; Compulsory social security">Public Administration and Defence; Compulsory social security</option>
+                                    <option value="Real Estate Activities">Real Estate Activities</option>
+                                    <option value="Transportation and Storage">Transportation and Storage</option>
+                                    <option value="Water supply, sewerage, waste management and remediation activities">Water supply, sewerage, waste management and remediation activities</option>
+                                    <option value="Wholesale and Retail trade; Repair of motor vehicles and Motorcycles">Wholesale and Retail trade; Repair of motor vehicles and Motorcycles</option>
+                                    <option value="Other service activities" selected="">Other service activities</option>
+                                </select>
+                                <span asp-validation-for="SectorName" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" id="divsectorname">
+                            <div class="form-group form-default">
+                                <label asp-for="SectorName1" class="form-label"></label><span class="text-danger"> *</span>
+                                <input asp-for="SectorName1" class="form-control form-control-lg" />
+                                <span asp-validation-for="SectorName1" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="PostCode" class="float-label"></label><span class="text-danger"> *</span>
+                                <input asp-for="PostCode" class="form-control form-control-lg" required />
+                                <span asp-validation-for="PostCode" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="AddressLine1" class="float-label"></label><span class="text-danger"> *</span>
+                                <input asp-for="AddressLine1" class="form-control form-control-lg" required />
+                                <span asp-validation-for="AddressLine1" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="AddressLine2" class="float-label"></label>
+                                <input asp-for="AddressLine2" class="form-control form-control-lg" />
+                                <span asp-validation-for="AddressLine2" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="AddressLine3" class="float-label"></label>
+                                <input asp-for="AddressLine3" class="form-control form-control-lg" />
+                                <span asp-validation-for="AddressLine3" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="City" class="float-label"></label>
+                                <input asp-for="City" class="form-control form-control-lg" />
+                                <span asp-validation-for="City" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="CountryId" class="form-label"></label>
+                                <select asp-for="CountryId" class="form-control form-control-lg">
+                                    <option value="">Select Country</option>
+                                    <option value="1">United States</option>
+                                    <option value="2" selected>United Kingdom</option>
+                                    <option value="3">Afghanistan</option>
+                                    <option value="4">Albania</option>
+                                    <option value="5">Algeria</option>
+                                    <option value="6">American Samoa</option>
+                                    <option value="7">Andorra</option>
+                                    <option value="8">Angola</option>
+                                    <option value="9">Anguilla</option>
+                                    <option value="10">Antarctica</option>
+                                    <option value="11">Antigua and Barbuda</option>
+                                    <option value="12">Argentina</option>
+                                    <option value="13">Armenia</option>
+                                    <option value="14">Aruba</option>
+                                    <option value="15">Australia</option>
+                                    <option value="16">Austria</option>
+                                    <option value="17">Azerbaijan</option>
+                                    <option value="18">Bahamas</option>
+                                    <option value="19">Bahrain</option>
+                                    <option value="20">Bangladesh</option>
+                                    <option value="21">Barbados</option>
+                                    <option value="22">Belarus</option>
+                                    <option value="23">Belgium</option>
+                                    <option value="24">Belize</option>
+                                    <option value="25">Benin</option>
+                                    <option value="26">Bermuda</option>
+                                    <option value="27">Bhutan</option>
+                                    <option value="28">Bolivia</option>
+                                    <option value="29">Bosnia and Herzegovina</option>
+                                    <option value="30">Botswana</option>
+                                    <option value="31">Bouvet Island</option>
+                                    <option value="32">Brazil</option>
+                                    <option value="33">British Indian Ocean Territory</option>
+                                    <option value="34">Brunei Darussalam</option>
+                                    <option value="35">Bulgaria</option>
+                                    <option value="36">Burkina Faso</option>
+                                    <option value="37">Burundi</option>
+                                    <option value="38">Cambodia</option>
+                                    <option value="39">Cameroon</option>
+                                    <option value="40">Canada</option>
+                                    <option value="41">Cape Verde</option>
+                                    <option value="42">Cayman Islands</option>
+                                    <option value="43">Central African Republic</option>
+                                    <option value="44">Chad</option>
+                                    <option value="45">Chile</option>
+                                    <option value="46">China</option>
+                                    <option value="47">Christmas Island</option>
+                                    <option value="48">Cocos (Keeling) Islands</option>
+                                    <option value="49">Colombia</option>
+                                    <option value="50">Comoros</option>
+                                    <option value="51">Congo</option>
+                                    <option value="52">Congo, The Democratic Republic of The</option>
+                                    <option value="53">Cook Islands</option>
+                                    <option value="54">Costa Rica</option>
+                                    <option value="55">Cote D'ivoire</option>
+                                    <option value="56">Croatia</option>
+                                    <option value="57">Cuba</option>
+                                    <option value="58">Cyprus</option>
+                                    <option value="59">Czech Republic</option>
+                                    <option value="60">Denmark</option>
+                                    <option value="61">Djibouti</option>
+                                    <option value="62">Dominica</option>
+                                    <option value="63">Dominican Republic</option>
+                                    <option value="64">Ecuador</option>
+                                    <option value="65">Egypt</option>
+                                    <option value="66">El Salvador</option>
+                                    <option value="67">Equatorial Guinea</option>
+                                    <option value="68">Eritrea</option>
+                                    <option value="69">Estonia</option>
+                                    <option value="70">Ethiopia</option>
+                                    <option value="71">Falkland Islands (Malvinas)</option>
+                                    <option value="72">Faroe Islands</option>
+                                    <option value="73">Fiji</option>
+                                    <option value="74">Finland</option>
+                                    <option value="75">France</option>
+                                    <option value="76">French Guiana</option>
+                                    <option value="77">French Polynesia</option>
+                                    <option value="78">French Southern Territories</option>
+                                    <option value="79">Gabon</option>
+                                    <option value="80">Gambia</option>
+                                    <option value="81">Georgia</option>
+                                    <option value="82">Germany</option>
+                                    <option value="83">Ghana</option>
+                                    <option value="84">Gibraltar</option>
+                                    <option value="85">Greece</option>
+                                    <option value="86">Greenland</option>
+                                    <option value="87">Grenada</option>
+                                    <option value="88">Guadeloupe</option>
+                                    <option value="89">Guam</option>
+                                    <option value="90">Guatemala</option>
+                                    <option value="91">Guinea</option>
+                                    <option value="92">Guinea-bissau</option>
+                                    <option value="93">Guyana</option>
+                                    <option value="94">Haiti</option>
+                                    <option value="95">Heard Island and Mcdonald Islands</option>
+                                    <option value="96">Holy See (Vatican City State)</option>
+                                    <option value="97">Honduras</option>
+                                    <option value="98">Hong Kong</option>
+                                    <option value="99">Hungary</option>
+                                    <option value="100">Iceland</option>
+                                    <option value="101">India</option>
+                                    <option value="102">Indonesia</option>
+                                    <option value="103">Iran, Islamic Republic of</option>
+                                    <option value="104">Iraq</option>
+                                    <option value="105">Ireland</option>
+                                    <option value="106">Israel</option>
+                                    <option value="107">Italy</option>
+                                    <option value="108">Jamaica</option>
+                                    <option value="109">Japan</option>
+                                    <option value="110">Jordan</option>
+                                    <option value="111">Kazakhstan</option>
+                                    <option value="112">Kenya</option>
+                                    <option value="113">Kiribati</option>
+                                    <option value="114">Korea, Democratic People's Republic of</option>
+                                    <option value="115">Korea, Republic of</option>
+                                    <option value="116">Kuwait</option>
+                                    <option value="117">Kyrgyzstan</option>
+                                    <option value="118">Lao People's Democratic Republic</option>
+                                    <option value="119">Latvia</option>
+                                    <option value="120">Lebanon</option>
+                                    <option value="121">Lesotho</option>
+                                    <option value="122">Liberia</option>
+                                    <option value="123">Libyan Arab Jamahiriya</option>
+                                    <option value="124">Liechtenstein</option>
+                                    <option value="125">Lithuania</option>
+                                    <option value="126">Luxembourg</option>
+                                    <option value="127">Macao</option>
+                                    <option value="128">Macedonia, The Former Yugoslav Republic of</option>
+                                    <option value="129">Madagascar</option>
+                                    <option value="130">Malawi</option>
+                                    <option value="131">Malaysia</option>
+                                    <option value="132">Maldives</option>
+                                    <option value="133">Mali</option>
+                                    <option value="134">Malta</option>
+                                    <option value="135">Marshall Islands</option>
+                                    <option value="136">Martinique</option>
+                                    <option value="137">Mauritania</option>
+                                    <option value="138">Mauritius</option>
+                                    <option value="139">Mayotte</option>
+                                    <option value="140">Mexico</option>
+                                    <option value="141">Micronesia, Federated States of</option>
+                                    <option value="142">Moldova, Republic of</option>
+                                    <option value="143">Monaco</option>
+                                    <option value="144">Mongolia</option>
+                                    <option value="145">Montserrat</option>
+                                    <option value="146">Morocco</option>
+                                    <option value="147">Mozambique</option>
+                                    <option value="148">Myanmar</option>
+                                    <option value="149">Namibia</option>
+                                    <option value="150">Nauru</option>
+                                    <option value="151">Nepal</option>
+                                    <option value="152">Netherlands</option>
+                                    <option value="153">Netherlands Antilles</option>
+                                    <option value="154">New Caledonia</option>
+                                    <option value="155">New Zealand</option>
+                                    <option value="156">Nicaragua</option>
+                                    <option value="157">Niger</option>
+                                    <option value="158">Nigeria</option>
+                                    <option value="159">Niue</option>
+                                    <option value="160">Norfolk Island</option>
+                                    <option value="161">Northern Mariana Islands</option>
+                                    <option value="162">Norway</option>
+                                    <option value="163">Oman</option>
+                                    <option value="164">Pakistan</option>
+                                    <option value="165">Palau</option>
+                                    <option value="166">Palestinian Territory, Occupied</option>
+                                    <option value="167">Panama</option>
+                                    <option value="168">Papua New Guinea</option>
+                                    <option value="169">Paraguay</option>
+                                    <option value="170">Peru</option>
+                                    <option value="171">Philippines</option>
+                                    <option value="172">Pitcairn</option>
+                                    <option value="173">Poland</option>
+                                    <option value="174">Portugal</option>
+                                    <option value="175">Puerto Rico</option>
+                                    <option value="176">Qatar</option>
+                                    <option value="177">Reunion</option>
+                                    <option value="178">Romania</option>
+                                    <option value="179">Russian Federation</option>
+                                    <option value="180">Rwanda</option>
+                                    <option value="181">Samoa</option>
+                                    <option value="182">San Marino</option>
+                                    <option value="183">Saudi Arabia</option>
+                                    <option value="184">Senegal</option>
+                                    <option value="185">Serbia and Montenegro</option>
+                                    <option value="186">Seychelles</option>
+                                    <option value="187">Sierra Leone</option>
+                                    <option value="188">Singapore</option>
+                                    <option value="189">Slovakia</option>
+                                    <option value="190">Slovenia</option>
+                                    <option value="191">Solomon Islands</option>
+                                    <option value="192">Somalia</option>
+                                    <option value="193">South Africa</option>
+                                    <option value="194">Spain</option>
+                                    <option value="195">Sri Lanka</option>
+                                    <option value="196">Sudan</option>
+                                    <option value="197">Suriname</option>
+                                    <option value="198">Swaziland</option>
+                                    <option value="199">Sweden</option>
+                                    <option value="200">Switzerland</option>
+                                    <option value="201">Tajikistan</option>
+                                    <option value="202">Thailand</option>
+                                    <option value="203">Togo</option>
+                                    <option value="204">Tokelau</option>
+                                    <option value="205">Tonga</option>
+                                    <option value="206">Tunisia</option>
+                                    <option value="207">Turkey</option>
+                                    <option value="208">Turkmenistan</option>
+                                    <option value="209">Tuvalu</option>
+                                    <option value="210">Uganda</option>
+                                    <option value="211">Ukraine</option>
+                                    <option value="212">United Arab Emirates</option>
+                                    <option value="213">Uruguay</option>
+                                    <option value="214">Uzbekistan</option>
+                                    <option value="215">Vanuatu</option>
+                                    <option value="216">Venezuela</option>
+                                    <option value="217">Viet Nam</option>
+                                    <option value="218">Yemen</option>
+                                    <option value="219">Zambia</option>
+                                    <option value="220">Zimbabwe</option>
+                                </select>
+                                <span asp-validation-for="CountryId" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group row justify-content-center mb-2">
+                                <label class="col-sm-12 control-label">Image</label>
+                                <div class="col-sm-12">
+                                    <img id="image-preview" onclick="HandleBrowseClick('Logofile');"
+                                         onerror="this.onerror=null;this.src='@Url.Content("~/img/empty.jpg")'"
+                                         class="img-rounded img-thumbnail" for="input-image-hidden" style="height:120px; width:120px;"
+                                         src="/@(Model?.LogoPath?? "img/empty.jpg")">
+
+                                    <input style="display:none" asp-for="Logofile" onchange="document.getElementById('image-preview').src = window.URL.createObjectURL(this.files[0])" type="file" accept="image/jpeg, image/png">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="sub-title">Authorised Person Details</h4>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="AP_FirstName" class="float-label"></label><span class="text-danger"> *</span>
+                                <input asp-for="AP_FirstName" class="form-control form-control-lg" required />
+                                <span asp-validation-for="AP_FirstName" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="AP_LastName" class="float-label"></label>
+                                <input asp-for="AP_LastName" class="form-control form-control-lg" />
+                                <span asp-validation-for="AP_LastName" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 d-none">
+                            <div class="form-group form-default">
+                                <label asp-for="AP_DesignationID" class="form-label"></label>
+                                <select asp-for="AP_DesignationID" asp-items="@ViewBag.Designation" class="form-control form-control-lg " required>
+                                    <option value="0">Select</option>
+                                </select>
+                                <span asp-validation-for="AP_DesignationID" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="AP_DesignationName" class="form-label"></label>
+                                <input asp-for="AP_DesignationName" class="form-control form-control-lg" />
+                                <span asp-validation-for="AP_DesignationName" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="AP_PhoneNo" class="form-label"></label>
+                                <input asp-for="AP_PhoneNo" class="form-control form-control-lg PN" />
+                                <span asp-validation-for="AP_PhoneNo" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="AP_Email" class="form-label"></label>
+                                <input asp-for="AP_Email" class="form-control form-control-lg" />
+                                <span asp-validation-for="AP_Email" class="text-danger form-bar"></span>
+                                <span id="errorapemail" class="text-danger" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="AP_IsCriminalHistory" class="form-label"></label>
+                                <select asp-for="AP_IsCriminalHistory" class="form-control form-control-lg">
+                                    <option value="Yes">Yes</option>
+                                    <option value="No" selected="">No</option>
+                                </select>
+                                <span asp-validation-for="AP_IsCriminalHistory" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group row justify-content-center mb-2">
+                                <label class="col-sm-12 control-label">Image</label>
+                                <div class="col-sm-12">
+                                    <img id="image-preview1" onclick="HandleBrowseClick('AP_NId');"
+                                         onerror="this.onerror=null;this.src='@Url.Content("~/img/empty.jpg")'"
+                                         class="img-rounded img-thumbnail" for="input-image-hidden" style="height:120px; width:120px;"
+                                         src="/@(Model?.AP_NIdPath?? "img/empty.jpg")">
+
+                                    <input style="display:none" asp-for="AP_NId" onchange="document.getElementById('image-preview1').src = window.URL.createObjectURL(this.files[0])" type="file" accept="image/jpeg, image/png">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="sub-title">
+                        Organisation Admin<br />
+                    </h4>
+                    <div class="border-checkbox-group border-checkbox-group-primary">
+                        <input class="border-checkbox" type="checkbox" id="keycontact">
+                        <label class="border-checkbox-label" for="keycontact">If Same As Authorised Person</label>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="SA_FirstName" class="float-label"></label>
+                                <input asp-for="SA_FirstName" class="form-control form-control-lg" />
+                                <span asp-validation-for="SA_FirstName" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="SA_LastName" class="form-label"></label>
+                                <input asp-for="SA_LastName" class="form-control-lg col-lg-12" />
+                                <span asp-validation-for="SA_LastName" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group form-default">
+                                <label asp-for="SA_Email" class="float-label"></label>
+                                <input asp-for="SA_Email" class="form-control form-control-lg" />
+                                <span asp-validation-for="SA_Email" class="text-danger form-bar"></span>
+                                <span id="errorsaemail" class="text-danger" style="display:none;"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- manual code to this action btn are available in the Manual Update CSS -->
+                    <div class="card-block actionBtnRight">
+                        <input type="submit" value="Save" id="btnSave1" class="btn btn-primary waves-effect waves-light" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+</div>
+<div class="row">
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+            $('#divorgtype').hide();
+            $('#ClientId,#PackageId,#CountryId').select2();
+            $('#OrgId').select2('destroy');
+            $('#OrgType').select2();
+
+            if ("@action" == "Create") {
+                //$('input[name="SA_FirstName"]').attr('required', true);
+                //$('input[name="SA_Email"]').attr('required', true);
+            }
+        })
+        var checkbox = document.getElementById('keycontact');
+
+        checkbox.addEventListener('change', function () {
+            // Check if the checkbox is checked
+            if (this.checked) {
+                let firstname = $('#AP_FirstName').val();
+                let lastname = $('#AP_LastName').val();
+                let AP_DesignationID = $('#AP_DesignationID').val();
+                let AP_PhoneNo = $('#AP_PhoneNo').val();
+                let AP_Email = $('#AP_Email').val();
+
+                var desigid = parseInt(AP_DesignationID);
+
+                $('#SA_FirstName').val(firstname);
+                $('#SA_LastName').val(lastname);
+                $('#SA_Email').val(AP_Email);
+
+
+            } else {
+                $('#KC_FirstName').val('');
+                $('#KC_LastName').val('');
+                $('#KC_DesignationID').val('0');
+                $('#KC_PhoneNo').val('');
+                $('#KC_Email').val('');
+            }
+        });
+        $(document).on('change', '#OrgType', function () {
+            let OrgType = $(this).val();
+            if (OrgType == 'others-type') {
+                $('#divorgtype').show();
+            } else {
+                $('#divorgtype').hide();
+            }
+        })
+        $(document).on('change', '#SectorName', function () {
+            let sectname = $(this).val();
+            if (sectname == 'Other service activities') {
+                $('#divsectorname').show();
+            } else {
+                $('#divsectorname').hide();
+            }
+        })
+
+        $(document).on('click', '#btnSave', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Get the form element
+            let form = $('#main');
+
+            // Check if the form exists
+            if (form.length > 0) {
+                // Initialize the form validation
+                form.validate();
+
+                // Create FormData object with form data
+                let formData = new FormData(form[0]);
+
+                // Check if the form is valid
+                if (form.valid()) {
+                    // Send AJAX request
+                    $.ajax({
+                        url: '/organisation/Create',
+                        type: 'POST',
+                        data: formData,
+                        processData: false, // Prevent jQuery from processing the data
+                        contentType: false, // Prevent jQuery from setting Content-Type
+                        success: function (data, status, xhr) {
+                            if (data.isError == false) {
+                                SuccessPNotify(data.message);
+                                window.location.href = '/organisation/index';
+                            } else {
+                                WarningPNotify(data.message);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error
+                            console.error(xhr.responseText);
+                        }
+                    });
+                } else {
+                    // If form is not valid, display warning message
+                    WarningPNotify('Form Not Valid');
+                }
+            } else {
+                console.error('Form element not found.');
+            }
+        });
+
+
+        var form = $("#contact");
+        form.validate({
+            errorPlacement: function errorPlacement(error, element) { element.before(error); },
+            rules: {
+                confirm: {
+                    equalTo: "#password"
+                }
+            }
+        });
+        form.children("div").steps({
+            headerTag: "h3",
+            bodyTag: "section",
+            transitionEffect: "slideLeft",
+            onStepChanging: function (event, currentIndex, newIndex) {
+                form.validate().settings.ignore = ":disabled,:hidden";
+                return form.valid();
+            },
+            onFinishing: function (event, currentIndex) {
+                form.validate().settings.ignore = ":disabled";
+                return form.valid();
+            },
+            onFinished: function (event, currentIndex) {
+                alert("Submitted!");
+            }
+        });
+
+        function fileValidation(name) {
+            var fileInput = document.getElementById(`${name}`);
+            var filePath = fileInput.value;
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+            if (!allowedExtensions.exec(filePath)) {
+                alert('Please upload file having extensions .jpeg/.jpg/.png only.');
+                fileInput.value = '';
+                return false;
+            } else {
+                //Image preview
+                //if (fileInput.files && fileInput.files[0]) {
+                //    var reader = new FileReader();
+                //    reader.onload = function (e) {
+                //        document.getElementById('imagePreview').innerHTML = '<img src="' + e.target.result + '"/>';
+                //    };
+                //    reader.readAsDataURL(fileInput.files[0]);
+                //}
+            }
+        }
+        //---------------- duplicate email check -----------------//
+        $('#OrgEmail').blur(function () {
+            let email = $(this).val();
+            $.get('/client/checkemail', { Email: email }, function (data, success, xhr) {
+                if (success == 'success') {
+                    if (data != "") {
+                        //SuccessPNotify(data);
+                        $('#erroremail').text(data).show();
+                        $('#OrgEmail').val('');
+
+                    } else {
+                        $('#erroremail').text('');
+                        $('#erroremail').hide();
+                    }
+                }
+            })
+        });
+        $('#SA_Email').blur(function () {
+            let email = $(this).val();
+            $.get('/client/checkemail', { Email: email }, function (data, success, xhr) {
+                if (success == 'success') {
+                    if (data != "") {
+                        //SuccessPNotify(data);
+                        $('#errorsaemail').text(data).show();
+                        $('#SA_Email').val('');
+
+                    } else {
+                        $('#errorsaemail').text('');
+                        $('#errorsaemail').hide();
+                    }
+                }
+            })
+        });
+        $('#AP_Email').blur(function () {
+            let email = $(this).val();
+            $.get('/client/checkemail', { Email: email }, function (data, success, xhr) {
+                if (success == 'success') {
+                    if (data != "") {
+                        $('#errorapemail').text(data).show();
+                        $('#AP_Email').val('');
+
+                    } else {
+                        $('#errorapemail').text('');
+                        $('#errorapemail').hide();
+                    }
+                }
+            })
+        });
+        $('#OrgName').blur(function () {
+            let orgname = $(this).val();
+            if (orgname != "") {
+                $.get('/organisation/checkorgname', { OrgName: orgname }, function (data, success, xhr) {
+                    console.log(data);
+                    if (success == 'success') {
+                        if (data == true) {
+                            $('#orgerror').text('Organisation Name Already Exist.').show();
+                            $('#OrgName').val('');
+
+                        } else {
+                            $('#orgerror').text('');
+                            $('#orgerror').hide();
+                        }
+                    }
+                })
+            }
+        });
+
+        function HandleBrowseClick(input_image) {
+            var fileinput = document.getElementById(input_image);
+            fileinput.click();
+        }
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function () {
+                const output = document.getElementById('image-preview');
+                output.src = reader.result;
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+}

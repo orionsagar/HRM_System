@@ -1,0 +1,88 @@
+﻿@model MainModuleViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@{
+
+    string[] BCText = new string[] { "Module List", "Module Edit" };
+    string[] BCLink = new string[] { "module/index", "#" };
+    PageHeaderProps pageHeader = new PageHeaderProps
+    {
+        PageTitle = "Module Edit",
+        PageDesc = "Module Edit",
+        BreadcrumbText = BCText,
+        BreadcrumbLink = BCLink
+    };
+}
+
+@await Component.InvokeAsync("PageHeader", pageHeader)
+
+
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <!-- Basic Inputs Validation start -->
+            <div class="card">
+
+                <form id="main" asp-action="Edit" method="post" asp-controller="Module" novalidate>
+                    <div class="card-header">
+                        <h5><a asp-action="Index">Back to List</a></h5>
+                        @*<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>*@
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="ModuleID" />
+                    </div>
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label asp-for="ModuleName" class="col-sm-12 col-form-label">  <span asp-validation-for="ModuleName" class="text-danger messages"></span></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="ModuleName" id="name" name="ModuleName" class="form-control" />
+
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="Package" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="Package" class="form-control" />
+                                        <span asp-validation-for="Package" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label asp-for="Description" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="Description" class="form-control" />
+                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="SortIndex" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="SortIndex" class="form-control" />
+                                        <span asp-validation-for="SortIndex" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <label class="col-sm-2"></label>
+                            <div class="col-sm-10">
+                                <input type="submit" value="Submit" class="btn btn-primary m-b-0" />
+                                @*<button type="submit" class="btn btn-primary m-b-0">Submit</button>*@
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Basic Inputs Validation end -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+﻿
+<style>
+    @@media (min-width: 992px) {
+        .modal-lg {
+            max-width: 992px;
+        }
+    }
+</style>
+
+<div class="modal fade" id="reportmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" draggable="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Report Access</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="ReportTypeId" class="col-md-3 col-form-label">Report Type:</label>
+                            <div class="col-md-9">
+                                <select id="ReportTypeId" class="form-control form-control-sm" asp-items="@ViewBag.ReportTypeId" required>
+                                    <option value="0">Select</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <table class="table table-sm" id="rptlist">
+                    <thead>
+                        <tr>
+                            <th>SL No</th>
+                            <th>Report Name</th>
+                            <th>Report Type</th>
+                            <th>Menu Name</th>
+                            <th><input type="checkbox" id="permissionall" class="custom-checkbox" /></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnclose">Close</button>
+                <button type="button" class="btn btn-primary" id="btnrsave">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>    
+        function isPermission(reportid) {
+            if ($(`#Permission_${reportid}`).is(":checked")) {
+                $(`#Permission_${reportid}`).val(1)
+            } else {
+                $(`#Permission_${reportid}`).val(0)
+            }
+        }        
+
+        function bindReportType(rtypelist) {
+            let option = `<option value='0'>select</option>`;
+            rtypelist.map(r => {
+                option += `<option value='${r.value}'>${r.text}</option>`;
+            });
+            $('#ReportTypeId').html(option);
+        }
+    </script>
+}

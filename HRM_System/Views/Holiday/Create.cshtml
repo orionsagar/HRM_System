@@ -1,0 +1,614 @@
+﻿@model Holiday
+
+@inject IGlobalHelper _global;
+@{
+    var action = ViewBag.Action;
+    var title = "Holiday";
+    ViewData["Title"] = $"{title} List";
+}
+
+@section PageName {
+    Holiday List
+}
+@section Breadcrumb {
+    <a href="/holiday/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">Holiday List</span>
+}
+@{
+    var ComId = _global.GetCompID();
+    var OrgId = _global.GetOrgId();
+    var UserId = _global.GetUserID();
+    var date = DateTime.Now;
+}
+
+<style type="text/css">
+    .ms-container {
+        width: 520px !important;
+    }
+
+    #loading {
+        position: fixed;
+        display: block;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        text-align: center;
+        opacity: 0.7;
+        background-color: #fff;
+        z-index: 99;
+    }
+
+    #loading-image {
+        position: absolute;
+        top: 100px;
+        left: 240px;
+        z-index: 100;
+    }
+</style>
+
+<div class="page-body">
+    <div class="row justify-content-center">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-block">
+                    @if (Model == null)
+                    {
+                        <input type="hidden" asp-for="HolidayId" value="0" />
+                        <input type="hidden" asp-for="AddedBy" value="@UserId" />
+                        <input type="hidden" asp-for="UpdatedBy" />
+                        <input type="hidden" asp-for="AddedDate" value="@date" />
+                        <input type="hidden" asp-for="UpdatedDate" />
+                        <input type="hidden" asp-for="CompId" value="@ComId" />
+                        <input type="hidden" asp-for="OrgId" value="@OrgId" />
+                    }
+                    else
+                    {
+                        <input type="hidden" asp-for="HolidayId" />
+                        <input type="hidden" asp-for="AddedBy" />
+                        <input type="hidden" asp-for="UpdatedBy" value="@UserId" />
+                        <input type="hidden" asp-for="AddedDate" />
+                        <input type="hidden" asp-for="UpdatedDate" value="@date" />
+                        <input type="hidden" asp-for="CompId" value="@ComId" />
+                        <input type="hidden" asp-for="OrgId" value="@OrgId" />
+                    }
+
+                    <input type="hidden" id="privjobcalenderid" />
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row p-b-5">
+                                        <label class="col-md-2 control-label">Calender</label>
+                                        <div class="col-md-10">
+                                            <select asp-items="ViewBag.JobCalendarId" class="form-control form-control-sm" id="jobcalender">                      </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row p-b-5">
+                                        <label class="col-md-2 control-label">Month</label>
+                                        <div class="col-md-10">
+                                            <input type="text" id="dtmonth" class="form-control form-control-sm" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group row p-b-15">
+                                        <label class="col-md-3 control-label">Select Day</label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="dtholiday" class="form-control form-control-sm" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group row p-b-5">
+                                        <input type="button" class="btn btn-sm btn-primary" id="btnadd" value="Add Holiday" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="table table-responsive-sm table-bordered" id="holiday">
+                                <thead>
+                                    <tr>
+                                        <th>Is WeekDay</th>
+                                        @*<th>holidayId</th>*@
+                                        <th>Holiday Date</th>
+                                        <th>Remarks</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            @* <div class="form-group-sm row justify-content-center p-2">
+
+                </div> *@
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-block actionBtnRight">
+                            <input type="button" class="btn btn-primary" id="btnSave" value="Submit" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page-body end -->
+</div>
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    @*<script src="~/bower_components/multiselect/js/jquery.multi-select.js"></script>
+        <script src="~/assets/js/jquery.quicksearch.js"></script>*@
+
+
+    <script type="text/javascript">
+        $(function () {
+            $("[id*=btnDelete]").removeAttr("onclick");
+            $("#dialog").dialog({
+                modal: true,
+                autoOpen: false,
+                title: "Confirmation",
+                width: 350,
+                height: 160,
+                buttons: [
+                    {
+                        id: "Yes",
+                        text: "Yes",
+                        click: function () {
+                            $("[id*=btnDelete]").attr("rel", "delete");
+                            $("[id*=btnDelete]").click();
+                        }
+                    },
+                    {
+                        id: "No",
+                        text: "No",
+                        click: function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                ]
+            });
+            $("[id*=btnDelete]").click(function () {
+                if ($(this).attr("rel") != "delete") {
+                    $('#dialog').dialog('open');
+                    return false;
+                } else {
+                    __doPostBack(this.name, '');
+                }
+            });
+        });
+    </script>
+    <script>
+                let previouscalander = 0;
+                let daylist = [];
+                var i = 0;
+                $(document).ready(function () {
+
+                })
+                $('#jobcalender').select2();
+
+                $('#dtholiday').datepicker();
+
+
+                $('#dtmonth').datepicker(
+                    {
+                        dateFormat: "mm-yy",
+                        changeMonth: true,
+                        changeYear: true,
+                        showButtonPanel: true,
+                        onClose: function (dateText, inst) {
+
+                            function isDonePressed() {
+                                return ($('#ui-datepicker-div').html().indexOf('ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all ui-state-hover') > -1);
+                            }
+
+                            if (isDonePressed()) {
+                                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                                $(this).datepicker('setDate', new Date(year, month, 1)).trigger('change');
+
+                                $('#dtmonth').focusout()//Added to remove focus from datepicker input box on selecting date
+                                $(".ui-datepicker-calendar").hide();
+
+                            }
+                        },
+
+                        beforeShow: function (input, inst) {
+
+                            inst.dpDiv.addClass('month_year_datepicker')
+
+                            if ((datestr = $(this).val()).length > 0) {
+                                year = datestr.substring(datestr.length - 4, datestr.length);
+                                month = datestr.substring(0, 2);
+                                $(this).datepicker('option', 'defaultDate', new Date(year, month - 1, 1));
+                                $(this).datepicker('setDate', new Date(year, month - 1, 1));
+                                $(".ui-datepicker-calendar").hide();
+                            }
+
+                        }
+                    });
+                //$("#dtmonth").datepicker("setDate", new Date());
+
+
+        @*$('#dtmonth').datepicker({
+    dateFormat: "mm-yy",
+    changeMonth: true,
+    changeYear: true,
+    //autoclose: true,
+    showButtonPanel: true,
+    //onClose: function (dateText, inst) {
+    //    $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+    //}
+    onClose: function (dateText, inst) {
+
+    var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+    //$(this).val($.datepicker.formatDate('yy-mm', new Date(year, month, 1))).trigger('change');
+    $(this).datepicker('setDate', new Date(year, month, 1)).trigger('change');
+    //$(this).datepicker('refresh');
+    var cmonth = parseInt(month) + 1;
+    var jcid = $('#jobcalender option:selected').val();
+    if (jcid != 0) {
+    $('#holiday tbody').empty();
+    getHolidays(jcid, @ComId, year, cmonth );
+    } else {
+    WarningPNotify('Please Select Job Calendar Fast.')
+    $('#dtmonth').val('');
+    return false
+    }
+    },
+    beforeShow: function (input, inst) {
+
+    //inst.dpDiv.addClass('month_year_datepicker')
+
+    if ((datestr = $(this).val()).length > 0) {
+    year = datestr.substring(datestr.length - 4, datestr.length);
+    month = datestr.substring(0, 2);
+    $(this).datepicker('option', 'defaultDate', new Date(year, month - 1, 1));
+    $(this).datepicker('setDate', new Date(year, month - 1, 1));
+    $(".ui-datepicker-calendar").hide();
+    }
+
+    }
+    //onSelect: function (dateText, inst) {
+    //     alert(dateText + 'select');
+    //},
+    //onChange: function (dateText, inst) {
+    //     alert(dateText + 'change');
+    //}
+    });*@
+
+                    $("#dtmonth").focus(function () {
+                        // alert();
+                        $(".ui-datepicker-calendar").hide();
+                        $("#ui-datepicker-div").position({
+                            my: "center top",
+                            at: "center bottom",
+                            of: $(this)
+                        });
+                    });
+
+                $('#jobcalender').on('change', function () {
+                    var jcid = $(this).val();
+                    var dtmonth = $('#dtmonth').val();
+
+
+                    if (dtmonth != '') {
+                        var month = dtmonth.split("-")[0];
+                        var year = dtmonth.split("-")[1];
+                        $('#holiday tbody').empty();
+                        getHolidays(jcid, @ComId, year, month)
+                    } else {
+                        WarningPNotify("please select month!!");
+                    }
+                })
+                $('#dtmonth').on('change', function () {
+                    var jcid = $('#jobcalender option:selected').val();
+                    let yearmonth = $(this).val();
+                    let splidts = yearmonth.split('-')
+                    let month = splidts[0];
+                    let year = splidts[1];
+                    if (jcid != 0) {
+                        $('#holiday tbody').empty();
+                        getHolidays(jcid, @ComId, year, month)
+
+                    } else {
+                        WarningPNotify('Please Select Job Calendar Fast.')
+                        $('#dtmonth').val('');
+                        //return false
+                    }
+                })
+                $('#btnadd').on('click', function () {
+                    $('#btnSave').show();
+                    let yearmonth = $('#dtmonth').val();
+                    let splidts = yearmonth.split('-')
+                    let cyear = splidts[1];
+                    let cmonth = splidts[0];
+                    var jobcalendarid = $('#jobcalender option:selected').val();
+                    var hdate = $('#dtholiday').val();
+                    var date = new Date(hdate)
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    var cdate = date.getDate();
+                    if (cyear == year) {
+                        if (month == cmonth) {
+                            //var isvalid = checkdate(hdate)
+                            var isvalid = checkdate(cdate, jobcalendarid)
+                            if (isvalid == true) {
+                                if (jobcalendarid != 0 && hdate != '') {
+                                    bindHoliday(hdate)
+                                } else {
+                                    if (jobcalendarid == 0) {
+                                        WarningPNotify('Please Select Job Calendar Fast.')
+                                    } else if (hdate == '') {
+                                        WarningPNotify('Please Select Holiday Date Fast.')
+                                    }
+                                }
+                            }
+                        } else {
+                            WarningPNotify('Selected date not in same selected Month.')
+                        }
+                    } else {
+                        WarningPNotify('Selected date not in same selected year.')
+                    }
+
+
+                })
+
+                function checkdate(cdate, jobcalendarid) {
+                    $("tr.item-row").each(function (index) {
+                        $this = $(this);
+                        var day = $this.find('.day').text();
+                        var daysplit = day.trim().split('[');
+                        date = daysplit[0].trim();
+                        var date1 = new Date(date)
+                        var cdate = date1.getDate();
+                        daylist.push(cdate)
+                    })
+                    for (adate of daylist) {
+                        var prvjobcalenderid = $('#privjobcalenderid').val();
+                        if (cdate == adate && jobcalendarid == prvjobcalenderid) {
+                            WarningPNotify('Holiday Already Added.');
+                            return false;
+                        }
+                    }
+                    return true
+                }
+                function getHolidays(jobcalendarid, ComId, year, month) {
+                    if (previouscalander != jobcalendarid) {
+                        $.get('/holiday/getholidays', { JobCalendarId: jobcalendarid, CompId: ComId, Year: year, Month: month }, function (data, status, xhr) {
+                            // console.log(data)
+                            if (data.length > 0) {
+                                bindPreviousHoliday(data);
+                                //$('#btnSave').hide();
+                            } else {
+                                daylist = [];
+                            }
+
+                        })
+                    } else {
+                        bindHoliday(hdate)
+                        $('#btnSave').show();
+                    }
+
+                }
+                function bindHoliday(hdate) {
+                    var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    var date = new Date(hdate)
+                    var date1 = $.datepicker.formatDate('dd-M-yy', date)
+                    var name = weekday[date.getDay()]
+                    var html = '';
+
+                    html = `<tr class="text-left item-row" id="row_${i}">
+                                            <td class="isweekday">
+                                                <div class="checkbox-zoom zoom-info p-t-12">
+                                                <label>
+                                                    <input type="checkbox" id="isweekday_${i}" onclick="isweekday(${i})"/>
+                                                    <span class="cr">
+                                                        <i class="cr-icon icofont icofont-ui-check txt-default"></i>
+                                                    </span>
+                                                </label>
+                                                </div>
+                                            </td>
+                                            <td class="holidayid" style="display:none;">
+                                                <input type="hidden" id="holidayid" value="0"/>
+                                            </td>
+                                            <td class="day">
+                                                ${date1} [${name}]
+                                            </td>
+                                            <td class="remarks">
+                                                <input type="text" class="form-control form-control-sm" autocomplete="off" id="remarks_${i}"/>
+                                            </td>
+                                            <td>
+                                                <a id="btndelete_${i}">
+                                                    <i class="fa fa-trash" onclick="deleterow(${i})"></i>
+                                                </a>
+                                            </td>
+                                        </tr>`
+                    $('#holiday tbody').append(html);
+                    i++;
+                }
+
+                function bindPreviousHoliday(datalist) {
+                    daylist = [];
+                    console.log(datalist);
+                    var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    var html = '';
+                    for (holiday of datalist) {
+                        var dt = holiday.holidayDate;
+                        var date = new Date(dt)
+                        daylist.push(date.getDate());
+                        var name = weekday[date.getDay()]
+                        var date1 = $.datepicker.formatDate('dd-M-yy', date)
+                        var ischeck = '';
+                        $('#privjobcalenderid').val(holiday.jobCalenderId);
+                        if (holiday.holidayType == true) {
+                            ischeck = 'checked';
+                        }
+                        html = `<tr class="text-left item-row" id="row_${i}">
+                                            <td class="isweekday">
+                                                <div class="checkbox-zoom zoom-info p-t-12">
+                                                <label>
+                                                    <input type="checkbox" id="isweekday_${i}" onclick="isweekday(${i})" ${ischeck}/>
+                                                    <span class="cr">
+                                                        <i class="cr-icon icofont icofont-ui-check txt-default"></i>
+                                                    </span>
+                                                </label>
+                                                </div>
+                                            </td>
+                                            <td class="holidayid" style="display:none;">
+                                                <input type="hidden" id="holidayid_${i}" value="${holiday.holidayId}"/>
+                                                <input type="hidden" id="jobCalenderId_${i}" value="${holiday.jobCalenderId}"/>
+                                            </td>
+                                            <td class="day" ondblclick="enableremarks(${i})">
+                                                ${date1} [${name}]
+                                            </td>
+                                            <td class="remarks"  ondblclick="enableremarks(${i})">
+                                                <input type="text" class="form-control form-control-sm" autocomplete="off" id="remarks_${i}" value="${holiday.remarks}" />
+                                            </td>
+                                            <td>
+                                                <a id="btndelete_${i}">
+                                                    <i class="fa fa-trash" id="delete_${i}" onclick="deleteparmanent(${i})"></i>
+                                                </a>
+
+                                            </td>
+                                        </tr>`
+                        $('#holiday tbody').append(html);
+                        i++;
+                    }
+                }
+
+                //<i class="fa fa-trash" id="delete_${i}" onclick="confirmmodal('/holiday/delete','${holiday.holidayId}','Are you sure you want to delete parmanently ...?')"></i>
+                function deleterow(index) {
+                    $('tr#row_' + index).remove();
+                }
+                function deleteparmanent(index) {
+                    ConfirmDialog('Are you sure you want to delete parmanently ...?', index)
+                    //if (confirm("Are you sure you want to delete parmanently ...?")) {
+                    //    var holidayid = $(`#holidayid_${index}`).val();
+                    //    daylist = [];
+                    //    $.get('/holiday/delete', { id: holidayid }, function (data, status, xhr) {
+                    //        DangerPNotify(data.message)
+                    //        $('tr#row_' + index).remove();
+                    //        $("tr.item-row").each(function (index) {
+                    //            $this = $(this);
+                    //            var day = $this.find('.day').text();
+                    //            var daysplit = day.trim().split('[');
+                    //            date = daysplit[0].trim();
+                    //            var date1 = new Date(date)
+                    //            var cdate = date1.getDate();
+                    //            daylist.push(cdate)
+                    //        })
+                    //    })
+                    //} else {
+                    //    return false;
+                    //}
+                }
+                $('#btnSave').on('click', function () {
+                    //$(this).hide();
+                    var jobcalendarid = $('#jobcalender option:selected').val();
+                    var AddedBy = $('#AddedBy').val();
+                    var UpdatedBy = $('#UpdatedBy').val();
+                    var AddedDate = $('#AddedDate').val();
+                    var UpdatedDate = $('#UpdatedDate').val();
+                    var CompId = $('#CompId').val();
+                    var OrgId = $('#OrgId').val();
+                    var Items = [];
+                    if (jobcalendarid != 0) {
+                        $("tr.item-row").each(function (index) {
+                            $this = $(this);
+                            var isweekday = $this.find('.isweekday').find("input").is(":checked");
+                            var day = $this.find('.day').text();
+                            var daysplit = day.trim().split('[');
+                            var date = daysplit[0].trim();
+                            var remarks = $this.find('.remarks').find("input").val();
+                            var HolidayId = $this.find('.holidayid').find("input").val();
+
+                            Items.push({ HolidayDate: date, Remarks: remarks, HolidayType: isweekday, JobCalenderId: jobcalendarid, OrgId: OrgId, HolidayId: HolidayId, CompId: CompId, AddedBy: AddedBy, UpdatedBy: UpdatedBy, AddedDate: AddedDate, UpdatedDate: UpdatedDate });
+                        });
+                    } else {
+                        WarningPNotify('Please Select Job Calendar Fast.')
+                        return false
+                    }
+
+                    if (Items.length > 0) {
+                        $.post('/holiday/create', { holiday: Items }, function (data, status, xhr) {
+                            console.log(data);
+                            SuccessPNotify(data.message);
+                            $('#btnSave').show();
+                        })
+                    } else {
+                        WarningPNotify('Please Add Holiday Then Submit.')
+                    }
+
+                    console.log(Items);
+                })
+                function enableremarks(index) {
+                    $('#btnSave').show();
+                    $(`#remarks_${index}`).attr('readonly', false);
+                    $(`#btndelete_${index}`).show();
+                }
+                function ConfirmDialog(message, index) {
+                    $('<div></div>').appendTo('body')
+                        .html('<div><h6>' + message + '?</h6></div>')
+                        .dialog({
+                            show: "fadein",
+                            modal: true,
+                            title: 'Confirm message',
+                            zIndex: 10000,
+                            autoOpen: true,
+                            width: 'auto',
+                            resizable: false,
+                            hide: "fadeout",
+                            buttons: {
+                                Yes: function () {
+                                    var holidayid = $(`#holidayid_${index}`).val();
+                                    daylist = [];
+                                    $.get('/holiday/delete', { id: holidayid }, function (data, status, xhr) {
+                                        DangerPNotify(data.message)
+                                        $('tr#row_' + index).remove();
+                                        $("tr.item-row").each(function (index) {
+                                            $this = $(this);
+                                            var day = $this.find('.day').text();
+                                            var daysplit = day.trim().split('[');
+                                            date = daysplit[0].trim();
+                                            var date1 = new Date(date)
+                                            var cdate = date1.getDate();
+                                            daylist.push(cdate)
+                                        })
+                                    })
+                                    //$('body').append('<h1>Confirm Dialog Result: <i>Yes</i></h1>');
+
+                                    $(this).dialog("close");
+                                },
+                                No: function () {
+                                    /*$('body').append('<h1>Confirm Dialog Result: <i>No</i></h1>');*/
+
+                                    $(this).dialog("close");
+                                }
+                            },
+                            close: function (event, ui) {
+                                $(this).remove();
+                            }
+                        });
+                };
+    </script>
+}

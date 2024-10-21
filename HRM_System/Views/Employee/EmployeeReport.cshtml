@@ -1,0 +1,950 @@
+﻿@model EmployeeReport
+@{
+    Layout = null;
+}
+
+@{
+    var EmpLogoPath = "";
+    var OrgLogoPath = "";
+    var hostUrl = StaticData.HostPath;
+
+    if (Model != null) {
+        if (!string.IsNullOrEmpty(Model.Employee.Photograph)) { 
+            OrgLogoPath = hostUrl + Model.OrganisationVM.LogoPath;
+        }
+    }
+    
+
+    if (Model != null) {
+        if (!string.IsNullOrEmpty(Model.Employee.Photograph)) {
+            EmpLogoPath = hostUrl + "/" + Model.Employee?.Photograph;
+        }
+    }
+    
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Invoice @Model.Employee.Name</title>
+    <link rel="stylesheet" href="@Url.Content("~/css/invoice-report.css")" />
+    <style>
+        body {
+            margin: 0px;
+            font-family: 'Segoe UI', Arial;
+        }
+
+        .invoice-head {
+            clear: both;
+            display: block;
+            padding: 10px;
+            margin-bottom: 40px;
+        }
+
+        .invoice-title {
+            background-color: navy;
+            color: white;
+            font-size: 20px;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .invoice-to {
+            float: left;
+        }
+
+        .invoice-details {
+            float: right;
+        }
+
+        table {
+            clear: both;
+            border: 1px solid darkgray;
+            border-collapse: collapse;
+            margin: auto;
+            width: 100%;
+        }
+
+        th {
+            background-color: navy;
+            color: white;
+        }
+
+        td, th {
+            border: 1px solid darkgray;
+            padding: 5px;
+        }
+
+        .numeric-cell {
+            text-align: right;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .div100 {
+            width: 100%;
+            display: flex;
+            text-align: center;
+        }
+
+        .div20 {
+            width: 20%;
+        }
+
+        .div60 {
+            width: 60%;
+            text-align: center;
+        }
+
+        div.div60 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="div100">
+        <div class="div20">
+
+            <img src="@OrgLogoPath" class="invoice-to" width="100" />
+        </div>
+        <div class="div60">
+            <div class="invoice-details">
+                <h3 style="padding-bottom: 0px;">@Model.OrganisationVM?.OrgName</h3>
+                @Model.OrganisationVM.AddressLine1, @Model.OrganisationVM?.AddressLine2<br />
+                @Model.OrganisationVM.AddressLine3, @Model.OrganisationVM?.City<br />
+                <h3>Employee Report</h3>
+            </div>
+        </div>
+        <div class="div20"></div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    @* <div class="invoice-title">
+    Invoice @Model.InvoiceNo
+    </div> *@
+
+    @* <div class="invoice-head clearfix">
+    <div class="invoice-to">
+    <strong>@Model.CustomerName</strong><br />
+    @Model.CustomerBillingAddress
+    </div>
+    <div class="invoice-details">
+    Invoice no: @Model.InvoiceNo<br />
+    Date: @Model.InvoiceDate.ToShortDateString()<br />
+    Due date: @Model.DueDate.ToShortDateString()
+    </div>
+    </div> *@
+
+    <br />
+    <img src="@EmpLogoPath" class="invoice-details" width="100" />
+    <table>
+        <tr>
+            <td>Employee Code: @Model.Employee?.CardNo</td>
+            <td>Employee Name: @Model.Employee?.Name</td>
+        </tr>
+        <tr>
+            <td>Department: @Model.Employee.EmployeeHistory?.Department</td>
+            <td>Designation: @Model.Employee.EmployeeHistory?.Designation</td>
+        </tr>
+    </table>
+    <br />
+    <br />
+    <table>
+        <tr>
+            @* <th>
+            Sl
+            No.
+            </th> *@
+            <th>Type</th>
+            <th>Particulars</th>
+        </tr>
+        <tr>
+            @* <td>1</td> *@
+            <td>
+                Employee
+                ID
+            </td>
+            <td>@Model.Employee?.CardNo</td>
+        </tr>
+        <tr>
+            @* <td>2</td> *@
+            <td>
+                Employee
+                Name
+            </td>
+            <td>@Model.Employee.Name</td>
+        </tr>
+        <tr>
+            @* <td>3</td> *@
+            <td>
+                Gender
+            </td>
+            <td>@Model.Employee?.Gender</td>
+        </tr>
+        <tr>
+            @* <td>4</td> *@
+            <td>
+                NI Number
+            </td>
+            <td>@Model.Employee?.NationalId</td>
+        </tr>
+        <tr>
+            @* <td>5</td> *@
+            <td>
+                Date of Birth
+            </td>
+            <td>@Convert.ToDateTime(Model.Employee.DateOfBirth).ToString("dd-MM-yyyy")</td>
+        </tr>
+        <tr>
+            @* <td>6</td> *@
+            <td>
+                Marital Status
+            </td>
+            <td></td>
+        </tr>
+        @* <tr>
+            <td>7</td> 
+            <td>
+                NI Number
+            </td>
+            <td>@Model.Employee.NationalId</td>
+        </tr>*@
+        <tr>
+            @* <td>7</td> *@
+            <td>
+                Nationality
+            </td>
+            <td>@Model.Employee.EmployeeDetails?.Nationality</td>
+        </tr>
+        <tr>
+            @* <td>8</td> *@
+            <td>
+                Email
+            </td>
+            <td>@Model.Employee?.Email</td>
+        </tr>
+        <tr>
+            @* <td>9</td> *@
+            <td>
+                Contact
+                Number
+            </td>
+            <td>@Model.Employee?.Phone</td>
+        </tr>
+        <tr>
+            @* <td>1</td> *@
+            <td>
+                Employee
+                Code
+            </td>
+            <td>@Model.Employee?.CardNo</td>
+        </tr>
+        <tr>
+            @* <td>10</td> *@
+            <td>
+                Alternative
+                Number
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            @* <td>11</td> *@
+            <td>
+                Department
+            </td>
+            <td>@Model.Employee.EmployeeHistory?.Department</td>
+        </tr>
+        <tr>
+            @* <td>12</td> *@
+            <td>
+                Designation
+            </td>
+            <td>@Model.Employee.EmployeeHistory?.Designation</td>
+        </tr>
+        <tr>
+            @* <td>13</td> *@
+            <td>
+                Date of Joining
+            </td>
+            <td>@Convert.ToDateTime(Model.Employee.JoiningDate).ToString("dd-MM-yyyy")</td>
+        </tr>
+        <tr>
+            @* <td>14</td> *@
+            <td>
+                Employment
+                Type
+            </td>
+            <td>@Model.Employee?.EmployeeType</td>
+        </tr>
+        <tr>
+            @* <td>15</td> *@
+            <td>
+                Date of
+                Confirmation
+            </td>
+            <td>@Convert.ToDateTime(Model.Employee.ConfirmDate).ToString("dd-MM-yyyy")</td>
+        </tr>
+        <tr>
+            @* <td>16</td> *@
+            <td>
+                Contract Start
+                Date
+            </td>
+            <td>@Convert.ToDateTime(Model.Employee.ContactStartDate).ToString("dd-MM-yyyy")</td>
+        </tr>
+        <tr>
+            @* <td>17</td> *@
+            <td>
+                Contract End
+                Date
+            </td>
+            <td>@Convert.ToDateTime(Model.Employee.ContactEndDate).ToString("dd-MM-yyyy")</td>
+        </tr>
+        <tr>
+            @* <td>18</td> *@
+            <td>
+                Job Location
+            </td>
+            <td>@Model.Employee?.JobLocation</td>
+        </tr>
+
+        @{
+            if (Model.Employee.EmployeeExperiences != null)
+            {
+                foreach (var item in Model.Employee.EmployeeExperiences)
+                {
+                    <tr>
+                        <td>
+                            Job Title
+                        </td>
+                        <td>@item.Designation</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Start Date
+                        </td>
+                        <td>@Convert.ToDateTime(item.JobStartDate).ToString("dd-MM-yyyy")</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            End Date
+                        </td>
+                        <td>@Convert.ToDateTime(item.JobEndDate).ToString("dd-MM-yyyy")</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Year of
+                            Experience
+                        </td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Job
+                            Description
+                        </td>
+                        <td>@item?.Remarks</td>
+                    </tr>
+                }
+            }
+        }
+        <tr>
+            <td>
+                Next of Kin
+                Contact Name
+            </td>
+            <td>@Model.Employee.EmployeeDetails?.NOKName</td>
+        </tr>
+        <tr>
+            @*  <td>13</td> *@
+            <td>
+                Next of Kin
+                Contact
+                Relationship
+            </td>
+            <td>@Model.Employee.EmployeeDetails?.Relationship</td>
+        </tr>
+        <tr>
+            @* <td>13</td> *@
+            <td>
+                Next of Kin
+                Contact Email
+            </td>
+            <td>@Model.Employee.EmployeeDetails?.NOKEmail</td>
+        </tr>
+        <tr>
+            @* <td>13</td> *@
+            <td>
+                Next of Kin
+                Contact
+                Number
+            </td>
+            <td>@Model.Employee.EmployeeDetails?.EmergencyContactNo</td>
+        </tr>
+        <tr>
+            @* <td>13</td> *@
+            <td>
+                Next of Kin
+                Contact
+                Address
+            </td>
+            <td>@Model.Employee.EmployeeDetails?.NOKAddress</td>
+        </tr>
+        <tr>
+            @* <td>13</td> *@
+            <td>
+                COS Number
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            @* <td>13</td> *@
+            <td>
+                COS Number
+                Start Date
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            @* <td>13</td> *@
+            <td>
+                COS Number
+                End Date
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            @* <td>13</td> *@
+            <td>
+                Present
+                Address
+            </td>
+            <td>@Model.Employee.Address</td>
+        </tr>
+        <tr>
+            @* <td>13</td> *@
+            <td>
+                Proof Of
+                Present
+                Address
+            </td>
+            <td></td>
+        </tr>
+
+        @{
+            if (Model.EmpNewDocuments != null)
+            {
+                foreach (var item in Model.EmpNewDocuments)
+                {
+                    if (item.DocumentType == "Passport")
+                    {
+                        <tr>
+                            <td>
+                                Passport No.
+                            </td>
+                            <td>@item.PostCode</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Nationality
+                            </td>
+                            <td>@item.Nationality</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Place of Birth
+                            </td>
+                            <td>@item.CountryOfResidence</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Passport
+                                Issued By
+                            </td>
+                            <td>@item.IssueBy</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Passport
+                                Issued Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.IssuedDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Passport
+                                Expiry Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.ExpiryDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Passport
+                                Eligible
+                                Review Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.EligibleReviewDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Passport
+                                Document
+                            </td>
+                            <td>Uploaded</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Is this your
+                                current
+                                passport?
+                            </td>
+                            <td>@item.IsCurrentPassport</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Passport
+                                Remarks
+                            </td>
+                            <td>@item.Remarks</td>
+                        </tr>
+                    }
+                    else if (item.DocumentType == "Visa")
+                    {
+                        <tr>
+                            <td>
+                                BRP/Visa
+                                Number
+                            </td>
+                            <td>@item.PostCode</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Nationality
+                            </td>
+                            <td>@item.Nationality</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Country of
+                                Residence
+                            </td>
+                            <td>@item.CountryOfResidence</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Visa Issued By
+                            </td>
+                            <td>@item.IssueBy</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Visa Issued
+                                Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.IssuedDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Visa Expiry
+                                Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.ExpiryDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Visa Eligible
+                                Review Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.EligibleReviewDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Visa
+                                Document
+                            </td>
+                            <td>Uploaded</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Is this your
+                                current
+                                status?
+                            </td>
+                            <td>@item.IsCurrentPassport</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Visa
+                                Remarks
+                            </td>
+                            <td>@item.Remarks</td>
+                        </tr>
+                    }
+                    else if (item.DocumentType == "Euss_Time_limit")
+                    {
+                        <tr>
+                            <td>
+                                EUSS/Time
+                                limit Ref. No.
+                            </td>
+                            <td>@item.PostCode</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                EUSS/Time
+                                limit
+                                Nationality
+                            </td>
+                            <td>@item.Nationality</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Country of
+                                Residence
+                            </td>
+                            <td>@item.CountryOfResidence</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                EUSS/Time
+                                limit Issued By
+                            </td>
+                            <td>@item.IssueBy</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                EUSS/Time
+                                limit Issued
+                                Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.IssuedDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                EUSS/Time
+                                limit Expiry
+                                Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.ExpiryDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                EUSS/Time
+                                limit Eligible
+                                Review Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.EligibleReviewDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                EUSS/Time
+                                limit
+                                Document
+                            </td>
+                            <td>Uploaded</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Is this your
+                                current
+                                status?
+                            </td>
+                            <td>@item.IsCurrentPassport</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                EUSS/Time
+                                limit
+                                Remarks
+                            </td>
+                            <td>@item.Remarks</td>
+                        </tr>
+                    }
+                    else if (item.DocumentType == "DBS")
+                    {
+                        <tr>
+                            <td>
+                                DBS Ref. No.
+                            </td>
+                            <td>@item.PostCode</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                DBS
+                                Nationality
+                            </td>
+                            <td>@item.Nationality</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Country of
+                                Residence
+                            </td>
+                            <td>@item.CountryOfResidence</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                DBS Issued By
+                            </td>
+                            <td>@item.IssueBy</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                DBS Issued
+                                Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.IssuedDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                DBS Expiry
+                                Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.ExpiryDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                DBS Eligible
+                                Review Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.EligibleReviewDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                DBS
+                                Document
+                            </td>
+                            <td>Uploaded</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Is this your
+                                current
+                                status?
+                            </td>
+                            <td>@item.IsCurrentPassport</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                DBS
+                                Remarks
+                            </td>
+                            <td>@item.Remarks</td>
+                        </tr>
+                    }
+                    else if (item.DocumentType == "NationalID")
+                    {
+                        <tr>
+                            <td>
+                                National Id Ref. No.
+                            </td>
+                            <td>@item.PostCode</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                National Id
+                                Nationality
+                            </td>
+                            <td>@item.Nationality</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Country of
+                                Residence
+                            </td>
+                            <td>@item.CountryOfResidence</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                National Id Issued By
+                            </td>
+                            <td>@item.IssueBy</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                National Id Issued
+                                Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.IssuedDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                National Id Expiry
+                                Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.ExpiryDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                National Id Eligible
+                                Review Date
+                            </td>
+                            <td>@Convert.ToDateTime(item.EligibleReviewDate).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                National Id
+                                Document
+                            </td>
+                            <td>Uploaded</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Is this your
+                                current
+                                status?
+                            </td>
+                            <td>@item.IsCurrentPassport</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                National Id
+                                Remarks
+                            </td>
+                            <td>@item.Remarks</td>
+                        </tr>
+                    }
+                    else if (item.DocumentType == "RWC")
+                    {
+                        <tr>
+                            <td>
+                                RWC Ref. No.
+                            </td>
+                            <td>@item.PostCode</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                RWC
+                                Nationality
+                            </td>
+                            <td>@item.Nationality</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Country of
+                                Residence
+                            </td>
+                            <td>@item.CountryOfResidence</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                RWC Issued By
+                            </td>
+                            <td>@item.IssueBy</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                RWC Issued
+                                Date
+                            </td>
+                            <td>
+                                @{
+                                    if (item.IssuedDate == new DateTime(1900, 1, 1))
+                                    {
+                                        Convert.ToDateTime(item.IssuedDate).ToString("dd-MM-yyyy");
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                RWC Expiry
+                                Date
+                            </td>
+                            <td>
+                                @{
+                                    if (item.ExpiryDate == new DateTime(1900, 1, 1))
+                                    {
+                                        Convert.ToDateTime(item.ExpiryDate).ToString("dd-MM-yyyy");
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                RWC Eligible
+                                Review Date
+                            </td>
+                            <td>
+                                @{
+                                    if (item.EligibleReviewDate == new DateTime(1900, 1, 1))
+                                    {
+                                        Convert.ToDateTime(item.EligibleReviewDate).ToString("dd-MM-yyyy");
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                RWC
+                                Document
+                            </td>
+                            <td>Uploaded</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Is this your
+                                current
+                                status?
+                            </td>
+                            <td>@item.IsCurrentPassport</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                RWC
+                                Remarks
+                            </td>
+                            <td>@item.Remarks</td>
+                        </tr>
+                    }
+                    else if (item.DocumentType == "Others")
+                    {
+
+                    }
+
+                }
+            }
+        }
+
+        <tr>
+            @* <td>13</td> *@
+            <td>
+                Bank Name
+            </td>
+            <td>@Model.Employee.PayDetails?.BankId</td>
+        </tr>
+        <tr>
+            @* <td>13</td> *@
+            <td>
+                Branch Name
+            </td>
+            <td>@Model.Employee.PayDetails?.BranchName</td>
+        </tr>
+        <tr>
+            @* <td>13</td> *@
+            <td>
+                Sort Code
+            </td>
+            <td>@Model.Employee.PayDetails?.SortCode</td>
+        </tr>
+        <tr>
+            @* <td>13</td> *@
+            <td>
+                Account
+                Number
+            </td>
+            <td>@Model.Employee.PayDetails?.AccountNo</td>
+        </tr>
+    </table>
+</body>
+</html>

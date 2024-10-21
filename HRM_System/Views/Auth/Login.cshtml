@@ -1,0 +1,127 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+@* <style>
+
+
+    /*
+        @@media only screen and (max-width: 1280px) {
+            img {
+                width: 16% !important
+            }
+        }*/
+        @@media (max-width: 479px) {
+            .com_logo {
+                width: 45% !important
+            }
+        }
+        @@media (min-width: 768px) {
+            .com_logo {
+                width: 45% !important
+            }
+        }
+        @@media (min-width: 992px) {
+            .com_logo {
+                width: 16% !important
+            }
+        }
+        @@media (min-width: 1200px) {
+            .com_logo {
+                width: 16% !important
+            }
+        }
+    </style> *@
+<div class="rightSignInWrapper">
+    <div class="rightContentWrapper">
+        <div class="logo">
+            <img src="/Images/assets/Logo/WP-l.png" alt="Company Logo">
+        </div>
+
+        <div class="SignInContainer">
+            <div class="signInHeader">
+                <span>Sign In</span>
+            </div>
+
+            <form asp-action="Login" asp-controller="Auth" asp-route-ReturnUrl="@ViewBag.ReturnUrl" autocomplete="off">
+                <div class="formContainer">
+                    <div class="msg">
+                        @if (ViewBag.errormessage != null)
+                        {
+                            <Span class="messageServe text-danger" style="color: red !important;" data-Error="ServerError">@ViewBag.errormessage</Span>
+                        }
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    </div>
+                    <div class="signInTextGroup">
+                        <input asp-for="Username" type="text" name="Username" data-Field="userName" placeholder="User Name" required="">
+
+                        <!-- <label for="Will">UserName</label> -->
+                    </div>
+                    <div class="signInTextGroup">
+                        <input asp-for="Password" type="password" name="password" placeholder="Password" data-Field="password" required="">
+                        <!-- <label for="Wills">Password</label> -->
+                    </div>
+                    <div class="recaptchaGroup">
+                        <script src='https://www.google.com/recaptcha/api.js'></script>
+                        <div class="g-recaptcha" data-theme="light" data-type="image" data-sitekey="6LfhUYEpAAAAAIkIG4IEcWY6Nuui2EsQidwQXJYo"></div>
+                    </div>
+
+
+                    @*  /*=========================================================================*/
+                        /*New codes from here regarding Registration form aside content 28/04/2024;*/
+                        /*=========================================================================*/ *@
+
+                    <div class="SupportLinks">
+                        <ul>
+                            <li>
+                                <a asp-controller="Auth" asp-action="PasswordReset">Forgot your Password?</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Auth" asp-action="Register" class="RedText">Register Now</a>
+                            </li>
+                        </ul>
+                    </div>
+                    @*           /*=========================================================================*/
+                        /*New codes from here regarding Registration form aside content 28/04/2024;*/
+                        /*=========================================================================*/ *@
+
+
+                    <!-- <div class="captcha">
+                        <div class="signinCheck">
+                            <input type="checkbox">
+                            <label for="">Please Verify on captcha</label>
+                        </div>
+                    </div> -->
+                    <div class="signInBtn">
+                        <button type="submit" data-trigger="Validate">Sign In</button>
+                        @* <input type="submit" data-trigger="Validate" value="Sign in"/> *@
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <div class="companyResources">
+            <div class="companyManualPdf">
+                <i class="fa-solid fa-file-pdf fa-xl"></i>
+                <span>Our Software Manual</span>
+            </div>
+
+            <div class="softwareTutorial">
+                <i class="fa-solid fa-circle-play fa-xl"></i>
+                <span>Software Tutorial</span>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+

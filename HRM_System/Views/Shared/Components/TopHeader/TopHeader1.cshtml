@@ -1,0 +1,874 @@
+﻿@model Domains.ViewModels.UserInfoViewModel
+@inject IGlobalHelper helper;
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    //Layout = null;
+    var userid = helper.GetUserID();
+    var userRole = helper.GetRoleName();
+}
+
+        <style>
+*{
+    margin: 0px;
+    padding: 0;
+    box-sizing: border-box;
+}
+.responsiveHeader{
+    display: none;
+}
+.headerContainer{
+    width: 100%;
+    height: 80px;
+    background-color: #3759B0;
+    font-family: Poppins;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+    position: sticky;
+}
+.logoContainer{
+    width: 20%;
+    height: 100%;
+    /* border: 1px solid; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-size: 1rem;
+    /* margin-left: 20px; */
+    
+}
+.logoContainer > .logo > img{
+    width: 150px;
+    height: 50px;
+    display: block;
+    -webkit-filter: drop-shadow(0px 5px 15px #ffffff);
+    filter: drop-shadow(0px 5px 15px #ffffff);
+}
+
+.searchContainer{
+    width: 40%;
+    height: 40px;
+    border-radius: 10px 10px 10px 10px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+}
+.mainSearchIcon{
+    width: 10%;
+    height: 40px;
+    background-color: #125FB8;
+    border-radius: 0px 10px 10px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    color: #ffffff;
+    transition: 500ms ease-in-out;
+}
+
+.mainSearchIcon:hover{
+    color: #000000;
+    cursor: pointer;
+}
+
+.searchContainer > input{
+    width: 90%;
+    height: 40px;
+    border: none;
+    outline: none;
+    border-radius: 10px 0px 0px 10px;
+    padding-left: 20px;
+}
+
+.userPanelContainer{
+    width: 200px;
+    height: 100px;
+    /* border: 1px solid; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-left: 30px;
+}
+
+.userPanelContainer > i{
+    color: #ffffff;
+    font-size: 2rem;
+    transition: 500ms ease-in-out;
+}
+
+.userPanelContainer > i:hover{
+    cursor: pointer;
+    color: #000000;
+    scale: 1.1;
+}
+
+.profilePic{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+}
+.userDetails{
+    margin-left: 0px;
+    color: #ffffff;
+}
+.userDetails > span{
+    display: block;
+    margin-left: 10px;
+}
+
+
+/* Left Navigation Styles */
+.bodyContainer{
+
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+}
+
+.allFormContainer{
+    width: 1000px;
+    height: 100%;
+    border: 1px solid;
+    margin-left: 50px;
+    border-top: 5px solid #3759B0;
+    border-radius: 3px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 25%);
+    background-color: #ffffff;
+    
+}
+
+.sideNavBarContainer{
+    min-width: 200px;
+    max-width: 200px;
+    height: 88vh;
+    background-color: #BBC2F8;
+    position: sticky;
+    top: 80px;
+    
+}
+.navHeader{
+    padding: 10px 0px 10px 0px;
+    width: 100%;
+    height: 30px;
+    background-color: #dfdfdf;
+    color: #125FB8;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: 700;
+}
+.navItems > ul{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+
+.nav > li > a{
+    width: 200px;
+    height: 100%;
+    font-size: 1.5rem;
+    color: #125FB8;
+    text-decoration: none;
+    transition: 300ms ease-in-out;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.nav > li > a:hover{
+    background-color: #3759B0;
+    color: #ffffff;
+    scale: 1.1;
+}
+section{
+    width: 100%;
+    height: 20px;
+}
+.contentSection{
+    width: 100%;
+    padding: 20px;
+    background-color: #dbdffa;
+}
+.breadCrumHeaders > p{
+    font-family: Poppins;
+    font-size: 2rem;
+    font-weight: 800;
+    width: 100%;
+    height: 40px;
+    /* background-color: #125FB8; */
+
+}
+.mainFormContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+}
+
+
+
+/* Organization Register first 3 questions */
+.questioneirs{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.pageHeader{
+    margin-top: 20px;
+    margin-left: 20px;
+    font-family: Poppins;
+    font-size: 1.5rem;
+    color: #161616;
+}
+.questionWrapper{
+    margin: 30px 0px 0px 30px;
+    width: 70%;
+    max-height: 100px;
+    min-height: 70px; 
+    background-color: #BBC2F8;
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px #b9b9b9;
+    /* box-shadow: 5px 5px 10px rgb(#000000); */
+}
+.question > span{
+    margin-top: 20px;
+    display: inline-block;
+    margin-left: 50px;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.question > p{
+    display: inline-block;
+    margin-left: 10px;
+}
+.selectAnswer{
+    width: 100%;
+    /* border: 1px solid; */
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.yesBtn{
+    width: 100px;
+    height: 30px;
+    margin-right: 10px;
+    border-radius: 3px;
+    box-shadow: 5px 5px 2px #546eaf;
+    background-color: #3759B0;
+    color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    transition: 300ms ease-in-out;
+
+}
+.yesBtn:hover{
+    cursor: pointer;
+    background-color: #0035bb;
+    box-shadow: 2px 2px 2px #546eaf;
+    scale: .99;
+}
+
+.noBtn{
+    width: 100px;
+    height: 30px;
+    border-radius: 3px;
+    margin-right: 10px;
+    box-shadow: 5px 5px 5px #546eaf;
+    background-color: #3759B0;
+    color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    transition: 300ms ease-in-out;
+
+}
+.noBtn:hover{
+    cursor: pointer;
+    background-color: #0035bb;
+    box-shadow: 2px 2px 2px #546eaf;
+    scale: .99;
+}
+
+
+/* Input Group Styling */
+.col1{
+    margin-left: 10px;
+
+}
+.col2{
+    margin-left: 10px;
+    
+}
+.colHeader{
+    color: #0964b0;
+    font-family: Poppins;
+    font-size: 1.5rem;
+    font-weight: 500;
+    width: 100%;
+    height: 40px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.colHeader > span{
+    border-bottom: 1px solid #0964b0;
+
+}
+.formTextGroup{
+    width: 470px;
+    height: 35px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    margin-left: 10px;
+
+}
+.inputlabel{
+    width: 190px;
+    height: 30px;
+    background-color: #0964b0;
+    border-radius: 3px;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    color: #ffffff;
+    font-family: Poppins;
+    font-size: 1.1rem;
+
+}
+.formTextGroup > input{
+    width: 220px;
+    height: 30px;
+    margin-left: 10px;
+    border: 1px solid #0964b0;
+    border-radius: 3px;
+    padding-left: 10px;
+    background-color: hsl(208, 100%, 94%);
+    font-size: 1.3rem;
+    transition: 200ms ease-in-out;
+}
+.formTextGroup > input:focus{
+    outline: none;
+    border-bottom: 3px solid #0964b0;
+}
+
+.infocircile{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #0964b0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    margin-left: 5px;
+    font-size: .8rem;
+}
+
+
+
+/* Tooltip */
+  
+.infocircile .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    font-size: 1.3rem;
+  
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+  
+.infocircile:hover .tooltiptext {
+    visibility: visible;
+  }
+
+
+
+
+/* select groups styling */
+
+.formSelectGroup{
+    width: 470px;
+    height: 35px;
+    /* border: 1px solid; */
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    margin-left: 10px;
+}
+.selectlabel{
+    width: 190px;
+    height: 30px;
+    background-color: #0964b0;
+    border-radius: 3px;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    color: #ffffff;
+    font-family: Poppins;
+    font-size: 1.1rem;
+}
+.formSelectGroup > select{
+    width: 220px;
+    height: 33px;
+    margin-left: 10px;
+    border: 1px solid #0964b0;
+    border-radius: 3px;
+    padding-left: 10px;
+    background-color: hsl(208, 100%, 94%);
+    font-size: 1.3rem;
+    transition: 200ms ease-in-out;
+}
+.formSelectGroup > select:focus{
+    outline: none;
+    border-bottom: 3px solid #0964b0;
+}
+
+/* All tab and form styles here */
+.addressContainer{
+    width: 100%;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+}
+.colHeader{
+    width: 420px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.colHeader > .formcheckgroup > label{
+    font-size: 1.3rem;
+    font-weight: normal;
+}
+.optionSelectContainer{
+    margin: 20px;
+}
+.optionSelectContainer > .questionLabel{
+    width: 100%;
+    font-weight: 700;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+.optionSelectContainer > .questionLabel > .boolRadiobtn{
+    margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.optionSelectContainer > .questionLabel > .boolRadiobtn > .yesRadio > label{
+    margin-right: 10px;
+}
+
+
+.formActionBtn{
+    padding-top: 10px;
+    padding-right: 70px;
+    margin-bottom: 30px;
+    width: 100%;
+    height: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    gap:20px;
+}
+
+.formActionBtn > .formSaveBtn > button{
+    background-color: #008CBA;
+    border: none;
+    outline: none;
+    width: 120px;
+    height: 40px;
+    border-radius: 3px;
+    color: #ffffff;
+    font-family: Poppins;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+
+
+
+:required::after {
+  content: ' *';
+  color: red;
+}
+
+.tableHeader{
+    width: 90%;
+    height: 50px;
+    margin-left: 20px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+.tableHeaderData{
+    width: 800px;
+    height: 50px;
+    background-color: #0964b0;
+    color: #ffffff;
+    border-radius: 3px 3px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.tableRowData{
+    width: 90%;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+.tableDataRow > input{
+    width: 172px;
+    height: 40px;
+    padding-left: 10px;
+}
+.tableDataRow > select{
+    width: 171px;
+    height: 40px;
+    padding-left: 10px;
+}
+.employeeTableHeader{
+    width: 90%;
+    height: 50px;
+    margin-left: 20px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+.employeeTableHeaderData{
+    width: 800px;
+    height: 50px;
+    background-color: #0964b0;
+    color: #ffffff;
+    border-radius: 3px 3px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.employeeTableRowData{
+    width: 90%;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+
+}
+.employeeTableDataRow > input{
+    width: 141px;
+    height: 40px;
+    padding-left: 10px;
+}
+.employeeTableDataRow > select{
+    width: 141px;
+    height: 40px;
+    padding-left: 10px;
+}
+
+.addFieldButton{
+    width: 30px;
+    height: 30px;
+    margin-left: 20px;
+    margin-top: 20px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    background-color: #198754;
+}
+
+.authorisingOfficers{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    padding-top: 10px;
+}
+.authorisingOfficers > .col1 > .questionLabel{
+    width: 85%;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-family: Poppins;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+.authorisingOfficers > .col1 > .questionLabel > .boolRadiobtn{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    gap: 20px;
+}
+.authorisingOfficers > .col2 > .questionLabel{
+    width: 85%;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-family: Poppins;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+.eligibleLabel{
+    border: 1px solid #b9b9b9;
+    border-radius: 3px;
+    margin-top: 10px;
+    width: 170px;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.keyContact{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    padding-top: 10px;
+}
+.formcheckgroupabove{
+    font-size: 1.3rem;
+    font-weight: normal;
+    margin-left: 20px;
+    color: #0964b0;
+    padding-top: 10px;
+}
+
+.keyContact > .col1 > .questionLabel{
+    width: 85%;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-family: Poppins;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.keyContact > .col1 > .questionLabel > .boolRadiobtn{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    gap: 20px;
+}
+.keyContact > .col2 > .questionLabel{
+    width: 85%;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-family: Poppins;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.level1User{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    padding-top: 10px;
+}
+
+.level1User > .col1 > .questionLabel{
+    width: 85%;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-family: Poppins;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.level1User > .col1 > .questionLabel > .boolRadiobtn{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    gap: 20px;
+}
+.level1User > .col2 > .questionLabel{
+    width: 85%;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-family: Poppins;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+.OrganizationTabs{
+    width: 100%;
+    height: 40px;
+}
+.OrganizationTabs > ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 10px;
+    padding-left: 20px;
+}
+.OrganizationTabs > ul > li{
+    list-style: none;
+    transition: 300ms ease-in-out;
+    padding: 10px;
+    height: 40px;
+    font-family: Poppins;
+    font-size: 1.3rem;
+    font-weight: 700;
+    
+}
+.OrganizationTabs > ul > li:hover{
+    background-color: #407bac;
+    border-radius: 3px;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0px 3px 15px #BBC2F8;
+}
+.tabActive{
+    background-color: #005ca7;
+    border-radius: 3px;
+    color: #ffffff;
+    cursor: pointer;
+    scale: 1.1;
+}
+.tabFormContainer{
+    display: none;
+    transition: 300ms ease-in-out;
+}
+.tabFormContainerShow{
+    display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </style>
+
+
+    <header>
+        <div class="headerContainer">
+            <div class="logoContainer">
+                <!-- Related to LOGO -->
+                <div class="logo">
+                    <img src="Icons/WP-l-rb.png" alt="WP-LOGO">
+                </div>
+                <div class="companyTagLine">
+                    <span>Your Virtual HR Manager</span>
+                </div>
+            </div>
+
+            <!-- Realted to Header Search Bar -->
+            <div class="searchContainer">
+                <input type="text" name="" id="" placeholder="Search Using UID">
+                <span class="mainSearchIcon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            </div>
+
+            <!-- users Panel -->
+            <div class="userPanelContainer">
+                <i class="fa-solid fa-bell"></i>
+                <i class="fa-solid fa-message"></i>
+                <div class="profilePic">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+
+            <!-- user Details -->
+            <div class="userDetails">
+                <span> Welcome: @userid</span>
+                <span> U.Level: @userRole</span>
+            </div>
+        </div>
+
+        <div class="responsiveHeader">
+            <div class="searchConatiner activeMobile">
+                <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                <span>Search</span>
+            </div>
+            <div class="homeContainer">
+                <span><i class="fa-solid fa-house"></i></span>
+                <span>Home</span>
+
+            </div>
+            <div class="menuContainer">
+                <span><i class="fa-solid fa-bars"></i></span>
+                Menu
+            </div>
+        </div>
+
+    </header>

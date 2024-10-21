@@ -1,0 +1,279 @@
+﻿@model LeaveReport
+@inject IGlobalHelper _global;
+@{
+    var action = ViewBag.Action;
+    var title = "Leave Report";
+    ViewData["Title"] = $"{title}";
+}
+
+@{
+    string[] BCText = new string[] { $"{title}" };
+    string[] BCLink = new string[] { $"leavereport/index" };
+    //string createlink = "Section/create";
+    //string linkname = "Add New";
+    PageHeaderProps pageHeader = new PageHeaderProps
+    {
+        PageTitle = $"{title}",
+        PageDesc = $"{title}",
+        //PageCreateLink = createlink,
+        //PageCreateLinkName = linkname,
+        BreadcrumbText = BCText,
+        BreadcrumbLink = BCLink
+    };
+    List<ReportAccessVM> reportlist = ViewBag.reportlist as List<ReportAccessVM>;
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+    var date = DateTime.Now;
+}
+<style>
+</style>
+@Html.AntiForgeryToken()
+<!-- Page-body start -->
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Ajax data source (Arrays) table start -->
+            <div class="card">
+                <div class="card-header">
+                    @await Component.InvokeAsync("PageHeader", pageHeader)
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        @if (reportlist != null)
+                        {
+                            var reporttype = reportlist.Select(r => new { r.ReportTypeId, r.ReportTypeName }).Distinct().ToList();
+                            @foreach (var type in reporttype)
+                            {
+                                var reports = reportlist.Where(r => r.ReportTypeId == type.ReportTypeId).ToList();
+                                <div class="col-6">
+                                    <H4>@type.ReportTypeName</H4>
+                                    @foreach (var item in reports)
+                                    {
+                                        <div>
+                                            <input type="radio" name="ReportName" id="@item.IdName" value="@item.IdName" reportid="@item.ReportId"/>
+                                            <label for="@item.IdName">@item.ReportName</label>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        }
+                        <div class="col-md-6 ">
+                            <div class="row">
+                                <input type="hidden" id="EmpId" />
+                                <div class="col-sm-12" id="FiscalYearField">
+                                    <div class="form-group row mt-1">
+                                        <label asp-for="FiscalYearId" class="col-sm-3 col-form-label">Fiscal Year</label>
+                                        <div class="col-sm-9">
+                                            <select asp-for="FiscalYearId" asp-items="ViewBag.FiscalYearId" class="form-control form-control-sm">
+                                            </select>
+                                            <span asp-validation-for="FiscalYearId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12" id="MonthField">
+                                    <div class="form-group row mt-1">
+                                        <label asp-for="Month" class="col-sm-3 col-form-label">Month</label>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Month" type="text" value="@DateTime.Now.ToString("MM-yyyy")" class="form-control" autocomplete="off" />
+                                            <span asp-validation-for="Month" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="form-group row mt-1">
+                                        <label asp-for="SectId" class="col-sm-3 col-form-label">Section</label>
+                                        <div class="col-sm-9">
+                                            <select asp-for="SectId" asp-items="ViewBag.Section" class="form-control form-control-sm">
+                                                <option value="">Select</option>
+                                            </select>
+                                            <span asp-validation-for="SectId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group row mt-1">
+                                        <label asp-for="DeptId" class="col-sm-3 col-form-label">Department</label>
+                                        <div class="col-sm-9">
+                                            <select asp-for="DeptId" asp-items="ViewBag.Department" class="form-control form-control-sm">
+                                                <option value="">Select</option>
+                                            </select>
+                                            <span asp-validation-for="DeptId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group row mt-1">
+                                        <label asp-for="DesigId" class="col-sm-3 col-form-label">Designation</label>
+                                        <div class="col-sm-9">
+                                            <select asp-for="DesigId" asp-items="ViewBag.Designation" class="form-control form-control-sm">
+                                                <option value="">Select</option>
+                                            </select>
+                                            <span asp-validation-for="DesigId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row mt-1">
+                                                <label asp-for="CardNo" class="col-sm-6 col-form-label">Card No</label>
+                                                <div class="col-sm-6">
+                                                    <input asp-for="CardNo" class="form-control" autocomplete="off" />
+                                                    <span asp-validation-for="CardNo" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group row mt-1">
+                                                <div class="col-sm-12">
+                                                    <input asp-for="EmpName" class="form-control" readonly />
+                                                    <input asp-for="EmpId" type="hidden" class="form-control" />
+                                                    <span asp-validation-for="EmpName" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group row mt-1 ml-0">
+                                        <button type="button" id="btnleavereport" class="btn btn-sm btn-info text-center">Preview</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page-body end -->
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/custom/js/report.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('[name="ReportName"]:first').prop('checked', true);
+            ShowHide();
+            $("#FiscalYearId,#SectId,#DesigId,#DeptId").select2();
+            $("#EffectiveDate").datepicker({
+                dateFormat: 'dd-mm-yy',
+                changeYear: true,
+                changeMonth: true,
+            });
+
+            $("#EffectiveDate").datepicker("setDate", new Date());
+
+            $("#empAllCheck").click(function () {
+                let check = $('#rptleavedetais').is(":checked");
+                if (check) {
+                    $("input[name='empCheckbox']").prop('checked', true);
+                } else {
+                    $("input[name='empCheckbox']").prop('checked', false);
+                }
+            });
+
+            $('#dt-emp-list tbody').on('click', 'tr td:not(:first-child)', function () {
+                const empid = $(this).closest('tr').find("td:eq(0)").find("input[name='empCheckbox']").val();
+                getEmployeeLeaveBalance(empid)
+            });
+            $('#CardNo').keyup(function () {
+                let cardno = $('#CardNo').val();
+                if (cardno != '') {
+                    getEmployeeDetails(cardno)
+                } else {
+                    $('#EmpName').val('')
+                    $('#EmpId').val('')
+                }
+            })
+            $('input[name="ReportName"]').click(function () {
+                ShowHide();
+            });
+
+            $('#btnleavereport').click(function () {
+                let reprt = getReport();
+
+                const reportName = ($('input[name="ReportName"]:checked').val() || "").toLocaleLowerCase();
+                var reportid = $('input[name="ReportName"]:checked').attr('reportid');
+                const FiscalYearId = $('#FiscalYearId').val();
+                const SectId = $('#SectId').val();
+                const DesigId = $('#DesigId').val();
+                const DeptId = $('#DeptId').val();
+                const EmpId = $('#EmpId').val();
+                const CardNo = $('#CardNo').val();
+                const month = $('#Month').val() || "";
+                if (reportName == ('rptleavedetais').toLocaleLowerCase()) {
+                    printReport(FiscalYearId, SectId, DesigId, DeptId, EmpId, CardNo, reportName, reportid);
+                } else if (reportName == ('LeaveReport').toLocaleLowerCase()) {
+                    leavereport(FiscalYearId, SectId, DesigId, DeptId, EmpId, CardNo, reportName, reportid);
+                }
+                else if (reportName == ('ShortLeaveReport').toLocaleLowerCase()) {
+                    const monthInt = month.split("-")[0];
+                    const yearInt = month.split("-")[1];
+                    shortLeaveReport(monthInt, yearInt, SectId, DesigId, DeptId, EmpId, CardNo, reportName, reportid)
+                }
+                else if (reportName == ('lsr').toLocaleLowerCase()) {
+                    annualleavereport(FiscalYearId, SectId, DesigId, DeptId, EmpId, CardNo, reportName, reportid)
+                }
+
+            })
+        });
+
+        function ShowHide() {
+            const reportName = ($('input[name="ReportName"]:checked').val() || "").toLocaleLowerCase();
+            if (reportName == "ShortLeaveReport".toLocaleLowerCase()) {
+                $("#MonthField").removeClass("d-none");
+                $("#FiscalYearField").addClass("d-none");
+            } else {
+                $("#MonthField").addClass("d-none");
+                $("#FiscalYearField").removeClass("d-none");
+            }
+        }
+        function getEmployeeLeaveBalance(empid) {
+            $.get('/leavesetup/getemployeeleave', { EmpId: empid }, function (data, status) {
+                console.log(data);
+            })
+        }
+        function getReport() {
+            let leavedetails = $('#rptleavedetais').is(":checked");
+            let report = '';
+            if (leavedetails) {
+                report = 'rptleavedetais'
+            }
+            return report;
+        }
+        function printReport(FiscalYearId, SectId, DesigId, DeptId, EmpId, CardNo, reprt, reportid) {
+            open(`/leavereport/LeaveDetailsReport?FiscalYearId=${FiscalYearId}&SectId=${SectId}&DesigId=${DesigId}&DeptId=${DeptId}&EmpId=${EmpId}&CardNo=${CardNo}&ReportName=${reprt}&ReportId=${reportid}`, '_blank');
+        }
+        function leavereport(FiscalYearId, SectId, DesigId, DeptId, EmpId, CardNo, reprt, reportid) {
+            open(`/leavereport/EmployeeLeaveReport?FiscalYearId=${FiscalYearId}&SectId=${SectId}&DesigId=${DesigId}&DeptId=${DeptId}&EmpId=${EmpId}&CardNo=${CardNo}&ReportName=${reprt}&ReportId=${reportid}`, '_blank');
+        }
+
+        function shortLeaveReport(monthInt, yearInt, SectId, DesigId, DeptId, EmpId, CardNo, reprt, reportid) {
+            open(`/leavereport/ShortLeaveReport?month=${monthInt}&year=${yearInt}&SectId=${SectId}&DesigId=${DesigId}&DeptId=${DeptId}&EmpId=${EmpId}&CardNo=${CardNo}&ReportName=${reprt}&ReportId=${reportid}`, '_blank');
+        }
+
+        function annualleavereport(FiscalYearId, SectId, DesigId, DeptId, EmpId, CardNo, reprt, reportid) {
+            if(FiscalYearId == '2')
+            {
+                FiscalYearId = '2023';
+            }
+            else {
+                FiscalYearId = '2022';
+            }
+            open(`/leavereport/EmployeeLeaveSummaryReport?fiscalYearId=${FiscalYearId}&SectId=${SectId}&DesigId=${DesigId}&DeptId=${DeptId}&CardNo=${CardNo}&Name=${EmpId}`, '_blank');
+            //open(`/leavereport/LeaveDetailsReport?FiscalYearId=${FiscalYearId}&SectId=${SectId}&DesigId=${DesigId}&DeptId=${DeptId}&EmpId=${EmpId}&CardNo=${CardNo}&ReportName=${reprt}&ReportId=${reportid}`, '_blank');
+        }
+
+    </script>
+}

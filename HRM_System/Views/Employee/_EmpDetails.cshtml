@@ -1,0 +1,1093 @@
+﻿@model EmployeeDetails
+@inject IHttpContextAccessor _http;
+
+
+@inject IGlobalHelper _global;
+
+@{
+    //var compId = DataEncryption.DecryptString(_http.HttpContext.Request.Cookies["CompID"]);
+    //var userId = DataEncryption.DecryptString(_http.HttpContext.Request.Cookies["UserID"]);
+    var compId = _global.GetCompID();
+    var userId = _global.GetUserID();
+
+}
+<style type="text/css">
+    .hr-text {
+        border: 0;
+        line-height: 1em;
+        position: relative;
+        text-align: center;
+        height: 1.5em;
+        font-size: 18px;
+        margin: 30px 15px;
+        width: 100%;
+    }
+
+        .hr-text::before {
+            content: "";
+            background: linear-gradient(to right, transparent, blue, transparent);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+        }
+
+        .hr-text::after {
+            content: attr(data-content);
+            position: relative;
+            padding: 0 7px;
+            line-height: 1.5em;
+            color: black;
+            background-color: white;
+            /*1a1a1a*/
+        }
+</style>
+<form method="post" enctype="multipart/form-data" id="detailsForm" novalidate>
+    @if (Model == null)
+    {
+        <input type="hidden" asp-for="EmpDetailsID" value="0" />
+
+        <input type="hidden" id="Details_AddedBy" value="@userId" />
+        <input type="hidden" id="Details_UpdatedBy" />
+        <input type="hidden" id="Details_AddedDate" value="@DateTime.Now" />
+        <input type="hidden" id="Details_UpdatedDate" />
+    }
+    else
+    {
+        <input type="hidden" asp-for="EmpDetailsID" />
+
+        <input type="hidden" id="Details_AddedBy" value="@Model.AddedBy" />
+        <input type="hidden" id="Details_UpdatedBy" value="@userId" />
+        <input type="hidden" id="Details_AddedDate" value="@Model.AddedDate" />
+        <input type="hidden" id="Details_UpdatedDate" value="@DateTime.Now" />
+    }
+    <div class="row">
+        <hr class="hr-text gradient" data-content="Personal Info">
+        <div class="col-sm-4 d-none">
+            <div class="form-group row">
+                <label asp-for="FathersName" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="FathersName" class="form-control form-control-sm" required />
+                    <span asp-validation-for="FathersName" class="text-danger messages"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 d-none">
+            <div class="form-group row">
+                <label asp-for="MothersName" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="MothersName" class="form-control form-control-sm" required />
+                    <span asp-validation-for="MothersName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 d-none">
+            <div class="form-group row">
+                <label asp-for="BloodGroup" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <select asp-for="BloodGroup" asp-items="ViewBag.BloodGroup" class="form-control form-control-sm">
+                    </select>
+                    <span asp-validation-for="BloodGroup" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group row">
+                <label asp-for="MaritalStatus" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <select asp-for="MaritalStatus" class="form-control form-control-sm">
+                        <option value="">&nbsp;</option>
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
+                        <option value="Unmarried">Unmarried</option>
+                        <option value="Widow">Widow</option>
+                        <option value="Divorce">Divorce</option>
+                    </select>
+                    <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="form-group row">
+                <label asp-for="Nationality" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <select asp-for="Nationality" class="form-control form-control-sm">
+                        <option value="">&nbsp;</option>
+                        <option value="Afghanistan">
+                            Afghanistan
+                        </option>
+                        <option value="Albania">
+                            Albania
+                        </option>
+                        <option value="America">
+                            America
+                        </option>
+                        <option value="Argentina">
+                            Argentina
+                        </option>
+                        <option value="Aruba">
+                            Aruba
+                        </option>
+                        <option value="Australia">
+                            Australia
+                        </option>
+                        <option value="Azerbaijan">
+                            Azerbaijan
+                        </option>
+                        <option value="Bahamas">
+                            Bahamas
+                        </option>
+                        <option value="Bahrain">
+                            Bahrain
+                        </option>
+                        <option value="Bangladesh">
+                            Bangladesh
+                        </option>
+                        <option value="Barbados">
+                            Barbados
+                        </option>
+                        <option value="Belarus">
+                            Belarus
+                        </option>
+                        <option value="Belgium">
+                            Belgium
+                        </option>
+                        <option value="Beliz">
+                            Beliz
+                        </option>
+                        <option value="Bermuda">
+                            Bermuda
+                        </option>
+                        <option value="Bolivia">
+                            Bolivia
+                        </option>
+                        <option value="Bosnia and Herzegovina">
+                            Bosnia and Herzegovina
+                        </option>
+                        <option value="Botswana">
+                            Botswana
+                        </option>
+                        <option value="Brazil">
+                            Brazil
+                        </option>
+                        <option value="Brunei Darussalam">
+                            Brunei Darussalam
+                        </option>
+                        <option value="Bulgaria">
+                            Bulgaria
+                        </option>
+                        <option value="Cambodia">
+                            Cambodia
+                        </option>
+                        <option value="Canada">
+                            Canada
+                        </option>
+                        <option value="Cayman Islands">
+                            Cayman Islands
+                        </option>
+                        <option value="Chile">
+                            Chile
+                        </option>
+                        <option value="China">
+                            China
+                        </option>
+                        <option value="Colombia">
+                            Colombia
+                        </option>
+                        <option value="Costa Rica">
+                            Costa Rica
+                        </option>
+                        <option value="Croatia">
+                            Croatia
+                        </option>
+                        <option value="Cuba">
+                            Cuba
+                        </option>
+                        <option value="Cyprus">
+                            Cyprus
+                        </option>
+                        <option value="Czech Republic">
+                            Czech Republic
+                        </option>
+                        <option value="Denmark">
+                            Denmark
+                        </option>
+                        <option value="Dominican Republic">
+                            Dominican Republic
+                        </option>
+                        <option value="East Caribbean">
+                            East Caribbean
+                        </option>
+                        <option value="Egypt">
+                            Egypt
+                        </option>
+                        <option value="El Salvador">
+                            El Salvador
+                        </option>
+                        <option value="Eritrea">
+                            Eritrea
+                        </option>
+                        <option value="Euro">
+                            Euro
+                        </option>
+                        <option value="Falkland Islands">
+                            Falkland Islands
+                        </option>
+                        <option value="Fiji">
+                            Fiji
+                        </option>
+                        <option value="France">
+                            France
+                        </option>
+                        <option value="Germany">
+                            Germany
+                        </option>
+                        <option value="Ghana">
+                            Ghana
+                        </option>
+                        <option value="Gibraltar">
+                            Gibraltar
+                        </option>
+                        <option value="Guatemala">
+                            Guatemala
+                        </option>
+                        <option value="Guernsey">
+                            Guernsey
+                        </option>
+                        <option value="Guyana">
+                            Guyana
+                        </option>
+                        <option value="Hellas (Greece)">
+                            Hellas (Greece)
+                        </option>
+                        <option value="Holland (Netherlands)">
+                            Holland (Netherlands)
+                        </option>
+                        <option value="Honduras">
+                            Honduras
+                        </option>
+                        <option value="Hong Kong">
+                            Hong Kong
+                        </option>
+                        <option value="Hungary">
+                            Hungary
+                        </option>
+                        <option value="Iceland">
+                            Iceland
+                        </option>
+                        <option value="India">
+                            India
+                        </option>
+                        <option value="Indonesia">
+                            Indonesia
+                        </option>
+                        <option value="Iran">
+                            Iran
+                        </option>
+                        <option value="Iraq">
+                            Iraq
+                        </option>
+                        <option value="Ireland">
+                            Ireland
+                        </option>
+                        <option value="Isle of Man">
+                            Isle of Man
+                        </option>
+                        <option value="Israel">
+                            Israel
+                        </option>
+                        <option value="Italy">
+                            Italy
+                        </option>
+                        <option value="Jamaica">
+                            Jamaica
+                        </option>
+                        <option value="Japan">
+                            Japan
+                        </option>
+                        <option value="Jersey">
+                            Jersey
+                        </option>
+                        <option value="Kazakhstan">
+                            Kazakhstan
+                        </option>
+                        <option value="Korea (North)">
+                            Korea (North)
+                        </option>
+                        <option value="Korea (South)">
+                            Korea (South)
+                        </option>
+                        <option value="Kyrgyzstan">
+                            Kyrgyzstan
+                        </option>
+                        <option value="Laos">
+                            Laos
+                        </option>
+                        <option value="Latvia">
+                            Latvia
+                        </option>
+                        <option value="Lebanon">
+                            Lebanon
+                        </option>
+                        <option value="Liberia">
+                            Liberia
+                        </option>
+                        <option value="Libya">
+                            Libya
+                        </option>
+                        <option value="Liechtenstein">
+                            Liechtenstein
+                        </option>
+                        <option value="Lithuania">
+                            Lithuania
+                        </option>
+                        <option value="Luxembourg">
+                            Luxembourg
+                        </option>
+                        <option value="Macedonia">
+                            Macedonia
+                        </option>
+                        <option value="Malaysia">
+                            Malaysia
+                        </option>
+                        <option value="Malta">
+                            Malta
+                        </option>
+                        <option value="Mauritius">
+                            Mauritius
+                        </option>
+                        <option value="Mexico">
+                            Mexico
+                        </option>
+                        <option value="Mongolia">
+                            Mongolia
+                        </option>
+                        <option value="Morocco">
+                            Morocco
+                        </option>
+                        <option value="Mozambique">
+                            Mozambique
+                        </option>
+                        <option value="Myanmar">
+                            Myanmar
+                        </option>
+                        <option value="Namibia">
+                            Namibia
+                        </option>
+                        <option value="Nepal">
+                            Nepal
+                        </option>
+                        <option value="Netherlands">
+                            Netherlands
+                        </option>
+                        <option value="Netherlands Antilles">
+                            Netherlands Antilles
+                        </option>
+                        <option value="New Zealand">
+                            New Zealand
+                        </option>
+                        <option value="Nicaragua">
+                            Nicaragua
+                        </option>
+                        <option value="Nigeria">
+                            Nigeria
+                        </option>
+                        <option value="North Korea">
+                            North Korea
+                        </option>
+                        <option value="Norway">
+                            Norway
+                        </option>
+                        <option value="Oman">
+                            Oman
+                        </option>
+                        <option value="Pakistan">
+                            Pakistan
+                        </option>
+                        <option value="Panama">
+                            Panama
+                        </option>
+                        <option value="Paraguay">
+                            Paraguay
+                        </option>
+                        <option value="Peru">
+                            Peru
+                        </option>
+                        <option value="Philippines">
+                            Philippines
+                        </option>
+                        <option value="Poland">
+                            Poland
+                        </option>
+                        <option value="Portugal">
+                            Portugal
+                        </option>
+                        <option value="Qatar">
+                            Qatar
+                        </option>
+                        <option value="Republic of Uganda">
+                            Republic of Uganda
+                        </option>
+                        <option value="Romania">
+                            Romania
+                        </option>
+                        <option value="Russia">
+                            Russia
+                        </option>
+                        <option value="Saint Helena">
+                            Saint Helena
+                        </option>
+                        <option value="Saudi Arabia">
+                            Saudi Arabia
+                        </option>
+                        <option value="Serbia">
+                            Serbia
+                        </option>
+                        <option value="Seychelles">
+                            Seychelles
+                        </option>
+                        <option value="Singapore">
+                            Singapore
+                        </option>
+                        <option value="Slovakia">
+                            Slovakia
+                        </option>
+                        <option value="Slovenia">
+                            Slovenia
+                        </option>
+                        <option value="Solomon Islands">
+                            Solomon Islands
+                        </option>
+                        <option value="Somalia">
+                            Somalia
+                        </option>
+                        <option value="South Africa">
+                            South Africa
+                        </option>
+                        <option value="South Korea">
+                            South Korea
+                        </option>
+                        <option value="Spain">
+                            Spain
+                        </option>
+                        <option value="Sri Lanka">
+                            Sri Lanka
+                        </option>
+                        <option value="Sudan">
+                            Sudan
+                        </option>
+                        <option value="Suriname">
+                            Suriname
+                        </option>
+                        <option value="Sweden">
+                            Sweden
+                        </option>
+                        <option value="Switzerland">
+                            Switzerland
+                        </option>
+                        <option value="Syria">
+                            Syria
+                        </option>
+                        <option value="Taiwan">
+                            Taiwan
+                        </option>
+                        <option value="Thailand">
+                            Thailand
+                        </option>
+                        <option value="Trinidad and Tobago">
+                            Trinidad and Tobago
+                        </option>
+                        <option value="Tunisia">
+                            Tunisia
+                        </option>
+                        <option value="Turkey">
+                            Turkey
+                        </option>
+                        <option value="Turkey">
+                            Turkey
+                        </option>
+                        <option value="Tuvalu">
+                            Tuvalu
+                        </option>
+                        <option value="Ukraine">
+                            Ukraine
+                        </option>
+                        <option value="United Arab Emirates">
+                            United Arab Emirates
+                        </option>
+                        <option value="United Kingdom">
+                            United Kingdom
+                        </option>
+                        <option value="United States of America">
+                            United States of America
+                        </option>
+                        <option value="Uruguay">
+                            Uruguay
+                        </option>
+                        <option value="Uzbekistan">
+                            Uzbekistan
+                        </option>
+                        <option value="Vatican City">
+                            Vatican City
+                        </option>
+                        <option value="Venezuela">
+                            Venezuela
+                        </option>
+                        <option value="Vietnam">
+                            Vietnam
+                        </option>
+                        <option value="Yemen">
+                            Yemen
+                        </option>
+                        <option value="Zimbabwe">
+                            Zimbabwe
+                        </option>
+                    </select>
+                    <span asp-validation-for="Nationality" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group row">
+                <label asp-for="Religion" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <select asp-for="Religion" asp-items="ViewBag.Religion" class="form-control form-control-sm">
+                    </select>
+                    <span asp-validation-for="Religion" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        @* <div class="col-md-4">
+            <div class="form-group row">
+                <label asp-for="Nationality" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="Nationality" class="form-control form-control-sm" required />
+                    <span asp-validation-for="Nationality" class="text-danger"></span>
+                </div>
+            </div>
+        </div> *@
+        
+        <div class="col-md-4">
+            <div class="form-group row">
+                <label asp-for="Reference" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="Reference" class="form-control form-control-sm" />
+                    <span asp-validation-for="Reference" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="form-group row">
+                <label asp-for="ExtraQualification" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <textarea asp-for="ExtraQualification" class="form-control form-control-sm"></textarea>
+                    <span asp-validation-for="ExtraQualification" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="form-group row">
+                <label asp-for="Remarks" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <textarea asp-for="Remarks" class="form-control form-control-sm"></textarea>
+                    <span asp-validation-for="Remarks" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 pr-4 d-flex flex-row justify-content-start align-items-center flex-wrap">
+            @* <div class="form-group mb-0">
+                <div class="checkbox-fade fade-in-primary">
+                    <label class="mb-0">
+                        @if (Model?.CertificateRequired == true)
+                        {
+                            <input type="checkbox" id="CertificateRequired" name="CertificateRequired" checked value="@Model?.CertificateRequired">
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="CertificateRequired" name="CertificateRequired" value="@Model?.CertificateRequired">
+                        }
+
+                        <span class="cr">
+                            <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                        </span>
+                        <span>Certificate</span>
+                    </label>
+                </div>
+            </div> *@
+
+            <!--New Trials-->
+            @*<label asp-for="PhysicalStatus" class="col-sm-12 col-6 control-label">Physicaly Unfit?</label>*@
+
+            @* <div class="form-group mb-0">
+                <div class="col-sm-12 col-6">
+                    <div class="checkbox-fade fade-in-primary">
+                        <label class="mb-0">
+                            @if (Model?.PhysicalStatus == true)
+                            {
+                                <input type="checkbox" id="PhysicalStatus" name="PhysicalStatus" checked value="@Model?.PhysicalStatus">
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="PhysicalStatus" name="PhysicalStatus" value="@Model?.PhysicalStatus">
+                            }
+
+                            <span class="cr">
+                                <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                            </span>
+                            <span>Physicaly Unfit?</span>
+                        </label>
+                    </div>
+                </div>
+            </div> *@
+
+            @* <div class="form-group mb-0">
+                <div class="checkbox-fade fade-in-primary">
+                    <label class="mb-0">
+                        @if (Model?.MaritalStatus == true)
+                        {
+                            <input type="checkbox" id="MaritalStatus" name="MaritalStatus" checked value="@Model?.MaritalStatus">
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="MaritalStatus" name="MaritalStatus" value="@Model?.MaritalStatus">
+                        }
+
+                        <span class="cr">
+                            <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                        </span>
+                        <span>Is Married?</span>
+                    </label>
+                </div>
+            </div> *@
+
+        </div>
+
+        <div class="col-sm-4 d-none" id="divh">
+            <div class="form-group row">
+                <label asp-for="HusbandsName" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="HusbandsName" class="form-control form-control-sm" />
+                    <span asp-validation-for="HusbandsName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 d-none" id="divboy">
+            <div class="form-group row">
+                <label asp-for="Boys" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="Boys" value="@(Model==null?0:Model.Boys)" min="0" class="form-control form-control-sm" />
+                    <span asp-validation-for="Boys" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 d-none" id="divgirl">
+            <div class="form-group row">
+                <label asp-for="Girls" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="Girls" value="@(Model==null?0:Model.Girls)" min="0" class="form-control form-control-sm" />
+                    <span asp-validation-for="Girls" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        @*  <div class="col-md-4">
+        <div class="form-group row">
+
+
+        <div class="col-sm-12 col-6">
+        <div class="checkbox-fade fade-in-primary">
+        <label>
+        @if (Model?.PhysicalStatus == true)
+        {
+        <input type="checkbox" id="PhysicalStatus" name="PhysicalStatus" checked value="@Model?.PhysicalStatus">
+        }
+        else
+        {
+        <input type="checkbox" id="PhysicalStatus" name="PhysicalStatus" value="@Model?.PhysicalStatus">
+        }
+
+        <span class="cr">
+        <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+        </span>
+        <span>Physicaly Unfit?</span>
+        </label>
+        </div>
+        </div>
+        </div>
+        </div> *@
+
+
+        <hr class="hr-text gradient" data-content="Emergency / Next of Kin Contact Details">
+        <div class="col-sm-4">
+            <div class="form-group row">
+                <label asp-for="NOKName" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="NOKName" class="form-control form-control-sm" />
+                    <span asp-validation-for="NOKName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group row">
+                <label asp-for="Relationship" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <select asp-for="Relationship" class="form-control form-control-sm">
+                        <option>Select Relationship</option>
+                        <option>Father</option>
+                        <option>Mother</option>
+                        <option>Wife</option>
+                        <option>Relatives</option>
+                        <option>Husband</option>
+                        <option>Partner</option>
+                        <option>Son</option>
+                        <option>Daughter</option>
+                        <option>Friend</option>
+                    </select>
+                    <span asp-validation-for="Relationship" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group row">
+                <label asp-for="NOKEmail" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="NOKEmail" class="form-control form-control-sm" />
+                    <span asp-validation-for="NOKEmail" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group row">
+                <label asp-for="EmergencyContactNo" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="EmergencyContactNo" class="form-control form-control-sm" />
+                    <span asp-validation-for="EmergencyContactNo" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group row">
+                <label asp-for="NOKAddress" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="NOKAddress" class="form-control form-control-sm" />
+                    <span asp-validation-for="NOKAddress" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <hr class="hr-text gradient" data-content="Contact Information (Correspondence Address)">
+
+        <div class="col-sm-4">
+            <div class="form-group row">
+                <label asp-for="PresentPC" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="PresentPC" type="text" class="form-control form-control-sm" />
+                    <span asp-validation-for="PresentPC" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group row">
+                <label asp-for="Address1" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="Address1" class="form-control form-control-sm"  />
+                    <span asp-validation-for="Address1" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group row">
+                <label asp-for="Address2" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="Address2" type="text" class="form-control form-control-sm" />
+                    <span asp-validation-for="Address2" class="text-danger"></span>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group row">
+                <label asp-for="Address3" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="Address3" type="text" class="form-control form-control-sm" />
+                    <span asp-validation-for="Address3" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group row">
+                <label asp-for="City" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="City" type="text" class="form-control form-control-sm" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-4">
+            <div class="form-group row">
+                <label asp-for="CountryId" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <select asp-for="CountryId" asp-items="ViewBag.Country" class="form-control form-control-sm">
+                    </select>
+                    <span asp-validation-for="CountryId" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="col-md-4">
+            <div class="form-group row justify-content-center mb-2">
+                <label class="col-sm-12 control-label">Proof Of Address</label>
+                <div class="col-sm-12">
+                    <img id="image-preview1" onclick="HandleBrowseClick('ImgFile');"
+                         onerror="this.onerror=null;this.src='@Url.Content("~/img/empty.jpg")'"
+                         class="img-rounded img-thumbnail" for="input-image-hidden" style="height:120px; width:120px;" src="/@(Model?.ProofOfAddress?? "img/empty.jpg")">
+
+                    <input style="display:none" asp-for="ImgFile" onchange="document.getElementById('image-preview1').src = window.URL.createObjectURL(this.files[0])" type="file" accept="image/jpeg,image/gif,image/png,application/pdf">
+
+                </div>
+            </div>
+        </div>
+        <hr class="hr-text gradient d-none" data-content="Permanant Address">
+        <div class="col-sm-12 d-none">
+            <div class="form-group row">
+                <div class="checkbox-fade fade-in-primary">
+                    <label>
+                        <input type="checkbox" id="isparmanant">
+                        <span class="cr">
+                            <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                        </span>
+                        <strong class="text-c-blue">Is Permanant Address Same as Present Address?</strong>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 d-none">
+            <div class="form-group row">
+                <label asp-for="PermanantAddress" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="PermanantAddress" class="form-control form-control-sm" />
+                    <span asp-validation-for="PermanantAddress" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 d-none">
+            <div class="form-group row">
+                <label asp-for="PermanantArea" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="PermanantArea" class="form-control form-control-sm" />
+                    <span asp-validation-for="PermanantArea" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4 d-none">
+            <div class="form-group row">
+                <label asp-for="PermanantPC" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12">
+                    <input asp-for="PermanantPC" type="text" class="form-control form-control-sm PN" />
+                    <span asp-validation-for="PermanantPC" class="text-danger"></span>
+                    <div class="form-group row">
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="col-sm-4 d-none">
+            <label asp-for="PermanantDistrictId" class="col-sm-12 control-label"></label>
+            <div class="col-sm-12">
+            <select asp-for="PermanantDistrictId" asp-items="ViewBag.PerDistrict" class="form-control form-control-sm">
+            <option value="0">Select</option>
+            </select>
+            <span asp-validation-for="PermanantDistrictId" class="text-danger"></span>
+            </div>
+            </div>
+            </div>*@
+            @*<div class="col-md-4 d-none">
+            <div class="form-group row">
+            <label asp-for="PermanantThanaId" class="col-sm-12 control-label"></label>
+            <div class="col-sm-12">
+            <select asp-for="PermanantThanaId" asp-items="ViewBag.PerThana" class="form-control form-control-sm">
+            <option value="0">Select</option>
+            </select>
+            <span asp-validation-for="PermanantThanaId" class="text-danger"></span>
+            </div>
+            </div>*@
+        </div>
+
+        @*  <hr class="hr-text gradient" data-content="Marrital Information">
+        <div class="col-sm-12">
+        <div class="form-group row">
+        <div class="checkbox-fade fade-in-primary">
+        <label>
+        @if (Model?.MaritalStatus == true)
+        {
+        <input type="checkbox" id="MaritalStatus" name="MaritalStatus" checked value="@Model?.MaritalStatus">
+        }
+        else
+        {
+        <input type="checkbox" id="MaritalStatus" name="MaritalStatus" value="@Model?.MaritalStatus">
+        }
+
+        <span class="cr">
+        <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+        </span>
+        <span>Is Married?</span>
+        </label>
+        </div>
+        </div>
+        </div> *@
+        @*    <div class="col-sm-4 d-none" id="divh">
+        <div class="form-group row">
+        <label asp-for="HusbandsName" class="col-sm-12 control-label"></label>
+        <div class="col-sm-12">
+        <input asp-for="HusbandsName" class="form-control form-control-sm" />
+        <span asp-validation-for="HusbandsName" class="text-danger"></span>
+        </div>
+        </div>
+        </div>
+        <div class="col-sm-4 d-none" id="divboy">
+        <div class="form-group row">
+        <label asp-for="Boys" class="col-sm-12 control-label"></label>
+        <div class="col-sm-12">
+        <input asp-for="Boys" value="@(Model==null?0:Model.Boys)" min="0" class="form-control form-control-sm" />
+        <span asp-validation-for="Boys" class="text-danger"></span>
+        </div>
+        </div>
+        </div>
+        <div class="col-sm-4 d-none" id="divgirl">
+        <div class="form-group row">
+        <label asp-for="Girls" class="col-sm-12 control-label"></label>
+        <div class="col-sm-12">
+        <input asp-for="Girls" value="@(Model==null?0:Model.Girls)" min="0" class="form-control form-control-sm" />
+        <span asp-validation-for="Girls" class="text-danger"></span>
+        </div>
+        </div>
+        </div> *@
+
+
+    </div>
+
+
+    <div class="col-sm-4">
+        @*------------------    hidden field  temporary blocked --------------------------------*@
+
+
+        <div class="form-group row d-none">
+            <label asp-for="IntroducerName" class="col-sm-4 control-label"></label>
+            <div class="col-sm-8">
+                <input asp-for="IntroducerName" class="form-control form-control-sm" />
+                <span asp-validation-for="IntroducerName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row d-none">
+            <label asp-for="IntroducerAddress" class="col-sm-4 control-label"></label>
+            <div class="col-sm-8">
+                <textarea asp-for="IntroducerAddress" class="form-control form-control-sm"></textarea>
+                <span asp-validation-for="IntroducerAddress" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row d-none">
+            <label asp-for="IntroducerCell" class="col-sm-4 control-label"></label>
+            <div class="col-sm-8">
+                <input asp-for="IntroducerCell" class="form-control form-control-sm" />
+                <span asp-validation-for="IntroducerCell" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row d-none">
+            <label asp-for="EarnedPerson" class="col-sm-4 control-label"></label>
+            <div class="col-sm-8">
+                <input asp-for="EarnedPerson" class="form-control form-control-sm" />
+                <span asp-validation-for="EarnedPerson" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row d-none">
+            <label asp-for="TotalIncome" class="col-sm-4 control-label"></label>
+            <div class="col-sm-8">
+                <input asp-for="TotalIncome" class="form-control form-control-sm" />
+                <span asp-validation-for="TotalIncome" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row d-none">
+            <label asp-for="DependPerson" class="col-sm-4 control-label"></label>
+            <div class="col-sm-8">
+                <input asp-for="DependPerson" class="form-control form-control-sm" />
+                <span asp-validation-for="DependPerson" class="text-danger"></span>
+            </div>
+        </div>
+        @*--------------------------------    end --------------------------------------------*@
+    </div>
+
+
+
+    @*------------------    hidden field  temporary blocked --------------------------------*@
+    <div class="form-group row d-none">
+        <label asp-for="JoiningSalary" class="col-sm-4 control-label"></label>
+        <div class="col-sm-8">
+            <input asp-for="JoiningSalary" class="form-control form-control-sm" />
+            <span asp-validation-for="JoiningSalary" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row d-none">
+        <label asp-for="ACNo" class="col-sm-4 control-label"></label>
+        <div class="col-sm-8">
+            <input asp-for="ACNo" class="form-control form-control-sm" />
+            <span asp-validation-for="ACNo" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row d-none">
+        <label asp-for="NOK" class="col-sm-4 control-label"></label>
+        <div class="col-sm-8">
+            <input asp-for="NOK" class="form-control form-control-sm" />
+            <span asp-validation-for="NOK" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row d-none">
+        <label asp-for="NOKRelation" class="col-sm-4 control-label"></label>
+        <div class="col-sm-8">
+            <input asp-for="NOKRelation" class="form-control form-control-sm" />
+            <span asp-validation-for="NOKRelation" class="text-danger"></span>
+        </div>
+    </div>
+    @*--------------------------------    end --------------------------------------------*@
+
+
+
+    <div class="row mt-2">
+        <div class="col-sm-12">
+            <div class="form-group row">
+                <label class="col-sm-5"></label>
+                <div class="col-sm-7 d-flex justify-content-end align-items-end">
+                    <input type="submit" id="btnDetails" value="Submit" class="btn btn-md btn-primary m-b-0" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+

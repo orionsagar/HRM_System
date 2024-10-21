@@ -1,0 +1,181 @@
+﻿@model List<DeductionSummaryReportVM>
+@inject IHttpContextAccessor _http
+@{
+    ViewBag.Title = $"Deduction Summary Report";
+    Layout = null;
+
+    CompanyViewModel company = ViewBag.company as CompanyViewModel ?? new();
+
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/css/bootstrap.min.css">
+
+    <!-- themify icon -->
+    <link rel="stylesheet" type="text/css" href="/assets/icon/themify-icons/themify-icons.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="/assets/icon/font-awesome/css/font-awesome.min.css">
+    <style type="text/css">
+        .verticaltext {
+            writing-mode: vertical-lr;
+            -ms-writing-mode: tb-rl;
+            transform: rotate(180deg);
+        }
+
+        .table td, .table th {
+            text-align: center;
+            padding: 2px .25rem;
+            vertical-align: middle;
+        }
+
+        .font-weight-bold {
+            font-weight: 500 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="container">
+                        <div class="row text-center">
+                            <div class="col-sm-12 invoice-btn-group text-right">
+                                <button type="button" class="btn btn-primary btn-print-invoice m-b-10 btn-sm waves-effect waves-light m-r-20 printdiv-btn" onclick="">Print</button>
+                                @*<button type="button" class="btn btn-danger waves-effect m-b-10 btn-sm waves-light">Cancel</button>*@
+                            </div>
+                        </div>
+                        <div class="card" id="printdiv">
+                            <div class="row invoice-contact">
+                                <div class="col-md-12">
+                                    <div style="margin: 0 auto; width: 900px">
+                                        <div class="row border-dark border mx-0">
+                                            <div class="col-4 my-auto">
+                                                <img src="@company.Logo" style="width: 250px; height: 80px">
+                                            </div>
+                                            <div class="col-8">
+                                                <h3 class="text-center font-weight-bold">@company.Name</h3>
+                                                <p class="text-center mb-0 f-w-600">@company.Address, Bangladesh</p>
+                                                <p class="text-center mb-1 f-w-600">E-mail: @company.Email1; Web: @company.Website</p>
+                                            </div>
+                                        </div>
+                                        <div class="py-2">
+                                            <h3 class="text-center">@ViewBag.Title</h3>
+                                            <p class="text-center">Date <b>@ViewBag.Date</b></p>
+                                        </div>
+                                        @if (Model != null)
+                                        {
+                                            <div>
+                                                <table class="table table-bordered p-0" style="font-size:14px">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SL</th>
+                                                            <th>Name</th>
+                                                            <th>Card No</th>
+                                                            <th>Type</th>
+                                                            <th>Date</th>
+                                                            <th>Amount</th>                                                           
+                                                            <th>Remarks</th>                                                           
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            var sections = Model.Select(a => a.SectionName).Distinct();
+                                                            int sl = 1;
+                                                            foreach (var sect in sections)
+                                                            {
+                                                                var section = Model.Where(d => d.SectionName == sect).ToList();
+                                                                var departments = section.Select(a => a.DepartmentName).Distinct();
+                                                                foreach (var dept in departments)
+                                                                {
+                                                                    var department = section.Where(d => d.DepartmentName == dept).ToList();
+                                                                    var designation = department.Select(a => a.DesignationName).Distinct();
+                                                                    foreach (var desig in designation)
+                                                                    {
+                                                                        <tr>
+                                                                            <td class="text-left" colspan="7">Section: <b>(@sect)</b> Department: <b>(@dept)</b> Designation: <b>(@desig)</td>
+                                                                        </tr>
+                                                                        var emps = department.Where(a => a.DesignationName == desig).ToList();
+
+                                                                        @foreach (var emp in emps)
+                                                                        {
+                                                                            <tr>
+                                                                                <td class="text-center">@sl</td>
+                                                                                <td class="text-left">@emp.Name</td>
+                                                                                <td class="text-center">@emp.CardNo</td>
+                                                                                <td class="text-center">@emp.DeductionName</td>
+                                                                                <td class="text-center">@emp.ApplyDate.ToShortDateString()</td>
+                                                                                <td class="text-right">@emp.Amount.ToString("n0")</td>                                                                               
+                                                                                <td>@emp.Remarks</td>                                                                               
+                                                                            </tr>
+                                                                            sl++;
+                                                                        }
+                                                                        @*<tr>
+                                                                                <td colspan="4">Total: @desig</td>
+                                                                                <td class="text-right">@emps.Sum(a => a.SanctionAmount).ToString("n0")</td>
+                                                                                <td class="text-right">@emps.Sum(a => a.TotalPaidAmount).ToString("n0")</td>
+                                                                                <td class="text-right">@emps.Sum(a => a.DueAmount).ToString("0")</td>
+                                                                            </tr>*@
+                                                                    };
+
+                                                                    <tr>
+                                                                        <td class="text-right font-weight-bold" colspan="5">Total @dept:</td>
+                                                                        <td class="text-right">@department.Sum(a => a.Amount).ToString("n0")</td>
+                                                                       
+                                                                    </tr>
+                                                                };
+                                                                <tr>
+                                                                    <td class="text-right font-weight-bold" colspan="5">Net Total @sect :</td>
+                                                                    <td class="text-right">@Model.Where(a => a.SectionName == sect).Sum(a => a.Amount).ToString("n0")</td>
+                                                                   
+                                                                </tr>
+
+                                                            };
+                                                            <tr>
+                                                                <td class="text-right font-weight-bold" colspan="5">Grand Total:</td>
+                                                                <td class="text-right">@Model.Sum(a => a.Amount).ToString("n0")</td>
+                                                                
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/bower_components/jquery/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/bower_components/jquery-ui/js/jquery-ui.min.js "></script>
+    <script type="text/javascript" src="/bower_components/popper.js/js/popper.min.js"></script>
+    <script type="text/javascript" src="/bower_components/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            //printdiv('printdiv');
+        })
+        $(document).on('click', '.printdiv-btn', function (e) {
+            e.preventDefault();
+            printdiv('printdiv')
+        });
+
+        function printdiv(printdivname) {
+            var headstr = "<html><head><title>Daily Sales</title></head><body>";
+            var footstr = "</body>";
+            var newstr = document.getElementById(printdivname).innerHTML;
+            var oldstr = document.body.innerHTML;
+            document.body.innerHTML = headstr + newstr + footstr;
+            window.print();
+            document.body.innerHTML = oldstr;
+            return false;
+        }
+    </script>
+</body>
+</html>

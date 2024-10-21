@@ -1,0 +1,208 @@
+﻿
+
+@using UKHRM.Extensions;
+
+<nav class="pcoded-navbar">
+    <div class="pcoded-inner-navbar">
+        @{
+            if (ViewBag.GetMenuModule != null)
+            {
+                var preModuleName = "";
+                var controllerpage = "";
+                var actionPage = "";
+                foreach (var item in (List<MainModule>)ViewBag.GetMenuModule)
+                {
+
+                    if (item.ModuleName != preModuleName)
+                    {
+                        <ul class="pcoded-item pcoded-left-item">
+                            @{
+                                if (item.TotalPageCnt > 1)
+                                {
+                                    var ChildMenuList = (List<UserAccessTools>)ViewBag.GetMenuPageName;
+                                    if (ChildMenuList != null)
+                                    {
+                                        var routeData = ViewContext.RouteData;
+                                        var routeAction = routeData.Values["action"].ToString().ToLower();
+                                        var routeController = routeData.Values["controller"].ToString().ToLower();
+
+                                        @foreach (var childItemO in ChildMenuList.Where(x => x.ModuleID == item.ModuleID && x.RoleID == Convert.ToInt32(ViewBag.UserRoleID)).OrderBy(x => x.SortIndex))
+                                        {
+                                            var link = !string.IsNullOrEmpty(childItemO.UAPage) ? childItemO.UAPage.ToString().ToLower() : "";
+                                            if (!string.IsNullOrEmpty(link))
+                                            {
+                                                var routelink = routeController + "/" + routeAction;
+                                                if (routelink.Contains(link))
+                                                {
+                                                    if (link.Contains("/") == true)
+                                                    {
+                                                        var pageSplit = link.Split("/");
+                                                        controllerpage = pageSplit[0].ToString();
+                                                        actionPage = pageSplit[1].ToString();
+                                                    }
+                                                    else
+                                                    {
+                                                        controllerpage = "";
+                                                        actionPage = "";
+                                                    }
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    controllerpage = "";
+                                                    actionPage = "";
+                                                }
+
+                                            }
+                                        }
+
+                                        <li class="pcoded-hasmenu @Html.ActiveClass(controllerpage,actionPage)">
+                                            <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="ti-layout-cta-right"></i><b>N</b></span>
+                                                <span class="pcoded-mtext">@item.ModuleName</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                            <ul class="pcoded-submenu">
+                                                @foreach (var childItem in ChildMenuList.Where(x => x.ModuleID == item.ModuleID && x.RoleID == Convert.ToInt32(ViewBag.UserRoleID)).OrderBy(x => x.SortIndex))
+                                                {
+                                                    var link = childItem.UAPage;
+                                                    if (!string.IsNullOrEmpty(link))
+                                                    {
+                                                        if (link.Contains("/") == true)
+                                                        {
+                                                            var pageSplit = link.Split("/");
+                                                            controllerpage = pageSplit[0].ToString();
+                                                            actionPage = pageSplit[1].ToString();
+                                                        }
+                                                        else
+                                                        {
+                                                            controllerpage = "";
+                                                            actionPage = "";
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        controllerpage = "";
+                                                        actionPage = "";
+                                                    }
+
+                                                    <li class="@Html.IsActive(controllerpage,actionPage)">
+                                                        <a href="/@link" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="ti-home"></i></span>
+                                                            <span class="pcoded-mtext">@childItem.UseraccesstoolNM</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    var link = "dashboard/index";
+                                    var ChildMenuList = (List<UserAccessTools>)ViewBag.GetMenuPageName;
+                                    if (ChildMenuList != null)
+                                    {
+                                        @foreach (var childItem in ChildMenuList.Where(x => x.ModuleID == item.ModuleID && x.RoleID == Convert.ToInt32(ViewBag.UserRoleID)).OrderBy(x => x.SortIndex))
+                                        {
+                                            link = childItem.UAPage;
+                                        }
+
+                                        if (!string.IsNullOrEmpty(link))
+                                        {
+                                            if (link.Contains("/") == true)
+                                            {
+                                                var pageSplit = link.Split("/");
+                                                controllerpage = pageSplit[0].ToString();
+                                                actionPage = pageSplit[1].ToString();
+                                            }
+                                            else
+                                            {
+                                                controllerpage = "";
+                                                actionPage = "";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            controllerpage = "";
+                                            actionPage = "";
+                                        }
+                                    }
+                                    <li class=" @Html.IsActive(controllerpage,actionPage)">
+                                        <a href="/@link" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-layout-cta-right"></i><b>N</b></span>
+                                            <span class="pcoded-mtext">@item.ModuleName</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                }
+                            }
+
+                        </ul>
+
+                        preModuleName = item.ModuleName;
+                    }
+                }
+            }
+        }
+        <!--<ul class="pcoded-item pcoded-left-item">
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-layout-cta-right"></i><b>N</b></span>
+                    <span class="pcoded-mtext">Navigation</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="ti-home"></i></span>
+                            <span class="pcoded-mtext">Dashboard</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="index.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Default</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="dashboard-ecommerce.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Ecommerce</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="dashboard-crm.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">CRM</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="dashboard-analytics.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Analytics</span>
+                                    <span class="pcoded-badge label label-info ">NEW</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="dashboard-project.html" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Project</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>-->
+                    
+                <!--</ul>
+            </li>
+        </ul>-->
+    </div>
+</nav>
+

@@ -1,0 +1,196 @@
+﻿
+@{
+    ViewData["Title"] = "Deduction Summary Reports";
+}
+
+@{
+
+    string[] BCText = new string[] { "Deduction Summary Reports" };
+    string[] BCLink = new string[] { "DeductionReport/index" };
+    PageHeaderProps pageHeader = new PageHeaderProps
+    {
+        PageTitle = "Deduction Summary Reports",
+        PageDesc = "Deduction Summary Reports",
+        BreadcrumbText = BCText,
+        BreadcrumbLink = BCLink
+    };
+    List<ReportAccessVM> reportlist = ViewBag.reportlist as List<ReportAccessVM>;
+}
+
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Basic Inputs Validation start -->
+            <div class="card">
+                <div class="card-header">
+                    @await Component.InvokeAsync("PageHeader", pageHeader)
+                </div>
+                <div class="card-block">
+                    <div class="row mt-4 justify-content-center">
+                        @*-----------Report Perameter-------------*@
+                        <div class="col-sm-5">
+                            <div id="forEmployeeReport" class="commonDiv">
+
+                                <div class="row justify-content-center" id="empreport">
+                                    <div class="col-sm-12" id="divsectid">
+                                        <div class="form-group row">
+                                            <label for="sectid" class="col-sm-4 col-form-label ">Section</label>
+                                            <div class="col-sm-8">
+                                                <select id="sectid" asp-items="ViewBag.Section" class="form-control form-control-sm">
+                                                    <option value="0">Select</option>
+                                                </select>
+                                                <span for="sectid" class="text-danger messages"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" id="divdeptid">
+                                        <div class="form-group row">
+                                            <label for="deptid" class="col-sm-4 col-form-label ">Department</label>
+                                            <div class="col-sm-8">
+                                                <select id="deptid" asp-items="ViewBag.Department" class="form-control form-control-sm">
+                                                    <option value="0">Select</option>
+                                                </select>
+                                                <span for="deptid" class="text-danger messages"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" id="divdesigid">
+                                        <div class="form-group row">
+                                            <label for="desigid" class="col-sm-4 col-form-label ">Designation</label>
+                                            <div class="col-sm-8">
+                                                <select id="desigid" asp-items="ViewBag.Designation" class="form-control form-control-sm">
+                                                    <option value="0">Select</option>
+                                                </select>
+                                                <span for="desigid" class="text-danger messages"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group row">
+                                            <label for="desigid" class="col-sm-4 col-form-label ">Type</label>
+                                            <div class="col-sm-8">
+                                                <select id="Type" name="Type" class="form-control form-control-sm" asp-items="ViewBag.reportlist">
+                                                    @*<option value="all">All</option>
+                                                        <option value="Lunch">Lunch</option>
+                                                        <option value="Absent">Absent</option>
+                                                        <option value="Welfare">Welfare</option>
+                                                        <option value="Others">Others</option>*@
+                                                </select>
+                                                <span for="Type" class="text-danger messages"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group row">
+                                            <label for="attdate" class="col-sm-4 col-form-label ">From Date</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="FromDate" name="FromDate" class="form-control form-control-sm" autocomplete="off" />
+                                                <span for="FromDate" class="text-danger messages"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group row">
+                                            <label for="ToDate" class="col-sm-4 col-form-label ">To Date</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="ToDate" name="ToDate" class="form-control form-control-sm" autocomplete="off" />
+                                                <span for="ToDate" class="text-danger messages"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="cardno" class="col-sm-4 col-form-label ">Card No</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="CardNo" name="CardNo" class="form-control form-control-sm" autocomplete="off" />
+                                                <span for="cardno" class="text-danger messages"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" id="divempname">
+                                        <div class="form-group row">
+                                            <label for="EmpName" class="col-sm-4 col-form-label ">Name</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="EmpName" class="form-control form-control-sm" readonly />
+                                                <input type="hidden" id="EmpId" />
+                                                <span for="EmpName" class="text-danger messages"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group text-center">
+                                        <label class="col-sm-12"></label>
+                                        <div class="col-sm-12">
+                                            <input type="button" value="Show" id="btnShow" class="btn btn-sm btn-success m-b-0" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Basic Inputs Validation end -->
+        </div>
+    </div>
+</div>
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+@section Scripts{
+    <script src="~/custom/js/report.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#FromDate,#ToDate").datepicker({
+                dateFormat: 'dd-mm-yy',
+                changeYear: true,
+                changeMonth: true,
+            });
+
+            $("#FromDate,#ToDate").datepicker("setDate", new Date());
+
+            $('#sectid,#deptid,#desigid,#ReportType,#Type').select2();
+        });
+
+        $('#CardNo').keyup(function () {
+            let cardno = $('#CardNo').val();
+            if (cardno != '') {
+                getEmployeeDetails(cardno)
+            } else {
+                $('#EmpName').val('')
+                $('#EmpId').val('')
+            }
+        })
+
+        $("#btnShow").click(function () {
+            //const reportName = ($('input[name="ReportName"]:checked').val() || "").toLocaleLowerCase();
+            let url = "";
+            const sectId = $("#sectid").val() || 0;
+            const deptId = $("#deptid").val() || 0;
+            const desigId = $("#desigid").val() || 0;
+            const type = $("#Type").val() || 'Section';
+            const FromDate = $("#FromDate").val() || '';
+            const ToDate = $("#ToDate").val() || '';
+            const cardno = $("#CardNo").val() || 'all';
+
+            url = `/DeductionReport/DeductionSummaryReport?sectId=${sectId}&deptId=${deptId}&desigId=${desigId}&cardNo=${cardno}&fromDate=${FromDate}&toDate=${ToDate}&type=${type}`;
+
+            window.open(url, "_blank");
+        })
+
+
+    </script>
+
+}

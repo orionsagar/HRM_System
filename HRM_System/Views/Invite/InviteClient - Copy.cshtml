@@ -1,0 +1,264 @@
+﻿@model ClientViewModel
+@inject IGlobalHelper _global;
+
+@{
+    ViewData["Title"] = "Create";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section PageName {
+    New Client
+}
+@section Breadcrumb {
+    <a href="/dashboard/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">New Client</span>
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-block">
+                <p>(<span class="text-danger">*</span>) marked are all madatory fields.</p>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <form id="main" asp-action="InviteClient" asp-controller="Invite" method="post" enctype="multipart/form-data" class="j-pro border-0" novalidate>
+                    <h4 class="sub-title">Basic Information</h4>
+                    <input type="hidden" asp-for="ClientID" />
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label asp-for="ClientType" class="form-label"></label><span class="text-danger"> *</span>
+                            <select asp-for="ClientType" class="form-control form-control-lg">
+                                <option selected>Law Farm</option>
+                                <option>Individual Solicitor</option>
+                            </select>
+                            <span asp-validation-for="ClientType" class="text-danger form-bar"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label asp-for="Name" class="float-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="Name" class="form-control form-control-lg name" />
+                            <span asp-validation-for="Name" class="text-danger form-bar"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label asp-for="Logo" class="form-label"></label>
+                            <div class="input-group">
+                                <input type="file" id="Logofile" name="Logofile" class="custom-file-input form-control-lg" accept="image/*" onchange="return fileValidation()">
+                                <label class="custom-file-label" for="Logo">Upload image</label>
+                            </div>
+                            <span asp-validation-for="Logo" class="text-danger form-bar"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label asp-for="Email1" class="float-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="Email1" class="form-control form-control-lg name" readonly/>
+                            <span asp-validation-for="Email1" class="text-danger form-bar"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label asp-for="Phone1" class="float-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="Phone1" class="form-control form-control-lg PN"/>
+                            <span asp-validation-for="Phone1" class="text-danger form-bar"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label asp-for="Address" class="form-label"></label><span class="text-danger"> *</span>
+                            <textarea asp-for="Address" class="form-control form-control-lg"></textarea>
+                            <span asp-validation-for="Address" class="text-danger form-bar"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label asp-for="City" class="form-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="City" class="form-control form-control-lg" />
+                            <span asp-validation-for="City" class="text-danger form-bar"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label asp-for="State" class="form-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="State" class="form-control form-control-lg" />
+                            <span asp-validation-for="State" class="text-danger form-bar"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label asp-for="PostCode" class="form-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="PostCode" class="form-control form-control-lg" />
+                            <span asp-validation-for="PostCode" class="text-danger form-bar"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-sm-6">
+                            <label asp-for="Country" class="form-label"></label>
+                            <select class="form-control form-control-lg" asp-for="Country">
+                                <option value="Austria">Austria</option>
+                                <option value="Belgium">Belgium</option>
+                                <option value="Denmark">Denmark</option>
+                                <option value="Finland">Finland</option>
+                                <option value="France">France</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Ireland">Ireland</option>
+                                <option value="Italy">Italy</option>
+                                <option value="Liechtenstein">Liechtenstein</option>
+                                <option value="Lithuania">Lithuania</option>
+                                <option value="Luxembourg">Luxembourg</option>
+                                <option value="Netherlands">Netherlands</option>
+                                <option value="Norway">Norway</option>
+                                <option value="Poland">Poland</option>
+                                <option value="Portugal">Portugal</option>
+                                <option value="Spain">Spain</option>
+                                <option value="Sweden">Sweden</option>
+                                <option value="Switzerland">Switzerland</option>
+                                <option value="United Kingdom" selected>United Kingdom</option>
+                            </select>
+                            <span asp-validation-for="Country" class="text-danger form-bar"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label asp-for="Email2" class="form-label"></label>
+                            <input asp-for="Email2" class="form-control form-control-lg" />
+                            <span asp-validation-for="Email2" class="text-danger form-bar"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label asp-for="Phone2" class="form-label"></label>
+                            <input asp-for="Phone2" class="form-control form-control-lg PN"/>
+                            <span asp-validation-for="Phone2" class="text-danger form-bar"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" asp-for="Establishment_Year"></label>
+                            <input asp-for="Establishment_Year" class="form-control form-control-lg" />
+                            <span asp-validation-for="Establishment_Year" class="text-danger form-bar"></span>
+                        </div>
+                    </div>
+                    <!--<div class="form-group row">
+                        <div class="col-sm-6">
+                            <label class="form-label" asp-for="Number_Of_Employee"></label>-->
+                            <!-- <h4 class="sub-title"></h4> -->
+                            <!--<select name="select" class="form-control form-control-lg" asp-for="Number_Of_Employee">
+                                <option value="0">Select a range</option>
+                                <option>1-10 Employees</option>
+                                <option>11-50 Employees</option>
+                                <option>51-200 Employees</option>
+                                <option>201-500 Employees</option>
+                            </select>
+                            <span asp-validation-for="Number_Of_Employee" class="text-danger form-bar"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label asp-for="BusinessType" class="float-label"></label>
+                            <input asp-for="BusinessType" class="form-control form-control-lg" />
+                            <span asp-validation-for="BusinessType" class="text-danger form-bar"></span>
+                        </div>
+                    </div>-->
+                    @*<h4 class="sub-title">Contact Person Information</h4>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label asp-for="CP_Name" class="float-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="CP_Name" class="form-control form-control-lg" />
+                            <span asp-validation-for="CP_Name" class="text-danger form-bar"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label asp-for="CP_Email" class="float-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="CP_Email" class="form-control form-control-lg" />
+                            <span asp-validation-for="CP_Email" class="text-danger form-bar"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label asp-for="CP_Phone" class="float-label"></label><span class="text-danger"> *</span>
+                            <input asp-for="CP_Phone" class="form-control form-control-lg" />
+                            <span asp-validation-for="CP_Phone" class="text-danger form-bar"></span>
+                        </div>
+                    </div>*@
+
+                    <h4 class="sub-title"> User Information </h4>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label asp-for="ClientSAEmail" class="float-label"></label>
+                                    <input type="email" asp-for="ClientSAEmail" class="form-control form-control-lg" readonly />
+                                    <span asp-validation-for="ClientSAEmail" class="text-danger form-bar"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label asp-for="Password" class="float-label"></label>
+                                    <input type="password" asp-for="Password" class="form-control form-control-lg" data-password="master" />
+                                    <span asp-validation-for="Password" class="text-danger form-bar"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label asp-for="ConfirmPassword" class="float-label"></label>
+                                    <input type="password" asp-for="ConfirmPassword" class="form-control form-control-lg" data-password="confirm" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger form-bar" data-notmatch="Error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- manual code to this action btn are available in the Manual Update CSS -->
+                    <div class="card-block actionBtnRight">
+                        <input type="submit" value="Submit" class="btn btn-primary waves-effect waves-light" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+</div>
+<div class="row">
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the password fields
+            const passwordField = document.querySelector('[data-password="master"]');
+            const confirmPasswordField = document.querySelector('[data-password="confirm"]');
+            const passwordMatchMessage = document.querySelector('[data-notmatch="Error"]');
+
+            function checkPasswordMatch() {
+                if (passwordField.value === confirmPasswordField.value) {
+                    passwordMatchMessage.innerText = "Password matched";
+                    passwordMatchMessage.classList.remove("text-danger");
+                    passwordMatchMessage.classList.add("text-success");
+                } else {
+                    passwordMatchMessage.innerText = "Passwords do not match";
+                    passwordMatchMessage.classList.remove("text-success");
+                    passwordMatchMessage.classList.add("text-danger");
+                }
+            }
+
+            passwordField.addEventListener("keyup", function () {
+                if (passwordField.value.length > 5) {
+                    passwordField.value = passwordField.value.slice(0, 5);
+                }
+                checkPasswordMatch();
+            });
+
+            confirmPasswordField.addEventListener("keyup", function () {
+                if (confirmPasswordField.value.length > 5) {
+                    confirmPasswordField.value = confirmPasswordField.value.slice(0, 5);
+
+                }
+                checkPasswordMatch();
+            });
+        });
+    </script>
+}

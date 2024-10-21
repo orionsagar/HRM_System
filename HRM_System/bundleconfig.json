@@ -1,0 +1,97 @@
+[
+  {
+    "outputFileName": "wwwroot/custom/css/custom.min.css",
+    "inputFiles": [
+      "wwwroot/custom/css/bootstrap-multiselect.css",
+      "wwwroot/custom/css/jquery-ui.css",
+      "wwwroot/custom/css/Select2.css",
+      "wwwroot/custom/css/report.css",
+      "wwwroot/custom/css/jquery.appendGrid-1.4.1.css",
+      "wwwroot/custom/css/CustomWidget.css"
+    ],
+    "minify": {
+      "enabled": false,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/custom/css/dtminifide.css",
+    "inputFiles": [
+      "wwwroot/bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css",
+      "wwwroot/assets/pages/data-table/css/buttons.dataTables.min.css",
+      "wwwroot/bower_components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css"
+    ],
+    "minify": {
+      "enabled": false,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/custom/js/dtminifide.js",
+    "inputFiles": [
+      "wwwroot/bower_components/datatables.net/js/jquery.dataTables.min.js",
+      "wwwroot/bower_components/datatables.net-buttons/js/dataTables.buttons.min.js",
+      "wwwroot/assets/pages/data-table/js/jszip.min.js",
+      "wwwroot/assets/pages/data-table/js/pdfmake.min.js",
+      "wwwroot/assets/pages/data-table/js/vfs_fonts.js",
+      "wwwroot/bower_components/datatables.net-buttons/js/buttons.print.min.js",
+      "wwwroot/bower_components/datatables.net-buttons/js/buttons.html5.min.js",
+      "wwwroot/bower_components/datatables.net-bs4/js/dataTables.bootstrap4.min.js",
+      "wwwroot/bower_components/datatables.net-responsive/js/dataTables.responsive.min.js",
+      "wwwroot/bower_components/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"
+    ],
+    "minify": {
+      "enabled": false,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/custom/js/custom.min.js",
+    "inputFiles": [
+      "wwwroot/custom/js/Acc-datatable.js",
+      "wwwroot/custom/js/bootstrap-multiselect.js",
+      "wwwroot/custom/js/CustomCKConfig.js",
+      "wwwroot/custom/js/custom-datatable.js",
+      "wwwroot/custom/js/jquery.appendGrid-1.4.1.js",
+      "wwwroot/custom/js/paging.js"
+    ],
+    "minify": {
+      "enabled": false,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/minify/css/minifyedpnotify.css",
+    "inputFiles": [
+      "wwwroot/bower_components/pnotify/css/pnotify.css",
+      "wwwroot/bower_components/pnotify/css/pnotify.brighttheme.css",
+      "wwwroot/bower_components/pnotify/css/pnotify.buttons.css",
+      "wwwroot/bower_components/pnotify/css/pnotify.history.css",
+      "wwwroot/bower_components/pnotify/css/pnotify.mobile.css",
+      "wwwroot/assets/pages/pnotify/notify.css"
+    ],
+    "minify": {
+      "enabled": false,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/minify/js/minifyedpnotify.js",
+    "inputFiles": [
+      "wwwroot/bower_components/pnotify/js/pnotify.js",
+      "wwwroot/bower_components/pnotify/js/pnotify.desktop.js",
+      "wwwroot/bower_components/pnotify/js/pnotify.buttons.js",
+      "wwwroot/bower_components/pnotify/js/pnotify.confirm.js",
+      "wwwroot/bower_components/pnotify/js/pnotify.callbacks.js",
+      "wwwroot/bower_components/pnotify/js/pnotify.animate.js",
+      "wwwroot/bower_components/pnotify/js/pnotify.history.js",
+      "wwwroot/bower_components/pnotify/js/pnotify.mobile.js",
+      "wwwroot/bower_components/pnotify/js/pnotify.nonblock.js",
+      "wwwroot/assets/pages/pnotify/notify.js"
+    ],
+    "minify": {
+      "enabled": false,
+      "renameLocals": true
+    }
+  }
+]

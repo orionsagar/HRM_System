@@ -1,0 +1,502 @@
+﻿@model Employee
+@inject IHttpContextAccessor _http;
+@using Utility
+
+@inject IGlobalHelper _global;
+
+@{
+    var compId = _global.GetCompID();
+    var userId = _global.GetUserID();
+    var OrgId = _global.GetOrgId();
+}
+<style type="text/css">
+    .hr-text {
+        border: 0;
+        line-height: 1em;
+        position: relative;
+        text-align: center;
+        height: 1.5em;
+        font-size: 18px;
+        margin: 30px 15px;
+        width: 100%;
+    }
+
+    .hr-text::before {
+        content: "";
+        background: linear-gradient(to right, transparent, blue, transparent);
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        height: 1px;
+    }
+
+    .hr-text::after {
+        content: attr(data-content);
+        position: relative;
+        padding: 0 7px;
+        line-height: 1.5em;
+        color: black;
+        background-color: white;
+        /*1a1a1a*/
+    }
+</style>
+<form method="post" enctype="multipart/form-data" id="basicForm" novalidate>
+    <div class="row">
+
+        @if (Model == null)
+        {
+            <input type="hidden" asp-for="IsDelete" value="false" />
+            <input type="hidden" asp-for="EmpId" value="0" />
+            <input type="hidden" asp-for="CompId" value="@compId" />
+            <input type="hidden" asp-for="OrgId" value="@OrgId" />
+            <input type="hidden" asp-for="AddedBy" value="@userId" />
+            <input type="hidden" asp-for="UpdatedBy" />
+            <input type="hidden" asp-for="AddedDate" value="@DateTime.Now" />
+            <input type="hidden" asp-for="UpdatedDate" />
+            <input type="hidden" asp-for="EmployeeHistory.TransType" value="@((int)Enums.TransactionType.Joining)" />
+            <input type="hidden" asp-for="EmployeeHistory.DecisionDate" value="@DateTime.Now" />
+        }
+        else
+        {
+            <input type="hidden" asp-for="IsDelete" value="@Model.IsDelete" />
+            <input type="hidden" asp-for="EmpId" />
+            <input type="hidden" asp-for="CompId" />
+            <input type="hidden" asp-for="OrgId" />
+            <input type="hidden" asp-for="AddedBy" />
+            <input type="hidden" asp-for="UpdatedBy" value="@userId" />
+            <input type="hidden" asp-for="AddedDate" />
+            <input type="hidden" asp-for="UpdatedDate" value="@DateTime.Now" />
+            <input type="hidden" asp-for="EmployeeHistory.TransType" />
+            <input type="hidden" asp-for="EmployeeHistory.DecisionDate" />
+        }
+
+        <input type="hidden" asp-for="EmpHistoryId" />
+        <input type="hidden" asp-for="NoWorkSalary" />
+        <input type="hidden" asp-for="EmployeeHistory.EmpHistoryId" />
+        <input type="hidden" asp-for="EmployeeHistory.Rate" />
+        <input type="hidden" asp-for="EmployeeHistory.LineId" />
+        <input type="hidden" asp-for="EmployeeHistory.FloorId" />
+        <input type="hidden" asp-for="EmployeeHistory.IsFixed" />
+        <input type="hidden" asp-for="EmployeeHistory.CalRuleId" />
+        <input type="hidden" asp-for="Photograph" />
+
+
+        <div class="col-sm-12">
+            <hr class="hr-text gradient" data-content="Personal Details">
+            <div class="row">
+                <div class="col-md-4 d-none">
+                    <div class="form-group row">
+                        <label asp-for="OrgId" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <select asp-for="OrgId" asp-items="ViewBag.OrgId" class="form-control form-control-sm">
+                            </select>
+                            <span asp-validation-for="OrgId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="CardNo" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            @if (Model == null)
+                            {
+                                <input asp-for="CardNo" readonly value="@ViewBag.CardNo" class="form-control form-control-sm" />
+                            }
+                            else
+                            {
+                                <input asp-for="CardNo" readonly class="form-control form-control-sm" />
+                            }
+
+                            <span asp-validation-for="CardNo" class="text-danger messages"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="Name" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <input asp-for="Name" class="form-control form-control-sm" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 d-none">
+                    <div class="form-group row">
+                        <label asp-for="NameGeneric" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <input asp-for="NameGeneric" class="form-control form-control-sm" />
+                            <span asp-validation-for="NameGeneric" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="NickName" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <input asp-for="NickName" class="form-control form-control-sm" />
+                            <span asp-validation-for="NickName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="Gender" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <select asp-for="Gender" asp-items="ViewBag.Gender" class="form-control form-control-sm">
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 d-none">
+                    <div class="form-group row">
+                        <label asp-for="ProximityNo" class="col-sm-12 control-label">Finger Print Id</label>
+                        <div class="col-sm-12">
+                            <input asp-for="ProximityNo" class="form-control form-control-sm" />
+                            <span asp-validation-for="ProximityNo" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="NationalId" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <input asp-for="NationalId" class="form-control form-control-sm" />
+                            <span asp-validation-for="NationalId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="DateOfBirth" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <input asp-for="DateOfBirth" type="text" placeholder="dd/MM/yyyy" class="form-control form-control-sm" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="Email" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <input asp-for="Email" class="form-control form-control-sm" />
+                            <span id="erroremail" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="Phone" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-6">
+                            <partial name="~/Views/_Dropdown/_CountryCode.cshtml" />                            
+                        </div>
+                        <div class="col-sm-6">
+                            <input asp-for="Phone" class="form-control form-control-sm PN" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 d-none">
+                    <div class="form-group row">
+                        <label asp-for="Mobile" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+
+                            <input asp-for="Mobile" class="form-control form-control-sm PN" />
+                            <span asp-validation-for="Mobile" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="Address" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <textarea asp-for="Address" class="form-control form-control-sm"></textarea>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row justify-content-center mb-2">
+                        <label class="col-sm-12 control-label">Image</label>
+                        <div class="col-sm-12">
+                            <img id="image-preview" onclick="HandleBrowseClick('File');"
+                                 onerror="this.onerror=null;this.src='@Url.Content("~/img/empty.jpg")'"
+                                 class="img-rounded img-thumbnail" for="input-image-hidden" style="height:120px; width:120px;"
+                                 src="/@(Model?.Photograph?? "img/empty.jpg")">
+
+                            <input style="display:none" asp-for="File" onchange="document.getElementById('image-preview').src = window.URL.createObjectURL(this.files[0])" type="file" accept="image/jpeg, image/png">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-sm-12">
+            <hr class="hr-text gradient" data-content="Service Details">
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="EmployeeHistory.SectId" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <select asp-for="EmployeeHistory.SectId" asp-items="ViewBag.Section" class="form-control form-control-sm" required>
+                                @* <option value="0">N/A</option> *@
+                            </select>
+                            <span asp-validation-for="EmployeeHistory.SectId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="EmployeeHistory.DeptId" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <select asp-for="EmployeeHistory.DeptId" asp-items="ViewBag.Department" class="form-control form-control-sm" required>
+                                @* <option value="0">N/A</option> *@
+                            </select>
+                            <span asp-validation-for="EmployeeHistory.DeptId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="EmployeeHistory.DesigId" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <select asp-for="EmployeeHistory.DesigId" asp-items="ViewBag.Designation" class="form-control form-control-sm" required>
+                                @* <option value="0">N/A</option> *@
+                            </select>
+                            <span asp-validation-for="EmployeeHistory.DesigId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 d-none">
+                    <div class="form-group row ">
+                        <label asp-for="EmployeeHistory.EmpCatId" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <select asp-for="EmployeeHistory.EmpCatId" asp-items="ViewBag.EmployeeCategory" class="form-control form-control-sm" required>
+                                <option value="">N/A</option>
+                            </select>
+                            <span asp-validation-for="EmployeeHistory.EmpCatId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="JoiningDate" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <input asp-for="JoiningDate" type="text" placeholder="dd/MM/yyyy" class="form-control form-control-sm" />
+                            <span asp-validation-for="JoiningDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="EmpTypeId" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <select asp-for="EmpTypeId" asp-items="ViewBag.EmployeeType" class="form-control form-control-sm">
+                                @* <option value="0">N/A</option> *@
+                            </select>
+                            <span asp-validation-for="EmpTypeId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="EmployeeHistory.EffectiveDate" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <input asp-for="EmployeeHistory.EffectiveDate" type="text" placeholder="dd/MM/yyyy" class="form-control form-control-sm" />
+                            <span asp-validation-for="EmployeeHistory.EffectiveDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="EmployeeHistory.PayScaleId" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <select asp-for="EmployeeHistory.PayScaleId" asp-items="ViewBag.PayScale" class="form-control form-control-sm" required>
+                                @* <option value="0">N/A</option> *@
+                            </select>
+                            <span asp-validation-for="EmployeeHistory.PayScaleId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="SalaryAC" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <input asp-for="SalaryAC" type="text" class="form-control form-control-sm " />
+                            <span asp-validation-for="SalaryAC" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="EmployeeHistory.Salary" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <input asp-for="EmployeeHistory.Salary" class="form-control form-control-sm " />
+                            <span asp-validation-for="EmployeeHistory.Salary" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="ConfirmDate" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <input type="text" asp-for="ConfirmDate" placeholder="dd/MM/yyyy" class="form-control form-control-sm" />
+                            <span asp-validation-for="ConfirmDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="ContactStartDate" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <input type="text" asp-for="ContactStartDate" placeholder="dd/MM/yyyy" class="form-control form-control-sm" />
+                            <span asp-validation-for="ContactStartDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="ContactEndDate" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <input type="text" asp-for="ContactEndDate" placeholder="dd/MM/yyyy" class="form-control form-control-sm" />
+                            <span asp-validation-for="ContactEndDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="JobLocation" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <input asp-for="JobLocation" class="form-control form-control-sm" />
+                            <span asp-validation-for="JobLocation" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="ReportingAuthorityEmpId" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <select asp-for="ReportingAuthorityEmpId" asp-items="ViewBag.Employee" class="form-control form-control-sm">
+                                <option value="0">Select</option>
+                            </select>
+                            <span asp-validation-for="ReportingAuthorityEmpId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="LeaveSanctionAuthorityEmpId" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <select asp-for="LeaveSanctionAuthorityEmpId" asp-items="ViewBag.Employee" class="form-control form-control-sm">
+                                <option value="0">Select</option>
+                            </select>
+                            <span asp-validation-for="LeaveSanctionAuthorityEmpId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label asp-for="EmployeeHistory.EmpStatusID" class="col-sm-12 control-label"></label>
+                        <div class="col-sm-12">
+                            <select asp-for="EmployeeHistory.EmpStatusID" asp-items="ViewBag.EmployeeStatus" class="form-control form-control-sm">
+                            </select>
+                            <span asp-validation-for="EmployeeHistory.EmpStatusID" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 d-flex flex-row justify-content-start align-items-end">
+                    <div class="form-group row">
+                        <label asp-for="SalaryToBank" class="col-sm-8 col-6 control-label"></label>
+
+                        <div class="col-sm-4 col-6">
+                            <div class="checkbox-fade fade-in-primary">
+                                <label>
+                                    @if (Model?.SalaryToBank == true)
+                                    {
+                                        <input type="checkbox" id="SalaryToBank" name="SalaryToBank" checked value="@Model?.SalaryToBank">
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" id="SalaryToBank" name="SalaryToBank" value="@Model?.SalaryToBank">
+                                    }
+
+                                    <span class="cr">
+                                        <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex flex-row justify-content-start align-items-end">
+                    <div class="form-group row">
+                        <label asp-for="IsResidence" class="col-sm-8 col-6 control-label">Is Residence</label>
+
+                        <div class="col-sm-4 col-6">
+                            <div class="checkbox-fade fade-in-primary">
+                                <label>
+                                    @if (Model?.IsResidence == true)
+                                    {
+                                        <input type="checkbox" id="IsResidence" name="IsResidence" checked value="@Model?.IsResidence">
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" id="IsResidence" name="IsResidence" value="@Model?.IsResidence">
+                                    }
+
+                                    <span class="cr">
+                                        <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-sm-12">
+            <div class="form-group row">
+                <label class="col-sm-5"></label>
+                <div class="col-sm-7 d-flex justify-content-end align-items-end">
+                    <input type="submit" id="btnBasicInfo" value="Submit" class="btn btn-md btn-primary m-b-0" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+

@@ -1,0 +1,203 @@
+﻿@model IEnumerable<EmpNewDocuments>
+@{
+    ViewData["Title"] = "Employee Documents List";
+}
+
+@section PageName {
+    Employee Documents List
+}
+@section Breadcrumb {
+    <a href="/employeeDoc/index" class="text-white">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">Employee Documents List</span>
+}
+
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Ajax data source (Arrays) table start -->
+            <div class="card">
+                @* <div class="card-header">
+                @await Component.InvokeAsync("PageHeader", pageHeader)
+                </div> *@
+                <div class="card-block">
+                    <button type="button" class="btn waves-effect waves-light btn-sm btn-outline-primary" data-toggle="modal" data-target="#large-Modal"><i class="icofont icofont-ui-add"></i>  New Documents</button>
+                    <div class="table-responsive dt-responsive">
+                        <table id="dt-empNewDocuments" class="table table-striped table-bordered nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Doc ID</th>
+                                    <th>Employee ID</th>
+                                    <th>Employee Name</th>
+                                    <th>Employee ID/Name</th>
+                                    <th>Document Type</th>
+                                    <th>Nationlity</th>
+                                    <th>Is Current Status</th>
+                                    <th>Issued Date</th>
+                                    <th>Expiry Date</th>
+                                    <th>Number Of Doc.</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @*@foreach (var item in Model)
+                                {
+                                <tr>
+                                <td>@item.EmpTypeId</td>
+                                <td>@item.Name</td>
+                                <td>@item.NameGeneric</td>
+                                <td>@item.Description</td>
+                                <td>
+                                <a asp-action="Edit" asp-route-id="@item.EmpTypeId"><i class="fa fa-edit"></i></a>
+                                </td>
+                                <td>
+                                <a asp-action="Delete" asp-route-Id="@item.EmpTypeId"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                                </tr>
+                                }*@
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Ajax data source (Arrays) table end -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal large-->
+
+<div class="modal fade" id="large-Modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Document Entry Form</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <partial name="_DocEntry.cshtml" />
+           
+        </div>
+    </div>
+</div>
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.dataTables.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/rowgroup/1.5.0/js/dataTables.rowGroup.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/rowgroup/1.5.0/js/rowGroup.dataTables.js" type="text/javascript"></script>
+
+    <script>
+        $('.AllSelect2').select2();
+
+        $("#IssuedDate,#EligibleReviewDate,#VisaIssuedDate,#VisaExpiryDate,#VisaEligibleReviewDate,#EussEligibleReviewDate,#EussExpiryDate,#EussIssuedDate,#DBSIssuedDate,#DBSExpiryDate,#DBSEligibleReviewDate,#IdIssuedDate,#IdIssuedDate,#IdExpiryDate,#IdEligibleReviewDate,#OtherIssuedDate,#OtherExpiryDate,#OtherEligibleReviewDate,#ChangedDate,#ExpiryDate").datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeYear: true,
+            changeMonth: true,
+        });
+
+        $('#EmpID').change(function () {
+            let EmpId = $(this).val();
+            if (EmpId != 0) {
+                $.get('/organogram/GetEmployeeInfoByEmpId', { id: EmpId }, function (data, status, xhr) {
+                    if (status == 'success') {
+                        console.log(data);
+                        let designationName = data.designationName;
+                        let cardNo = data.cardNo;
+                        let phone = data.phone;
+                        $('#Designation').val(designationName)
+                        $('#CardNo').val(cardNo)
+                        // $('#Mobile').val(mobile)
+                        //let enddate = data.enddate
+                        //$('#curenddate').val(enddate)
+                    }
+                })
+            } else {
+
+            }
+
+        });
+
+        // $('.emp_date_from').datepicker({
+        //     format: 'dd-mm-yy',
+        //     autoclose: true,
+        //     todayHighlight: true,
+        // });
+
+        // $('body').on('focus', ".emp_date_from", function () {
+        //     $(this).datepicker({
+        //         dateFormat: 'dd-mm-yy',
+        //         changeMonth: true,
+        //         changeYear: true
+        //     });
+        // });
+
+
+        function ConfirmDelete(docId) {
+            var x = confirm("Are you sure you want to delete?");
+            if (x) {
+                $.ajax({
+                    type: "post",
+                    url: "@Url.ActionLink("DeleteDoc", "employeedoc")",
+                    data: { 'Id': docId },
+                    dataType: 'json',
+                    success: function (response) {
+                        //alert(response.status);
+                        window.location.reload();
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+        }
+
+        $("#DocumentType").on('change', function () {
+            // add jQuery ajax code to upload
+
+
+            var docType = $('#DocumentType').val();
+            //console.log(docType);
+            if (docType == 'Passport') {
+                document.getElementById("PostCode").innerHTML = "Passport No";
+                document.getElementById("IsCurrentPassport").innerHTML = "Is this your current passport?";
+                $("#dbsTypehide").hide();
+            }
+            else if (docType == 'Visa') {
+                document.getElementById("PostCode").innerHTML = "BRP/Visa No.";
+                document.getElementById("IsCurrentPassport").innerHTML = "Is this your current status?";
+                $("#dbsTypehide").hide();
+            }
+            else if (docType == 'Euss_Time_limit') {
+                document.getElementById("PostCode").innerHTML = "Reference Number.";
+                document.getElementById("IsCurrentPassport").innerHTML = "Is this your current status?";
+                $("#dbsTypehide").hide();
+            }
+            else if (docType == 'DBS') {
+                document.getElementById("PostCode").innerHTML = "Reference Number.";
+                document.getElementById("IsCurrentPassport").innerHTML = "Is this your current status?";
+                $("#dbsTypehide").show();
+            }
+            else if (docType == 'NationalID') {
+                document.getElementById("PostCode").innerHTML = "National id number.";
+                document.getElementById("IsCurrentPassport").innerHTML = "Is this your current status?";
+                $("#dbsTypehide").hide();
+            }
+            else {
+                document.getElementById("PostCode").innerHTML = "Reference Number.";
+                document.getElementById("IsCurrentPassport").innerHTML = "Is this your current status?";
+                $("#dbsTypehide").hide();
+            }
+
+        });
+    </script>
+}

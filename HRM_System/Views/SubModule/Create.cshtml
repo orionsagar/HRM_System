@@ -1,0 +1,127 @@
+﻿@model SubModule
+@inject IGlobalHelper _global;
+@{
+    var action = ViewBag.Action;
+    if (action == "Create")
+    {
+        ViewData["Title"] = "Create";
+    }
+    else
+    {
+        ViewData["Title"] = "Edit";
+    }
+
+   // Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+
+    string[] BCText = new string[] { "SubModule List", "SubModule Add" };
+    string[] BCLink = new string[] { "submodule/index", "#" };
+    PageHeaderProps pageHeader = new PageHeaderProps
+    {
+        PageTitle = "SubModule Add",
+        PageDesc = "SubModule Add",
+        BreadcrumbText = BCText,
+        BreadcrumbLink = BCLink
+    };
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+}
+
+
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <!-- Basic Inputs Validation start -->
+            <div class="card">
+                <div class="card-header">
+                    @*<h5><a asp-action="Index">Back to List</a></h5>*@
+                    @await Component.InvokeAsync("PageHeader", pageHeader)
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                </div>
+                <div class="card-block">
+
+                    <form id="main" asp-action="Create" method="post" novalidate>
+
+                        @if (Model == null)
+                        {
+                            <input type="hidden" asp-for="SubModuleID" value="0" />
+                            <input type="hidden" asp-for="CompId" value="@ComId" />
+                            <input type="hidden" asp-for="AddedBy" value="@UserId" />
+                            <input type="hidden" asp-for="UpdatedBy" />
+                            <input type="hidden" asp-for="AddedDate" value="@DateTime.Now" />
+                            <input type="hidden" asp-for="UpdatedDate" />
+                        }
+                        else
+                        {
+                            <input type="hidden" asp-for="SubModuleID" />
+                            <input type="hidden" asp-for="CompId" />
+                            <input type="hidden" asp-for="AddedBy" />
+                            <input type="hidden" asp-for="UpdatedBy" value="@UserId" />
+                            <input type="hidden" asp-for="AddedDate" />
+                            <input type="hidden" asp-for="UpdatedDate" value="@DateTime.Now" />
+                        }
+                        <div class="row justify-content-center">
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label asp-for="ModuleID" class="col-sm-4 col-form-label">Module</label>
+                                    <div class="col-sm-8">
+                                        <select asp-for="ModuleID" class="form-control form-control-sm" asp-items="@ViewBag.ModuleId" required>
+                                            <option value="">Select</option>
+                                        </select>
+                                        <span asp-validation-for="ModuleID" class="text-danger messages"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="SubModuleName" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="SubModuleName" class="form-control form-control-sm" placeholder="SubModule Name" />
+                                        <span asp-validation-for="SubModuleName" class="text-danger messages"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="Description" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="Description" class="form-control form-control-sm" placeholder="Description" />
+                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="SortIndex" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="SortIndex" class="form-control form-control-sm" placeholder="Sort Index" />
+                                        <span asp-validation-for="SortIndex" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group text-center">
+                                    <label class="col-sm-12"></label>
+                                    <div class="col-sm-12">
+                                        <input type="submit" value="Submit" class="btn btn-primary m-b-0" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Basic Inputs Validation end -->
+        </div>
+    </div>
+</div>
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $('#ModuleID').select2();
+    </script>
+}

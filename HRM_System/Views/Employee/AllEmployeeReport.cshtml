@@ -1,0 +1,208 @@
+﻿@model EmployeeReport
+@{
+    Layout = null;
+}
+
+@{
+    var hostUrl = StaticData.HostPath;
+    var OrgLogoPath = "";
+    if (Model.OrganisationVM != null)
+    {
+        if (!string.IsNullOrEmpty(Model.OrganisationVM.LogoPath))
+        {
+            OrgLogoPath = hostUrl + Model.OrganisationVM.LogoPath;
+        }       
+    }
+    
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Employee Reports</title>
+    <link rel="stylesheet" href="@Url.Content("~/css/invoice-report.css")" />
+    <style>
+        body {
+            margin: 0px;
+            font-family: 'Segoe UI', Arial;
+        }
+
+        .invoice-head {
+            clear: both;
+            display: block;
+            padding: 10px;
+            margin-bottom: 40px;
+        }
+
+        .invoice-title {
+            background-color: navy;
+            color: white;
+            font-size: 20px;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .invoice-to {
+            float: left;
+        }
+
+        .invoice-details {
+            float: right;
+        }
+
+        table {
+            clear: both;
+            border: 1px solid darkgray;
+            border-collapse: collapse;
+            margin: auto;
+            width: 100%;
+        }
+
+        th {
+            background-color: navy;
+            color: white;
+        }
+
+        td, th {
+            border: 1px solid darkgray;
+            padding: 5px;
+        }
+
+        .numeric-cell {
+            text-align: right;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .div100 {
+            width: 100%;
+            display: flex;
+            text-align: center;
+        }
+
+        .div20 {
+            width: 20%;
+        }
+
+        .div60 {
+            width: 60%;
+            text-align: center;
+        }
+
+        div.div60 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="div100">
+        <div class="div20">
+
+            <img src="@OrgLogoPath" class="invoice-to" width="100" />
+        </div>
+        <div class="div60">
+            <div class="invoice-details">
+                <h3 style="padding-bottom: 0px;">@Model.OrganisationVM.OrgName</h3>
+                @Model.OrganisationVM.AddressLine1, @Model.OrganisationVM.AddressLine2<br />
+                @Model.OrganisationVM.AddressLine3, @Model.OrganisationVM.City<br />
+                <h3>Employee Report</h3>
+            </div>
+        </div>
+        <div class="div20"></div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    @* <div class="invoice-title">
+    Invoice @Model.InvoiceNo
+    </div> *@
+
+    @* <div class="invoice-head clearfix">
+    <div class="invoice-to">
+    <strong>@Model.CustomerName</strong><br />
+    @Model.CustomerBillingAddress
+    </div>
+    <div class="invoice-details">
+    Invoice no: @Model.InvoiceNo<br />
+    Date: @Model.InvoiceDate.ToShortDateString()<br />
+    Due date: @Model.DueDate.ToShortDateString()
+    </div>
+    </div> *@
+
+    @*     <br />
+    <img src="@EmpLogoPath" class="invoice-details" />
+    <table>
+    <tr>
+    <td>Employee Code: @Model.Employee.CardNo</td>
+    <td>Employee Name: @Model.Employee.Name</td>
+    </tr>
+    <tr>
+    <td>Department: @Model.Employee.EmployeeHistory.Department</td>
+    <td>Designation: @Model.Employee.EmployeeHistory.Designation</td>
+    </tr>
+    </table> *@
+    <br />
+    <br />
+    <table>
+        <tr>
+            <th>
+                Sl
+                No.
+            </th>
+            <th>Card NO</th>
+            <th>Employee Name</th>
+            <th>Address</th>
+            <th>DOB</th>
+            <th>Mobile</th>
+            <th>Email</th>
+            <th>Designation</th>
+            <th>Nationality</th>
+            <th>NID Number</th>
+            <th>Visa Expired</th>
+            <th>Passport No</th>
+            <th>EUSS Details</th>
+            <th>DBS Details</th>
+        </tr>
+
+        @{
+            if (Model.AllEmployee != null)
+            {
+                var i = 1;
+                foreach (var item in Model.AllEmployee)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>
+                            @item.CardNo
+                        </td>
+                        <td>@item.Name</td>
+                        <td>@item.Address</td>
+                        @*<td>@DateTime.ParseExact(item.DateOfBirth, "dd/MM/yyyy", null)</td>*@
+                        <td>@item.DateOfBirth</td>
+                        <td>@item.Phone</td>
+                        <td>@item.Email</td>
+                        <td>@item.DesignationName</td>
+                        <td>@item.Nationality</td>
+                        <td>@item.NationalId</td>
+                        <td>@item.VisaExpiryDate</td>
+                        <td>@item.PassportNo</td>
+                        <td>@item.EUSSDetails</td>
+                        <td>@item.DBSDetails</td>
+                    </tr>
+
+                    i += 1;
+                }
+            }
+        }
+
+    </table>
+</body>
+</html>

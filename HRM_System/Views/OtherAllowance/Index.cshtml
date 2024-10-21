@@ -1,0 +1,797 @@
+﻿@model OtherAllowance
+
+@inject IGlobalHelper _global;
+@{
+    //var action = ViewBag.Action;
+    var title = "Other Allowance";
+
+    ViewData["Title"] = $"{title}";
+}
+
+@section PageName {
+    Other Allowance
+}
+@section Breadcrumb {
+    <a href="/otherallowance/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">Other Allowance</span>
+}
+
+@{    
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+}
+
+<style>
+    label {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    #dt-emp-list {
+        display: block;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>
+
+@Html.AntiForgeryToken()
+<!-- Page-body start -->
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Ajax data source (Arrays) table start -->
+            <div id="loader">
+                <div class="overlay"></div>
+                <div class="card">
+                    @* <div class="card-header">
+                        @await Component.InvokeAsync("PageHeader", pageHeader)
+                    </div> *@
+                    <div class="card-block">
+                        @*@await Component.InvokeAsync("EmployeeFilter")*@
+                        <div class="row justify-content-center">
+
+                            <partial name="_Filter" />
+
+                            <div class="col-sm-4 px-lg-3">
+
+                                <input type="hidden" asp-for="EmpId" />
+                                <input type="hidden" asp-for="OtherAllowanceID" />
+                                <input type="hidden" asp-for="Amount" />
+
+                                <div class="form-group form-default d-none">
+                                    <label asp-for="OrgId" class="form-label">Organisation</label>
+                                    <select asp-for="OrgId" asp-items="ViewBag.OrgId" required class="form-control form-control-sm">
+                                    </select>
+                                    <span asp-validation-for="OrgId" class="text-danger form-bar"></span>
+
+                                </div>
+                                <div class="form-group form-default">
+                                    <label asp-for="AllowanceName" class="form-label">Allowance Name</label>
+                                    <select asp-for="AllowanceName" asp-items="ViewBag.AllowanceName" required class="form-control form-control-sm">
+                                        <option value="Lunch Allowance">Lunch Allowance</option>
+                                        <option value="Holiday Allowance">Holiday Allowance</option>
+                                        <option value="Special Allowance">Special Allowance</option>
+                                        <option value="RelantionShip Allowance">RelantionShip Allowance</option>
+                                    </select>
+                                    <span asp-validation-for="AllowanceName" class="text-danger form-bar"></span>
+
+                                </div>
+
+                                <div class="form-group form-default">
+                                    <label asp-for="ApplyDate" class="form-label">Allowance Date</label>
+                                    <input asp-for="ApplyDate" required type="text" class="form-control form-control-sm" />
+                                    <span asp-validation-for="ApplyDate" class="text-danger form-bar"></span>
+                                </div>
+
+                                <div class="form-group form-default">
+                                    <label asp-for="IsFixed" class="form-label">Is Fixed?</label>
+                                    <input asp-for="IsFixed" style="width: 20px; height: 20px; margin-top: 6px;" type="checkbox" />
+                                    <span asp-validation-for="IsFixed" class="text-danger form-bar"></span>
+                                </div>
+
+                                <div class="form-group form-default forFixed">
+                                    <label asp-for="FixedAmount" class="form-label">Fixed Amount</label>
+                                    <input asp-for="FixedAmount" type="number" class="form-control form-control-sm" />
+                                    <span asp-validation-for="FixedAmount" class="text-danger form-bar"></span>
+
+                                </div>
+
+                                <div class="form-group form-default">
+                                    <label asp-for="CalcRuleID" class="form-label">Calculation Rule</label>
+                                    <select asp-for="CalcRuleID" asp-items="ViewBag.Rules" required class="form-control form-control-sm">
+                                    </select>
+                                    <span asp-validation-for="CalcRuleID" class="text-danger form-bar"></span>
+
+                                </div>
+
+                                <div class="form-group form-default" id="forRuleId">
+                                    <label asp-for="Rate" id="AllowanceAmountLable" class="form-label"></label>
+                                    <input asp-for="Rate" type="number" class="form-control form-control-sm" />
+                                    <span asp-validation-for="Rate" class="text-danger form-bar"></span>
+
+                                </div>
+
+                                <div class="form-group form-default">
+                                    <label asp-for="Remarks" class="form-label">Remarks</label>
+                                    <textarea asp-for="Remarks" class="form-control form-control-sm"></textarea>
+                                    <span asp-validation-for="Remarks" class="text-danger form-bar"></span>
+
+                                </div>
+
+                                <div class="row justify-content-center mt-2">
+                                    <div class="col-12 col-sm-8 text-center">
+                                        <button class="btn btn-sm btn-primary" id="btnSave">Save</button>
+                                        <button class="btn btn-sm btn-warning d-none" id="btnUpdate">Update</button>
+                                        <button class="btn btn-sm btn-danger d-none" id="btnDelete">Delete</button>
+                                        <button class="btn btn-sm btn-light btn-outline-info" id="btnClear">Clear</button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row m-0 mt-2">
+
+                        <div class="col-sm-12" id="employeeList">
+                            <p class="m-1 font-weight-bold">Employee List</p>
+
+                            <div class="table-responsive dt-responsive">
+
+                                <table id="dt-emp-list" class="table table-hover table-striped table-bordered nowrap">
+                                    <thead>
+                                        <tr>
+
+                                            <th>
+
+                                                <div class="checkbox-fade fade-in-primary ml-3">
+                                                    <label class="m-0">
+                                                        <input type="checkbox" id="empAllCheck" name="empAllCheck">
+                                                        <span class="cr">
+                                                            <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </th>
+                                            <th>Employee</th>
+                                            <th>Card No</th>
+                                            <th>Designation</th>
+                                            <th>Category</th>
+                                            <th>Department</th>
+                                            <th>Section</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 d-none" id="allowanceList">
+                            <p class="m-1 font-weight-bold">Allowance List</p>
+
+                            <div class="table-responsive dt-responsive">
+
+                                <table id="dt-emp-allowance-list" class="table table-hover table-striped table-bordered nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th class="d-none">OtherAllowanceId</th>
+                                            <th>Name</th>
+                                            <th>Card No</th>
+                                            <th>Section</th>
+                                            <th>Designation</th>
+                                            @*<th>Category</th>
+                                            <th>Department</th>*@
+                                            <th>Is Fixed</th>
+                                            <th>Fixed Amount</th>
+                                            <th>Rate</th>
+                                            <th>Amount</th>
+                                            <th>Apply Date</th>
+                                            <th>Rule</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Ajax data source (Arrays) table end -->
+        </div>
+    </div>
+</div>
+<!-- Page-body end -->
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    <script>
+        let empSelectedAllowance = [];
+        let OtherAllowanceIdForSelectOption = "0";
+        let emp_allowance_list_table;
+
+        $(document).ready(function () {
+
+            $("#IsFixed").on('click', function () {
+                FixedAmountShowHide();
+            });
+
+            $("#CalcRuleID").change(function () {
+                AmountLableChange();
+            });
+
+            $('#dt-emp-allowance-list tbody').on('click', 'tr', function () {
+                //const tr = $(this).closest('tr')
+                //$(tr).toggleClass('selected');
+
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    clearData();
+                } else {
+                    emp_allowance_list_table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    const allowanceId = emp_allowance_list_table.row(this).data()[0];
+                    empAllowance(allowanceId);
+                }
+            });
+
+            $("#Type_Filter,#AllowanceName, #CalcRuleID,#OrgId").select2();
+
+            $("#FromDate_Filter, #ToDate_Filter, #ApplyDate").datepicker({
+                dateFormat: 'dd-mm-yy',
+                changeYear: true,
+                changeMonth: true,
+            });
+
+            $("#FromDate_Filter, #ToDate_Filter, #ApplyDate").datepicker("setDate", new Date());
+
+            emp_allowance_list_table = $('#dt-emp-allowance-list').DataTable({
+                paging: false,
+                select:true,
+                //scrollY: 250,
+                //searching:false,
+                columnDefs: [
+                    {
+                        targets: 0,
+                        visible: false,
+                        searchable: false,
+                    },
+                ]
+            });
+
+            $("#btnEmpFilter").click(function () {
+                divShow("#employeeList");
+                divHide("#allowanceList");
+                let filter = {
+                    EffectiveDate: $("#EffectiveDate").val(),
+                    EmpCategoryId_Filter: $("#EmpCategoryId_Filter").val(),
+                    DesignationId_Filter: $("#DesignationId_Filter").val(),
+                    SectionId_Filter: $("#SectionId_Filter").val(),
+                    DepartmentId_Filter: $("#DepartmentId_Filter").val(),
+                    CardNo_Filter: $("#CardNo_Filter").val()||"",
+                    EmpName_Filter: $("#EmpName_Filter").val() || "",
+                    CompId: '@ComId',
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("LoadEmployee", "OtherAllowance")",
+                    data: filter,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        HTMLEmployeeList(response);
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+            });
+
+            $("#btnOtherAllowanceFind").click(function () {
+                divShow("#allowanceList");
+                divHide("#employeeList");
+                let filter = {
+                    FromDate_Filter: $("#FromDate_Filter").val(),
+                    ToDate_Filter: $("#ToDate_Filter").val(),
+                    Type_Filter: $("#Type_Filter").val()||"",
+                    //FindCardNo_Filter: $("#FindCardNo_Filter").val()||"",
+                    CompId: '@ComId',
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("LoadEmployeeOtherAllowance", "OtherAllowance")",
+                    data: filter,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        HTMLEmpAllowanceList(response);
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+            });
+
+            $("#btnDelete").click(function () {
+                if (!confirm("Are you confirm to delete?")) {
+                    return;
+                }
+                const otherAllowanceId = $("#OtherAllowanceID").val();
+
+                if (otherAllowanceId == "" || otherAllowanceId == 0) {
+                    WarningPNotify("Please select Allowance data!!");
+                    return;
+                }
+
+                $.ajax({
+                    type: "DELETE",
+                    url: "@Url.Action("Delete", "OtherAllowance")",
+                    data: { otherAllowanceId },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                            SuccessPNotify(res.message);
+                            clearData();
+                            showSaveButton();
+                            $("#btnOtherAllowanceFind").click();
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+            })
+
+            $("#btnSave").click(function () {
+                let employees = [];
+                //const OtherAllowanceId = $("#OtherAllowanceID").val()||"";
+                const ApplyAmount = $("#Amount").val()||0;
+                const Type = $("#AllowanceName").val();
+                const ApplyDate = $("#ApplyDate").val();
+                const IsFixed = $("#IsFixed").is(":checked");
+                const CalcRuleID = $("#CalcRuleID").val();
+                const Rate = $("#Rate").val()||0;
+                const FixedAmount = $("#FixedAmount").val()||0;
+                const Remarks = $("#Remarks").val();
+                const OrgId = $("#OrgId").val();
+
+
+                if (Type == "" || ApplyDate == "") {
+                    WarningPNotify("Please select Type & Date");
+                    return;
+                }
+
+                if (IsFixed) {
+                    if (FixedAmount == 0) {
+                        WarningPNotify("Please assign Fixed Amount!");
+                        return;
+                    }
+                } else {
+                    const ruleName = $("#CalcRuleID option:selected").text().trim();
+                    if (Rate == 0 && ruleName != "Gross Salary" && ruleName != "Basic Salary") {
+                        WarningPNotify("Please assign Rate!");
+                        return;
+
+                    }
+
+                }
+
+                $("input[name='empCheckbox']:checked").each(function () {
+                    //console.log($(this).val());
+                    employees.push(
+                        {
+                            @nameof(OtherAllowance.OtherAllowanceID) : 0,
+                            @nameof(OtherAllowance.Amount) : ApplyAmount,
+                            @nameof(OtherAllowance.AllowanceName) : Type,
+                            @nameof(OtherAllowance.EmpId) : $(this).val(),
+                            @nameof(OtherAllowance.ApplyDate) : ApplyDate,
+                            @nameof(OtherAllowance.IsFixed) : IsFixed,
+                            @nameof(OtherAllowance.CalcRuleID) : CalcRuleID,
+                            @nameof(OtherAllowance.Rate) : Rate,
+                            @nameof(OtherAllowance.FixedAmount) : FixedAmount,
+                            @nameof(OtherAllowance.Remarks) : Remarks,
+                            @nameof(OtherAllowance.OrgId) : OrgId,
+
+                        }); 
+                });
+
+                if (employees.length<1) {
+                    WarningPNotify("Please select Employee");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Create", "OtherAllowance")",
+                    data: {model:employees},
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                           // SuccessPNotify("Employee Job Calender Updated");
+                            SuccessPNotify(res.message);
+                            clearData();
+                            $("#btnOtherAllowanceFind").click();
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+
+            })
+
+            $("#btnUpdate").click(function () {
+                let employees = [];
+
+                const OtherAllowanceId = $("#OtherAllowanceID").val()||0;
+                const empId = $("#EmpId").val()||"";
+                const ApplyAmount = $("#Amount").val()||0;
+                const Type = $("#AllowanceName").val();
+                const ApplyDate = $("#ApplyDate").val();
+                const IsFixed = $("#IsFixed").is(":checked");
+                const CalcRuleID = $("#CalcRuleID").val()||0;
+                const Rate = $("#Rate").val()||0;
+                const FixedAmount = $("#FixedAmount").val()||0;
+                const Remarks = $("#Remarks").val();
+
+
+                if (OtherAllowanceId==0) {
+                    WarningPNotify("No data found. Please select sanction data again.");
+                    return;
+                }
+
+                if (Type == "" || ApplyDate == "") {
+                    WarningPNotify("Please select Type & Date.");
+                    return;
+                }
+
+                employees.push(
+                    {
+        @nameof(OtherAllowance.OtherAllowanceID) : OtherAllowanceId,
+        @nameof(OtherAllowance.Amount) : ApplyAmount,
+        @nameof(OtherAllowance.AllowanceName) : Type,
+        @nameof(OtherAllowance.EmpId) : empId,
+        @nameof(OtherAllowance.ApplyDate) : ApplyDate,
+        @nameof(OtherAllowance.IsFixed) : IsFixed,
+        @nameof(OtherAllowance.CalcRuleID) : CalcRuleID,
+        @nameof(OtherAllowance.Rate) : Rate,
+        @nameof(OtherAllowance.FixedAmount) : FixedAmount,
+        @nameof(OtherAllowance.Remarks) : Remarks,
+                    });
+
+
+                if (employees.length<1) {
+                    WarningPNotify("Please select Employee");
+                    return;
+                }
+
+                //console.log(employees);
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Create", "OtherAllowance")",
+                    data: {model:employees},
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                           // SuccessPNotify("Employee Job Calender Updated");
+                            SuccessPNotify(res.message);
+                            clearData();
+                            $("#btnOtherAllowanceFind").click();
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+
+             });
+
+            $("#empAllCheck").click(function () {
+                let check = $(this).is(":checked");
+                if (check) {
+                    $("input[name='empCheckbox']").prop('checked', true);
+                } else {
+                    $("input[name='empCheckbox']").prop('checked', false);
+                }
+            });
+
+            $("#btnClear").click(function () {
+                clearData();
+                showSaveButton();
+            });
+
+
+
+            $("#btnEmpFilter").click();
+
+
+
+            FixedAmountShowHide();
+            //AmountLableChange();
+
+            divShow("#employeeList");
+            divHide("#allowanceList");
+        });
+
+        function HTMLEmpAllowanceList(tr) {
+            tr = tr || [];
+            console.log(tr);
+            emp_allowance_list_table.clear().draw();
+
+            tr.map(a => {
+                a.applyDate = getDateString(a.applyDate);
+                a.isFixed = a.isFixed?"Yes":"No";
+                emp_allowance_list_table.row.add([
+                    a.otherAllowanceId,
+                    a.name,
+                    a.cardNo,
+                    a.sectionName,
+                    a.designationName,
+                   // a.categoryName,
+                   // a.departmentName,
+                    a.isFixed,
+                    a.fixedAmount,
+                    a.rate,
+                    a.amount,
+                    a.applyDate,
+                    a.ruleName,
+                    a.remarks,
+                ]);
+            });
+
+            emp_allowance_list_table.draw();
+        }
+
+        function AmountLableChange() {
+
+            let rule = $("#CalcRuleID option:selected").text().trim();
+
+            if (rule == "Gross Salary" || rule == "Basic Salary")
+            {
+                if (!$("#forRuleId").hasClass("d-none")) {
+                    $("#forRuleId").addClass("d-none")
+                }
+            }
+            else
+            {
+                if ($("#forRuleId").hasClass("d-none")) {
+                    $("#forRuleId").removeClass("d-none")
+                }
+                rule = rule.replace("Some ","");
+                $("#AllowanceAmountLable").text(rule);
+            }
+
+        }
+
+        function FixedAmountShowHide() {
+            //debugger;
+            if ($("#IsFixed").is(":checked")) {
+                $(".forFixed").each(function () {
+                    if ($(this).hasClass("d-none")) {
+                        $(this).removeClass("d-none");
+                    }
+                });
+
+                $(".forNotFixed").each(function () {
+                     if (!$(this).hasClass("d-none")) {
+                         $(this).addClass("d-none");
+                     }
+                });
+            }
+            else
+            {
+                $(".forNotFixed").each(function () {
+                    if ($(this).hasClass("d-none")) {
+                        $(this).removeClass("d-none");
+                    }
+                });
+
+                $(".forFixed").each(function () {
+                     if (!$(this).hasClass("d-none")) {
+                         $(this).addClass("d-none");
+                     }
+                });
+                AmountLableChange();
+            }
+        }
+
+        function divShow(selector) {
+            if ($(selector).hasClass("d-none")) {
+                $(selector).removeClass("d-none");
+            }
+        }
+
+        function divHide(selector) {
+            if (!$(selector).hasClass("d-none")) {
+                $(selector).addClass("d-none");
+            }
+        }
+
+        function getDateString(date) {
+            var d = new Date(date);
+            var day = d.getDate();
+            var month = d.getMonth() + 1;
+            var year = d.getFullYear();
+            if (day < 10) {
+                day = "0" + day;
+            }
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var date = day + "-" + month + "-" + year;
+            return date;
+        }
+
+        function empAllowance(otherAllowanceId) {
+
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetByOtherAllowanceId", "OtherAllowance")",
+                data: { otherAllowanceId },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                //contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response)
+                {
+                    if (!response.data.isError)
+                    {
+                        SetAllowanceData(response.data);
+                    }
+                    else
+                    {
+                        WarningPNotify(response.data.message);
+                        clearData();
+                    }
+                },
+                failure: function (response) {
+                    DangerPNotify(response.responseText);
+                    empSelectedAllowance = [];
+                },
+                error: function (response) {
+                    DangerPNotify(response.responseText);
+                    empSelectedAllowance = [];
+                }
+                });
+
+        }
+
+        function SetAllowanceData(sanction) {
+
+            const { empId, otherAllowanceID, amount, allowanceName, isFixed, applyDate, calcRuleID, fixedAmount,rate,remarks } = sanction;
+
+            $("#EmpId").val(empId);
+            $("#OtherAllowanceID").val(otherAllowanceID);
+            $("#Amount").val(amount);
+            $("#IsFixed").prop('checked', isFixed);
+            $("#AllowanceName").val(allowanceName).change();
+            $("#CalcRuleID").val(`${calcRuleID}`).change();
+            $("#FixedAmount").val(fixedAmount);
+            $("#Rate").val(rate);
+            $("#ApplyDate").val(getDateString(applyDate));
+            $("#Remarks").val(remarks);
+            showUpdateButton();
+            FixedAmountShowHide();
+
+        }
+
+        function clearData() {
+            $("#EmpId").val("");
+            $("#OtherAllowanceID").val("");
+            $("#Amount").val("");
+            $("#IsFixed").prop('checked', false);
+            $("#AllowanceName").prop("selectedIndex", 0).change();
+            $("#CalcRuleID").prop("selectedIndex", 0).change();
+            $("#FixedAmount").val("");
+            $("#Rate").val("");
+            $("#ApplyDate").val(getDateString(new Date()));
+
+
+            showSaveButton();
+
+            // recall employee list for update emp history id
+            //$("#btnEmpFilter").click();
+        }
+
+        function showSaveButton() {
+
+            if ($("#btnSave").hasClass("d-none")) {
+                $("#btnSave").removeClass("d-none");
+            }
+
+            if (!$("#btnUpdate").hasClass("d-none")) {
+                $("#btnUpdate").addClass("d-none");
+            }
+
+            if (!$("#btnDelete").hasClass("d-none")) {
+                $("#btnDelete").addClass("d-none");
+            }
+
+
+        }
+
+        function showUpdateButton() {
+
+            if (!$("#btnSave").hasClass("d-none")) {
+                $("#btnSave").addClass("d-none");
+            }
+
+            if ($("#btnUpdate").hasClass("d-none")) {
+                $("#btnUpdate").removeClass("d-none");
+            }
+            if ($("#btnDelete").hasClass("d-none")) {
+                $("#btnDelete").removeClass("d-none");
+            }
+
+        }
+
+    </script>
+}

@@ -1,0 +1,149 @@
+﻿@*
+
+    ===================================================
+    =================The new Header Codes==============
+    ===================================================
+
+*@
+
+<nav class="navbar header-navbar pcoded-header HeaderRecreated">
+    <div class="navbar-wrapper">
+        <div class="navbar-logo LogoContainerRecreated">
+            <a class="mobile-menu waves-effect waves-light colorPriority" id="mobile-collapse" href="#!">
+                <i class="ti-menu"></i>
+            </a>
+            <div class="mobile-search waves-effect waves-light">
+                <div class="header-search">
+                    <div class="main-search morphsearch-search colorPriority">
+                        <div class="input-group">
+                            <span class="input-group-prepend search-close"><i class="ti-close input-group-text"></i></span>
+                            <input type="text" class="form-control" placeholder="Enter Keyword">
+                            <span class="input-group-append search-btn"><i class="ti-search input-group-text"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="/dashboard/index">
+                <img class="img-fluid LogoRecreated" src="~/assets/images/WP-s-rb.png" alt="Company-Logo" />
+            </a>
+            <a class="mobile-options waves-effect waves-light">
+                <i class="ti-more" style="color:black !important;"></i>
+            </a>
+        </div>
+
+        <div class="navbar-container container-fluid">
+            <ul class="nav-left">
+                <li>
+                    <div class="sidebar_toggle"><a href="javascript:void(0)"><i class="ti-menu"></i></a></div>
+                </li>
+                <li class="header-search">
+                    <div class="main-search morphsearch-search">
+                        <div class="input-group">
+                            <span class="input-group-prepend search-close"><i class="ti-close input-group-text"></i></span>
+                            <input type="text" class="form-control" placeholder="Enter Keyword">
+                            <span class="input-group-append search-btn"><i class="ti-search input-group-text"></i></span>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+            <ul class="nav-right">
+                <li class="header-notification">
+                    <a href="#!" class="waves-effect waves-light">
+                        <i class="ti-bell colorPriority"></i>
+                        <span class="badge bg-c-red"></span>
+                    </a>
+                    <ul class="show-notification">
+                        <li>
+                            <h6>Notifications</h6>
+                            <label class="label label-danger">New</label>
+                        </li>
+                        <li class="waves-effect waves-light">
+                            <div class="media">
+                                <img class="d-flex align-self-center img-radius" src="~/assets/images/avatar-2.jpg" alt="Generic placeholder image">
+                                <div class="media-body">
+                                    <h5 class="notification-user">Admin</h5>
+                                    <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                    <span class="notification-time">30 minutes ago</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="waves-effect waves-light">
+                            <div class="media">
+                                <img class="d-flex align-self-center img-radius" src="~/assets/images/avatar-4.jpg" alt="Generic placeholder image">
+                                <div class="media-body">
+                                    <h5 class="notification-user">Joseph William</h5>
+                                    <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                    <span class="notification-time">30 minutes ago</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="waves-effect waves-light">
+                            <div class="media">
+                                <img class="d-flex align-self-center img-radius" src="~/assets/images/avatar-3.jpg" alt="Generic placeholder image">
+                                <div class="media-body">
+                                    <h5 class="notification-user">Sara Soudein</h5>
+                                    <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                    <span class="notification-time">30 minutes ago</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="user-profile header-notification">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img src="~/assets/images/faq_man.png" class="img-radius" alt="User-Profile-Image">
+                        </div>
+                        <div class="col-md-8" style="height: 10px;">
+                            <a href="#!" class="waves-effect waves-light" style="color:black">
+                                <h5 class="mb-0">@ViewBag.FullName</h5>
+                                <h6 class="mb-0">@ViewBag.Client</h6>
+                                @* <h6 class="mb-0">@ViewBag.Email</h6> *@
+
+
+                                @* <p class="col-md-12">@ViewBag.FullName<br />@ViewBag.Client<br />@ViewBag.Email </p> *@
+                                @* <span class="colorPriority">@ViewBag.UserName</span> *@
+                                @* <h6 style="margin-bottom: 0px;"></h6><br />
+                                <h6 style="margin-bottom: 0px;"></h6><br />
+                                <h6 style="margin-bottom: 0px;"></h6> *@
+
+
+                            </a>
+                        </div>
+                        <div class="col-md-1">
+                            <i class="ti-angle-down"></i>
+                        </div>
+
+                    </div>
+
+
+                    <ul class="show-notification profile-notification">
+                        @*<li class="waves-effect waves-light">
+                        <a href="#!">
+                        <i class="ti-settings"></i> Settings
+                        </a>
+                        </li>*@
+                        <li class="waves-effect waves-light">
+                            <a href="/userinfo/userprofile">
+                                <i class="ti-user"></i> Profile
+                            </a>
+                        </li>
+
+                        <li class="waves-effect waves-light">
+                            <a href="/auth/forgetpassword">
+                                <i class="ti-lock"></i> Lock Screen
+                            </a>
+                        </li>
+                        <a href="/auth/logout">
+                        <li class="waves-effect waves-light">
+                            <i class="ti-layout-sidebar-left"></i> Logout
+                        </li>
+                        </a>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,287 @@
+﻿@model PaymentGroup
+
+@inject IGlobalHelper _global
+@{
+    var action = ViewBag.Action;
+    var title = "PaymentGroup List";
+
+    ViewData["Title"] = $"{title}";
+}
+
+@section PageName {
+    PaymentGroup List
+}
+@section Breadcrumb {
+    <a href="/PaymentGroup/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <a href="/PaymentGroup/index">
+        <span class="section">Payment Group</span>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">
+        @if (ViewBag.Action == "Add")
+        {
+            <span> Add</span>
+        }
+        else if (ViewBag.Action == "Edit")
+        {
+            <span> Edit</span>
+        }
+        else if (ViewBag.Action == "Delete")
+        {
+            <span> Delete</span>
+        }
+    </span>
+}
+
+@{
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+    var date = DateTime.Now;
+    var OrgId = _global.GetOrgId();
+    var ClientId = _global.GetClientId();
+    var paymentGroups = ViewBag.paymentGroups as List<PaymentGroup> ?? new List<PaymentGroup>();
+}
+
+@Html.AntiForgeryToken()
+<!-- Page-body start -->
+<div class="page-body">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-block">
+                    <form asp-action="Create" id="main" class="" novalidate>
+                        @if (Model == null)
+                        {
+                            <input type="hidden" asp-for="AddedBy" value="@UserId" />
+                            <input type="hidden" asp-for="UpdatedBy" />
+                            <input type="hidden" asp-for="AddedDate" value="@date" />
+                            <input type="hidden" asp-for="UpdatedDate" />
+                            <input type="hidden" asp-for="OrgId" value="@OrgId" />
+                            <input type="hidden" asp-for="ClientId" value="@ClientId" />
+                        }
+                        else
+                        {
+                            <input type="hidden" asp-for="PayGroupId" />
+                            <input type="hidden" asp-for="AddedBy" />
+                            <input type="hidden" asp-for="UpdatedBy" value="@UserId" />
+                            <input type="hidden" asp-for="AddedDate" />
+                            <input type="hidden" asp-for="UpdatedDate" value="@date" />
+                            <input type="hidden" asp-for="OrgId" value="@OrgId" />
+                            <input type="hidden" asp-for="ClientId" value="@ClientId" />
+                        }
+
+                        @* Hide the Organisation section using CSS *@
+                        <div class="form-group row" style="display:none;">
+                            <div class="col-sm-12">
+                                <label asp-for="OrgId" class="form-label">Organisation:</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <select asp-for="OrgId" asp-items="ViewBag.OrgId" class="form-control form-control-sm">
+                                </select>
+                                <span asp-validation-for="OrgId" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label asp-for="PayGroup" class="float-label">Pay Group</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <input asp-for="PayGroup" class="form-control" required />
+                                <span asp-validation-for="PayGroup" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label asp-for="Status" class="float-label">Status</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <select asp-for="Status" class="form-control" required>
+                                    <option value="">Select Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                </select>
+                                <span asp-validation-for="Status" class="text-danger form-bar"></span>
+                            </div>
+                        </div>
+
+                        <div class="row actionBtnRight">
+                            <div class="col-12 col-sm-12">
+                                <button class="btn btn-primary waves-effect waves-light m-r-20" id="btnSave">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-block">
+                    <div class="table-responsive dt-responsive">
+                        <table id="dt-PaymentGroup" class="table table-hover table-striped table-bordered nowrap">
+                            <thead>
+                                <tr>
+                                    <th>PayGroupId</th>
+                                    <th>PayGroup</th>
+                                    <th>Status</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in paymentGroups)
+                                {
+                                    <tr>
+                                        <td>@item.PayGroupId</td>
+                                        <td>@item.PayGroup</td>
+                                        <td>@item.Status</td>
+                                        <td>
+                                            <a href="/PaymentGroup/Edit/@item.PayGroupId" class="@ViewBag.IsEdit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="javascript:;" class="@ViewBag.IsDelete" onclick="DeleteData('@item.PayGroupId', 'PaymentGroup/Delete', 'dt-PaymentGroup');">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page-body end -->
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#Status').select2();
+
+            $("#btnSave").click(function (e) {
+                e.preventDefault();
+                let paymentGroupData = {
+                    PayGroupId: $("#PayGroupId").val(),
+                    PayGroup: $("#PayGroup").val(),
+                    Status: $("#Status").val(),
+                    AddedBy: $("#AddedBy").val(),
+                    UpdatedBy: $("#UpdatedBy").val(),
+                    UpdatedDate: $("#UpdatedDate").val(),
+                    AddedDate: $("#AddedDate").val(),
+                    OrgId: $("#OrgId").val(),
+                    ClientId: $("#ClientId").val()
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Create", "PaymentGroup")",
+                    data: paymentGroupData,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                            SuccessPNotify(res.message);
+                            $('#dt-PaymentGroup').DataTable().draw();
+                            cleardata();
+                            window.location.replace('/PaymentGroup/index');
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+            });
+
+            $("#dt-PaymentGroup").DataTable({
+                "processing": true,
+                "serverSide": true,
+                "filter": true,
+                "ajax": {
+                    "url": "/PaymentGroup/LoadData",
+                    "type": "POST",
+                    "datatype": "json",
+                    "error": function (xhr, error, thrown) {
+                        // Display error message to the user
+                        DangerPNotify("An error occurred while loading data. Please try again later.");
+                        console.log("Error: " + xhr.responseText); // Log the error for debugging
+                    }
+                },
+                "columnDefs": [{
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+                "order": [[0, "desc"]],
+                buttons: [
+                    'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "columns": [
+                    { "data": "payGroupId", "className": "text-left" },
+                    { "data": "payGroup", "className": "text-left" },
+                    { "data": "status", "className": "text-left" },
+                    {
+                        "render": function (data, type, full, meta) {
+                            var IsEdit = $('#IsEdit').val();
+                            return `<a href="/PaymentGroup/Edit/${full.payGroupId}" class="${IsEdit}"><i class="fa fa-edit"></i></a>`;
+                        }
+                    },
+                    {
+                        "render": function (data, type, row) {
+                            var IsDelete = $('#IsDelete').val();
+                            return `<a href='javascript:;' class='${IsDelete}' onclick="DeleteData('${row.payGroupId}', 'PaymentGroup/Delete', 'dt-PaymentGroup');"><i class='fa fa-trash'></i></a>`;
+                        }
+                    }
+                ]
+            });
+
+            function cleardata() {
+                $("#PayGroupId").val(0);
+                $("#PayGroup").val('');
+                $("#Status").val('');
+            }
+
+            function DeleteData(id, deleteUrl, tableId) {
+                if (confirm("Are you sure you want to delete this item?")) {
+                    $.ajax({
+                        type: "POST",
+                        url: deleteUrl,
+                        data: { id: id },
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+                        },
+                        success: function (response) {
+                            if (!response.isError) {
+                                SuccessPNotify(response.message);
+                                $('#' + tableId).DataTable().draw();
+                            } else {
+                                DangerPNotify(response.message);
+                            }
+                        },
+                        error: function (response) {
+                            DangerPNotify(response.responseText);
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+}

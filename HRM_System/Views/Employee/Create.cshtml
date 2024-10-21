@@ -1,0 +1,1032 @@
+﻿@model Employee
+
+@inject IGlobalHelper _global;
+
+@{
+    var compID = _global.GetCompID();
+    var userID = _global.GetUserID();
+}
+
+@{
+    var title = Model == null ? "Add" : "Update";
+    ViewData["Title"] = $"Employee Training {title}";
+}
+
+@{
+    var action = ViewBag.Action;
+    if (action == "Add")
+    {
+        ViewData["Title"] = "Employee Add";
+    }
+    else
+    {
+        ViewData["Title"] = "Employee Edit";
+    }
+    Layout = "~/Views/Shared/_Main_Layout.cshtml";
+}
+
+@section PageName {
+    @ViewData["Title"]
+}
+@section Breadcrumb {
+    <a href="/dashboard/index" class="text-white">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <a href="/Employee/index" class="text-white">Employee List</a>
+
+    <span class="Divider">/</span>
+    @* <span class="section activeCrum">Employee Add</span> *@
+    <span class="section activeCrum">@ViewData["Title"]</span>
+}
+
+@Html.AntiForgeryToken()
+
+
+<!-- Page-header start -->
+<div class="row  m-b-10">
+    <div class="col-sm-12">
+        <!-- Basic Inputs Validation start -->
+        <div class="card">
+            @* <div class="card-header">
+                @await Component.InvokeAsync("PageHeader", pageHeader)    
+            </div> *@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-lg-12 ">
+                        @*<div class="sub-title">Default</div>*@
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs md-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active show" data-toggle="tab" href="#basic" role="tab" aria-selected="false">Basic Info</a>
+                                <div class="slide"></div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  " data-toggle="tab" href="#details" role="tab" aria-selected="true">Employee Details</a>
+                                <div class="slide"></div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#education" role="tab" aria-selected="false">Education</a>
+                                <div class="slide"></div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#experience" role="tab" aria-selected="false">Exprerience</a>
+                                <div class="slide"></div>
+                            </li>
+                            @*<li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#otherInfo" role="tab" aria-selected="false">Other info</a>
+                                <div class="slide"></div>
+                            </li>*@
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#training" role="tab" aria-selected="false">Training</a>
+                                <div class="slide"></div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#pay" role="tab" aria-selected="false">Pay Details</a>
+                                <div class="slide"></div>
+                            </li>
+
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content card-block">
+                            <div class="tab-pane active show" id="basic" role="tabpanel">
+                                <partial name="_EmpBasic.cshtml" model="@Model" />
+                            </div>
+                            <div class="tab-pane " id="details" role="tabpanel">
+                                <partial name="_EmpDetails.cshtml" model="@Model?.EmployeeDetails" />
+                            </div>
+                            <div class="tab-pane" id="education" role="tabpanel">
+                                <partial name="_EmpEducation.cshtml" model="@Model?.EmployeeEducations" />
+                            </div>
+                            <div class="tab-pane" id="experience" role="tabpanel">
+                                <partial name="_EmpExperience.cshtml" model="@Model?.EmployeeExperiences" />
+                            </div>
+                            @*<div class="tab-pane" id="otherInfo" role="tabpanel">
+                                <partial name="_EmpOtherInfo.cshtml" model="@Model?.EmployeeOtherInfo" />
+                            </div>*@
+                            <div class="tab-pane" id="training" role="tabpanel">
+                                <partial name="_EmpTraining.cshtml" model="@Model?.EmployeeTraining" />
+                            </div>
+                            <div class="tab-pane" id="pay" role="tabpanel">
+                                <partial name="_PayDetails.cshtml" model="@Model?.PayDetails" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Basic Inputs Validation end -->
+    </div>
+</div>
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //---------------- duplicate email check -----------------//
+        $('#Email').blur(function () {
+            let email = $(this).val();
+            $.get('/client/checkemail', { Email: email }, function (data, success, xhr) {
+                if (success == 'success') {
+                    if (data != "") {
+                        $('#erroremail').text(data).show();
+                        $('#Email').val('');
+                    } else {
+                        $('#erroremail').text('');
+                        $('#erroremail').hide();
+                    }
+                }
+            })
+        });
+        $('#CountryCode,#PayGroupId,#AnnualPayId,#PaymentModeId,#PaymentTypeId,#TaxId,#BankId,#PaymentCurrency').select2();
+        // Add event listener for checkbox change
+        $('#MaritalStatus').change(function () {
+            // Check if the checkbox is checked
+            if ($(this).is(':checked')) {
+                // Show an alert if the checkbox is checked
+                $('#divh').removeClass('d-none')
+                $('#divboy').removeClass('d-none')
+                $('#divgirl').removeClass('d-none')
+            } else {
+                $('#divh').addClass('d-none')
+                $('#divboy').addClass('d-none')
+                $('#divgirl').addClass('d-none')
+                $('#HusbandsName').val('');
+                $('#Boys').val('');
+                $('#Girls').val('');
+            }
+        });
+        $('#isparmanant').change(function () {
+            // Check if the checkbox is checked
+            let address = $('#PresentAddress').val();
+            let area = $('#PresentArea').val();
+            let pc = $('#PresentPC').val();
+            //let distictid = $('#PresentDistrictId').val();
+            //let thanaid = $('#PresentThanaId').val();
+            if ($(this).is(':checked')) {
+                // Show an alert if the checkbox is checked
+                $('#PermanantAddress').val(address);
+                $('#PermanantArea').val(area);
+                $('#PermanantPC').val(pc);
+                //$('#PermanantDistrictId').val(distictid).trigger('change');
+                //$('#PermanantThanaId').val(thanaid).trigger('change');
+            } else {
+                $('#PermanantAddress').val('');
+                $('#PermanantArea').val('');
+                $('#PermanantPC').val('');
+                //$('#PermanantDistrictId').val('0').trigger('change');
+                //$('#PermanantThanaId').val('0').trigger('change');
+            }
+        });
+
+    });
+
+        $('#CompType,#OrgId,#ReportingAuthorityEmpId,#LeaveSanctionAuthorityEmpId').select2();
+        $('#BusinessType').select2();
+        //$('#City').select2();
+        //$('#Country').select2();
+        $('#EmpTypeId').select2();
+        //$('#PresentDistrictId').select2();
+        //$('#PresentThanaId').select2();
+        //$('#PermanantDistrictId').select2();
+        //$('#PermanantThanaId').select2();
+        $('#CountryId').select2();
+        $('#State').select2();
+        $('#EmployeeHistory_EmpStatusID').select2();
+        $('#Relationship').select2();
+        $('#MaritalStatus').select2();
+        $('#Nationality').select2();
+
+
+        function dateConvertion(da) {
+            let date = new Date(da);
+            let day = date.getDate();
+            day = day < 10 ? ("0" + day) : day;
+            let month = date.getMonth() + 1;
+            month = month < 10 ? ("0" + month) : month;
+            return `${day}-${month}-${date.getFullYear()}`;
+        }
+        /// Check Upload file extensions.
+        function fileValidation() {
+            var fileInput = document.getElementById('files');
+            var filePath = fileInput.value;
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+            if (!allowedExtensions.exec(filePath)) {
+                alert('Please upload file having extensions .jpeg/.jpg/.png only.');
+                fileInput.value = '';
+                return false;
+            } else {
+                //Image preview
+                //if (fileInput.files && fileInput.files[0]) {
+                //    var reader = new FileReader();
+                //    reader.onload = function (e) {
+                //        document.getElementById('imagePreview').innerHTML = '<img src="' + e.target.result + '"/>';
+                //    };
+                //    reader.readAsDataURL(fileInput.files[0]);
+                //}
+            }
+        }
+
+        // Educaton
+        function getEducation(id) {
+            //alert(id);
+            $.ajax({
+                type: "GET",
+                url: "@Url.ActionLink("GetEducation", "Employee")",
+                data: { eduId: id },
+                //contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#EmpEducationId").val(data.empEducationId);
+                    $("#DegreeName").val(data.degreeName);
+                    $("#InstitutionName").val(data.institutionName);
+                    $("#CGPAOrDivision").val(data.cgpaOrDivision);
+                    $("#PassingYear").val(data.passingYear);
+                    $("#DegreeNameBNG").val(data.degreeNameBNG);
+                    $("#Education_AddedBy").val(data.addedBy);
+                    $("#Education_UpdatedBy").val("@userID");
+                    $("#Education_AddedDate").val(data.addedDate);
+                    $("#Education_UpdatedDate").val("@DateTime.Now");
+                    $("#Subject").val(data.subject);
+                    $("#AwardingBodyUniversity").val(data.awardingBodyUniversity);
+                    $("#Percentage").val(data.percentage);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+
+        function getEmpEducation(id) {
+            $.ajax({
+                type: "GET",
+                url: "@Url.ActionLink("GetEmpEducation", "Employee")",
+                data: { empId: id },
+                //contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        let tbody = "";
+                        data.map(a =>
+                            tbody += `<tr>
+                                                            <td class="d-none">${a.empEducationId}</td>
+                                                            <td>${a.degreeName}</td>
+                                                            <td>${a.degreeNameBNG || ''}</td>
+                                                            <td>${a.institutionName}</td>
+                                                            <td>${a.cgpaOrDivision}</td>
+                                                            <td>${a.passingYear}</td>
+                                                           <td><a class="text-warning" onclick="getEducation(${a.empEducationId})"><i class="fa fa-edit fa-lg"></i></a></td>
+                                                            <td><a class="text-danger" onclick="deleteEducation(${a.empEducationId})"><i class="fa fa-trash-o fa-lg"></i></a></td>
+                                                        </tr>` );
+
+                        $("#tblEducation tbody").empty().append(tbody);
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+
+        function deleteEducation(id) {
+            //alert(id);
+            if (confirm("Are sure delete the education info?")) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "@Url.ActionLink("DeleteEducation", "Employee")",
+                    data: { id: id },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        SuccessPNotify("Deleted!!");
+                        getEmpEducation($("#EmpId").val());
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+            }
+        }
+
+        function emptyEmpEducation() {
+            $("#EmpEducationId").val(0);
+            $("#DegreeName").val("");
+            $("#InstitutionName").val("");
+            $("#CGPAOrDivision").val("");
+            $("#PassingYear").val("");
+            $("#DegreeNameBNG").val("");
+            $("#Education_AddedBy").val("@userID");
+            $("#Education_UpdatedBy").val();
+            $("#Education_AddedDate").val("@DateTime.Now");
+            $("#Education_UpdatedDate").val("");
+            $("#Subject").val("");
+            $("#AwardingBodyUniversity").val("");
+            $("#Percentage").val(0);
+        }
+
+        // Experience
+
+        function getExperience(id) {
+            $.ajax({
+                type: "GET",
+                url: "@Url.ActionLink("GetExperience", "Employee")",
+                data: { expId: id },
+                dataType: "json",
+                success: function (data) {
+                    $("#EmpExpID").val(data.empExpID);
+                    $("#Organization").val(data.organization);
+                    $("#OrganizationAddress").val(data.organizationAddress);
+                    $("#Designation").val(data.designation);
+                    $("#Responsibilities").val(data.responsibilities);
+                    $("#JobStartDate").val(dateConvertion(data.jobStartDate));
+                    $("#JobEndDate").val(dateConvertion(data.jobEndDate));
+                    $("#Experience_Remarks").val(data.remarks);
+                    $("#Experience_AddedBy").val(data.addedBy);
+                    $("#Experience_UpdatedBy").val("@userID");
+                    $("#Experience_AddedDate").val(data.addedDate);
+                    $("#Experience_UpdatedDate").val("@DateTime.Now");
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+
+        function getEmpExperience(id) {
+            $.ajax({
+                type: "GET",
+                url: "@Url.ActionLink("GetEmpExperience", "Employee")",
+                data: { empId: id },
+                //contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                        let tbody = "";
+                        data.map(a =>
+                            tbody += `<tr>
+                                <td class="d-none">${a.empExpID}</td>
+                                <td>${a.organization}</td>
+                                <td>${a.designation}</td>
+                                <td>${dateConvertion(a.jobStartDate)}</td>
+                                <td>${dateConvertion(a.jobEndDate)}</td>
+                                <td>${a.organizationAddress}</td>
+                                <td>${a.remarks}</td>
+                                <td><a class="text-warning" onclick="getExperience(${a.empExpID})"><i class="fa fa-edit fa-lg"></i></a></td>
+                                <td><a class="text-danger" onclick="deleteExperience(${a.empExpID})"><i class="fa fa-trash-o fa-lg"></i></a></td>
+                                </tr>` );
+
+                        $("#tblExperience tbody").empty().append(tbody);
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+
+        function deleteExperience(id) {
+
+            if (confirm("Are sure delete the experience info?")) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "@Url.ActionLink("DeleteExperience", "Employee")",
+                    data: { id: id },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        getEmpExperience($("#EmpId").val());
+                        SuccessPNotify("Deleted!!");
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+            }
+        }
+
+        function emptyEmpExperience() {
+            $("#EmpExpID").val(0);
+            $("#Organization").val("");
+            $("#OrganizationAddress").val("");
+            $("#Designation").val("");
+            $("#Responsibilities").val("");
+            $("#JobStartDate").val("");
+            $("#JobEndDate").val("");
+            $("#Experience_Remarks").val("");
+            $("#Experience_AddedBy").val("@userID");
+            $("#Experience_UpdatedBy").val();
+            $("#Experience_AddedDate").val("@DateTime.Now");
+            $("#Experience_UpdatedDate").val("");
+
+        }
+        function emptyEmpTraining() {
+            $("#EmpTrainingID").val(0);
+            $("#Title").val("");
+            $("#TrainingStartDate").val("");
+            $("#TrainingEndDate").val("");
+            $("#TrainingRemarks").val("");
+        }
+        function getEmpTraining(id) {
+            $.ajax({
+                type: "GET",
+                url: "@Url.ActionLink("GetEmpTraining", "Employee")",
+                data: { empId: id },
+                //contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data != null) {
+                        let tbody = "";
+                        data.map(a =>
+                            tbody += `<tr>
+                                <td class="d-none">${a.empTrainingID}</td>
+                                <td>${a.organization}</td>
+                                <td>${a.designation}</td>
+                                <td>${dateConvertion(a.jobStartDate)}</td>
+                                <td>${dateConvertion(a.jobEndDate)}</td>
+                                <td>${a.organizationAddress}</td>
+                                <td>${a.remarks}</td>
+                                <td><a class="text-warning" onclick="getExperience(${a.empExpID})"><i class="fa fa-edit fa-lg"></i></a></td>
+                                <td><a class="text-danger" onclick="deleteExperience(${a.empExpID})"><i class="fa fa-trash-o fa-lg"></i></a></td>
+                                </tr>` );
+
+                        $("#tblExperience tbody").empty().append(tbody);
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+}
+        $(document).ready(function () {
+
+            $("#EmployeeHistory_EffectiveDate, #JoiningDate, #JobStartDate, #JobEndDate, #TrainingEndDate, #TrainingStartDate, #ContractStartDate, #ContractEndDate,#ConfirmDate,#ContactStartDate,#ContactEndDate").datepicker({
+                dateFormat: 'dd-mm-yy',
+                changeYear: true,
+                changeMonth: true
+            });
+
+            $("#DateOfBirth").datepicker({
+                dateFormat: 'dd-mm-yy',
+                changeYear: true,
+                changeMonth: true,
+                yearRange: '-100:+0'
+            });
+
+
+
+            $("#EmployeeHistory_SectId, #EmployeeHistory_DeptId, #EmployeeHistory_DesigId, #EmployeeHistory_PayScaleId, #EmployeeType, #EmployeeHistory_EmpCatId, #Gender, #BloodGroup, #Religion, #ReportingAuthority, #LeaveSanctionAuthority").select2();
+
+
+
+
+            $("#experienceForm").on('submit', function (e) {
+                //debugger;
+                e.preventDefault();
+                const empId = $("#EmpId").val()
+                if (empId == 0) {
+                    alert("Please create basic info!!");
+                    return;
+                }
+
+                let experience = {
+                    EmpExpID: $("#EmpExpID").val() || 0,
+                    EmpId: $("#EmpId").val(),
+                    Organization: $("#Organization").val(),
+                    OrganizationAddress: $("#OrganizationAddress").val(),
+                    Designation: $("#Designation").val(),
+                    Responsibilities: $("#Responsibilities").val(),
+                    JobStartDate: $("#JobStartDate").val(),
+                    JobEndDate: $("#JobEndDate").val(),
+                    Remarks: $("#Experience_Remarks").val(),
+                    AddedBy: $("#Experience_AddedBy").val(),
+                    UpdatedBy: $("#Experience_UpdatedBy").val(),
+                    AddedDate: $("#Experience_AddedDate").val(),
+                    UpdatedDate: $("#Experience_UpdatedDate").val(),
+                    CompId: $("#CompId").val()
+                }
+                let form = $(this);
+                form.validate();
+                if (form.valid()) {
+                    OpeningHoldon('sk-folding-cube', 'Please wait. Data is Saving...');
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("ExperienceCreate", "Employee")",
+                        data: { exp: experience },
+                        //contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            //console.log(response);
+                            if (response.data > 0) {
+                                getEmpExperience($("#EmpId").val());
+                                ClosingHoldon();
+                                emptyEmpExperience();
+                            } else {
+                                ClosingHoldon();
+                                alert(response.message);
+                            }
+                        },
+                        success: function (response) {
+                            if (response.isError) {
+                                ClosingHoldon();
+                                DangerPNotify(response.message);
+                            } else {
+                                $("#EmpEducationId").val(response.data);
+                                if (response.data > 0) {
+                                    ClosingHoldon();
+                                    SuccessPNotify(response.message);
+                                    getEmpExperience($("#EmpId").val());
+                                    emptyEmpExperience();
+                                } else {
+                                    ClosingHoldon();
+                                    DangerPNotify(response.message);
+                                }
+                            }
+                        },
+                        failure: function (response) {
+                            ClosingHoldon();
+                            DangerPNotify(response.responseText);
+                        },
+                        error: function (response) {
+                            ClosingHoldon();
+                            DangerPNotify(response.responseText);
+                        }
+                    });
+                }
+            });
+            $("#trainingForm").on('submit', function (e) {
+                e.preventDefault();
+                const empId = $("#EmpId").val()
+                if (empId == 0) {
+                    alert("Please create basic info!!");
+                    return;
+                }
+                let form = $(this);
+                let formdata = new FormData(form[0]); // Create a FormData object directly from the form element
+                formdata.append("EmpId", empId);
+                form.validate();
+                if (form.valid()) {
+                    OpeningHoldon('sk-folding-cube', 'Please wait. Data is Saving...');
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("TrainingCreate", "Employee")", // Ensure the URL is generated server-side or specified correctly
+                        data: formdata, // Directly pass FormData object
+                        processData: false, // Don't process the data
+                        contentType: false, // Let the browser set the content type
+                        dataType: "json",
+                        success: function (response) {
+                            if (response.isError) {
+                                ClosingHoldon();
+                                DangerPNotify(response.message);
+                            } else {
+                                $("#EmpEducationId").val(response.data);
+                                if (response.data > 0) {
+                                    console.log(response.data)
+                                    ClosingHoldon();
+                                    SuccessPNotify(response.message);
+                                    getEmpTraining($("#EmpId").val());
+                                    emptyEmpTraining();
+                                } else {
+                                    ClosingHoldon();
+                                    DangerPNotify(response.message);
+                                }
+                            }
+                        },
+                        error: function (response) {
+                            DangerPNotify(response.responseText);
+                        }
+                    });
+                }
+            });
+
+            $("#educationForm").on('submit', function (e) {
+                e.preventDefault();
+                let form = $(this);
+                form.validate();
+                const empId = $("#EmpId").val()
+                if (empId == 0) {
+                    alert("Please create basic info!!");
+                    return;
+                }
+
+                let education = {
+                    EmpEducationId: $("#EmpEducationId").val() || 0,
+                    EmpId: $("#EmpId").val(),
+                    DegreeName: $("#DegreeName").val(),
+                    Subject: $("#Subject").val(),
+                    InstitutionName: $("#InstitutionName").val(),
+                    AwardingBodyUniversity: $("#AwardingBodyUniversity").val(),
+                    CGPAOrDivision: $("#CGPAOrDivision").val(),
+                    PassingYear: $("#PassingYear").val(),
+                    Percentage: $("#Percentage").val(),
+                    DegreeNameBNG: $("#DegreeNameBNG").val(),
+                    AddedBy: $("#Education_AddedBy").val(),
+                    UpdatedBy: $("#Education_UpdatedBy").val(),
+                    AddedDate: $("#Education_AddedDate").val(),
+                    UpdatedDate: $("#Education_UpdatedDate").val(),
+                    CompId: $("#CompId").val()
+                }
+                if (form.valid()) {
+                    //console.log(education);
+                    OpeningHoldon('sk-folding-cube', 'Please wait. Data is Saving...');
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("EducationCreate", "Employee")",
+                        data: { edu: education },
+                        //contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            // console.log(response);
+                            $("#EmpEducationId").val(response.data);
+                            if (response.data > 0) {
+                                ClosingHoldon();
+                                getEmpEducation($("#EmpId").val());
+                                emptyEmpEducation();
+                            } else {
+                                ClosingHoldon();
+                                alert(response.message);
+                            }
+
+                        },
+                        success: function (response) {
+                            if (response.isError) {
+                                ClosingHoldon();
+                                DangerPNotify(response.message);
+                            } else {
+                                $("#EmpEducationId").val(response.data);
+                                if (response.data > 0) {
+                                    ClosingHoldon();
+                                    getEmpEducation($("#EmpId").val());
+                                    emptyEmpEducation();
+                                    SuccessPNotify(response.message);
+                                } else {
+                                    ClosingHoldon();
+                                    DangerPNotify(response.message);
+                                }
+                            }
+                        },
+                        failure: function (response) {
+                            ClosingHoldon();
+                            DangerPNotify(response.responseText);
+                        },
+                        error: function (response) {
+                            ClosingHoldon();
+                            DangerPNotify(response.responseText);
+                        }
+                    });
+                }
+
+            });
+
+            $("#detailsForm").on('submit', function (e) {
+                e.preventDefault();
+                let form = $(this);
+                const empId = $("#EmpId").val()
+                if (empId == 0) {
+                    alert("Please create basic info!!");
+                    return;
+                }
+
+                form.validate();
+
+                let EmployeeDetails = {
+                    EmpDetailsID: $("#EmpDetailsID").val(),
+                    EmpId: $("#EmpId").val(),
+                    FathersName: $("#FathersName").val(),
+                    MothersName: $("#MothersName").val(),
+                    HusbandsName: $("#HusbandsName").val(),
+                    PresentAddress: $("#PresentAddress").val(),
+                    PresentArea: $("#PresentArea").val(),
+                    PresentPS: $("#PresentPS").val(),
+                    PresentPC: $("#PresentPC").val(),
+                    //PresentThanaId: $("#PresentThanaId").val(),
+                    //PresentThana: $("#PresentThana").val(),
+                    //PresentDistrictId: $("#PresentDistrictId").val(),
+                    //PermanantAddress: $("#PermanantAddress").val(),
+                    //PermanantArea: $("#PermanantArea").val(),
+                    //PermanantPS: $("#PermanantPS").val(),
+                    //PermanantPC: $("#PermanantPC").val(),
+                    //PermanantThanaId: $("#PermanantThanaId").val(),
+                    //PermanantDistrictId: $("#PermanantDistrictId").val(),
+                    City: $("#City").val(),
+                    CountryId: $("#CountryId").val(),
+                    Nationality: $("#Nationality").val(),
+                    IntroducerName: $("#IntroducerName").val(),
+                    IntroducerAddress: $("#IntroducerAddress").val(),
+                    IntroducerCell: $("#IntroducerCell").val(),
+                    BloodGroup: $("#BloodGroup").val(),
+                    Religion: $("#Religion").val(),
+                    MaritalStatus: $("#MaritalStatus").val(),
+                    Boys: $("#Boys").val() || 0,
+                    Girls: $("#Girls").val() || 0,
+                    EarnedPerson: $("#EarnedPerson").val(),
+                    TotalIncome: $("#TotalIncome").val(),
+                    DependPerson: $("#DependPerson").val(),
+                    JoiningSalary: $("#JoiningSalary").val() || 0,
+                    ACNo: $("#ACNo").val(),
+                    NOK: $("#NOK").val(),
+                    NOKRelation: $("#NOKRelation").val(),
+                    CertificateRequired: $("#CertificateRequired").is(":checked"),
+                    PhysicalStatus: $("#PhysicalStatus").is(":checked"),
+                    PhysicalStatus: $("#PhysicalStatus").is(":checked"),
+                    ExtraQualification: $("#ExtraQualification").val(),
+                    Reference: $("#Reference").val(),
+                    Remarks: $("#Remarks").val(),
+                    //FathersNameBNG: $("#FathersNameBNG").val(),
+                    //MothersNameBNG: $("#MothersNameBNG").val(),
+                    //HusbandsNameBNG: $("#HusbandsNameBNG").val(),
+                    //PresentAddressBNG: $("#PresentAddressBNG").val(),
+                    //PresentAreaBNG: $("#PresentAreaBNG").val(),
+                    //PresentPSBNG: $("#PresentPSBNG").val(),
+                    //PresentPCBNG: $("#PresentPCBNG").val(),
+                    //PermanantAddressBNG: $("#PermanantAddressBNG").val(),
+                    //PermanantAreaBNG: $("#PermanantAreaBNG").val(),
+                    //PermanantPSBNG: $("#PermanantPSBNG").val(),
+                    //PermanantPCBNG: $("#PermanantPCBNG").val(),
+                    AddedBy: $("#Details_AddedBy").val(),
+                    UpdatedBy: $("#Details_UpdatedBy").val(),
+                    AddedDate: $("#Details_AddedDate").val(),
+                    UpdatedDate: $("#Details_UpdatedDate").val(),
+                    CompId: $("#CompId").val(),
+                    Address1: $("#Address1").val(),
+                    Address2: $("#Address2").val(),
+                    Address3: $("#Address3").val(),
+                    NOKName: $("#NOKName").val(),
+                    Relationship: $("#Relationship").val(),
+                    NOKEmail: $("#NOKEmail").val(),
+                    EmergencyContactNo: $("#EmergencyContactNo").val(),
+                    NOKAddress: $("#NOKAddress").val(),
+                };
+
+                //console.log(EmployeeDetails);
+                if (form.valid()) {
+                    var files = $('#ImgFile').prop("files");
+                    let formData = new FormData();
+                    formData.append("ImgFile", files[0]);
+                    appendFormdata(formData, EmployeeDetails);
+                    OpeningHoldon('sk-folding-cube', 'Please wait. Data is Saving...');
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("DetailsInfoCreate", "Employee")",
+                        data: formData, //{ emp: EmployeeDetails },
+                        //contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            if (response.isError) {
+                                ClosingHoldon();
+                                DangerPNotify(response.message);
+                            } else {
+                                ClosingHoldon();
+                                $("#EmpDetailsID").val(response.data);
+                                SuccessPNotify(response.message);
+                            }
+                        },
+                        failure: function (response) {
+                            ClosingHoldon();
+                            DangerPNotify(response.responseText);
+                        },
+                        error: function (response) {
+                            ClosingHoldon();
+                            DangerPNotify(response.responseText);
+                        }
+                    });
+                }
+            });
+
+            $("#btnBasicInfo").on('click', function (e) {
+
+                e.preventDefault();
+                let form = $('#basicForm');
+                form.validate();
+                var files = $('#File').prop("files");
+                //console.log(files);
+                let basicInfo = {
+                    EmpId: $("#EmpId").val(),
+                    Name: $("#Name").val(),
+                    NameGeneric: $("#NameGeneric").val(),
+                    NickName: $("#NickName").val(),
+                    CardNo: $("#CardNo").val(),
+                    Address: $("#Address").val(),
+                    ProximityNo: $("#ProximityNo").val(),
+                    JoiningDate: $("#JoiningDate").val(),
+                    Gender: $("#Gender").val(),
+                    Phone: $("#Phone").val(),
+                    Mobile: $("#Mobile").val(),
+                    Email: $("#Email").val(),
+                    DateOfBirth: $("#DateOfBirth").val(),
+                    NationalId: $("#NationalId").val(),
+                    Photograph: $("#Photograph").val() || "",
+                    EmpTypeId: $("#EmpTypeId").val(),
+                    EmpHistoryId: $("#EmpHistoryId").val(),
+                    NoWorkSalary: $("#NoWorkSalary").val() || 0,
+                    SalaryToBank: $("#SalaryToBank").is(":checked"),
+                    SalaryAC: $("#SalaryAC").val(),
+                    IsDelete: $("#IsDelete").val(),
+                    AddedBy: $("#AddedBy").val(),
+                    UpdatedBy: $("#UpdatedBy").val(),
+                    AddedDate: $("#AddedDate").val(),
+                    UpdatedDate: $("#UpdatedDate").val(),
+                    CompId: $("#CompId").val(),
+                    OrgId: $("#OrgId").val(),
+                    ConfirmDate: $('#ConfirmDate').val(),
+                    ContactStartDate: $('#ContactStartDate').val(),
+                    ContactEndDate: $('#ContactEndDate').val(),
+                    JobLocation: $('#JobLocation').val(),
+                    CountryCode: $('#CountryCode').val(),
+                    ReportingAuthorityEmpId: $('#ReportingAuthorityEmpId').val(),
+                    LeaveSanctionAuthorityEmpId: $('#LeaveSanctionAuthorityEmpId').val(),
+                    IsResidence: $("#IsResidence").is(":checked"),
+                    EmployeeHistory: null,
+
+                };
+
+                let empHistory = {
+                    EmpHistoryId: $("#EmployeeHistory_EmpHistoryId").val() || 0,
+                    EmpId: $("#EmpId").val(),
+                    EmpCatId: $("#EmployeeHistory_EmpCatId").val(),
+                    DesigId: $("#EmployeeHistory_DesigId").val(),
+                    SectId: $("#EmployeeHistory_SectId").val(),
+                    DeptId: $("#EmployeeHistory_DeptId").val(),
+                    LineId: $("#EmployeeHistory_LineId").val(),
+                    FloorId: $("#EmployeeHistory_FloorId").val(),
+                    PayScaleId: $("#EmployeeHistory_PayScaleId").val() || 0,
+                    EmpStatusID: $("#EmployeeHistory_EmpStatusID").val(),
+                    Salary: $("#EmployeeHistory_Salary").val(),
+                    IsFixed: $("#EmployeeHistory_IsFixed").val() || false,
+                    IncrAmount: $("#EmployeeHistory_IncrAmount").val() || 0,
+                    Rate: $("#EmployeeHistory_Rate").val() || 0,
+                    CalRuleId: $("#EmployeeHistory_CalRuleId").val(),
+                    EffectiveDate: $("#EmployeeHistory_EffectiveDate").val(),
+                    Remarks: $("#EmployeeHistory_Remarks").val() || "",
+                    SalaryAC: $("#EmployeeHistory_SalaryAC").val(),
+                    TransType: $("#EmployeeHistory_TransType").val(),
+                    DecisionDate: $("#EmployeeHistory_DecisionDate").val(),
+                    AddedBy: $("#AddedBy").val(),
+                    UpdatedBy: $("#UpdatedBy").val(),
+                    AddedDate: $("#AddedDate").val(),
+                    UpdatedDate: $("#UpdatedDate").val(),
+                    CompId: $("#CompId").val(),
+                };
+
+                basicInfo.EmployeeHistory = empHistory;
+
+                //console.log(basicInfo);
+
+                let formData = new FormData();
+                //formData.append("emp", basicInfo);
+                formData.append("file", files[0]);
+
+                // append in form data
+                appendFormdata(formData, basicInfo);
+                if (form.valid()) {
+                    OpeningHoldon('sk-folding-cube', 'Please wait. Data is Saving...');
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("BasicInfoCreate", "Employee")",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("XSRF-TOKEN",
+                                $('input:hidden[name="__RequestVerificationToken"]').val());
+                        },
+                        //contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response.isError) {
+                                ClosingHoldon();
+                                DangerPNotify(response.message);
+                            }
+                            else {
+                                ClosingHoldon();
+                                SuccessPNotify(response.message);
+                                $("#EmpId").val(response.data.empId);
+                                $("#EmployeeHistory_EmpHistoryId").val(response.data.empHistoryId)
+                            }
+                        },
+                        failure: function (response) {
+                            ClosingHoldon();
+                            DangerPNotify(response.responseText);
+                        },
+                        error: function (response) {
+                            ClosingHoldon();
+                            DangerPNotify(response.responseText);
+                        }
+                    });
+                }
+            });
+
+            $("#paymentForm").on('submit', function (e) {
+                e.preventDefault();
+                const empId = $("#EmpId").val()
+                if (empId == 0) {
+                    alert("Please create basic info!!");
+                    return;
+                }
+                let form = $(this);
+                let formdata = new FormData(form[0]); // Create a FormData object directly from the form element
+                formdata.append("EmpId", empId);
+                form.validate();
+                if (form.valid()) {
+                    OpeningHoldon('sk-folding-cube', 'Please wait. Data is Saving...');
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("PaymentDetailsCreate", "Employee")", // Ensure the URL is generated server-side or specified correctly
+                        data: formdata, // Directly pass FormData object
+                        processData: false, // Don't process the data
+                        contentType: false, // Let the browser set the content type
+                        dataType: "json",
+                        success: function (response) {
+                            if (response.isError) {
+                                ClosingHoldon();
+                                DangerPNotify(response.message);
+                            } else {
+                                $("#PayDetailsId").val(response.data);
+                                if (response.data > 0) {
+                                    console.log(response.data)
+                                    ClosingHoldon();
+                                    SuccessPNotify(response.message);
+                                } else {
+                                    ClosingHoldon();
+                                    DangerPNotify(response.message);
+                                }
+                            }
+                        },
+                        error: function (response) {
+                            DangerPNotify(response.responseText);
+                        }
+                    });
+                }
+            });
+        });
+
+        function appendFormdata(FormData, data, name) {
+            name = name || '';
+            if (typeof data === 'object') {
+                $.each(data, function (index, value) {
+                    if (name == '') {
+                        appendFormdata(FormData, value, index);
+                    } else {
+                        appendFormdata(FormData, value, name + '[' + index + ']');
+                    }
+                })
+            } else {
+                FormData.append(name, data);
+            }
+        }
+        function HandleBrowseClick(input_image) {
+            var fileinput = document.getElementById(input_image);
+            fileinput.click();
+    }
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function () {
+            const output = document.getElementById('image-preview');
+            output.src = reader.result;
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+}
+
+
+

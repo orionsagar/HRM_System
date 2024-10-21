@@ -1,0 +1,245 @@
+﻿
+
+@using UKHRM.Extensions;
+
+@{
+    var modulesubmodule = (HomeMenuVM)ViewBag.ModuleSubModule;
+    var Module = modulesubmodule.MainModule;
+    var SubModule = modulesubmodule.SubModule;
+    //var Module1 = (List<MainModule>)ViewBag.GetMenuModule;
+    //var SubModule1 = (List<SubModule>)ViewBag.GetSubModule;
+    var ChildMenuList = (List<UserAccessTools>)ViewBag.GetMenuPageName;
+    int RoleId = Convert.ToInt32(ViewBag.UserRoleID);
+    var routeData = ViewContext.RouteData;
+    var routeAction = routeData.Values["action"].ToString().ToLower();
+    var routeController = routeData.Values["controller"].ToString().ToLower();
+}
+
+<nav class="pcoded-navbar">
+    <div class="pcoded-inner-navbar">
+        @{
+            if (Module != null)
+            {
+                var preModuleName = "";
+                var controllerpage = "";
+                var actionPage = "";
+
+                foreach (var item in Module)
+                {
+                    <ul class="pcoded-item pcoded-left-item">
+                        @{
+                            if (item.ModuleName == "Dashboard")
+                            {
+                                var moduelmenus = ChildMenuList.Where(m => m.ModuleID == item.ModuleID && m.RoleID == RoleId).ToList();
+                                var link = moduelmenus?.FirstOrDefault()?.UAPage;
+                                var pageSplit = link.Split("/");
+                                routeAction = pageSplit[1].ToString();
+                                routeController = pageSplit[0].ToString();
+                                <li class="pcoded-hasmenu">
+                                    <a asp-action="@routeAction" asp-controller="@routeController" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="ti-layout-cta-right"></i><b>N</b></span>
+                                        <span class="pcoded-mtext">@item.ModuleName</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="pcoded-hasmenu">
+                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="ti-layout-cta-right"></i><b>N</b></span>
+                                        <span class="pcoded-mtext">@item.ModuleName</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                    @{
+
+                                        var submodules = SubModule.Where(m => m.ModuleID == item.ModuleID).ToList();
+                                        var submodulecount = submodules.Count;
+                                        if (submodulecount > 0)
+                                        {
+                                            <ul class="pcoded-submenu">
+                                                @{
+                                                    var menu_without_submodule = ChildMenuList.Where(m => m.ModuleID == item.ModuleID && m.RoleID == RoleId && m.SubModuleID == null).OrderBy(o => o.SortIndex).ToList();
+                                                    foreach (var m in menu_without_submodule)
+                                                    {
+                                                        var link = m.UAPage;
+                                                        if(link != null)
+                                                        {
+                                                            var pageSplit = link.Split("/");
+                                                            if (pageSplit.Length > 1)
+                                                            {
+                                                                routeAction = pageSplit[1].ToString();
+                                                            }
+                                                            else
+                                                            {
+
+                                                                routeController = pageSplit[0].ToString();
+                                                            }
+                                                        }
+
+                                                        <li class="">
+                                                            <a asp-action="@routeAction" asp-controller="@routeController" class="waves-effect waves-dark">
+                                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                                <span class="pcoded-mtext">@m.UseraccesstoolNM</span>
+                                                                <span class="pcoded-mcaret"></span>
+                                                            </a>
+                                                        </li>
+                                                    }
+
+                                                }
+                                                @foreach (var sm in submodules)
+                                                {
+                                                    var moduelmenus = ChildMenuList.Where(m => m.ModuleID == item.ModuleID && m.RoleID == RoleId && m.SubModuleID == sm.SubModuleID).OrderBy(o => o.SortIndex).ToList();
+                                                    var menucount = moduelmenus.Count;
+
+                                                    if (menucount > 0)
+                                                    {
+                                                        <li class="pcoded-hasmenu">
+
+                                                            <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                                <span class="pcoded-micon"><i class="ti-layout-cta-right"></i><b>N</b></span>
+                                                                <span class="pcoded-mtext">@sm.SubModuleName</span>
+                                                                <span class="pcoded-mcaret"></span>
+                                                            </a>
+                                                            <ul class="pcoded-submenu">
+                                                                @{
+                                                                    foreach (var mm in moduelmenus)
+                                                                    {
+                                                                        var link = mm.UAPage;
+                                                                        var pageSplit = link.Split("/");
+                                                                        routeAction = pageSplit[1].ToString();
+                                                                        routeController = pageSplit[0].ToString();
+                                                                        <li class="">
+                                                                            <a asp-action="@routeAction" asp-controller="@routeController" class="waves-effect waves-dark">
+                                                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                                                <span class="pcoded-mtext">@mm.UseraccesstoolNM</span>
+                                                                                <span class="pcoded-mcaret"></span>
+                                                                            </a>
+                                                                        </li>
+                                                                    }
+
+                                                                }
+                                                            </ul>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+                                                        @*moduelmenus = ChildMenuList.Where(m => m.ModuleID == item.ModuleID && m.SubModuleID == null && m.RoleID == RoleId).OrderBy(o => o.SortIndex).ToList();
+                                                            menucount = moduelmenus.Count;
+                                                            if (menucount > 0)
+                                                            {
+                                                                foreach (var mm in moduelmenus)
+                                                                {
+                                                                    var link = mm.UAPage;
+                                                                    var pageSplit = link.Split("/");
+                                                                    routeAction = pageSplit[1].ToString();
+                                                                    routeController = pageSplit[0].ToString();
+                                                                    <li class="">
+                                                                        <a asp-action="@routeAction" asp-controller="@routeController" class="waves-effect waves-dark">
+                                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                                            <span class="pcoded-mtext">@mm.UseraccesstoolNM</span>
+                                                                            <span class="pcoded-mcaret"></span>
+                                                                        </a>
+                                                                    </li>
+                                                                }
+                                                            }*@
+
+                                                    }
+
+                                                }
+                                            </ul>
+                                        }
+                                    }
+                                </li>
+                            }
+                        }
+
+
+                    </ul>
+                }
+            }
+        }
+        @*<ul class="pcoded-item pcoded-left-item">
+                <li class="pcoded-hasmenu">
+                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="ti-layout-cta-right"></i><b>N</b></span>
+                        <span class="pcoded-mtext">Navigation</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li class="pcoded-hasmenu">
+                            <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                <span class="pcoded-micon"><i class="ti-home"></i></span>
+                                <span class="pcoded-mtext">Dashboard</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+                                <li class="">
+                                    <a href="index.html" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Default</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="dashboard-ecommerce.html" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Ecommerce</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="pcoded-hasmenu">
+                            <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                <span class="pcoded-micon"><i class="ti-home"></i></span>
+                                <span class="pcoded-mtext">Dashboard1</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+                                <li class="">
+                                    <a href="index.html" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Default</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="dashboard-ecommerce.html" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Ecommerce</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="pcoded-hasmenu">
+                            <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                <span class="pcoded-micon"><i class="ti-home"></i></span>
+                                <span class="pcoded-mtext">Dashboard2</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+                                <li class="">
+                                    <a href="index.html" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Default</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="dashboard-ecommerce.html" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Ecommerce</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>*@
+    </div>
+</nav>
+

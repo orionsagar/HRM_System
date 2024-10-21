@@ -1,0 +1,216 @@
+﻿
+@{
+    ViewData["Title"] = "Employee Yearly Total Leave Report";
+    Layout = null;
+    List<LeaveDetailsVM> leavebalance = ViewBag.leaves as List<LeaveDetailsVM> ?? new();
+    EmployeeHistory employee = ViewBag.employee as EmployeeHistory ?? new();
+    List<Company> company = ViewBag.company as List<Company> ?? new();
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/css/bootstrap.min.css">
+
+    <!-- themify icon -->
+    <link rel="stylesheet" type="text/css" href="/assets/icon/themify-icons/themify-icons.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="/assets/icon/font-awesome/css/font-awesome.min.css">
+    <style type="text/css">
+        .verticaltext {
+            writing-mode: vertical-lr;
+            -ms-writing-mode: tb-rl;
+            transform: rotate(180deg);
+        }
+
+        .table td, .table th {
+            text-align: center;
+            padding: 2px .25rem;
+            vertical-align: middle;
+        }
+
+        .font-weight-bold {
+            font-weight: 500 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="container">
+                        <div class="row text-center">
+                            <div class="col-sm-12 invoice-btn-group text-right">
+                                <button type="button" class="btn btn-primary btn-print-invoice m-b-10 btn-sm waves-effect waves-light m-r-20 printdiv-btn" onclick="">Print</button>
+                                @*<button type="button" class="btn btn-danger waves-effect m-b-10 btn-sm waves-light">Cancel</button>*@
+                            </div>
+                        </div>
+                        <div class="card" id="printdiv">
+                            <div class="row invoice-contact">
+                                <div class="col-md-12">
+
+                                    <div style="margin: 0 auto; width: 900px">
+
+                                        <div class="row border-dark border mx-0">
+                                            <div class="col-4 my-auto">
+                                                <img src="@company.FirstOrDefault().Logo" style="width: 250px; height: 80px">
+                                            </div>
+                                            <div class="col-8">
+                                                <h3 class="text-center font-weight-bold">@company.FirstOrDefault().Name</h3>
+                                                <p class="text-center mb-0 f-w-600">@company.FirstOrDefault().Address, Bangladesh</p>
+                                                <p class="text-center mb-1 f-w-600">E-mail: @company.FirstOrDefault().Email1; Web: @company.FirstOrDefault().Website</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="py-2">
+                                            <h3 class="text-center">@ViewData["Title"]</h3>
+
+                                        </div>
+                                        @if (employee.Employee != null)
+                                        {
+                                    <div class="row justify-content-between m-0 my-2">
+                                        <h5>Section: @employee.Section.Name</h5> <br />
+                                        <h5>Department: @employee.Department.Name</h5><br />
+                                        <h5>Designation: @employee.Designation.Name</h5><br />
+                                        <h5>Name: @employee.Employee.Name</h5>
+                                        <h5>Card No: @employee.Employee.CardNo</h5>
+                                        @*<h5>Print: @DateTime.Now.AddHours(5).ToShortDateString();</h5>*@
+                                    </div>
+
+                                            <div>
+                                                <table class="table table-bordered p-0" style="font-size:11px">
+                                                    <thead>
+                                                        <tr>
+                                                            <th rowspan="2" style="font-size:14px">Leave Type</th>
+                                                            <th rowspan="2" style="font-size:14px">Leave Days</th>
+                                                            <th rowspan="2" style="font-size:14px">Leave Spend</th>
+                                                            <th rowspan="2" style="font-size:14px">Leave Balance</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in leavebalance)
+                                                        {
+                                                            <tr>
+                                                                <td class="text-center">@item.LTypeName</td>
+                                                                <td class="text-center">@item.LeaveDays</td>
+                                                                <td class="text-center">@item.TotalSpent</td>
+                                                                <td class="text-center">@item.BalanceDays</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            var sectionids = leavebalance.Select(s => s.SectId).Distinct().ToList();
+                                            foreach (var sectid in sectionids)
+                                            {
+                                                var sec = leavebalance.Where(s => s.SectId == sectid).FirstOrDefault();
+                                                <h5>Section: @sec.SectionName</h5>
+                                                var departmentids = leavebalance.Where(s => s.SectId == sectid).Select(s => s.DeptId).Distinct().ToList();
+                                                foreach (var deptid in departmentids)
+                                                {
+                                                    var dept = leavebalance.Where(s => s.DeptId == deptid).FirstOrDefault();
+                                                    <h5>Department: @dept.DepartmentName</h5>
+                                                    var designationids = leavebalance.Where(s => s.DeptId == deptid).Select(s => s.DesigId).Distinct().ToList();
+                                                    foreach (var desigid in designationids)
+                                                    {
+                                                        var desig = leavebalance.Where(s => s.DesigId == desigid).FirstOrDefault();
+                                                        <h5>Designation: @desig.DesignationName</h5>
+                                                        var empid = leavebalance.Where(s => s.DesigId == desigid).Select(l => l.EmpId).Distinct().ToList();
+                                                        var totalleave = 0;
+                                                        var totalspent = 0;
+                                                        var totalbalance = 0;
+                                                        foreach (var id in empid)
+                                                        {
+                                                            var empleave = leavebalance.Where(l => l.EmpId == id).ToList();
+
+
+                                                            <div class="row justify-content-between m-0 my-2">
+                                                                <h5>Name: @empleave.FirstOrDefault().EmployeeName</h5>
+                                                                <h5>Card No: @empleave.FirstOrDefault().CardNo</h5>
+                                                                @*<h5>Total Leave: @totalleave</h5>
+                                                                <h5>Total Spent: @totalspent</h5>
+                                                                <h5>Total Balance: @totalbalance</h5>*@
+                                                            </div>
+                                                            <div>
+                                                                <table class="table table-bordered p-0" style="font-size:11px">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th rowspan="2" style="font-size:14px">Leave Type</th>
+                                                                            <th rowspan="2" style="font-size:14px">Leave Days</th>
+                                                                            <th rowspan="2" style="font-size:14px">Leave Spend</th>
+                                                                            <th rowspan="2" style="font-size:14px">Leave Balance</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach (var item in empleave)
+                                                                        {
+                                                                            <tr>
+                                                                                <td class="text-center">@item.LTypeName</td>
+                                                                                <td class="text-center">@item.LeaveDays</td>
+                                                                                <td class="text-center">@item.TotalSpent</td>
+                                                                                <td class="text-center">@item.BalanceDays</td>
+                                                                            </tr>
+                                                                            totalleave += item.LeaveDays;
+                                                                            totalspent += item.TotalSpent;
+                                                                            totalbalance += item.BalanceDays;
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        @*<div class="row justify-content-between p-0 mb-2" style="margin-top:150px;">
+
+
+                                            <div class="col-3 m-2" style="border-top: 2px solid black">
+                                                <h6 class="text-center">Receive By</h6>
+                                            </div>
+                                            <div class="col-3 m-2" style="border-top: 2px solid black">
+                                                <h6 class="text-center">Distribution Officer</h6>
+                                            </div>
+                                        </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/bower_components/jquery/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/bower_components/jquery-ui/js/jquery-ui.min.js "></script>
+    <script type="text/javascript" src="/bower_components/popper.js/js/popper.min.js"></script>
+    <script type="text/javascript" src="/bower_components/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            //printdiv('printdiv');
+        })
+        $(document).on('click', '.printdiv-btn', function (e) {
+            e.preventDefault();
+            printdiv('printdiv')
+        });
+
+        function printdiv(printdivname) {
+            var headstr = "<html><head><title>Daily Sales</title></head><body>";
+            var footstr = "</body>";
+            var newstr = document.getElementById(printdivname).innerHTML;
+            var oldstr = document.body.innerHTML;
+            document.body.innerHTML = headstr + newstr + footstr;
+            window.print();
+            document.body.innerHTML = oldstr;
+            return false;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,633 @@
+﻿@model EmployeeStatusVM
+
+@inject IGlobalHelper _global;
+@{
+    //var action = ViewBag.Action;
+    var title = "Employee Status";
+
+    ViewData["Title"] = $"{title}";
+}
+
+@{
+
+    string[] BCText = new string[] { $"{title}" };
+    string[] BCLink = new string[] { $"EmployeeStatus/index" };
+    //string createlink = "Section/create";
+    //string linkname = "Add New";
+    PageHeaderProps pageHeader = new PageHeaderProps
+    {
+        PageTitle = $"{title} List",
+        PageDesc = $"{title} List",
+        //PageCreateLink = createlink,
+        //PageCreateLinkName = linkname,
+        BreadcrumbText = BCText,
+        BreadcrumbLink = BCLink
+    };
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+
+
+    var ClientId = _global.GetClientId();
+    var orgid = _global.GetOrgId();
+}
+
+<style>
+    table {
+        display: block;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>
+
+@section PageName {
+    Employee Status
+}
+@section Breadcrumb {
+    <a href="/dashboard/index" class="text-white">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">Employee Status</span>
+}
+
+
+@Html.AntiForgeryToken()
+
+<div class="row">
+    <div class="col-sm-12">
+        <!-- Ajax data source (Arrays) table start -->
+        <div id="loader">
+            <div class="overlay"></div>
+            <div class="card">
+                @* <div class="card-header">
+                    @await Component.InvokeAsync("PageHeader", pageHeader)
+                </div> *@
+                <div class="card-block">
+                    @{
+                        EmployeeFilterVM employeeFilterVM = new()
+                        {
+                            HTML = new List<string>() { "_EmpStatusDropdown" } // partial view
+                        };
+                    }
+                    @await Component.InvokeAsync("EmployeeFilter", employeeFilterVM)
+                    <hr />
+
+                    <div class="row mt-2">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <input type="hidden" asp-for="EmpId" />
+                                <input type="hidden" asp-for="EmpHistoryId" />
+                                <div class="col-sm-6">
+                                    <div class="form-group row">
+                                        <label asp-for="EmpStatusId" class="col-sm-12 col-form-label">Status</label>
+                                        <div class="col-sm-12">
+                                            <select asp-for="EmpStatusId" asp-items="ViewBag.Status" class="form-control form-control-sm"></select>
+                                            <span asp-validation-for="EmpStatusId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group row">
+                                        <label asp-for="EffectiveDate" class="col-sm-12 col-form-label">Effective Date</label>
+                                        <div class="col-sm-12">
+                                            <input asp-for="EffectiveDate" type="text" class="form-control form-control-sm" />
+                                            <span asp-validation-for="EffectiveDate" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-sm-12">
+                                    <div class="form-group row">
+                                        <label asp-for="Remarks" class="col-sm-12 col-form-label"></label>
+                                        <div class="col-sm-12">
+                                            <textarea asp-for="Remarks" class="form-control form-control-sm"></textarea>
+                                            <span asp-validation-for="Remarks" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-5">
+                                <div class="col-12 col-sm-6">
+                                    <button class="btn btn-sm btn-success" id="btnSave">Save</button>
+                                    <button class="btn btn-sm btn-warning d-none" id="btnUpdate">Update</button>
+                                    <button class="btn btn-sm btn-danger" id="btnDelete">Delete</button>
+                                    <button class="btn btn-sm btn-light btn-outline-info" id="btnClear">Clear</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 mt-2" ">
+                            <p class="m-1">Assign Status</p>
+                            <div class="table-responsive dt-responsive">
+                                <table id="dt-emp-status" class="table table-hover table-striped table-bordered nowrap" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="d-none">EmpId</th>
+                                            <th class="d-none">HistoryId</th>
+                                            <th>Status</th>
+                                            <th>Effective Date</th>
+                                            <th>Remarks</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-sm-12">
+                            <p class="m-1 font-weight-bold">Employee List</p>
+
+                            @*<div class="form-group row mt-2 pl-1">
+                                    <label for="IsNoShift" class="col-sm-4  control-label text-left">Employees who have no Shift</label>
+                                    <div class="col-sm-2 col-2">
+                                        <div class="checkbox-fade fade-in-primary">
+                                            <label>
+                                                <input type="checkbox" id="IsNoShift" name="IsNoShift">
+                                                <span class="cr">
+                                                    <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                                </span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                </div>*@
+
+
+                            <div class="table-responsive dt-responsive">
+                                <table id="dt-emp-list" class="table table-hover  w-100 table-striped table-bordered nowrap">
+
+                                    <thead>
+                                        <tr>
+                                            @*<th>All<input type="checkbox" id="empAllCheck" /></th>*@
+                                            <th>
+
+                                                <div class="checkbox-fade fade-in-primary ml-3">
+                                                    <label class="m-0">
+                                                        <input type="checkbox" id="empAllCheck" name="empAllCheck">
+                                                        <span class="cr">
+                                                            <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </th>
+                                            <th class="d-none">EmployeeHistory</th>
+                                            <th>Employee</th>
+                                            <th>Card No</th>
+                                            <th>Designation</th>
+                                            <th>Joning Date</th>
+                                            <th>Status</th>
+                                            <th>Section</th>
+                                            <th>Department</th>
+                                            <th>Category</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+
+
+                </div>
+            </div>
+            <!-- Ajax data source (Arrays) table end -->
+        </div>
+    </div>
+</div>
+
+<!-- Page-body end -->
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    <script>
+
+        // hold selected employee history data
+        let empSelectedHistory;
+
+        $(document).ready(function () {
+            emp_list_table.column(1).visible(false); // Emp History Id hide
+            $('#dt-emp-list tbody').on('click', 'tr td:not(:first-child)', function () {
+                //const empid = $(this).closest('tr').find("td:eq(0)").find("input[name='empCheckbox']").val();
+                //const historyId = $(this).closest('tr').find("td:eq(1)").text().trim();
+                const tr = $(this).closest('tr')
+
+                if ($(this).hasClass('selected')) {
+                    //$(tr).find('td:not(:first-child)').removeClass('selected');
+                } else {
+                   
+                    emp_list_table.$('tr').find('td:not(:first-child)').removeClass('selected');
+                    $(tr).find('td:not(:first-child)').addClass('selected');
+                    const currRow = $(this).closest('tr');
+                    const historyId = emp_list_table.row(currRow).data()[1];
+                    //var historyId = emp_list_table.row(this).data()[1];
+                    empStatus(historyId);
+                  
+                }
+
+            });
+
+
+
+
+            $("#EmpStatusId,#EmpStatus_Filter").select2();
+
+            $("#EffectiveDate").datepicker({
+                dateFormat: 'dd-mm-yy',
+                changeYear: true,
+                changeMonth: true,
+            });
+
+            $("#EffectiveDate").datepicker("setDate", new Date());
+            //table = $('#dt-emp-list').DataTable({
+            //    "searching": false,
+            //    ordering:false,
+            //    paging:false
+            //});
+
+            $("#btnDelete").click(function () {
+                let employeesStatus = [];
+
+
+                $("input[name='empCheckbox']:checked").each(function () {
+                    //console.log($(this).val());
+                    let currRow = $(this).closest('tr');
+                    let historyId = emp_list_table.row(currRow).data()[1];
+                     employeesStatus.push(
+                        {
+                            @nameof(EmployeeStatusVM.EmpId) : $(this).val(),
+                            @nameof(EmployeeStatusVM.EmpHistoryId) : historyId,
+                        });
+                })
+
+
+
+                if (employeesStatus.length<1) {
+                    WarningPNotify("Please select Employee");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Delete", "EmployeeStatus")",
+                    data: { model: employeesStatus },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                            SuccessPNotify(res.message);
+                            clearData();
+                            showSaveButton();
+
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+
+            })
+
+            $("#btnSave").click(function () {
+                let employeesStatus = [];
+                const effDate = $("#EffectiveDate").val() || "";
+                const empStatusId = $("#EmpStatusId").val() || "";
+                //const empHistoryId = $("#EmpHistoryId").val()||0;
+
+
+                if (effDate == "" || empStatusId == "") {
+                    WarningPNotify("Please select Effective Date & Status");
+                    return;
+                }
+
+                $("input[name='empCheckbox']:checked").each(function () {
+                    let currRow = $(this).closest('tr');
+                    let historyId = emp_list_table.row(currRow).data()[1];
+                    //console.log($(this).val());
+                    employeesStatus.push(
+                        {
+                            @nameof(EmployeeStatusVM.EmpId) : $(this).val(),
+                            @nameof(EmployeeStatusVM.EmpHistoryId) : historyId,
+                            @nameof(EmployeeStatusVM.EmpStatusId) : empStatusId,
+                            @nameof(EmployeeStatusVM.EffectiveDate) : effDate,
+                            @nameof(EmployeeStatusVM.Remarks) : $("#Remarks").val().trim()||"",
+                        });
+                });
+
+                if (employeesStatus.length < 1) {
+                    WarningPNotify("Please select Employee");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Create", "EmployeeStatus")",
+                    data: { model: employeesStatus },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                            // SuccessPNotify("Employee Job Calender Updated");
+                            SuccessPNotify(res.message);
+                            clearData();
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+            });
+
+
+
+             $("#btnUpdate").click(function () {
+                let empId = $("#EmpId").val().trim()||"";
+                let empHistoryId = $("#EmpHistoryId").val().trim();
+                let empStatusId = $("#EmpStatusId").val().trim();
+                let effectiveDate = $("#EffectiveDate").val().trim();
+                 let remarks = $("#Remarks").val().trim() || "";
+
+                if (empId=="") {
+                    WarningPNotify("Please select employee");
+                }
+
+                if (effectiveDate == "" || empStatusId == "") {
+                    WarningPNotify("Please select Effective Date & Status");
+                    return;
+                }
+
+                let empStatus=   {
+                    '@nameof(EmployeeStatusVM.EmpId)' :empId,
+                    '@nameof(EmployeeStatusVM.EmpHistoryId)' : empHistoryId,
+                    '@nameof(EmployeeStatusVM.EmpStatusId)' : empStatusId,
+                    '@nameof(EmployeeStatusVM.EffectiveDate)' : effectiveDate,
+                    '@nameof(EmployeeStatusVM.Remarks)': remarks,
+                };
+
+                 $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Update", "EmployeeStatus")",
+                     data: { model: empStatus },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                            // SuccessPNotify("Employee Job Calender Updated");
+                            SuccessPNotify(res.message);
+                            clearData();
+
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+
+
+             });
+
+            $("#btnEmpFilter").click(function () {
+                let filter = {
+                    EffectiveDate: $("#EffectiveDate").val(),
+                    EmpCategoryId_Filter: $("#EmpCategoryId_Filter").val(),
+                    DesignationId_Filter: $("#DesignationId_Filter").val(),
+                    SectionId_Filter: $("#SectionId_Filter").val(),
+                    DepartmentId_Filter: $("#DepartmentId_Filter").val(),
+                    CardNo_Filter: $("#CardNo_Filter").val()||"",
+                    EmpName_Filter: $("#EmpName_Filter").val() || "",
+                    EmpStatusId: $("#EmpStatus_Filter").val(),
+                    CompId: '@ComId',
+                    ClientId: '@ClientId',
+                    OrgId: '@orgid'
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("LoadEmployee", "EmployeeStatus")",
+                    data: filter,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (tr) {
+
+                            tr = tr || [];
+
+                            emp_list_table.clear().draw();
+
+                        tr.map(a => {
+                            a.joiningDate = getDateString(a.joiningDate);
+                                emp_list_table.row.add([
+                                    a.empId,
+                                    a.empHistoryId,
+                                    a.name,
+                                    a.cardNo,
+                                    a.designationName,
+                                    a.joiningDate,
+                                    a.empStatusName,
+                                    a.sectionName,
+                                    a.departmentName,
+                                    a.categoryName,
+                                ]);
+                            });
+
+                            emp_list_table.draw();
+
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+            });
+
+            $("#empAllCheck").click(function () {
+                let check = $(this).is(":checked");
+                if (check) {
+                    $("input[name='empCheckbox']").prop('checked', true);
+                } else {
+                    $("input[name='empCheckbox']").prop('checked', false);
+                }
+            });
+
+            $("#btnClear").click(function () {
+                clearData();
+                showSaveButton();
+            })
+
+            $("#btnEmpFilter").click();
+
+        });
+
+
+
+
+        function HTMLStatus(data) {
+            $('#dt-emp-status tbody').html("");
+            let tr = "";
+
+            if (data!=null) {
+                tr = `<tr>
+                          <td class="d-none">${data.empId}</td>
+                          <td class="d-none">${data.empHistoryId}</td>
+                          <td>${data.employeeStatus.empStatusName}</td>
+                          <td>${getDateString(data.effectiveDate)}</td>
+                          <td>${data.remarks}</td>
+                          <td><button class="btn btn-outline-info btn-sm" data-toggle="tooltip" data-placement="top" title="Edit" onclick="SetStatusData(${data.empHistoryId})"><i class="fa fa-edit"></i></button></td>
+                      </tr>`
+            }
+
+            $('#dt-emp-status tbody').append(tr);
+
+        }
+
+        function getDateString(date) {
+            var d = new Date(date);
+            var day = d.getDate();
+            var month = d.getMonth() + 1;
+            var year = d.getFullYear();
+            if (day < 10) {
+                day = "0" + day;
+            }
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var date = day + "-" + month + "-" + year;
+            return date;
+        }
+
+
+        function empStatus(empHistoryId) {
+
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetByHistoryId", "EmployeeStatus")",
+                data: { empHistoryId },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        HTMLStatus(response.data)
+                        empSelectedHistory=response.data;
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                        empSelectedHistory = {};
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                        empSelectedHistory = {};
+                    }
+                });
+
+        }
+
+        function showSaveButton() {
+
+            if ($("#btnSave").hasClass("d-none")) {
+                $("#btnSave").removeClass("d-none");
+            }
+
+            if (!$("#btnUpdate").hasClass("d-none")) {
+                $("#btnUpdate").addClass("d-none");
+            }
+        }
+
+        function showUpdateButton() {
+
+            if (!$("#btnSave").hasClass("d-none")) {
+                $("#btnSave").addClass("d-none");
+            }
+
+            if ($("#btnUpdate").hasClass("d-none")) {
+                $("#btnUpdate").removeClass("d-none");
+            }
+        }
+
+
+        function SetStatusData()
+        {
+            $("#EmpId").val(empSelectedHistory.empId);
+            $("#EmpHistoryId").val(empSelectedHistory.empHistoryId);
+            $("#EmpStatusId").val(empSelectedHistory.empStatusID).change();
+            $("#EffectiveDate").val(getDateString(empSelectedHistory.effectiveDate));
+            $("#Remarks").val(empSelectedHistory.remarks.replace("Status Changed: ", ""));
+
+            showUpdateButton();
+        }
+
+        function clearData() {
+            $("#EmpId").val("");
+            $("#EmpHistoryId").val("");
+            $("#EmpStatusId").val("1").change();
+            $("#EffectiveDate").val(getDateString(new Date()));
+            $("#Remarks").val("");
+
+            empSelectedHistory = {};
+
+            $("#dt-emp-status tbody").html("");
+
+            showSaveButton();
+
+            // recall employee list for update emp history id
+            $("#btnEmpFilter").click();
+        }
+
+    </script>
+}

@@ -1,0 +1,85 @@
+﻿@model Domains.ViewModels.OrganisationVM;
+
+<br />
+<br />
+<br />
+<style>
+    .freeze-text {
+        /* Add your styling to freeze the text here */
+        /* For example: */
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+</style>
+@{
+    if (Model != null)
+    {
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+                    @*<div class="card-header">
+                        <a target="_parent" class="btn btn-sm btn-primary" href="/Organisation/Edit/@Model.OrgId"><i class="fa fa-edit"></i> Edit</a>
+                        <a target="_blank" class="btn btn-sm btn-primary" href="/Leads/PrintLead/85">Print</a>
+
+                    </div>*@
+                    <div class="card-block protected">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <fieldset class="scheduler-border ">
+                                    <legend class="scheduler-border form-bg-info">Organisation Details:</legend>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="LeadNo">Organisation Name</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong><span>@Model.OrgName</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="LeadNo">Organisation Code</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong><span>@Model.OrgCode</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="Client_Name">Subscription Type</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong><span>@Model.PackageName</span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="Client_Phone">Number Of Employee</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong><span>@Model.NumberOfEmp</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="Clinet_Phone2">Contact No</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong><span>@Model.ContactNo</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="Client_Email">Email</label>
+                                        <div class="col-sm-6" style="white-space:nowrap">
+                                            <strong>:</strong><span>@Model.OrgEmail</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="Address">Address</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong><span>@Model.AddressLine1</span>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

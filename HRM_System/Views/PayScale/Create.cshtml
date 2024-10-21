@@ -1,0 +1,672 @@
+﻿@model PayScaleVM
+@inject IGlobalHelper _global;
+@{
+    var title = ViewBag.Action;
+    ViewData["Title"] = title;
+    Layout = "~/Views/Shared/_Main_Layout.cshtml";
+}
+
+@{
+    var action = ViewBag.Action;
+    if (action == "Add")
+    {
+        ViewData["Title"] = "Pay Scale Add";
+    }
+    else
+    {
+        ViewData["Title"] = "Pay Scale Edit";
+    }
+    Layout = "~/Views/Shared/_Main_Layout.cshtml";
+}
+
+@section PageName {
+    @ViewData["Title"]
+}
+@section Breadcrumb {
+    <a href="/dashboard/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <a href="/payscale/index">Pay Scale List</a>
+
+    <span class="Divider">/</span>
+    @* <span class="section activeCrum">Pay Scale Type Add</span> *@
+    <span class="section activeCrum">@ViewData["Title"]</span>
+}
+
+
+@{
+
+    var comid = _global.GetCompID();
+    var userid = _global.GetUserID();
+    var date = DateTime.Now;
+    var payscal = Model;
+    var medicalfixed = 0.0;
+    var houserentfixed = 0.0;
+    var conveynccefixed = 0.0;
+    var foodingfixed = 0.0;
+    var ruleid = 0;
+    if (payscal != null)
+    {
+        if (payscal.SalaryBreakDown != null)
+        {
+            medicalfixed = Model.SalaryBreakDown.MedicalFixed;
+            houserentfixed = Model.SalaryBreakDown.HouseRentFixed;
+            conveynccefixed = Model.SalaryBreakDown.ConveyanceFixed;
+            foodingfixed = Model.SalaryBreakDown.FoodingFixed;
+            ruleid = Model.SalaryBreakDown.RuleID;
+        }
+    }
+
+}
+
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Basic Inputs Validation start -->
+            <div id="loader">
+                <div class="overlay"></div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <form id="main" asp-action="Create" method="post" novalidate>
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6">
+                                    <div class="form-group row">
+                                        @if (Model == null)
+                                        {
+                                            <input type="hidden" asp-for="PayScaleID" value="0" />
+                                            <input type="hidden" asp-for="AddedBy" value="@userid" />
+                                            <input type="hidden" asp-for="UpdatedBy" />
+                                            <input type="hidden" asp-for="AddedDate" value="@date" />
+                                            <input type="hidden" asp-for="UpdatedDate" />
+                                            <input type="hidden" asp-for="CompId" value="@comid" />
+                                            <input type="hidden" asp-for="SalaryBreakDown.CompId" value="@comid" />
+                                        }
+                                        else
+                                        {
+                                            <input type="hidden" asp-for="PayScaleID" />
+                                            <input type="hidden" asp-for="SalaryBreakDown.SalaryBreakDownID" />
+                                            <input type="hidden" asp-for="SalaryBreakDown.CompId" value="@comid" />
+                                            <input type="hidden" asp-for="AddedBy" />
+                                            <input type="hidden" asp-for="UpdatedBy" value="@userid" />
+                                            <input type="hidden" asp-for="AddedDate" />
+                                            <input type="hidden" asp-for="UpdatedDate" value="@date" />
+                                            <input type="hidden" asp-for="CompId" value="@comid" />
+                                            <input type="hidden" asp-for="OrgId"/>
+                                        }
+                                        <label asp-for="GradeOrScale" class="col-sm-12 control-label ">Grade/Scale</label>
+                                        <div class="col-sm-12">
+                                            <input asp-for="GradeOrScale" class="form-control form-control-sm" required />
+                                            <span asp-validation-for="GradeOrScale" class="text-danger messages"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row d-none">
+                                        <label asp-for="OrgId" class="col-sm-12 control-label">Organisation</label>
+                                        <div class="col-sm-12">
+                                            <select asp-for="OrgId" asp-items="@ViewBag.OrgId" class="form-control form-control-sm" required>
+                                            </select>
+                                            <span asp-validation-for="OrgId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label asp-for="PayScaleTypeId" class="col-sm-12 control-label ">PayScale Type</label>
+                                        <div class="col-sm-12">
+                                            <select asp-for="PayScaleTypeId" asp-items="@ViewBag.PayScaleTypeId" class="form-control form-control-sm border" required>
+                                                <option value="Private">Private</option>
+                                            </select>
+                                            <span asp-validation-for="PayScaleTypeId" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row d-none">
+                                        <label class="col-sm-4 control-label " for="PayScaleTypeId"></label>
+                                        <label class="col-sm-6 text-right" id="lblgovt" style="display:none; color:blue">Govornment</label>
+                                        <label class="col-sm-6 text-right" id="lblnotgovt" style="display: none; color:blue">Non-Govornment</label>
+                                    </div>
+                                    <div class="form-group row d-none">
+                                        <label class="col-sm-4 control-label " for="PayScaleTypeId"></label>
+                                        <label class="col-sm-6 text-right" id="lblgovt" style="display:none; color:blue">Govornment</label>
+                                        <label class="col-sm-6 text-right" id="lblnotgovt" style="display: none; color:blue">Non-Govornment</label>
+                                    </div>
+                                    <div class="form-group row mt-2 d-none">
+                                        <label asp-for="ByGross" class="col-sm-4 col-6 control-label text-right">Salary By Gross</label>
+
+                                        <div class="col-sm-6 col-6">
+                                            <div class="checkbox-fade fade-in-primary">
+                                                <label>
+                                                    @if (Model?.ByGross == true)
+                                                    {
+                                                        <input asp-for="ByGross" type="checkbox" checked>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input asp-for="ByGross" type="checkbox">
+                                                    }
+
+                                                    <span class="cr">
+                                                        <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                                    </span>
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row d-none">
+                                        <label asp-for="SalaryBreakDown.RuleID" class="col-sm-4 control-label text-right">Calc Rule</label>
+                                        <div class="col-sm-6">
+                                            <select asp-for="SalaryBreakDown.RuleID" id="ruleid" asp-items="@ViewBag.RuleID" class="form-control form-control-sm" required>
+                                                @*<option value="0">Select</option>*@
+                                            </select>
+                                            <span asp-validation-for="SalaryBreakDown.RuleID" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-12 control-label" id="lblbasic">Annual Pay</label>
+                                        <label class="col-sm-12 control-label" id="lblgross" style="display:none">Annual Pay</label>
+                                        <div class="col-sm-12">
+                                            <input asp-for="InitialPay" type="number" class="form-control form-control-sm text-right manual-p-sz" />
+                                            <span asp-validation-for="InitialPay" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row d-none">
+                                        <label class="col-sm-4 control-label text-right">Year Of Increment</label>
+                                        <div class="col-sm-6">
+                                            <input asp-for="YearOfIncr" class="form-control form-control-sm text-right manual-p-sz" readonly />
+                                            <span asp-validation-for="YearOfIncr" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row d-none">
+                                        <label asp-for="IncrAmount" class="col-sm-4 control-label text-right">Increment Amount</label>
+                                        <div class="col-sm-6">
+                                            <input asp-for="IncrAmount" type="number" class="form-control form-control-sm text-right manual-p-sz" readonly />
+                                            <span asp-validation-for="IncrAmount" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row d-none">
+                                        <label asp-for="EBYearOfIncr" class="col-sm-4 control-label text-right">Efficiencybar inc year</label>
+                                        <div class="col-sm-6">
+                                            <input asp-for="EBYearOfIncr" class="form-control form-control-sm text-right manual-p-sz" readonly />
+                                            <span asp-validation-for="EBYearOfIncr" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row d-none">
+                                        <label asp-for="EBIncrAmount" class="col-sm-4 control-label text-right">Efficiencybar inc amnt</label>
+                                        <div class="col-sm-6">
+                                            <input asp-for="EBIncrAmount" type="number" class="form-control form-control-sm text-right manual-p-sz" readonly />
+                                            <span asp-validation-for="EBIncrAmount" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row d-none">
+                                        <label asp-for="SalaryBreakDown.YearlyIncrementRate" class="col-sm-4 control-label text-right">Yearly Increment</label>
+                                        <div class="col-sm-6">
+                                            <input asp-for="SalaryBreakDown.YearlyIncrementRate" type="number" class="form-control form-control-sm text-right manual-p-sz" />
+                                            <span asp-validation-for="SalaryBreakDown.YearlyIncrementRate" class="text-danger"></span>
+                                        </div>
+                                        <label class="col-sm-2 control-label text-left">%</label>
+                                    </div>
+
+                                    
+                                </div>
+
+
+                                <div class="col-sm-6">
+                                    <div class="form-group row">
+                                        <label asp-for="SalaryBreakDown.SalaryRate" class="col-sm-3 text-right control-label">Basic</label>
+                                        <div class="col-sm-3">
+                                            @*<input asp-for="SalaryBreakDown.SalaryRate" type="number" class="form-control form-control-sm text-right manual-p-sz" style="display:none;" placeholder="Fixed" />*@
+                                            <input asp-for="SalaryBreakDown.SalaryRate" id="SalaryRate" type="number" class="form-control form-control-sm text-right manual-p-sz" placeholder="%" />
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <select class="form-control form-control-sm dd" id="sbasic">
+                                                <option value="%">%</option>
+                                                @*<option value="Fixed">Fixed</option>*@
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row">
+                                        <label asp-for="SalaryBreakDown.MedicalRate" class="col-sm-3 text-right control-label">Medical</label>
+                                        <div class="col-sm-3">
+                                            <input asp-for="SalaryBreakDown.MedicalFixed" id="MedicalFixed" type="number" class="form-control form-control-sm text-right manual-p-sz" style="display:none;" placeholder="Fixed" />
+                                            <input asp-for="SalaryBreakDown.MedicalRate" id="MedicalRate" type="number" class="form-control form-control-sm text-right manual-p-sz" placeholder="%" value="10" />
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <select class="form-control form-control-sm dd" id="smedical">
+                                                <option value="%">%</option>
+                                                @*<option value="Fixed">Fixed</option>*@
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row">
+                                        <label asp-for="SalaryBreakDown.HouseRentRate" class="col-sm-3 control-label text-right">House Rent</label>
+                                        <div class="col-sm-3">
+                                            <input asp-for="SalaryBreakDown.HouseRentRate" id="HouseRentRate" type="number" class="form-control form-control-sm text-right manual-p-sz" placeholder="%" value="20" />
+                                            <input asp-for="SalaryBreakDown.HouseRentFixed" id="HouseRentFixed" type="number" class="form-control form-control-sm text-right manual-p-sz" style="display:none;" placeholder="Fixed" />
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <select class="form-control form-control-sm dd" id="shouserent">
+                                                <option value="%">%</option>
+                                                @*<option value="Fixed">Fixed</option>*@
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label asp-for="SalaryBreakDown.ConveyanceRate" class="col-sm-3 control-label text-right">Conveyance</label>
+                                        <div class="col-sm-3">
+                                            <input asp-for="SalaryBreakDown.ConveyanceFixed" id="ConveyanceFixed" type="number" class="form-control form-control-sm text-right manual-p-sz" style="display:none;" placeholder="Fixed" />
+                                            <input asp-for="SalaryBreakDown.ConveyanceRate" id="ConveyanceRate" type="number" class="form-control form-control-sm text-right manual-p-sz" placeholder="%" value="10" />
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <select class="form-control form-control-sm dd" id="sconveyance">
+                                                <option value="%">%</option>
+                                                @*<option value="Fixed">Fixed</option>*@
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label asp-for="SalaryBreakDown.FoodingRate" class="col-sm-3 control-label text-right">Fooding</label>
+                                        <div class="col-sm-3">
+                                            <input asp-for="SalaryBreakDown.FoodingFixed" id="FoodingFixed" type="number" class="form-control form-control-sm text-right manual-p-sz" style="display:none" placeholder="Fixed" />
+                                            <input asp-for="SalaryBreakDown.FoodingRate" id="FoodingRate" type="number" class="form-control form-control-sm text-right manual-p-sz" placeholder="%" value="10" />
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <select class="form-control form-control-sm dd" id="sfooding">
+                                                <option value="%">%</option>
+                                                @*<option value="Fixed">Fixed</option>*@
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row col-12">
+
+                                        <div class="row col-12 d-flex justify-content-end p-0 m-0">
+                                            <div class="">
+                                                <input type="submit" value="Submit" class="btn btn-primary waves-effect waves-light ">
+                                                <button type="button" class="btn btn-danger d-none">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card">
+                                @* <div class="card-block actionBtnRight">
+                                    <input type="submit" value="Submit" class="btn btn-primary m-b-0" />
+                                </div> *@
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <!-- Basic Inputs Validation end -->
+        </div>
+    </div>
+</div>
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/custom/js/payScale.js"></script>
+    <script>
+        $('#PayScaleTypeId,#sbasic').select2();
+        $('#ruleid').select2();
+        $('.dd').select2();
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var pscale = $('#PayScaleTypeId option:selected').val();
+            //getLebelIsGovtOrNot(pscale);
+            salaryByGrossOrNot()
+            if ('@title' == 'Create') {
+                $('#YearOfIncr').val(0);
+                $('#IncrAmount').val(0);
+                $('#EBYearOfIncr').val(0);
+                $('#EBIncrAmount').val(0);
+                $('#SalaryBreakDown_YearlyIncrementRate').val(5);
+            }
+            if (@medicalfixed != 0) {
+                $('#smedical').val('Fixed').change();
+            }
+            if (@houserentfixed != 0) {
+                $('#shouserent').val('Fixed').change();
+            }
+            if (@conveynccefixed != 0) {
+                $('#sconveyance').val('Fixed').change();
+            }
+            if (@foodingfixed != 0) {
+                $('#sfooding').val('Fixed').change();
+            }
+        })
+        //var BASICSALARY = 0.0;
+        //var HRRATE = 0.0;
+        //var HRFIXED = 0.0;
+        //var MEDICALRATE = 0.0;
+        //var MEDICALFIXED = 0.0;
+        //var CONVEYANCERATE = 0.0;
+        //var CONVEYANCEFIXED = 0.0;
+        //var FOODINGRATE = 0.0;
+        //var FOODINGFIXED = 0.0;
+        //var TOTALSALARY = 0.0;
+
+        $('#PayScaleTypeId').on('change', function () {
+            var pscale = $('#PayScaleTypeId option:selected').val();
+           // getLebelIsGovtOrNot(pscale)
+        });
+
+        $('#ruleid').on('change', function () {
+            var ruleid = $(this).val();
+            if (ruleid == 22) {
+                $('#divsalary').hide();
+            } else {
+                $('#divsalary').show();
+            }
+        })
+
+        $('#smedical').on('change', function () {
+            var typeAttrName = 'smedical';
+            var amountAttrName = 'Medical';
+            typeChangeevemt(typeAttrName, amountAttrName)
+        });
+
+        //$('#MedicalRate').keyup(function () {
+        //    var typeAttrName = 'smedical';
+        //    var amountAttrName = 'Medical';
+        //    calculateAmount(typeAttrName, amountAttrName)
+        //});
+
+        //$('#MedicalFixed').keyup(function () {
+        //    var typeAttrName = 'smedical';
+        //    var amountAttrName = 'Medical';
+        //    calculateAmount(typeAttrName, amountAttrName)
+        //});
+
+
+        $('#shouserent').on('change', function () {
+            var typeAttrName = 'shouserent';
+            var amountAttrName = 'HouseRent';
+            typeChangeevemt(typeAttrName, amountAttrName)
+        })
+
+        //$('#HouseRentRate').keyup(function () {
+        //    var typeAttrName = 'shouserent';
+        //    var amountAttrName = 'HouseRent';
+        //    calculateAmount(typeAttrName, amountAttrName)
+        //});
+        //$('#HouseRentFixed').keyup(function () {
+        //    var typeAttrName = 'shouserent';
+        //    var amountAttrName = 'HouseRent';
+        //    calculateAmount(typeAttrName, amountAttrName)
+        //});
+
+
+        $('#sconveyance').on('change', function () {
+            var typeAttrName = 'sconveyance';
+            var amountAttrName = 'Conveyance';
+            typeChangeevemt(typeAttrName, amountAttrName)
+        })
+
+        //$('#ConveyanceRate').keyup(function () {
+        //    var typeAttrName = 'sconveyance';
+        //    var amountAttrName = 'Conveyance';
+        //    calculateAmount(typeAttrName, amountAttrName)
+        //});
+        //$('#ConveyanceFixed').keyup(function () {
+        //    var typeAttrName = 'sconveyance';
+        //    var amountAttrName = 'Conveyance';
+        //    calculateAmount(typeAttrName, amountAttrName)
+        //});
+
+        $('#sfooding').on('change', function () {
+            var typeAttrName = 'sfooding';
+            var amountAttrName = 'Fooding';
+            typeChangeevemt(typeAttrName, amountAttrName)
+        })
+
+        //$('#FoodingRate').keyup(function () {
+        //    var typeAttrName = 'sfooding';
+        //    var amountAttrName = 'Fooding';
+        //    calculateAmount(typeAttrName, amountAttrName)
+        //});
+        //$('#FoodingFixed').keyup(function () {
+        //    var typeAttrName = 'sfooding';
+        //    var amountAttrName = 'Fooding';
+        //    calculateAmount(typeAttrName, amountAttrName)
+        //});
+
+        $('#ByGross').click(function () {
+            salaryByGrossOrNotForClick()
+        })
+
+        function salaryByGrossOrNot() {
+            if ($("#ByGross").is(':checked')) {
+                $('#lblbasic').hide();
+                $('#lblgross').show();
+                if (@ruleid == 21) {
+                    $('#divsalary').show();
+                } else {
+                    $('#divsalary').hide();
+                }
+            }
+            else {
+                $('#lblbasic').show();
+                $('#lblgross').hide();
+                $('#divsalary').hide();
+            }
+        }
+        function salaryByGrossOrNotForClick() {
+            if ($("#ByGross").is(':checked')) {
+                $('#lblbasic').hide();
+                $('#lblgross').show();
+                $('#divsalary').show();
+                bindGrossDropdown();
+            }
+            else {
+                $('#lblbasic').show();
+                $('#lblgross').hide();
+                $('#divsalary').hide();
+                bindBasicDropdown();
+            }
+        }
+
+        function getLebelIsGovtOrNot(PayScaleTypeId) {
+            $.get('/payscale/getLebelIsGovtOrNot', { PayScaleTypeID: parseInt(PayScaleTypeId) }, function (data, status, xhr) {
+                if (status == 'success') {
+                    //console.log(data);
+                    if (data == true) {
+                        $('#lblgovt').show();
+                        $('#lblnotgovt').hide();
+
+                        $('#YearOfIncr').attr('readonly', false);
+                        $('#IncrAmount').attr('readonly', false);
+                        $('#EBYearOfIncr').attr('readonly', false);
+                        $('#EBIncrAmount').attr('readonly', false);
+                    } else {
+                        $('#lblgovt').hide();
+                        $('#lblnotgovt').show();
+
+                        $('#YearOfIncr').attr('readonly', true);
+                        $('#IncrAmount').attr('readonly', true);
+                        $('#EBYearOfIncr').attr('readonly', true);
+                        $('#EBIncrAmount').attr('readonly', true);
+                    }
+                }
+            })
+        }
+        function bindBasicDropdown() {
+            $.get('/payscale/bindBasicDropdown', function (data, status, xhr) {
+                if (status == 'success') {
+                    //console.log(data)
+                    $('#ruleid').empty()
+                    var asset = [
+                        //'<option value="0">Select</option>'
+                    ]
+                    data.map(x => (asset.push(`<option value="${x.value}">${x.text}</option>`)));
+                    $('#ruleid').append(asset);
+                } else {
+
+                }
+            })
+        }
+        function bindGrossDropdown() {
+            $.get('/payscale/bindGrossDropdown', function (data, status, xhr) {
+                if (status == 'success') {
+                    //console.log(data)
+                    $('#ruleid').empty()
+                    var asset = [
+                        //'<option value="0">Select</option>'
+                    ]
+                    data.map(x => (asset.push(`<option value="${x.value}">${x.text}</option>`)));
+                    $('#ruleid').append(asset);
+
+                }
+            })
+        }
+
+        function typeChangeevemt(typeAttrName, amountAttrName) {
+            var option = $(`#${typeAttrName}`).val();
+            if (option == 'Fixed') {
+                $(`#${amountAttrName}Rate`).hide() || 0;
+                $(`#${amountAttrName}`).val() || 0;
+                $(`#${amountAttrName}Fixed`).val() || 0;
+                $(`#${amountAttrName}Rate`).val() || 0;
+                $(`#${amountAttrName}Fixed`).show();
+
+            } else {
+                $(`#${amountAttrName}Fixed`).hide();
+                $(`#${amountAttrName}`).val() || 0;
+                $(`#${amountAttrName}Rate`).val() || 0;
+                $(`#${amountAttrName}Fixed`).val() || 0;
+                $(`#${amountAttrName}Rate`).show();
+
+            }
+        }
+        function typeChangeevemtForEdit(typeAttrName, amountAttrName) {
+            var option = $(`#${typeAttrName}`).val();
+            if (option == 'Fixed') {
+                $(`#${amountAttrName}Rate`).hide();
+                //$(`#${amountAttrName}`).val('');
+                //$(`#${amountAttrName}Fixed`).val('');
+                $(`#${amountAttrName}Rate`).val(0);
+                $(`#${amountAttrName}Fixed`).show();
+
+            } else {
+                $(`#${amountAttrName}Fixed`).hide();
+                //$(`#${amountAttrName}`).val('');
+                //$(`#${amountAttrName}Rate`).val('');
+                $(`#${amountAttrName}Fixed`).val(0);
+                $(`#${amountAttrName}Rate`).show();
+
+            }
+        }
+
+        function calculateAmount(typeAttrName, amountAttrName) {
+            //debugger;
+            var option = $(`#${typeAttrName}`).val();
+
+            if (option == '%') {
+
+                if (initialPay == 0) {
+                    ErrorAlert('Please add Salary Fist');
+                    $(`#${amountAttrName}`).val('');
+                    $(`#${amountAttrName}Rate`).val(0);
+                    $(`#${amountAttrName}Fixed`).val(0);
+                    return false;
+                } else {
+                    var rate = $(`#${amountAttrName}Rate`).val();
+                    var initialPay = parseFloat($('#InitialPay').val()) || 0;
+                    var SalaryRate = parseFloat($('#SalaryRate').val()) || 0;
+                    var RuleID = $('#ruleid option:selected').val();
+                    if (RuleID == '21') { // 21 = Input Gross Calculated By Gross
+
+                        value = (initialPay * rate) / 100;
+                        $(`#${amountAttrName}`).val(value);
+
+                    } else if (RuleID == '22') { //22 = Input Gross Calculated By Basic
+
+                        //HRRATE = $('#HouseRentRate').val();
+                        //MEDICALRATE = $('#MedicalRate').val();
+                        //CONVEYANCERATE = $('#ConveyanceRate').val();
+                        //FOODINGRATE = $('#FoodingRate').val();
+                        //BASICSALARY = ((initialPay - HRFIXED - MEDICALFIXED - CONVEYANCEFIXED - FOODINGFIXED) / (1 + HRRATE / 100 + MEDICALRATE / 100 + CONVEYANCERATE / 100 + FOODINGRATE / 100));
+                        //value = (BASICSALARY * rate) / 100;
+                        $(`#${amountAttrName}`).val(value);
+
+                    } else if (RuleID == '23') { // 23 = Input Basic Calculated By Basic
+
+                        var value = (initialPay * rate) / 100
+                        $(`#${amountAttrName}`).val(value);
+                    }
+                }
+            } else {
+                var value = $(`#${amountAttrName}Fixed`).val();
+                $(`#${amountAttrName}`).val(value);
+            }
+            //bindValue(amountAttrName);
+        }
+        //function bindValue(amountAttrName) {
+        //    //debugger;
+        //    switch (amountAttrName) {
+        //        case "Medical":
+        //            MEDICALRATE = $(`#${amountAttrName}Rate`).val() || 0;
+        //            MEDICALFIXED = $(`#${amountAttrName}Fixed`).val() || 0;
+        //            break;
+        //        case "HouseRent":
+        //            HRRATE = $(`#${amountAttrName}Rate`).val() || 0;
+        //            HRFIXED = $(`#${amountAttrName}Fixed`).val() || 0;
+        //            break;
+        //        case "Conveyance":
+        //            CONVEYANCERATE = $(`#${amountAttrName}Rate`).val() || 0;
+        //            CONVEYANCEFIXED = $(`#${amountAttrName}Fixed`).val() || 0;
+        //            break;
+        //        case "Fooding":
+        //            FOODINGRATE = $(`#${amountAttrName}Rate`).val() || 0;
+        //            FOODINGFIXED = $(`#${amountAttrName}Fixed`).val() || 0;
+        //            break;
+        //    }
+        //}
+        function getFixedValue(basic, rate, ruleid, amountAttrName) {
+            var fixedVale = 0.0;
+            if (ruleid == '21') {
+                fixedVale = (basic * rate) / 100;
+                $(`#${amountAttrName}`).val();
+                bindValue(amountAttrName);
+            }
+            return fixedVale;
+        }
+        function ErrorAlert(msg) {
+            new PNotify({
+                //title: 'Sticky notice',
+                text: '' + msg,
+                addclass: 'bg-danger',
+                //hide: true,
+                icon: 'icofont icofont-info-circle',
+                type: 'primary'
+            });
+        }
+        //function intParse(value) {
+        //    var result = parseInt(value);
+        //    return result;
+        //}
+    </script>
+
+}

@@ -1,0 +1,351 @@
+﻿@model LeaveTransaction
+
+@inject IGlobalHelper _global;
+@{
+    var action = ViewBag.Action;
+    var title = "Leave Transaction";
+
+    ViewData["Title"] = $"{title}";
+
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+    var date = DateTime.Now;
+    var todate = DateTime.UtcNow.AddMonths(3);
+}
+
+@section PageName {
+    Leave Approval List
+}
+@section Breadcrumb {
+    <a href="/leavetransaction/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">Leave Approval List</span>
+}
+
+@Html.AntiForgeryToken()
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-block">
+                    <input type="hidden" id="message" />
+                    <input type="hidden" id="action" />
+                    <input type="hidden" id="ltypeid" />
+                    <div class="row p-t-10">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group-sm row">
+                                        <label asp-for="StartDate" class="col-sm-4 col-form-label text-right">Start Date:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control form-control-sm" value="@date.ToShortDateString()" id="dtfrom" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group row">
+                                        <label asp-for="EndDate" class="col-sm-4 col-form-label text-right">End Date:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control form-control-sm" value="@todate.ToShortDateString()" id="dtto" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group row">
+                                        @*<label class="col-sm-4 col-form-label text-right"></label>*@
+                                        <div class="col-sm-4">
+                                            <input type="submit" value="Search" class="form-control form-control-sm btn btn-info btn-sm" id="btnltcearch" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="table-responsive dt-responsive">
+                                    <table id="dt-leaveapprove-list" class="table table-hover table-striped table-bordered nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>leave Transaction Id</th>
+                                                <th>Card No</th>
+                                                <th>Name</th>
+                                                <th>Leave Type</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>Total Days</th>
+                                                <th>Status</th>
+                                                <th>Pay Method Name</th>
+                                                <th>Remarks</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Ajax data source (Arrays) table end -->
+    </div>
+</div>
+<!-- Page-body end -->
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+    var ltypes = [];
+    $(document).ready(function () {
+        $('#action').val('Create')
+        $('#LeaveTypeId').select2();
+        $('#LeavePayMethodId').select2();
+        $('#FiscalYearId').select2();
+        $('#EmpId').select2();
+
+        $("#StartDate,#EndDate,#GrantDate,#dtfrom,#dtto").datepicker(
+            {
+                dateFormat: 'dd-mm-yy' ,//'yy/mm/dd'
+                changeMonth: true,
+                changeYear: true,
+                //yearRange: "-60:+30",
+                //maxDate: '10',
+                autoclose: true
+            });
+        let dtstart = $('#StartDate').val();
+        let dtend = $('#EndDate').val();
+        getLeaveDays(dtstart, dtend)
+    })
+    $('#EndDate,#StartDate').change(function () {
+        let empid = $('#EmpId').val();
+        if (empid == 0) {
+            DangerPNotify('Employee Not Selected!');
+        }
+        let dtstart = $('#StartDate').val();
+        let dtend = $('#EndDate').val();
+        let ltypeid = $('#LeaveTypeId').val();
+        getLeaveDays(dtstart, dtend);
+        if (ltypeid != 0) {
+            checkLeaveBalance(ltypeid)
+        }
+    })
+
+        $('#EmpId').change(function () {
+            let EmpId = $(this).val();
+            let fiscalyearid = $('#FiscalYearId').val();
+            if (EmpId != 0) {
+                $.get('/Employee/GetEmployeeInfoByEmpId', { id: EmpId }, function (data, status, xhr) {
+                    //console.log(data);
+                    if (status == 'success') {
+                        $('#CardNo').val(data.cardNo)
+                        $('#section').val(data.sectionName)
+                        $('#designation').val(data.designationName)
+                        $('#DOJ').val(getDateString(data.joiningDate))
+                    }
+                })
+                LoadLeaveBalance(fiscalyearid, EmpId, 0)
+            } else {
+                $('#CardNo').val('')
+            }
+        });
+
+        $('#FiscalYearId').change(function () {
+
+            let empId = $("#EmpId").val();
+            let fiscalyearid = $('#FiscalYearId').val();
+            LoadLeaveBalance(fiscalyearid, empId, 0);
+
+        });
+
+
+    $('#LeaveTypeId').change(function () {
+        var ltypeid = $('#LeaveTypeId').val();
+        let action = $('#action').val()
+        if (ltypeid != 0 && action == 'Create') {
+            checkLeaveBalance(ltypeid);
+        }
+    })
+    $('#btnSave').on('click', function () {
+        SaveUpdate()
+    })
+    $('#btnUpdate').on('click', function () {
+        SaveUpdate()
+    })
+
+    function getLeaveDays(dtstart, dtend) {
+        $.get('/leavetransaction/getleavday', { DtStart: dtstart, DtEnd: dtend }, function (data, status, xhr) {
+            if (status == 'success') {
+                //console.log(data);
+                $('#TotalDays').val(data)
+            }
+        })
+    }
+
+    function SaveUpdate() {
+        const EmpId = $('#EmpId  option:selected').val();
+        const FiscalYearId = $('#FiscalYearId  option:selected').val();
+        let leaveTransaction = {
+            '@nameof(LeaveTransaction.LeaveTransactionId)' : $('#LeaveTransactionId').val(),
+            '@nameof(LeaveTransaction.EmpId)': EmpId,
+            '@nameof(LeaveTransaction.LeaveTypeId)' : $('#LeaveTypeId').val(),
+            '@nameof(LeaveTransaction.LeaveTypeName)' : $('#LeaveTypeId').text(),
+            '@nameof(LeaveTransaction.StartDate)' : $('#StartDate').val(),
+            '@nameof(LeaveTransaction.EndDate)' : $('#EndDate').val(),
+            '@nameof(LeaveTransaction.GrantDate)' : $('#GrantDate').val(),
+            '@nameof(LeaveTransaction.TotalDays)' : $('#TotalDays').val(),
+            '@nameof(LeaveTransaction.LeavePayMethodId)' : $('#LeavePayMethodId').val(),
+            '@nameof(LeaveTransaction.Remark)' : $('#Remark').val(),
+            '@nameof(LeaveTransaction.AddedBy)' : $('#AddedBy').val(),
+            '@nameof(LeaveTransaction.AddedDate)' : $('#AddedDate').val(),
+            '@nameof(LeaveTransaction.CompId)' : $('#CompId').val(),
+            '@nameof(LeaveTransaction.DOJ)' : $('#DOJ').val()
+        };
+        if (leaveTransaction.EmpId == '0') {
+            DangerPNotify('Employee Not Selected!');
+            return false;
+        } else if (leaveTransaction.LeaveTypeId == '0') {
+            DangerPNotify('LeaveTyoe Not Selected!');
+            return false;
+        } else if (leaveTransaction.LeavePayMethodId == '0') {
+            DangerPNotify('Leave Pay Method Not Selected!');
+            return false;
+        } else {
+            let message = $('#message').val();
+            if (message == '') {
+                $.ajax({
+                type: "POST",
+                url: "@Url.Action("create", "leavetransaction")",
+                data: { leaveTransaction: leaveTransaction, FiscalYearId: FiscalYearId },
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                dataType: "json",
+                success: function(res) {
+                    if (!res.isError) {
+                        SuccessPNotify(res.message);
+                        //$("#dt-earnleave-list").DataTable().draw();
+                        window.location.reload();
+                        Clear();
+                        $('#btnSave').show();
+                        $('#btnUpdate').hide();
+                    } else {
+                        DangerPNotify(res.message);
+                    }
+                },
+                failure: function(response) {
+                    DangerPNotify(response.responseText);
+                },
+                error: function(response) {
+                    DangerPNotify(response.responseText);
+                }
+            });
+            } else {
+                DangerPNotify(message);
+            }
+        }
+
+    }
+    function EditData(id) {
+
+        $.get('/leavetransaction/GetLeaveTransactionDataById', { leaveTransactionId: id }, function (data, status, xhr) {
+            if (status == 'success') {
+                console.log(data);
+                $('#EmpId').val(data.empId).change();
+                let sdate = getDateString(data.startDate);
+                let edate = getDateString(data.endDate);
+                let gdate = getDateString(data.grantDate);
+                $('#LeaveTransactionId').val(data.leaveTransactionId);
+                $('#StartDate').val(sdate);
+                $('#EndDate').val(edate);
+                $('#LeavePayMethodId').val(data.leavePayMethodId).change();
+                $('#TotalDays').val(data.totalDays);
+                $('#GrantDate').val(gdate);
+                $('#Remark').val(data.remark);
+                $('#action').val('Edit')
+                $('#btnSave').hide();
+                $('#btnUpdate').show();
+                $('#LeaveTypeId').val(data.leaveTypeId).change();
+                $('#ltypeid').val(data.leaveTypeId)
+            }
+        })
+    }
+    function Clear() {
+        $('#OpeningBalance').val(0);
+        $('#EmpId').val(0).change();
+        $('#CardNo').val('');
+        $('#EarnLeaveId').val(0);
+}
+    function LoadLeaveBalance(fiscalyearid, empid, leavetypeid) {
+        $.get('/leavetransaction/GetLeaveDetails', { EmpId: empid, FiscalYearId: fiscalyearid, LeaveTypeId: leavetypeid }, function (data,status,xhr) {
+            if (status == 'success') {
+                //console.log(data);
+                let action = $('#action').val();
+                var html = '';
+                var balance = data.length
+                if (balance > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        html += `<tr>
+                                <td>${data[i].lTypeName}</td>
+                                <td>${data[i].leaveDays}</td>
+                                <td>${data[i].totalSpent}</td>
+                                <td>${data[i].balanceDays}</td>
+                            </tr>`
+                    }
+                    $('#dt-leavebalance-list tbody').empty().append(html);
+                    bindLeaveTypeDropdown(data)
+                    if (action == 'Edit') {
+                        let ltypeid = $('#ltypeid').val();
+                        $('#LeaveTypeId').val(ltypeid)
+                    }
+                    ltypes = data;
+                    //localStorage.removeItem("leavetypes");
+                    //localStorage.setItem('leavetypes', JSON.stringify(data));
+                } else {
+                    $('#dt-leavebalance-list tbody').empty();
+                    $('#LeaveTypeId').empty();
+                    DangerPNotify('Leav not setup. Please setup leave for this employee');
+                }
+
+            }
+        })
+    }
+    function bindLeaveTypeDropdown(leavedata) {
+        $('#LeaveTypeId').empty()
+        var type = [
+            '<option value="0">Select</option>'
+        ]
+        leavedata.map(x => (type.push(`<option value="${x.leaveTypeId}">${x.lTypeName} [${x.balanceDays}]</option>`)));
+        $('#LeaveTypeId').append(type);
+    }
+    function checkLeaveBalance(ltypeid) {
+        var requestday = $('#TotalDays').val();
+        //var leavetypes = localStorage.getItem('leavetypes');
+        //ltypes = [];
+        //ltypes = JSON.parse(leavetypes)
+        //console.log(ltypes);
+        for (let item of ltypes) {
+            if (ltypeid == item.leaveTypeId) {
+                if (item.balanceDays < requestday) {
+                    let message = `Leave balance is insaficient. Your <b>${item.lTypeName}</b> balance is <b>${item.balanceDays}</b> but your requested leave day is <b>${requestday}</b>`
+                    DangerPNotify(message);
+                    $('#message').val(message);
+                    //$('#TotalDays').val(0)
+                    return false;
+                }
+            } else {
+                $('#message').val('');
+            }
+        }
+    }
+    </script>
+}

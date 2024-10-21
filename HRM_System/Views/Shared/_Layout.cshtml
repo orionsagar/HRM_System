@@ -1,0 +1,440 @@
+﻿@inject IHttpContextAccessor _accessor
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    @{
+        var ComName = _accessor.HttpContext.Request.Cookies["ComName"];
+    }
+    <title>@ViewData["Title"] - @ComName</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Favicon icon -->
+    <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="~/assets/icon/icofont/css/icofont.css">
+
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="~/bower_components/bootstrap/css/bootstrap.min.css">
+    <!-- waves.css -->
+    <link rel="stylesheet" href="~/assets/pages/waves/css/waves.min.css" type="text/css" media="all">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="~/assets/icon/themify-icons/themify-icons.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="~/assets/icon/font-awesome/css/font-awesome.min.css">
+    <!-- Syntax highlighter Prism css -->
+    @*<link rel="stylesheet" type="text/css" href="/assets/pages/prism/prism.css">*@
+
+    <!-- Data Table Css -->
+    @*<link href="~/custom/css/dtminifide.css" rel="stylesheet" />*@
+
+    <!-- Data Table Css -->
+    <link rel="stylesheet" type="text/css" href="~/bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/pages/data-table/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/bower_components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css">
+
+    <!-- Style.css -->
+    <link href="~/bower_components/jquery-ui/css/jquery-ui.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/pcoded-horizontal.min.css">
+
+    <!-- Custom Css File Minified css file -->
+    <link href="~/custom/css/custom.min.css" rel="stylesheet" />
+    @*<link href="~/custom/css/Select2.css" rel="stylesheet" />*@
+
+    <!-- notify alert -->
+    <link href="~/minify/css/minifyedpnotify.css" rel="stylesheet" />
+
+    <!-- FancyBox CSS -->
+    <link rel="stylesheet" type="text/css" href="~/assets/dist/jquery.fancybox.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="~/assets/css/ManualUpdates.css">
+
+    <!--Font Awesome webfont for appendGrid button icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" />
+
+    <link href="~/bower_components/json-viewer/jquery.json-viewer.css" rel="stylesheet" />
+    <link href="~/custom/css/TilesStyle.css" rel="stylesheet" />
+    <style type="text/css">
+
+        @@media only screen and (min-width : 991px) {
+            .labelRight label {
+                text-align: right !important;
+            }
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 999999;
+            background: rgba(255,255,255,0.8) url("/img/loader.webp") center no-repeat;
+        }
+
+        #loader.loading {
+            overflow: hidden;
+        }
+
+            #loader.loading .overlay {
+                display: block;
+            }
+
+        .ShowLink {
+            display: inline-block !important;
+        }
+
+        .HideLink {
+            display: none !important;
+        }
+
+        .form-group {
+            margin-bottom: 0rem;
+        }
+
+        .fancybox-slide--iframe .fancybox-content {
+            width: 800px;
+            height: 1000px;
+            min-width: 80%;
+            min-height: 100%;
+            margin: 0;
+        }
+    </style>
+    @RenderSection("Header", required: false)
+</head>
+<body>
+
+    <div id="pcoded" class="pcoded">
+
+        <div class="pcoded-container">
+            @await Component.InvokeAsync("TopHeader")
+
+
+
+            <!-- Sidebar inner chat end-->
+            <div class="pcoded-main-container">
+
+                <div class="pcoded-wrapper">
+                    @await Component.InvokeAsync("SideNavBar")
+                    <div class="pcoded-content">
+                        <div class="pcoded-inner-content">
+
+                            <!-- Main-body start -->
+                            <div class="main-body">
+                                <div class="page-wrapper">
+
+                                    <!-- Page body start -->
+                                    <div class="page-body">
+                                        <!-- New BreadCrum -->
+                                        <div class="row">
+                                            <div class="breadCrumContainer col-xl-12 col-md-12 ">
+                                                <div class="breadCrumWrapper">
+                                                    <div class="pageName">
+                                                        <span>
+                                                            @RenderSection("PageName", required: true)
+                                                        </span>
+                                                    </div>
+                                                    <div class="breadCrum">
+                                                        <i class="fa fa-home"></i>
+                                                        <span class="Divider">/</span>
+                                                        <span class="section activeCrum">DashBoard</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- New BreadCrumb ends-->
+                                        @RenderBody()
+                                    </div>
+                                    <!-- Page-body end -->
+                                </div>
+                            </div>
+                            <!-- Main-body end -->
+                            @*<div id="styleSelector">
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Button trigger modal -->
+    @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm"></button>*@
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="message">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    @*<button type="button" class="btn btn-primary">Delete</button>*@
+                    <a id="btndeleteconfirm" class="btn btn-primary">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div id="google_translate_element"></div>
+
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+            }
+        </script>
+
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>*@
+
+    <footer class="border-top footer text-muted" style="position: unset !important;">
+        <div class="container">
+            &copy; 2022 - HRPayroll - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <!-- Required Jquery -->
+    <script type="text/javascript" src="~/bower_components/jquery/js/jquery.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/jquery-ui/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/popper.js/js/popper.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/assets/pages/widget/excanvas.js"></script>
+
+    <!-- jquery slimscroll js -->
+    <script type="text/javascript" src="~/bower_components/jquery-slimscroll/js/jquery.slimscroll.js"></script>
+
+    <!-- waves js -->
+    <script src="~/assets/pages/waves/js/waves.min.js"></script>
+
+    <!-- modernizr js -->
+    <script type="text/javascript" src="~/bower_components/modernizr/js/modernizr.js"></script>
+    <script type="text/javascript" src="/bower_components/modernizr/js/css-scrollbars.js"></script>
+
+    <!-- menu js -->
+    <script src="~/assets/js/pcoded.min.js"></script>
+    @*<script src="~/assets/js/vertical/vertical-layout.min.js "></script>*@
+    <script src="~/assets/js/vertical/vertical-layout.js"></script>
+
+    <!-- slimscroll js -->
+    <script src="~/assets/js/jquery.mCustomScrollbar.concat.min.js "></script>
+
+    <!-- data-table js -->
+    <script src="~/custom/js/dtminifide.js"></script>
+
+    <!-- Custom js Minified file-->
+    <script src="~/custom/js/custom-datatable.js"></script>
+    @* <script src="~/custom/js/custom.min.js"></script>*@
+
+    <!-- Syntax highlighter prism js -->
+    @*<script type="text/javascript" src="~/assets/pages/prism/custom-prism.js"></script>*@
+    <!-- i18next.min.js -->
+    @*<script type="text/javascript" src="~/bower_components/i18next/js/i18next.min.js"></script>
+        <script type="text/javascript" src="~/bower_components/i18next-xhr-backend/js/i18nextXHRBackend.min.js"></script>
+        <script type="text/javascript" src="~/bower_components/i18next-browser-languagedetector/js/i18nextBrowserLanguageDetector.min.js"></script>
+        <script type="text/javascript" src="~/bower_components/jquery-i18next/js/jquery-i18next.min.js"></script>*@
+
+
+
+    <script src="~/assets/js/vertical/menu/menu-hori-fixed.js"></script>
+
+    <script type="text/javascript" src="~/assets/js/script.js"></script>
+
+    <!-- Select2 js -->
+    <script src="~/SelectTwo/dist/js/select2.full.js"></script>
+
+    <!-- notify alert -->
+    <script src="~/minify/js/minifyedpnotify.js"></script>
+
+    <!-- FancyBox JS -->
+    <script src="~/assets/dist/jquery.fancybox.min.js"></script>
+
+    @*validatoin*@
+    <script src="~/bower_components/jquery-validation/js/jquery.validate.js"></script>
+
+    <!--appendGrid JS library-->
+    <script src="https://cdn.jsdelivr.net/npm/jquery.appendgrid@2/dist/AppendGrid.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/floatthead@2.2.1/dist/jquery.floatThead.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/parsleyjs@2.9.1/dist/parsley.min.js"></script>
+
+    <script src="~/bower_components/json-viewer/jquery.json-viewer.js"></script>
+
+
+
+    <script type="text/javascript">
+
+
+
+        function ConvertDateString(date) {
+            var d = new Date(date);
+            var day = d.getDate();
+            var month = d.getMonth() + 1;
+            var year = d.getFullYear();
+            if (day < 10) {
+                day = "0" + day;
+            }
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var date = day + "-" + month + "-" + year;
+            return date;
+        }
+
+        function ConvertTimeString(dateTime) {
+            const pattern = /[^T]*$/g;  //"2022-10-18T14:53:56" get time after T
+            return pattern.exec(dateTime)[0];
+        }
+
+        function GetmeridianTime(dateTime) {
+            let currentTime;
+            // here we can give our date
+            const currentDate = new Date(dateTime);
+            // OR we can define like that also for current date
+            // var currentDate = new Date();
+            let hour = currentDate.getHours();
+            let minutes = currentDate.getMinutes();
+            var meridian = hour >= 12 ? " PM" : " AM";
+            currentTime = ((hour + 11) % 12 + 1) + ":" + (minutes < 10 ? `0${minutes}` : minutes) + meridian;
+            return currentTime;
+        }
+
+
+        $(document).ready(function () {
+
+            $("#EmpCategoryId_Filter,#SectionId_Filter,#DesignationId_Filter,#DepartmentId_Filter").select2();
+
+            $('.afancyboxiframe').fancybox({
+                iframe: {
+                    css: {
+                        width: '300px',
+                        height: '500px'
+                    }
+                },
+                toolbar: false,
+                smallBtn: true,
+                iframe: {
+                    preload: false
+                }
+            });
+
+
+            $('.fancysubmodule').fancybox({
+
+                iframe: {
+                    css: {
+                        autoSize: true,
+                        width: '400px',
+                        height: '700px',
+
+                    }
+                },
+                toolbar: false,
+                smallBtn: true,
+                iframe: {
+                    preload: false
+                }
+            });
+        });
+        $(document).on({
+            ajaxStart: function () {
+                $("#loader").addClass("loading");
+            },
+            ajaxComplete: function () {
+                $("#loader").removeClass("loading");
+            }
+        });
+        function SuccessPNotify(msg) {
+            new PNotify({
+                //title: 'Sticky notice',
+                text: '' + msg,
+                addclass: 'bg-sucess',
+                //hide: true,
+                icon: 'icofont icofont-info-circle',
+                type: 'success'
+            });
+        }
+        function WarningPNotify(msg) {
+            new PNotify({
+                //title: 'Sticky notice',
+                text: '' + msg,
+                addclass: 'bg-warning',
+                //hide: true,
+                icon: 'icofont icofont-info-circle',
+                type: 'warning'
+            });
+        }
+        function DangerPNotify(msg) {
+            new PNotify({
+                //title: 'Sticky notice',
+                text: '' + msg,
+                addclass: 'bg-danger',
+                //hide: true,
+                icon: 'icofont icofont-info-circle',
+                type: 'danger'
+            });
+        }
+
+        function confirmmodal(link, peram, message) {
+            $('#message').attr(message)
+            $("#btndeleteconfirm").attr("href", link + '/' + peram)
+            $('#confirm').modal('show');
+            return
+        }
+        /// For Date Format month/day/year
+        function getDateString(date) {
+            var d = new Date(date);
+            var day = d.getDate();
+            var month = d.getMonth() + 1;
+            var year = d.getFullYear();
+            if (day < 10) {
+                day = "0" + day;
+            }
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+
+        function ConfirmDialog(message, callbackFunction) {
+            $('<div></div>').appendTo('body')
+                .html('<div><h6>' + message + '?</h6></div>')
+                .dialog({
+                    show: "fadein",
+                    modal: true,
+                    title: 'Confirm message',
+                    zIndex: 10000,
+                    autoOpen: true,
+                    width: 'auto',
+                    resizable: false,
+                    hide: "fadeout",
+                    buttons: {
+                        Yes: function () {
+                            callbackFunction();
+                            //$('body').append('<h1>Confirm Dialog Result: <i>Yes</i></h1>');
+                            $(this).dialog("close");
+                        },
+                        No: function () {
+                            /*$('body').append('<h1>Confirm Dialog Result: <i>No</i></h1>');*/
+                            $(this).dialog("close");
+                        }
+                    },
+                    close: function (event, ui) {
+                        $(this).remove();
+                    }
+                });
+        };
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

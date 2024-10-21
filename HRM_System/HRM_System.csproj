@@ -1,0 +1,1025 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Platforms>AnyCPU;x86</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\FingerDevice\**" />
+    <Content Remove="Controllers\FingerDevice\**" />
+    <EmbeddedResource Remove="Controllers\FingerDevice\**" />
+    <None Remove="Controllers\FingerDevice\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\js\countrycode.js" />
+    <Content Remove="wwwroot\js\RegisterValidate.js" />
+    <Content Remove="wwwroot\Report\Attendance\AbsentSummaryReport.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\Absent_Record_Card - Copy.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\Absent_Record_Card.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\Absent_Record_Sub.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\AttendanceInOutReport.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\AttendanceSummaryReport.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\AttInOutSubReport.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\AttStatusSubReport.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\MonthlyOTReport.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\OTSubReport.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\rptDailyAttendanceReport.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\rptDailyAttendanceWithOT.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\rptDailyOT.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\rptManPower.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\rptMonthlyAttendanceStatus.rdlc" />
+    <Content Remove="wwwroot\Report\Attendance\rptStatusWiseDailyReport.rdlc" />
+    <Content Remove="wwwroot\Report\Employee\rptEmployee.rdlc" />
+    <Content Remove="wwwroot\Report\Employee\rptEmployeeDetails.rdlc" />
+    <Content Remove="wwwroot\Report\Employee\rptNewJoiningEmployee.rdlc" />
+    <Content Remove="wwwroot\Report\Leave\rptEmployee.rdlc" />
+    <Content Remove="wwwroot\Report\Salary\OTSheetReport.rdlc" />
+    <Content Remove="wwwroot\Report\Salary\rptSalarySheet.rdlc" />
+    <Content Remove="wwwroot\Report\Salary\SalarySheetReport.rdlc" />
+    <Content Remove="wwwroot\rptIDCard.rdlc" />
+    <Content Remove="wwwroot\rptJobCard.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\bower_components\animate.css\css\animate.css" />
+    <Content Include="wwwroot\bower_components\bootstrap-datepicker\css\bootstrap-datepicker3.css" />
+    <Content Include="wwwroot\bower_components\bootstrap-daterangepicker\css\daterangepicker.css" />
+    <Content Include="wwwroot\bower_components\bootstrap-multiselect\css\bootstrap-multiselect.css" />
+    <Content Include="wwwroot\bower_components\bootstrap-tagsinput\css\bootstrap-tagsinput.css" />
+    <Content Include="wwwroot\bower_components\bootstrap\css\bootstrap.css" />
+    <Content Include="wwwroot\bower_components\bootstrap\css\bootstrap.min.css" />
+    <Content Include="wwwroot\bower_components\c3\css\c3.css" />
+    <Content Include="wwwroot\bower_components\chartist\css\chartist.css" />
+    <Content Include="wwwroot\bower_components\cropper\css\cropper.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-bs4\css\dataTables.bootstrap4.min.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-bs\css\dataTables.bootstrap.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-bs\css\dataTables.bootstrap.min.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-buttons-bs4\css\buttons.bootstrap4.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-buttons-bs4\css\buttons.bootstrap4.min.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\.bower.json" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\features\alphabetSearch\dataTables.alphabetSearch.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\features\lengthLinks\dataTables.lengthLinks.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\features\pageResize\index.html" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\features\pageResize\scrolling.html" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\features\scrollResize\dynamic.html" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\features\scrollResize\dynamicVh.html" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\features\scrollResize\index.html" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\features\searchHighlight\dataTables.searchHighlight.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\1\dataTables.bootstrap.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\2\dataTables.bootstrap.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\2\index.html" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\3\dataTables.bootstrap.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\3\index.html" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\3\README.txt" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\images\sort_asc.png" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\images\sort_asc_disabled.png" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\images\sort_both.png" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\images\sort_desc.png" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\images\sort_desc_disabled.png" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\font-awesome\bootstrap.html" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\font-awesome\dataTables.fontAwesome.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\font-awesome\datatables.html" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\font-awesome\foundation.html" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\foundation\dataTables.foundation.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\foundation\images\sort_asc.png" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\foundation\images\sort_asc_disabled.png" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\foundation\images\sort_both.png" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\foundation\images\sort_desc.png" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\foundation\images\sort_desc_disabled.png" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\foundation\index.html" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\foundation\README.txt" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\jqueryui\dataTables.jqueryui.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\jqueryui\index.html" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\integration\jqueryui\README.txt" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\License.txt" />
+    <Content Include="wwwroot\bower_components\datatables.net-plugins\pagination\index.html" />
+    <Content Include="wwwroot\bower_components\datatables.net-responsive-bs4\css\responsive.bootstrap4.min.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-responsive-bs\css\responsive.bootstrap.css" />
+    <Content Include="wwwroot\bower_components\datatables.net-responsive-bs\css\responsive.bootstrap.min.css" />
+    <Content Include="wwwroot\bower_components\datatables.net\css\jquery.dataTables.min.css" />
+    <Content Include="wwwroot\bower_components\datedropper\css\datedropper.css" />
+    <Content Include="wwwroot\bower_components\datedropper\css\datedropper.min.css" />
+    <Content Include="wwwroot\bower_components\datedropper\css\dd-icon\dd-icon.eot" />
+    <Content Include="wwwroot\bower_components\datedropper\css\dd-icon\dd-icon.ttf" />
+    <Content Include="wwwroot\bower_components\datedropper\css\dd-icon\dd-icon.woff" />
+    <Content Include="wwwroot\bower_components\ekko-lightbox\css\ekko-lightbox.css" />
+    <Content Include="wwwroot\bower_components\font-awesome\css\font-awesome.min.css" />
+    <Content Include="wwwroot\bower_components\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="wwwroot\bower_components\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="wwwroot\bower_components\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="wwwroot\bower_components\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="wwwroot\bower_components\fullcalendar\css\fullcalendar.css" />
+    <Content Include="wwwroot\bower_components\fullcalendar\css\fullcalendar.print.css" />
+    <Content Include="wwwroot\bower_components\handsontable\css\handsontable.css" />
+    <Content Include="wwwroot\bower_components\handsontable\css\handsontable.full.min.css" />
+    <Content Include="wwwroot\bower_components\intro.js\css\introjs.css" />
+    <Content Include="wwwroot\bower_components\intro.js\css\introjs.min.css" />
+    <Content Include="wwwroot\bower_components\jquery-bar-rating\css\bars-1to10.css" />
+    <Content Include="wwwroot\bower_components\jquery-bar-rating\css\bars-horizontal.css" />
+    <Content Include="wwwroot\bower_components\jquery-bar-rating\css\bars-movie.css" />
+    <Content Include="wwwroot\bower_components\jquery-bar-rating\css\bars-pill.css" />
+    <Content Include="wwwroot\bower_components\jquery-bar-rating\css\bars-reversed.css" />
+    <Content Include="wwwroot\bower_components\jquery-bar-rating\css\bars-square.css" />
+    <Content Include="wwwroot\bower_components\jquery-bar-rating\css\css-stars.css" />
+    <Content Include="wwwroot\bower_components\jquery-bar-rating\css\fontawesome-stars-o.css" />
+    <Content Include="wwwroot\bower_components\jquery-bar-rating\css\fontawesome-stars.css" />
+    <Content Include="wwwroot\bower_components\jquery-minicolors\css\jquery.minicolors.css" />
+    <Content Include="wwwroot\bower_components\jquery-minicolors\images\jquery.minicolors.png" />
+    <Content Include="wwwroot\bower_components\jquery-ui\css\images\ui-icons_444444_256x240.png" />
+    <Content Include="wwwroot\bower_components\jquery-ui\css\images\ui-icons_444444_256x240old.png" />
+    <Content Include="wwwroot\bower_components\jquery-ui\css\images\ui-icons_555555_256x240.png" />
+    <Content Include="wwwroot\bower_components\jquery-ui\css\jquery-ui.css" />
+    <Content Include="wwwroot\bower_components\jquery.steps\css\jquery.steps.css" />
+    <Content Include="wwwroot\bower_components\jstree\css\style.css" />
+    <Content Include="wwwroot\bower_components\jstree\css\style.min.css" />
+    <Content Include="wwwroot\bower_components\lightbox2\css\lightbox.css" />
+    <Content Include="wwwroot\bower_components\lightbox2\css\lightbox.min.css" />
+    <Content Include="wwwroot\bower_components\lightbox2\images\close.png" />
+    <Content Include="wwwroot\bower_components\lightbox2\images\loading.gif" />
+    <Content Include="wwwroot\bower_components\lightbox2\images\next.png" />
+    <Content Include="wwwroot\bower_components\lightbox2\images\prev.png" />
+    <Content Include="wwwroot\bower_components\lightgallery\css\lightgallery.min.css" />
+    <Content Include="wwwroot\bower_components\lightgallery\fonts\lg.eot" />
+    <Content Include="wwwroot\bower_components\lightgallery\fonts\lg.ttf" />
+    <Content Include="wwwroot\bower_components\lightgallery\fonts\lg.woff" />
+    <Content Include="wwwroot\bower_components\long-press\css\app.css" />
+    <Content Include="wwwroot\bower_components\long-press\css\main.css" />
+    <Content Include="wwwroot\bower_components\morris.js\css\morris.css" />
+    <Content Include="wwwroot\bower_components\multiselect\css\multi-select.css" />
+    <Content Include="wwwroot\bower_components\multiselect\img\switch.png" />
+    <Content Include="wwwroot\bower_components\nvd3\css\nv.d3.css" />
+    <Content Include="wwwroot\bower_components\offline\css\offline-language-english-indicator.css" />
+    <Content Include="wwwroot\bower_components\offline\css\offline-language-english.css" />
+    <Content Include="wwwroot\bower_components\offline\css\offline-theme-chrome-indicator.css" />
+    <Content Include="wwwroot\bower_components\offline\css\offline-theme-chrome.css" />
+    <Content Include="wwwroot\bower_components\offline\css\offline-theme-dark-indicator.css" />
+    <Content Include="wwwroot\bower_components\offline\css\offline-theme-dark.css" />
+    <Content Include="wwwroot\bower_components\offline\css\offline-theme-default-indicator.css" />
+    <Content Include="wwwroot\bower_components\offline\css\offline-theme-default.css" />
+    <Content Include="wwwroot\bower_components\offline\css\offline-theme-slide-indicator.css" />
+    <Content Include="wwwroot\bower_components\offline\css\offline-theme-slide.css" />
+    <Content Include="wwwroot\bower_components\owl.carousel\css\owl.carousel.css" />
+    <Content Include="wwwroot\bower_components\owl.carousel\css\owl.theme.default.css" />
+    <Content Include="wwwroot\bower_components\pikaday\css\pikaday.css" />
+    <Content Include="wwwroot\bower_components\pnotify\css\pnotify.brighttheme.css" />
+    <Content Include="wwwroot\bower_components\pnotify\css\pnotify.buttons.css" />
+    <Content Include="wwwroot\bower_components\pnotify\css\pnotify.css" />
+    <Content Include="wwwroot\bower_components\pnotify\css\pnotify.history.css" />
+    <Content Include="wwwroot\bower_components\pnotify\css\pnotify.mobile.css" />
+    <Content Include="wwwroot\bower_components\seiyria-bootstrap-slider\css\bootstrap-slider.css" />
+    <Content Include="wwwroot\bower_components\select2\css\select2.min.css" />
+    <Content Include="wwwroot\bower_components\slick-carousel\css\slick-theme.css" />
+    <Content Include="wwwroot\bower_components\slick-carousel\css\slick.css" />
+    <Content Include="wwwroot\bower_components\spectrum\css\spectrum.css" />
+    <Content Include="wwwroot\bower_components\stroll\css\stroll.css" />
+    <Content Include="wwwroot\bower_components\sweetalert\css\sweetalert.css" />
+    <Content Include="wwwroot\bower_components\swiper\css\swiper.css" />
+    <Content Include="wwwroot\bower_components\swiper\css\swiper.min.css" />
+    <Content Include="wwwroot\bower_components\switchery\css\switchery.css" />
+    <Content Include="wwwroot\bower_components\switchery\css\switchery.min.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\assets\images\tooltip\shape1.svg" />
+    <None Include="wwwroot\assets\images\tooltip\tooltip1.svg" />
+    <None Include="wwwroot\bower_components\autosize\js\autosize.min.js" />
+    <None Include="wwwroot\bower_components\bootstrap-datepicker\js\bootstrap-datepicker.js" />
+    <None Include="wwwroot\bower_components\bootstrap-datepicker\js\bootstrap-datepicker.min.js" />
+    <None Include="wwwroot\bower_components\bootstrap-daterangepicker\js\bootstrap-datepicker.min.js" />
+    <None Include="wwwroot\bower_components\bootstrap-daterangepicker\js\daterangepicker.js" />
+    <None Include="wwwroot\bower_components\bootstrap-maxlength\js\bootstrap-maxlength.js" />
+    <None Include="wwwroot\bower_components\bootstrap-multiselect\js\bootstrap-multiselect.js" />
+    <None Include="wwwroot\bower_components\bootstrap-multiselect\less\bootstrap-multiselect.less" />
+    <None Include="wwwroot\bower_components\bootstrap-tagsinput\js\bootstrap-tagsinput.js" />
+    <None Include="wwwroot\bower_components\bootstrap\js\bootstrap.js" />
+    <None Include="wwwroot\bower_components\bootstrap\js\bootstrap.min.js" />
+    <None Include="wwwroot\bower_components\c3\js\c3.js" />
+    <None Include="wwwroot\bower_components\chart.js\js\Chart.js" />
+    <None Include="wwwroot\bower_components\chartist\js\chartist.js" />
+    <None Include="wwwroot\bower_components\clndr\js\clndr.js" />
+    <None Include="wwwroot\bower_components\clndr\js\clndr.min.js" />
+    <None Include="wwwroot\bower_components\countdown\js\jquery.countdown.js" />
+    <None Include="wwwroot\bower_components\cropper\js\cropper.js" />
+    <None Include="wwwroot\bower_components\cropper\js\cropper.min.js" />
+    <None Include="wwwroot\bower_components\d3\js\d3.js" />
+    <None Include="wwwroot\bower_components\d3\js\d3.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-bs4\js\dataTables.bootstrap4.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-bs\js\dataTables.bootstrap.js" />
+    <None Include="wwwroot\bower_components\datatables.net-bs\js\dataTables.bootstrap.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-buttons-bs4\js\buttons.bootstrap4.js" />
+    <None Include="wwwroot\bower_components\datatables.net-buttons-bs4\js\buttons.bootstrap4.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-buttons\js\buttons.html5.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-buttons\js\buttons.print.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-buttons\js\dataTables.buttons.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\average%28%29.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\column%28%29.title%28%29.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\columns%28%29.order%28%29.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnAddDataAndDisplay.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnAddTr.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnColumnIndexToVisible.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnDataUpdate.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnDisplayRow.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnDisplayStart.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnFakeRowspan.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnFilterAll.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnFilterClear.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnFilterOnReturn.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnFindCellRowIndexes.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnFindCellRowNodes.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnGetAdjacentTr.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnGetColumnData.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnGetColumnIndex.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnGetHiddenNodes.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnGetTd.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnGetTds.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnLengthChange.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnMultiFilter.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnPagingInfo.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnProcessingIndicator.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnReloadAjax.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnSetFilteringDelay.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnSortNeutral.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnStandingRedraw.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\fnVisibleToColumnIndex.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\order.neutral%28%29.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\page.jumpToData%28%29.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\row%28%29.show%28%29.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\api\sum%28%29.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\dataRender\ellipsis.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\features\alphabetSearch\dataTables.alphabetSearch.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\features\alphabetSearch\dataTables.alphabetSearch.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\features\conditionalPaging\dataTables.conditionalPaging.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\features\lengthLinks\dataTables.lengthLinks.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\features\lengthLinks\dataTables.lengthLinks.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\features\pageResize\dataTables.pageResize.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\features\pageResize\dataTables.pageResize.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\features\scrollResize\dataTables.scrollResize.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\features\searchHighlight\dataTables.searchHighlight.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\features\searchHighlight\dataTables.searchHighlight.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\filtering\row-based\range_dates.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\filtering\row-based\range_numbers.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\filtering\row-based\TableTools.ShowSelectedOnly.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\filtering\type-based\accent-neutralise.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\filtering\type-based\html.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\filtering\type-based\phoneNumber.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Afrikaans.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Albanian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Arabic.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Armenian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Azerbaijan.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Bangla.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Basque.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Belarusian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Bulgarian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Catalan.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Chinese-traditional.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Chinese.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Croatian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Czech.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Danish.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Dutch.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\English.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Estonian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Filipino.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Finnish.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\French.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Galician.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Georgian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\German.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Greek.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Gujarati.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Hebrew.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Hindi.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Hungarian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Icelandic.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Indonesian-Alternative.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Indonesian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Irish.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Italian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Japanese.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Korean.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Kyrgyz.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Latvian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Lithuanian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Macedonian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Malay.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Mongolian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Nepali.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Norwegian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Persian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Polish.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Portuguese-Brasil.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Portuguese.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Romanian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Russian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Serbian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Sinhala.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Slovak.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Slovenian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Spanish.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Swahili.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Swedish.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Tamil.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Thai.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Turkish.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Ukrainian.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Urdu.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Uzbek.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Vietnamese.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\i18n\Welsh.lang" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\1\dataTables.bootstrap.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\2\dataTables.bootstrap.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\2\dataTables.bootstrap.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\3\dataTables.bootstrap.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\integration\bootstrap\3\dataTables.bootstrap.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\integration\foundation\dataTables.foundation.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\integration\foundation\dataTables.foundation.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\integration\jqueryui\dataTables.jqueryui.css.map" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\integration\jqueryui\dataTables.jqueryui.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\integration\jqueryui\dataTables.jqueryui.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\integration\jqueryui\dataTables.jqueryui.scss" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\make.sh" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\pagination\ellipses.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\pagination\extjs.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\pagination\four_button.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\pagination\input.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\pagination\jPaginator\dataTables.jPaginator.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\pagination\scrolling.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\pagination\select.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\Readme.md" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\alt-string.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\anti-the.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\chinese-string.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\currency.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\custom-data-source\dom-checkbox.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\custom-data-source\dom-select.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\custom-data-source\dom-text.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\date-dd-MMM-yyyy.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\date-de.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\date-eu.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\date-euro.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\date-uk.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\datetime-moment.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\datetime-us.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\enum.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\file-size.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\formatted-numbers.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\ip-address.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\monthYear.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\natural.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\num-html.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\numeric-comma.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\percent.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\persian.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\scientific.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\signed-num.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\stringMonthYear.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\time.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\title-numeric.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\title-string.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\sorting\turkish-string.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\type-detection\currency.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\type-detection\date-uk.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\type-detection\file-size.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\type-detection\formatted-num.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\type-detection\ip-address.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\type-detection\num-html.js" />
+    <None Include="wwwroot\bower_components\datatables.net-plugins\type-detection\numeric-comma.js" />
+    <None Include="wwwroot\bower_components\datatables.net-responsive-bs4\js\responsive.bootstrap4.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-responsive-bs\js\responsive.bootstrap.js" />
+    <None Include="wwwroot\bower_components\datatables.net-responsive-bs\js\responsive.bootstrap.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-responsive\js\dataTables.responsive.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net-rowreorder\js\dataTables.rowReorder.js" />
+    <None Include="wwwroot\bower_components\datatables.net-rowreorder\js\dataTables.rowReorder.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net\js\jquery.dataTables.min.js" />
+    <None Include="wwwroot\bower_components\datedropper\css\dd-icon\dd-icon.svg" />
+    <None Include="wwwroot\bower_components\datedropper\js\datedropper.js" />
+    <None Include="wwwroot\bower_components\datedropper\js\datedropper.min.js" />
+    <None Include="wwwroot\bower_components\ekko-lightbox\js\ekko-lightbox.js" />
+    <None Include="wwwroot\bower_components\fastclick\js\fastclick.js" />
+    <None Include="wwwroot\bower_components\font-awesome\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\bower_components\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\bower_components\fullcalendar\js\fullcalendar.js" />
+    <None Include="wwwroot\bower_components\fullcalendar\js\fullcalendar.min.js" />
+    <None Include="wwwroot\bower_components\handlebars\js\handlebars.min.js" />
+    <None Include="wwwroot\bower_components\handsontable\js\de.js" />
+    <None Include="wwwroot\bower_components\handsontable\js\handsontable.full.js" />
+    <None Include="wwwroot\bower_components\handsontable\js\handsontable.js" />
+    <None Include="wwwroot\bower_components\i18next-browser-languagedetector\js\i18nextBrowserLanguageDetector.min.js" />
+    <None Include="wwwroot\bower_components\i18next-xhr-backend\js\i18nextXHRBackend.min.js" />
+    <None Include="wwwroot\bower_components\i18next\js\i18next.min.js" />
+    <None Include="wwwroot\bower_components\intro.js\js\intro.js" />
+    <None Include="wwwroot\bower_components\intro.js\js\intro.min.js" />
+    <None Include="wwwroot\bower_components\jquery-bar-rating\js\jquery.barrating.js" />
+    <None Include="wwwroot\bower_components\jquery-bar-rating\js\jquery.barrating.min.js" />
+    <None Include="wwwroot\bower_components\jquery-i18next\js\jquery-i18next.min.js" />
+    <None Include="wwwroot\bower_components\jquery-minicolors\js\jquery.minicolors.js" />
+    <None Include="wwwroot\bower_components\jquery-minicolors\js\jquery.minicolors.min.js" />
+    <None Include="wwwroot\bower_components\jquery-slimscroll\js\jquery.slimscroll.js" />
+    <None Include="wwwroot\bower_components\jquery-sparkline\js\jquery.sparkline.js" />
+    <None Include="wwwroot\bower_components\jquery-ui\js\jquery-ui.min.js" />
+    <None Include="wwwroot\bower_components\jquery-validation\js\jquery.validate.js" />
+    <None Include="wwwroot\bower_components\jquery.cookie\js\jquery.cookie.js" />
+    <None Include="wwwroot\bower_components\jquery.steps\js\jquery.steps.js" />
+    <None Include="wwwroot\bower_components\jquery.uniform\js\jquery.uniform.bundled.js" />
+    <None Include="wwwroot\bower_components\jquery\js\jquery.min.js" />
+    <None Include="wwwroot\bower_components\jscolor\js\jscolor.js" />
+    <None Include="wwwroot\bower_components\jstree\js\jstree.js" />
+    <None Include="wwwroot\bower_components\jstree\js\jstree.min.js" />
+    <None Include="wwwroot\bower_components\lightbox2\js\lightbox.js" />
+    <None Include="wwwroot\bower_components\lightbox2\js\lightbox.min.js" />
+    <None Include="wwwroot\bower_components\lightgallery\js\lg-autoplay.min.js" />
+    <None Include="wwwroot\bower_components\lightgallery\js\lg-fullscreen.min.js" />
+    <None Include="wwwroot\bower_components\lightgallery\js\lg-hash.min.js" />
+    <None Include="wwwroot\bower_components\lightgallery\js\lg-pager.min.js" />
+    <None Include="wwwroot\bower_components\lightgallery\js\lg-thumbnail.min.js" />
+    <None Include="wwwroot\bower_components\lightgallery\js\lg-video.min.js" />
+    <None Include="wwwroot\bower_components\lightgallery\js\lg-zoom.min.js" />
+    <None Include="wwwroot\bower_components\lightgallery\js\lightgallery.min.js" />
+    <None Include="wwwroot\bower_components\long-press\js\app.js" />
+    <None Include="wwwroot\bower_components\long-press\js\jquery.longpress.js" />
+    <None Include="wwwroot\bower_components\long-press\js\jquery.mousewheel.js" />
+    <None Include="wwwroot\bower_components\long-press\js\plugins.js" />
+    <None Include="wwwroot\bower_components\modernizr\js\css-scrollbars.js" />
+    <None Include="wwwroot\bower_components\modernizr\js\modernizr.js" />
+    <None Include="wwwroot\bower_components\moment\js\moment.js" />
+    <None Include="wwwroot\bower_components\moment\js\moment.min.js" />
+    <None Include="wwwroot\bower_components\morris.js\js\morris.js" />
+    <None Include="wwwroot\bower_components\multiselect\js\jquery.multi-select.js" />
+    <None Include="wwwroot\bower_components\numbro\js\numbro.js" />
+    <None Include="wwwroot\bower_components\nvd3\js\nv.d3.js" />
+    <None Include="wwwroot\bower_components\offline\js\offline.min.js" />
+    <None Include="wwwroot\bower_components\owl.carousel\js\owl.carousel.js" />
+    <None Include="wwwroot\bower_components\owl.carousel\js\owl.carousel.min.js" />
+    <None Include="wwwroot\bower_components\peity\js\jquery.peity.js" />
+    <None Include="wwwroot\bower_components\pikaday\js\pikaday.js" />
+    <None Include="wwwroot\bower_components\pnotify\js\pnotify.animate.js" />
+    <None Include="wwwroot\bower_components\pnotify\js\pnotify.buttons.js" />
+    <None Include="wwwroot\bower_components\pnotify\js\pnotify.callbacks.js" />
+    <None Include="wwwroot\bower_components\pnotify\js\pnotify.confirm.js" />
+    <None Include="wwwroot\bower_components\pnotify\js\pnotify.desktop.js" />
+    <None Include="wwwroot\bower_components\pnotify\js\pnotify.history.js" />
+    <None Include="wwwroot\bower_components\pnotify\js\pnotify.js" />
+    <None Include="wwwroot\bower_components\pnotify\js\pnotify.mobile.js" />
+    <None Include="wwwroot\bower_components\pnotify\js\pnotify.nonblock.js" />
+    <None Include="wwwroot\bower_components\popper.js\js\popper.js" />
+    <None Include="wwwroot\bower_components\popper.js\js\popper.min.js" />
+    <None Include="wwwroot\bower_components\raphael\js\raphael.min.js" />
+    <None Include="wwwroot\bower_components\rickshaw\js\jquery.peity.js" />
+    <None Include="wwwroot\bower_components\rickshaw\js\rickshaw.js" />
+    <None Include="wwwroot\bower_components\seiyria-bootstrap-slider\js\bootstrap-slider.js" />
+    <None Include="wwwroot\bower_components\select2\js\select2.full.min.js" />
+    <None Include="wwwroot\bower_components\select2\js\select2.js" />
+    <None Include="wwwroot\bower_components\slick-carousel\js\slick.min.js" />
+    <None Include="wwwroot\bower_components\Sortable\js\Sortable.js" />
+    <None Include="wwwroot\bower_components\spectrum\js\spectrum.js" />
+    <None Include="wwwroot\bower_components\stroll\js\stroll.js" />
+    <None Include="wwwroot\bower_components\sweetalert\js\sweetalert.min.js" />
+    <None Include="wwwroot\bower_components\swiper\js\swiper.js" />
+    <None Include="wwwroot\bower_components\swiper\js\swiper.min.js" />
+    <None Include="wwwroot\bower_components\switchery\js\switchery.js" />
+    <None Include="wwwroot\bower_components\switchery\js\switchery.min.js" />
+    <None Include="wwwroot\bower_components\tether\js\tether.min.js" />
+    <None Include="wwwroot\bower_components\transitionize\js\transitionize.js" />
+    <None Include="wwwroot\bower_components\typeahead.js\js\typeahead.bundle.min.js" />
+    <None Include="wwwroot\bower_components\underscore\js\underscore-min.js" />
+    <None Include="wwwroot\bower_components\underscore\js\underscore.js" />
+    <None Include="wwwroot\ckeditor\adapters\jquery.js" />
+    <None Include="wwwroot\ckeditor\build-config.js" />
+    <None Include="wwwroot\ckeditor\CHANGES.md" />
+    <None Include="wwwroot\ckeditor\ckeditor.js" />
+    <None Include="wwwroot\ckeditor\config.js" />
+    <None Include="wwwroot\ckeditor\lang\af.js" />
+    <None Include="wwwroot\ckeditor\lang\ar.js" />
+    <None Include="wwwroot\ckeditor\lang\az.js" />
+    <None Include="wwwroot\ckeditor\lang\bg.js" />
+    <None Include="wwwroot\ckeditor\lang\bn.js" />
+    <None Include="wwwroot\ckeditor\lang\bs.js" />
+    <None Include="wwwroot\ckeditor\lang\ca.js" />
+    <None Include="wwwroot\ckeditor\lang\cs.js" />
+    <None Include="wwwroot\ckeditor\lang\cy.js" />
+    <None Include="wwwroot\ckeditor\lang\da.js" />
+    <None Include="wwwroot\ckeditor\lang\de-ch.js" />
+    <None Include="wwwroot\ckeditor\lang\de.js" />
+    <None Include="wwwroot\ckeditor\lang\el.js" />
+    <None Include="wwwroot\ckeditor\lang\en-au.js" />
+    <None Include="wwwroot\ckeditor\lang\en-ca.js" />
+    <None Include="wwwroot\ckeditor\lang\en-gb.js" />
+    <None Include="wwwroot\ckeditor\lang\en.js" />
+    <None Include="wwwroot\ckeditor\lang\eo.js" />
+    <None Include="wwwroot\ckeditor\lang\es-mx.js" />
+    <None Include="wwwroot\ckeditor\lang\es.js" />
+    <None Include="wwwroot\ckeditor\lang\et.js" />
+    <None Include="wwwroot\ckeditor\lang\eu.js" />
+    <None Include="wwwroot\ckeditor\lang\fa.js" />
+    <None Include="wwwroot\ckeditor\lang\fi.js" />
+    <None Include="wwwroot\ckeditor\lang\fo.js" />
+    <None Include="wwwroot\ckeditor\lang\fr-ca.js" />
+    <None Include="wwwroot\ckeditor\lang\fr.js" />
+    <None Include="wwwroot\ckeditor\lang\gl.js" />
+    <None Include="wwwroot\ckeditor\lang\gu.js" />
+    <None Include="wwwroot\ckeditor\lang\he.js" />
+    <None Include="wwwroot\ckeditor\lang\hi.js" />
+    <None Include="wwwroot\ckeditor\lang\hr.js" />
+    <None Include="wwwroot\ckeditor\lang\hu.js" />
+    <None Include="wwwroot\ckeditor\lang\id.js" />
+    <None Include="wwwroot\ckeditor\lang\is.js" />
+    <None Include="wwwroot\ckeditor\lang\it.js" />
+    <None Include="wwwroot\ckeditor\lang\ja.js" />
+    <None Include="wwwroot\ckeditor\lang\ka.js" />
+    <None Include="wwwroot\ckeditor\lang\km.js" />
+    <None Include="wwwroot\ckeditor\lang\ko.js" />
+    <None Include="wwwroot\ckeditor\lang\ku.js" />
+    <None Include="wwwroot\ckeditor\lang\lt.js" />
+    <None Include="wwwroot\ckeditor\lang\lv.js" />
+    <None Include="wwwroot\ckeditor\lang\mk.js" />
+    <None Include="wwwroot\ckeditor\lang\mn.js" />
+    <None Include="wwwroot\ckeditor\lang\ms.js" />
+    <None Include="wwwroot\ckeditor\lang\nb.js" />
+    <None Include="wwwroot\ckeditor\lang\nl.js" />
+    <None Include="wwwroot\ckeditor\lang\no.js" />
+    <None Include="wwwroot\ckeditor\lang\oc.js" />
+    <None Include="wwwroot\ckeditor\lang\pl.js" />
+    <None Include="wwwroot\ckeditor\lang\pt-br.js" />
+    <None Include="wwwroot\ckeditor\lang\pt.js" />
+    <None Include="wwwroot\ckeditor\lang\ro.js" />
+    <None Include="wwwroot\ckeditor\lang\ru.js" />
+    <None Include="wwwroot\ckeditor\lang\si.js" />
+    <None Include="wwwroot\ckeditor\lang\sk.js" />
+    <None Include="wwwroot\ckeditor\lang\sl.js" />
+    <None Include="wwwroot\ckeditor\lang\sq.js" />
+    <None Include="wwwroot\ckeditor\lang\sr-latn.js" />
+    <None Include="wwwroot\ckeditor\lang\sr.js" />
+    <None Include="wwwroot\ckeditor\lang\sv.js" />
+    <None Include="wwwroot\ckeditor\lang\th.js" />
+    <None Include="wwwroot\ckeditor\lang\tr.js" />
+    <None Include="wwwroot\ckeditor\lang\tt.js" />
+    <None Include="wwwroot\ckeditor\lang\ug.js" />
+    <None Include="wwwroot\ckeditor\lang\uk.js" />
+    <None Include="wwwroot\ckeditor\lang\vi.js" />
+    <None Include="wwwroot\ckeditor\lang\zh-cn.js" />
+    <None Include="wwwroot\ckeditor\lang\zh.js" />
+    <None Include="wwwroot\ckeditor\LICENSE.md" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\a11yhelp.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\af.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\ar.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\az.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\bg.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\ca.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\cs.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\cy.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\da.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\de-ch.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\de.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\el.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\en-au.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\en-gb.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\en.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\eo.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\es-mx.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\es.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\et.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\eu.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\fa.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\fi.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\fo.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\fr-ca.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\fr.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\gl.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\gu.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\he.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\hi.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\hr.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\hu.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\id.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\it.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\ja.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\km.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\ko.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\ku.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\lt.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\lv.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\mk.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\mn.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\nb.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\nl.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\no.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\oc.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\pl.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\pt-br.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\pt.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\ro.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\ru.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\si.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\sk.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\sl.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\sq.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\sr-latn.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\sr.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\sv.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\th.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\tr.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\tt.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\ug.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\uk.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\vi.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\zh-cn.js" />
+    <None Include="wwwroot\ckeditor\plugins\a11yhelp\dialogs\lang\zh.js" />
+    <None Include="wwwroot\ckeditor\plugins\about\dialogs\about.js" />
+    <None Include="wwwroot\ckeditor\plugins\clipboard\dialogs\paste.js" />
+    <None Include="wwwroot\ckeditor\plugins\colordialog\dialogs\colordialog.js" />
+    <None Include="wwwroot\ckeditor\plugins\copyformatting\cursors\cursor-disabled.svg" />
+    <None Include="wwwroot\ckeditor\plugins\copyformatting\cursors\cursor.svg" />
+    <None Include="wwwroot\ckeditor\plugins\dialog\dialogDefinition.js" />
+    <None Include="wwwroot\ckeditor\plugins\div\dialogs\div.js" />
+    <None Include="wwwroot\ckeditor\plugins\easyimage\dialogs\easyimagealt.js" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\CHANGELOG.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\LICENSE.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\plugindefinition.js" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\README.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\authentication.js" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\exportpdf.js" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\manual\configfilename.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\manual\emptyeditor.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\manual\integration.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\manual\integrations\easyimage.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\manual\notifications.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\manual\notificationsasync.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\manual\paperformat.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\manual\readonly.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\manual\stylesheets.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\manual\tokenfetching.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\manual\tokentwoeditorscorrect.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\manual\tokentwoeditorswrong.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\manual\tokenwithouturl.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\manual\wrongendpoint.md" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\notification.js" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\resourcespaths.js" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\statistics.js" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\stylesheets.js" />
+    <None Include="wwwroot\ckeditor\plugins\exportpdf\tests\_helpers\tools.js" />
+    <None Include="wwwroot\ckeditor\plugins\find\dialogs\find.js" />
+    <None Include="wwwroot\ckeditor\plugins\flash\dialogs\flash.js" />
+    <None Include="wwwroot\ckeditor\plugins\forms\dialogs\button.js" />
+    <None Include="wwwroot\ckeditor\plugins\forms\dialogs\checkbox.js" />
+    <None Include="wwwroot\ckeditor\plugins\forms\dialogs\form.js" />
+    <None Include="wwwroot\ckeditor\plugins\forms\dialogs\hiddenfield.js" />
+    <None Include="wwwroot\ckeditor\plugins\forms\dialogs\radio.js" />
+    <None Include="wwwroot\ckeditor\plugins\forms\dialogs\select.js" />
+    <None Include="wwwroot\ckeditor\plugins\forms\dialogs\textarea.js" />
+    <None Include="wwwroot\ckeditor\plugins\forms\dialogs\textfield.js" />
+    <None Include="wwwroot\ckeditor\plugins\iframe\dialogs\iframe.js" />
+    <None Include="wwwroot\ckeditor\plugins\image\dialogs\image.js" />
+    <None Include="wwwroot\ckeditor\plugins\link\dialogs\anchor.js" />
+    <None Include="wwwroot\ckeditor\plugins\link\dialogs\link.js" />
+    <None Include="wwwroot\ckeditor\plugins\liststyle\dialogs\liststyle.js" />
+    <None Include="wwwroot\ckeditor\plugins\pastefromgdocs\filter\default.js" />
+    <None Include="wwwroot\ckeditor\plugins\pastefromlibreoffice\filter\default.js" />
+    <None Include="wwwroot\ckeditor\plugins\pastefromword\filter\default.js" />
+    <None Include="wwwroot\ckeditor\plugins\pastetools\filter\common.js" />
+    <None Include="wwwroot\ckeditor\plugins\pastetools\filter\image.js" />
+    <None Include="wwwroot\ckeditor\plugins\scayt\CHANGELOG.md" />
+    <None Include="wwwroot\ckeditor\plugins\scayt\dialogs\options.js" />
+    <None Include="wwwroot\ckeditor\plugins\scayt\LICENSE.md" />
+    <None Include="wwwroot\ckeditor\plugins\scayt\README.md" />
+    <None Include="wwwroot\ckeditor\plugins\smiley\dialogs\smiley.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\af.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\ar.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\az.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\bg.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\ca.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\cs.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\cy.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\da.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\de-ch.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\de.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\el.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\en-au.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\en-ca.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\en-gb.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\en.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\eo.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\es-mx.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\es.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\et.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\eu.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\fa.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\fi.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\fr-ca.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\fr.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\gl.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\he.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\hr.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\hu.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\id.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\it.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\ja.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\km.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\ko.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\ku.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\lt.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\lv.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\nb.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\nl.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\no.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\oc.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\pl.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\pt-br.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\pt.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\ro.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\ru.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\si.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\sk.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\sl.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\sq.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\sr-latn.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\sr.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\sv.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\th.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\tr.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\tt.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\ug.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\uk.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\vi.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\zh-cn.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\lang\zh.js" />
+    <None Include="wwwroot\ckeditor\plugins\specialchar\dialogs\specialchar.js" />
+    <None Include="wwwroot\ckeditor\plugins\tabletools\dialogs\tableCell.js" />
+    <None Include="wwwroot\ckeditor\plugins\table\dialogs\table.js" />
+    <None Include="wwwroot\ckeditor\plugins\templates\dialogs\templates.js" />
+    <None Include="wwwroot\ckeditor\plugins\templates\templates\default.js" />
+    <None Include="wwwroot\ckeditor\plugins\token\dialogs\token.js" />
+    <None Include="wwwroot\ckeditor\plugins\token\lang\en.js" />
+    <None Include="wwwroot\ckeditor\plugins\token\lang\ru.js" />
+    <None Include="wwwroot\ckeditor\plugins\token\LICENSE" />
+    <None Include="wwwroot\ckeditor\plugins\token\plugin.js" />
+    <None Include="wwwroot\ckeditor\plugins\token\ReadMe.md" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\dialogs\wsc.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\dialogs\wsc_ie.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\af.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\ar.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\bg.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\bn.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\bs.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\ca.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\cs.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\cy.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\da.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\de.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\el.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\en-au.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\en-ca.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\en-gb.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\en.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\eo.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\es.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\et.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\eu.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\fa.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\fi.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\fo.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\fr-ca.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\fr.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\gl.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\gu.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\he.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\hi.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\hr.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\hu.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\is.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\it.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\ja.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\ka.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\km.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\ko.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\ku.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\lt.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\lv.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\mk.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\mn.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\ms.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\nb.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\nl.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\no.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\pl.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\pt-br.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\pt.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\ro.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\ru.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\sk.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\sl.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\sr-latn.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\sr.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\sv.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\th.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\tr.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\ug.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\uk.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\vi.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\zh-cn.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\lang\zh.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\LICENSE.md" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\plugin.js" />
+    <None Include="wwwroot\ckeditor\plugins\wsc\README.md" />
+    <None Include="wwwroot\ckeditor\README.md" />
+    <None Include="wwwroot\ckeditor\samples\img\logo.svg" />
+    <None Include="wwwroot\ckeditor\samples\js\sample.js" />
+    <None Include="wwwroot\ckeditor\samples\js\sf.js" />
+    <None Include="wwwroot\ckeditor\samples\old\assets\posteddata.php" />
+    <None Include="wwwroot\ckeditor\samples\old\assets\uilanguages\languages.js" />
+    <None Include="wwwroot\ckeditor\samples\old\dialog\assets\my_dialog.js" />
+    <None Include="wwwroot\ckeditor\samples\old\htmlwriter\assets\outputforflash\outputforflash.fla" />
+    <None Include="wwwroot\ckeditor\samples\old\htmlwriter\assets\outputforflash\outputforflash.swf" />
+    <None Include="wwwroot\ckeditor\samples\old\htmlwriter\assets\outputforflash\swfobject.js" />
+    <None Include="wwwroot\ckeditor\samples\old\sample.js" />
+    <None Include="wwwroot\ckeditor\samples\old\sample_posteddata.php" />
+    <None Include="wwwroot\ckeditor\samples\toolbarconfigurator\font\fontello.svg" />
+    <None Include="wwwroot\ckeditor\samples\toolbarconfigurator\js\abstracttoolbarmodifier.js" />
+    <None Include="wwwroot\ckeditor\samples\toolbarconfigurator\js\fulltoolbareditor.js" />
+    <None Include="wwwroot\ckeditor\samples\toolbarconfigurator\js\toolbarmodifier.js" />
+    <None Include="wwwroot\ckeditor\samples\toolbarconfigurator\js\toolbartextmodifier.js" />
+    <None Include="wwwroot\ckeditor\samples\toolbarconfigurator\lib\codemirror\codemirror.js" />
+    <None Include="wwwroot\ckeditor\samples\toolbarconfigurator\lib\codemirror\javascript.js" />
+    <None Include="wwwroot\ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
+    <None Include="wwwroot\ckeditor\samples\toolbarconfigurator\lib\codemirror\show-hint.js" />
+    <None Include="wwwroot\ckeditor\skins\moono-lisa\readme.md" />
+    <None Include="wwwroot\ckeditor\styles.js" />
+    <None Include="wwwroot\ckeditor\vendor\promise.js" />
+    <None Include="wwwroot\js\RegisterValidate.js" />
+    <None Include="wwwroot\js\loginValidate.js" />
+    <None Include="wwwroot\Report\Attendance\Absent_Record_Card - Copy.rdlc" />
+    <None Include="wwwroot\Report\Attendance\AttendanceSummaryReport.rdlc" />
+    <None Include="wwwroot\Report\Attendance\AttInOutSubReport.rdlc" />
+    <None Include="wwwroot\Report\Attendance\Absent_Record_Sub.rdlc" />
+    <None Include="wwwroot\Report\Attendance\OTSubReport.rdlc" />
+    <None Include="wwwroot\Report\Attendance\AbsentSummaryReport.rdlc" />
+    <None Include="wwwroot\Report\Attendance\rptDailyOT.rdlc" />
+    <None Include="wwwroot\Report\Attendance\AttStatusSubReport.rdlc" />
+    <None Include="wwwroot\Report\Attendance\AttendanceInOutReport.rdlc" />
+    <None Include="wwwroot\Report\Attendance\MonthlyOTReport.rdlc" />
+    <None Include="wwwroot\Report\Attendance\Absent_Record_Card.rdlc" />
+    <None Include="wwwroot\Report\Attendance\rptStatusWiseDailyReport.rdlc" />
+    <None Include="wwwroot\Report\Attendance\rptDailyAttendanceWithOT.rdlc" />
+    <None Include="wwwroot\Report\Attendance\rptMonthlyAttendanceStatus.rdlc" />
+    <None Include="wwwroot\Report\Attendance\rptDailyAttendanceReport.rdlc" />
+    <None Include="wwwroot\Report\Attendance\rptManPower.rdlc" />
+    <None Include="wwwroot\Report\Employee\rptEmployeeDetails.rdlc" />
+    <None Include="wwwroot\Report\Employee\rptNewJoiningEmployee.rdlc" />
+    <None Include="wwwroot\Report\Employee\rptIDCard.rdlc" />
+    <None Include="wwwroot\Report\Employee\rptEmployee.rdlc" />
+
+    <None Include="wwwroot\Report\Leave\rptEmployee.rdlc" />
+    <None Include="wwwroot\Report\Attendance\rptJobCard.rdlc" />
+    <None Include="wwwroot\Report\Salary\OTSheetReport.rdlc" />
+    <None Include="wwwroot\Report\Salary\SalarySheetReport.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\assets\pages\ckeditor\samples\toolbarconfigurator\lib\" />
+    <Folder Include="wwwroot\assets\pages\j-pro\form_files\" />
+    <Folder Include="wwwroot\minify\css\" />
+    <Folder Include="wwwroot\minify\js\" />
+    <Folder Include="wwwroot\emp\" />
+    <Folder Include="wwwroot\AttendanceFiles\" />
+    <Folder Include="wwwroot\userfiles\" />
+    <Folder Include="wwwroot\Public\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+    <PackageReference Include="CookieManager" Version="2.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.17">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="ReportViewerCore.NETCore" Version="15.1.17" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.3.2" />
+    <PackageReference Include="RotativaCore" Version="4.1.0" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+    <PackageReference Include="Wkhtmltopdf.NetCore" Version="3.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EventSourcing.Messaging\Messaging.Framework.csproj" />
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Business\Business.csproj" />
+    <ProjectReference Include="..\Domains\Domains.csproj" />
+    <ProjectReference Include="..\Utility\Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DataSets\dsAttendance.Designer.cs">
+      <DependentUpon>dsAttendance.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="DataSets\dsEmpLeave.Designer.cs">
+      <DependentUpon>dsEmpLeave.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="DataSets\dsIdCard.Designer.cs">
+      <DependentUpon>dsIdCard.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="DataSets\dsJobCard.Designer.cs">
+      <DependentUpon>dsJobCard.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="DataSets\dsSalary.Designer.cs">
+      <DependentUpon>dsSalary.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="DataSets\SalarySheet.Designer.cs">
+      <DependentUpon>SalarySheet.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\IncProTranReport\IncermentSummaryReport.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\IncProTranReport\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DataSets\dsAttendance.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>dsAttendance.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="DataSets\dsEmpLeave.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>dsEmpLeave.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="DataSets\dsIdCard.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>dsIdCard.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="DataSets\dsJobCard.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>dsJobCard.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="DataSets\dsSalary.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>dsSalary.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="DataSets\SalarySheet.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>SalarySheet.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Update="EmailContents\PasswordResetAlert.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="EmailContents\ClientGreeting.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="EmailContents\SystemAdminAlert.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="EmailContents\ClientAlert.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="EmailContents\InviteClient.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="EmailContents\ClientInvitation.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="EmailContents\OrgGreeting.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="EmailContents\OrgInvitation.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="wkhtmltopdf\wkhtmltopdf.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

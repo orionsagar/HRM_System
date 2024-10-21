@@ -1,0 +1,177 @@
+﻿@model Domains.ViewModels.LoginViewModel;
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LoginLayout_WPboard.cshtml";
+    //Layout = null;
+}
+
+
+
+<div class="EntrybodyContainer">
+    <div class="mainContainer">
+
+        @await Html.PartialAsync("/Views/Auth/_CompDescription.cshtml")
+
+        <div class="loginColContainer">
+            <div class="loginBox">
+                <div class="logintab">
+                    <ul>
+                        <li class="listactive" id="login">Login</li>
+                        <li id="register">Register</li>
+                    </ul>
+                </div>
+
+                <div class="loginContainer">
+                    <div class="modalheader">
+                        <span>Log In</span>
+                        <p>Please Enter your Credentials</p>
+                        <p class="text-danger" id="successMessage">@ViewBag.ErrorMessage</p>
+                    </div>
+                    <div class="LogininputFieldContainer">
+
+                        <form asp-action="Login" asp-controller="Auth" asp-route-ReturnUrl="@ViewBag.ReturnUrl" autocomplete="off">
+
+                            <div class="formTextGroup">
+                                <label asp-for="Username">Email ID</label>
+                                <div class="inputWrapper">
+                                    <div class="input">
+                                        <input type="email" asp-for="Username" placeholder="Email ID">
+                                        <i class="fa-regular fa-user fa-lg"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="formTextGroup">
+                                <label asp-for="Password">Password</label>
+                                <div class="inputWrapper">
+                                    <div class="input">
+                                        <input type="password" asp-for="Password" placeholder="Password">
+                                        <i class="fa-solid fa-key fa-lg"></i>
+                                    </div>
+                                    <div class="errorIcon" style="display: none;">
+                                        <i class="text-danger fa-solid fa-xmark fa-lg"></i>
+                                        <span class="text-danger errorMessage">Incorrect Password</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="forgetpasslink">
+                                <a href="#">Forgot Password?</a>
+                            </div>
+
+                            <div class="resbtnPrimary">
+                                <button type="submit">Login <i class="fa-sharp fa-solid fa-right-to-bracket fa-lg"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="resMainContainer">
+    <div class="reslogoWrapper">
+        <div class="reslogo">
+            <img src="img/module_img/WP-l-rb.png" alt="Workers Permit Logo">
+        </div>
+    </div>
+
+    <div class="resLoginFormContainer">
+        <div class="resLoginContainer">
+            <div class="resModalheader">
+                <span>Log In</span>
+                <p style="margin-top: 10px;">Please Enter your Credentials</p>
+                <p class="text-danger" id="successMessage">@ViewBag.ErrorMessage</p>
+            </div>
+
+            <div class="reslogininputFieldContainer">
+                <form asp-action="Login" asp-controller="Auth" asp-route-ReturnUrl="@ViewBag.ReturnUrl" autocomplete="off">
+
+                    <div class="resFormCotainer">
+                        <div class="resformTextGroup">
+                            <label asp-for="Username">Email ID</label>
+                            <div class="input">
+                                <input type="email" asp-for="Username" placeholder="Email ID">
+                                <i class="fa-sharp fa-regular fa-envelope fa-sm"></i>
+                            </div>
+                        </div>
+
+                        <div class="resformTextGroup">
+                            <label asp-for="Password">Password</label>
+                            <div class="input">
+                                <input type="password" asp-for="Password" placeholder="Password">
+                                <i class="fa-solid fa-key fa-sm"></i>
+                            </div>
+                        </div>
+
+                        <div class="resLoginLinks">
+                            <div class="resRegNewUser">
+                                <a href="/auth/register">Register</a>
+                            </div>
+
+                            <div class="resForgetPass">
+                                <a href="#">Forgot Password?</a>
+                            </div>
+                        </div>
+
+                        <div class="resbtnPrimary">
+                            <button type="submit">Login <i class="fa-sharp fa-solid fa-right-to-bracket fa-lg"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="resCompanyContents">
+        <div class="resCompanyDiscription">
+            <span class="resDiscHeading">Know us</span>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Placeat quo eligendi accusantium maxime ipsam quam esse
+                animi deleniti nobis sit. Quibusdam ex iusto eos molestiae
+                maxime cumque sed amet nam.
+                Beatae, iusto expedita nesciunt adipisci unde cumque culpa
+                ipsum aliquid porro ipsam ratione! Animi facilis mollitia,
+                facere similique exercitationem nostrum, ad voluptate quisquam beatae
+                reprehenderit saepe laboriosam deserunt, a dolor?
+            </p>
+        </div>
+
+        <div class="resCompanyVideo">
+            <div class="resVideo">
+                <img src="~/img/module_img/VideoIcon.png" alt="">
+            </div>
+            <div class="resPlaybutton">
+                <img src="~/img/module_img/play-button.svg" alt="">
+            </div>
+        </div>
+
+    
+
+        <div class="resDownLoadBtn">
+            <button type="submit">Download PDF <i class="fa-solid fa-download fa-xl"></i></button>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@section Scripts {
+}
+
+
+
+

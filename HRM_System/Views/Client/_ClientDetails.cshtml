@@ -1,0 +1,106 @@
+﻿@model Domains.ViewModels.ClientViewModel;
+
+<br />
+<br />
+<br />
+<style>
+    .freeze-text {
+        /* Add your styling to freeze the text here */
+        /* For example: */
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+</style>
+@{
+    if (Model != null)
+    {
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+                    @*<div class="card-header">
+                        <a target="_parent" class="btn btn-sm btn-primary" href="/Leads/Edit/85"><i class="fa fa-edit"></i> Edit</a>
+                        <a target="_blank" class="btn btn-sm btn-primary" href="/Leads/PrintLead/85">Print</a>
+
+                    </div>*@
+                    <div class="card-block protected">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <fieldset class="scheduler-border ">
+                                    <legend class="scheduler-border form-bg-info">Client Details:</legend>
+                                    @*<div class="form-group row">
+                                        <label class="col-sm-4" for="Client_Phone">Client Code</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong><span>@Model.SRACode</span>
+                                        </div>
+                                    </div>*@
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="LeadNo">Client Name</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong> @Model.Name<span></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="Client_Name">Client Type</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong><span> @Model.ClientType</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="Client_Phone">Address</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong><span> @Model.Address</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="Clinet_Phone2">Phone</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong><span> @Model.Phone1</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="Client_Email">Email</label>
+                                        <div class="col-sm-6" style="white-space:nowrap">
+                                            <strong>:</strong><span> @Model.Email1</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="Profession">Country</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong><span> @Model.Country</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="Gender">City</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong><span> @Model.City</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="CountryName">State</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong><span> @Model.State</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4" for="LocationName">Status</label>
+                                        <div class="col-sm-6">
+                                            <strong>:</strong><span> @Model.Status</span>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>                            
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>     
+    }
+}
+
+
+
+
+

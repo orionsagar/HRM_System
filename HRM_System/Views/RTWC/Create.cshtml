@@ -1,0 +1,1045 @@
+﻿@model RightToWorkCheck
+@{
+    // var type = Model.RTWStap1.Select(s => s.Type).Distinct();
+    // var allstaps = Model?.RTWStap1;
+}
+<!-- jpro forms css -->
+<link rel="stylesheet" type="text/css" href="~/assets/pages/j-pro/css/demo.css" />
+<link rel="stylesheet" type="text/css" href="~/assets/pages/j-pro/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="~/assets/pages/j-pro/css/j-pro-modern.css" />
+
+<div class="card">
+    <div class="card-header">
+        <h5>Right to Work Checklist (RTW)</h5>
+    </div>
+    <div class="card-block">
+        <div class="j-wrapper">
+            <form asp-action="RTWCPost" asp-controller="RTWC" method="post" class="j-pro j-multistep" id="j-pro" novalidate=novalidate>
+                <!-- end /.header-->
+                @if (Model == null)
+                {
+                    <input type="hidden" asp-for="RightToWorkCheckId" value="0"/>
+                }
+                else
+                {
+                    <input type="hidden" asp-for="RightToWorkCheckId" />
+                }
+
+                <div class="j-content">
+                    <fieldset>
+                        <div class="j-row">
+                            <div class="j-span4 j-unit">
+                                <label asp-for="EmpId" class="j-label">Name Of Person</label>
+                                <div class="j-input">
+                                    <label class="j-icon-right" for="name">
+                                        <i class="icofont icofont-ui-user"></i>
+                                    </label>
+                                    <select asp-for="EmpId" asp-items="ViewBag.EmpId" onchange="setEmpID(this.value);">
+                                        <option value="0">Select</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="j-span4 j-unit">
+                                <label class="j-label">Date of Check</label>
+                                <div class="j-input">
+                                    <label class="j-icon-right" asp-for="CheckDate">
+                                        <i class="icofont icofont-ui-calendar"></i>
+                                    </label>
+                                    <input type="text" asp-for="CheckDate" readonly="" />
+                                </div>
+                            </div>
+                            <div class="j-span4 j-unit">
+                                <label class="j-label">Work Start Time</label>
+                                <div class="j-input">
+                                    <label class="j-icon-right" asp-for="WorkStartTime">
+                                        <i class="icofont icofont-ui-calendar"></i>
+                                    </label>
+                                    <input type="text" asp-for="WorkStartTime" readonly="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="j-row">
+                            <div class="j-span5 j-unit">
+                                <label class="j-label">Type of check</label>
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="TypeOfCheck1" />
+                                        <label class="ml-1" asp-for="TypeOfCheck1">Initial check before employment</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span5 j-unit">
+                                <label>&emsp;</label>
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="TypeOfCheck2" />
+                                        <label class="ml-1" asp-for="TypeOfCheck2">Initial check before employment</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="j-row">
+                            <div class="j-span5 j-unit">
+                                <label class="j-label">Medium of check</label>
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="MediumOfCheck1" />
+                                        <label class="ml-1" asp-for="MediumOfCheck1">In-person manual check with original documents</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span5 j-unit">
+                                <label>&emsp;</label>
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="MediumOfCheck2" />
+                                        <label class="ml-1" asp-for="MediumOfCheck2">Online right to work check</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="j-row">
+                            <div class="j-span4 j-unit">
+                                <label asp-for="EvidencePresented" class="j-label">Evidence presented</label>
+                                <div class="j-input">
+                                    <label class="j-icon-right" for="name">
+                                        <i class="icofont icofont-ui-user"></i>
+                                    </label>
+                                    <select asp-for="EvidencePresented" class="form-control form-control-sm AllSelect2">
+                                        <option value="">Select Doc Type</option>
+                                        <option value="Passport">Passport</option>
+                                        <option value="Visa">Visa/BRP</option>
+                                        <option value="Euss_Time_limit">EUSS/Time limit</option>
+                                        <option value="DBS">Disclosure and Barring Service (DBS)</option>
+                                        <option value="NationalID">National ID</option>
+                                        <option value="RWC">Right to work check (RWC)</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="j-span4 j-unit">
+                                <label class="j-label">Time of check</label>
+                                <div class="j-input">
+                                    @* <label class="j-icon-right" asp-for="TimeOfCheck">
+                                        <i class="icofont"></i>
+                                    </label> *@
+                                    <input type="text" asp-for="TimeOfCheck" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        @*<div class="j-divider-text j-gap-top-20 j-gap-bottom-45">
+                        <span>Step 2/3 - Booking details</span>
+                        </div>*@
+                        <!-- start guests -->
+                        <div class="j-row">
+                            <div class="j-span12 j-unit">
+                                <label class="j-label" style="line-height: 25px;">You may conduct a physical document check or perform an online check to establish a right to work. Where a right to work check has been conducted using the online service, the information is provided in real-time, directly from Home Office systems and there is no requirement to see the documents listed below.</label>
+                            </div>
+                            <div class="j-span12 j-unit mt-4 mb-2">
+                                <h4 class="text-c-blue">Step1 for physical check</h4>
+                                <label class="j-label" style="line-height: 25px;">You must obtain original documents from either List A or List B of acceptable documents for a manual right to work check.</label>
+                            </div>
+
+                            <div class="j-span12 j-unit">
+                                <h3 style="background-color: #82b8fd; color: #fff;padding: 5px 20px;">List A</h3>
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" checked asp-for="Is_Right_To_Abod" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_Right_To_Abod">
+                                            A passport (current or expired) showing the holder, or a person named in the passport as the child of the holder, is a British citizen or a citizen of the UK and
+                                            Colonies having the right of abode in the UK.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_Republic_Of_Ireland" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_Republic_Of_Ireland">
+                                            A passport or passport card (current or expired) showing that the holder is a national of the Republic of Ireland.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_United_Kingdom_In_definitely" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_United_Kingdom_In_definitely">
+                                            A current document issued by the Home Office to a family member of an EEA or Swiss citizen, and which indicates that the holder is permitted to stay in the
+                                            United Kingdom indefinitely.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_Appendix_EU_to_the_Isle_of_Man_Immigration_Rules" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_Appendix_EU_to_the_Isle_of_Man_Immigration_Rules">
+                                            A document issued by the Bailiwick of Jersey, the Bailiwick of Guernsey or the Isle of Man, which has been verified as valid by the Home Office Employer
+                                            Checking Service, showing that the holder has been granted unlimited leave to enter or remain under Appendix EU to the Jersey Immigration Rules,
+                                            Appendix EU to the Immigration (Bailiwick of Guernsey) Rules 2008 or Appendix EU to the Isle of Man Immigration Rules.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_has_no_time_limit_on_their_stay_in_the_UK" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_has_no_time_limit_on_their_stay_in_the_UK">
+                                            A current Biometric Immigration Document (biometric residence permit) issued by the Home Office to the holder indicating that the person named is
+                                            allowed to stay indefinitely in the UK, or has no time limit on their stay in the UK.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_allowed_to_stay_indefinitely_in_the_UK" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_allowed_to_stay_indefinitely_in_the_UK">
+                                            A current passport endorsed to show that the holder is exempt from immigration control, is allowed to stay indefinitely in the UK, has the right of
+                                            abode in the UK, or has no time limit on their stay in the UK.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_name_issued_by_a_government_agency_or_a_previous_employer" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_name_issued_by_a_government_agency_or_a_previous_employer">
+                                            A current Immigration Status Document issued by the Home Office to the holder with an endorsement indicating that the named person is allowed to stay indefinitely
+                                            in the UK or has no time limit on their stay in the UK, together with an official document giving the person’s permanent National Insurance number
+                                            and their name issued by a government agency or a previous employer.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_birth_or_adoption_certificate_issued_in_the_UK" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_birth_or_adoption_certificate_issued_in_the_UK">
+                                            A birth or adoption certificate issued in the UK, together with an official document giving the person’s permanent National Insurance number and their name issued by
+                                            a government agency or a previous employer.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_birth_or_adoption_certificate_issued_in_the_Channel_Islands" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_birth_or_adoption_certificate_issued_in_the_Channel_Islands">
+                                            A birth or adoption certificate issued in the Channel Islands, the Isle of Man or Ireland, together with an official document giving the person’s permanent National Insurance
+                                            number and their name issued by a government agency or a previous employer.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_certificate_of_registration_or_naturalisation_as_a_British_citizen" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_certificate_of_registration_or_naturalisation_as_a_British_citizen">
+                                            A certificate of registration or naturalisation as a British citizen, together with an official document giving the person’s permanent National Insurance number and their name
+                                            issued by a government agency or a previous employer.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <h3 style="background-color: #82b8fd; color: #fff;padding: 5px 20px;">List B Group 1</h3>
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" checked asp-for="Is_current_passport_endorsed_to_show" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_current_passport_endorsed_to_show">
+                                            A current passport endorsed to show that the holder is allowed to stay in the UK and is currently allowed to do the type of work in question.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_current_Biometric_Immigration_Document" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_current_Biometric_Immigration_Document">
+                                            A current Biometric Immigration Document (biometric residence permit) issued by the Home Office to the holder which indicates that the named person can currently
+                                            stay in the UK and is allowed to do the work in question.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_current_document_issued_by_the_Home_Office" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_current_document_issued_by_the_Home_Office">
+                                            A current document issued by the Home Office to a family member of an EEA or Swiss citizen, and which indicates that the holder is permitted to stay in the United
+                                            Kingdom for a time-limited period and to do the type of work in question.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_document_issued_by_the_Bailiwick_of_Jersey" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_document_issued_by_the_Bailiwick_of_Jersey">
+                                            A document issued by the Bailiwick of Jersey, the Bailiwick of Guernsey or the Isle of Man, which has been verified as valid by the Home Office Employer Checking Service
+                                            , showing that the holder has been granted limited leave to enter or remain under Appendix EU to the Jersey Immigration Rules, Appendix EU to the
+                                            Immigration (Bailiwick of Guernsey) Rules 2008 or Appendix EU to the Isle of Man Immigration Rules.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_document_issued_by_the_Bailiwick_of_Jersey_before_30_June_2021" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_document_issued_by_the_Bailiwick_of_Jersey_before_30_June_2021">
+                                            A document issued by the Bailiwick of Jersey or the Bailiwick of Guernsey, which has been verified as valid by the Home Office Employer Checking Service, showing
+                                            that the holder has made an application for leave to enter or remain under Appendix EU to the Jersey Immigration Rules or Appendix EU to the Immigration
+                                            (Bailiwick of Guernsey) Rules 2008, on or before 30 June 2021.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_frontier_worker_permit_issued_under_regulation" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_frontier_worker_permit_issued_under_regulation">
+                                            A frontier worker permit issued under regulation 8 of the Citizens’ Rights (Frontier Workers) (EU Exit) Regulations 2020.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_current_immigration_status_document_containing_a_photograph" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_current_immigration_status_document_containing_a_photograph">
+                                            A current immigration status document containing a photograph issued by the Home Office to the holder with a valid endorsement indicating that the named person may
+                                            stay in the UK, and is allowed to do the type of work in question, together with an official document giving the person’s permanent National Insurance
+                                            number and their name issued by a government agency or a previous employer.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <h3 style="background-color: #82b8fd; color: #fff;padding: 5px 20px;">Step1 List B Group 2</h3>
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" checked asp-for="Is_document_issued_by_the_Home_Office" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_document_issued_by_the_Home_Office">
+                                            A document issued by the Home Office showing that the holder has made an application for leave to enter or remain under Appendix EU to the immigration rules on or
+                                            before 30 June 2021 together with a Positive Verification Notice from the Home Office Employer Checking Service.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_Appendix_EU_to_the_Jersey_Immigration_Rules" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_Appendix_EU_to_the_Jersey_Immigration_Rules">
+                                            A document issued by the Bailiwick of Jersey or the Bailiwick of Guernsey, showing that the holder has made an application for leave to enter or remain under Appendix
+                                            EU to the Jersey Immigration Rules or Appendix EU to the Immigration (Bailiwick of Guernsey) Rules 2008 on or before 30 June 2021 together with
+                                            a Positive Verification Notice from the Home Office Employer Checking Service.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_holder_is_permitted_to_take_the_employment" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_holder_is_permitted_to_take_the_employment">
+                                            An application registration card issued by the Home Office stating that the holder is permitted to take the employment in question, together with a Positive Verification Notice
+                                            from the Home Office Employer Checking Service.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="j-span12 j-unit mt-3">
+                                <div class="j-input">
+                                    <div class="d-flex">
+                                        <input type="checkbox" asp-for="Is_Positive_Verification_Notice_issued_by_the_Home_Office_Employer" />
+                                        <label class="ml-1 j-label" style="" asp-for="Is_Positive_Verification_Notice_issued_by_the_Home_Office_Employer">
+                                            A Positive Verification Notice issued by the Home Office Employer Checking Service to the employer or prospective employer, which indicates that the named person may stay
+                                            in the UK and is permitted to do the work in question.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        @*<div class="j-divider-text j-gap-top-20 j-gap-bottom-45">
+                        <span>Step 3/3 - Comments</span>
+                        </div>*@
+                        <div class="j-span12 j-unit">
+                            <h4 class="text-c-blue">Step 2 Check</h4>
+                            <label class="j-label" style="">
+                                You must <b>check</b> that the documents are genuine and that the person presenting
+                                them is the prospective employee or employee, the rightful holder and allowed to
+                                do the type of work you are offering.
+                            </label>
+                        </div>
+                        <div class="j-unit">
+
+
+                            <div class="row form-group">
+                                <div class="col-lg-12">
+                                    <label class="">
+                                        1. Are photographs consistent across documents
+                                        and with the person’s appearance?
+                                    </label>&nbsp;&nbsp;
+
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" asp-for="Photographs_consistent_across_documents"  value="Yes" checked="">Yes
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" asp-for="Photographs_consistent_across_documents"  value="No">No
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline disabled">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" asp-for="Photographs_consistent_across_documents" value="N/A">N/A
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!---------------------->
+
+                                <div class="col-lg-12 mt-3">
+                                    <label class="">
+                                        2. Are dates of birth correct and consistent
+                                        across documents?
+                                    </label>&nbsp;&nbsp;
+
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" asp-for="Dates_of_birth_correct_and_consistent_across_documentss"  value="Yes" checked="">Yes
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" asp-for="Dates_of_birth_correct_and_consistent_across_documentss"  value="No">No
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline disabled">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" asp-for="Dates_of_birth_correct_and_consistent_across_documentss"  value="N/A">N/A
+                                        </label>
+                                    </div>
+                                </div>
+
+
+                                <!------------------------------>
+
+
+                                <div class="col-lg-12 mt-3">
+                                    <label class="">
+                                        3. Are expiry dates for time-limited permission
+                                        to be in the UK in the future i.e. they have not
+                                        passed (if applicable)?
+                                    </label>&nbsp;&nbsp;
+
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input"  asp-for="Expiry_dates_for_time_limited_permission" value="Yes" checked="">Yes
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input"  asp-for="Expiry_dates_for_time_limited_permission" value="No">No
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline disabled">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input"  asp-for="Expiry_dates_for_time_limited_permission" value="N/A">N/A
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!------------------------------->
+
+
+                                <div class="col-lg-12 mt-3">
+                                    <label class="ml-1 j-label">
+                                        4. Have you checked work restrictions to determine
+                                        if the person is able to work for you and do the
+                                        type of work you are offering? (For students who
+                                        have limited permission to work during termtime, you must also obtain, copy and retain
+                                        details of their academic term and vacation
+                                        times covering the duration of their period of
+                                        study in the UK for which they will be employed.)
+                                    </label><br>
+
+                                    <div class="form-check-inline mt-4">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input"  asp-for="Checked_work_restrictions" value="Yes" checked="">Yes
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline mt-4">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input"  asp-for="Checked_work_restrictions" value="No">No
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline disabled">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input"  asp-for="Checked_work_restrictions" value="N/A">N/A
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!------------------------------->
+
+                                <div class="col-lg-12 mt-3">
+                                    <label class="ml-1 j-label">
+                                        5. Are you satisfied the document is genuine,
+                                        has not been tampered with and belongs to
+                                        the holder?
+                                    </label>&nbsp;&nbsp;
+
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input"  asp-for="You_satisfied_the_document_is_genuine" value="Yes" checked="">Yes
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input"  asp-for="You_satisfied_the_document_is_genuine" value="No">No
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline disabled">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input"  asp-for="You_satisfied_the_document_is_genuine" value="N/A">N/A
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!------------------------------->
+                                <div class="col-lg-12 mt-3">
+                                    <label class="ml-1 j-label">
+                                        6. Have you checked the reasons for any
+                                        different names across documents (e.g.
+                                        marriage certificate, divorce decree, deed
+                                        poll)? (Supporting documents should also be
+                                        photocopied and a copy retained.)
+                                    </label>&nbsp;&nbsp;<br>
+
+                                    <div class="form-check-inline mt-4">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input"  asp-for="You_checked_the_reasons_for_any_different_names" value="Yes" checked="">Yes
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline mt-4">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input"  asp-for="You_checked_the_reasons_for_any_different_names" value="No">No
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline disabled">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input"  asp-for="You_checked_the_reasons_for_any_different_names" value="N/A">N/A
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!------------------------------->
+                            </div>
+
+                        </div>
+                        <!-- end message -->
+                    </fieldset>
+                    <fieldset>
+                        @*<div class="j-divider-text j-gap-top-20 j-gap-bottom-45">
+                        <span>Step 3/3 - Comments</span>
+                        </div>*@
+                        <div class="j-span12 j-unit">
+                            <h4 class="text-c-blue">Step 3 Copy</h4>
+                            <label class="j-label" style="">
+                                You must make a clear copy of each document in a format which cannot later be
+                                altered, and retain the copy securely; electronically or in hardcopy. You must copy
+                                and retain:
+                            </label>
+                        </div>
+                        <div class="j-unit">
+
+
+                            <div class="row form-group">
+                                <div class="col-lg-12">
+                                    <div class="form-check-inline mt-4">
+                                        <label class="form-check-label j-label">
+                                            <input type="checkbox" class="form-check-input" name="passports" asp-for="Passports_any_page_with_the_document_expiry_date" value="any page with the document" checked="">Passports: any page with the document expiry date, nationality, date of birth,
+                                            signature, leave expiry date, biometric details and photograph, and any page
+                                            containing information indicating the holder has an entitlement to enter or
+                                            remain in the UK and undertake the work in question.
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check-inline mt-4">
+                                        <label class="form-check-label j-label">
+                                            <input type="checkbox" class="form-check-input" name="passports" asp-for="Other_documents_the_document_in_full" value="All other documents">All other documents:
+                                            the document in full, both sides of a biometric residence
+                                            permit. You must also record and retain the date on which the check was made.
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!---------------------->
+
+                            </div>
+
+                            <legend>Know the type of excuse you have</legend>
+                            <p>
+                                If you have correctly carried out the above 3 steps you will have an excuse against
+                                liability for a civil penalty if the above named person is found working for you
+                                illegally. However, you need to be aware of the type of excuse you have as this
+                                determines how long it lasts for, and if, and when you are required to do a followup check.
+                            </p>
+                            <p>The documents that you have checked and copied are from:</p>
+
+
+
+                            <div class="row form-group">
+                                <div class="col-lg-12">
+                                    <div class="form-check-inline mt-4">
+                                        <label class="form-check-label j-label">
+                                            List A   <input type="checkbox" style="margin-left: 17px" class="form-check-input" asp-for="Continuous_statutory_excuse">
+                                            You have a continuous statutory excuse for the full duration of the
+                                            person’s employment with you. You are not required to carry out any repeat right
+                                            to work checks on this.
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check-inline mt-4">
+                                        <label class="form-check-label j-label">
+                                            List B: Group 1   <input type="checkbox" style="margin-left: 17px" class="form-check-input" asp-for="Time_limited_statutory_excuse" >
+                                            You have a time-limited statutory excuse which expires when
+                                            the person’s permission to be in the UK expires. You should carry out a follow-up
+                                            check when the document evidencing their permission to work expires.
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline mt-4">
+                                        <label class="form-check-label">
+                                            List B: Group 2   <input type="checkbox" style="margin-left: 17px" class="form-check-input" asp-for="Time_limited_statutory_excuse_which_expires_six_months">
+                                            You have a time-limited statutory excuse which expires six
+                                            months from the date specified in your Positive Verification Notice. This means that
+                                            you should carry out a follow-up check when this notice expires.
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!---------------------->
+
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <table class="text-left table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Know the type of excuse you have</th>
+
+                                                <th>Date followup required</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+
+                                            <input type="hidden" class="form-control" name="list_right">
+                                            <input type="hidden" class="form-control" name="list_right_follow">
+                                            <input type="hidden" class="form-control" name="list_right_date">
+
+                                            <tr>
+                                                <td>List B: (Group 1)</td>
+                                                <input type="hidden" class="form-control" name="list_rightb">
+                                                <input type="hidden" class="form-control" name="list_rightb_follow">
+                                                <td><input type="date" class="form-control" asp-for="List_B_Group_1_Date_followup" ></td>
+                                            </tr>
+
+
+                                            <input type="hidden" class="form-control" name="list_rightti">
+                                            <input type="hidden" class="form-control" name="list_rightti_follow">
+                                            <input type="hidden" class="form-control" name="list_rightti_date">
+
+                                            <tr>
+                                                <td>List B: (Group 2)</td>
+                                                <input type="hidden" class="form-control" name="list_rightbs">
+                                                <input type="hidden" class="form-control" name="list_rightbs_follow">
+                                                <td><input type="date" class="form-control" asp-for="List_B_Group_2_Date_followup"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>EUSS </td>
+                                                <input type="hidden" class="form-control" name="list_eusss">
+                                                <input type="hidden" class="form-control" name="list_euss_follow">
+                                                <td><input type="date" class="form-control" asp-for="EUSS_Date_followup"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+
+                            <div class="row form-group">
+                                <div class="col-lg-12">
+                                    <label>Select Document</label>
+
+                                    @*   <select class="form-control" id="scan_f" name="scan_f" onchange="checkscsnf(this.value);">
+                                    <option value="" selected="" disabled=""> &nbsp;</option>
+                                    <option value="pr_add_proof">Proof Of Correspondence   Address </option>
+                                    <option value="pass_docu">Passport Document </option>
+                                    <option value="visa_upload_doc">Visa Document </option>
+                                    <option value="RTW">RTW</option>
+                                    </select> *@
+
+                                    <select asp-for="Document_Select_1" class="form-control form-control-sm AllSelect2" onchange="checkscsnf(this.value);">
+                                        <option value="">Select Doc Type</option>
+                                        <option value="Passport">Passport</option>
+                                        <option value="Visa">Visa/BRP</option>
+                                        <option value="Euss_Time_limit">EUSS/Time limit</option>
+                                        <option value="DBS">Disclosure and Barring Service (DBS)</option>
+                                        <option value="NationalID">National ID</option>
+                                        <option value="RWC">Right to work check (RWC)</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+                                    <input type="hidden" id="RTW_Evidence_Scans_1" asp-for="RTW_Evidence_Scans_1" name="RTW_Evidence_Scans_1">
+
+                                    <div class="text-center rtw-scan">
+                                        <div class="scan-hd">
+                                            <h3>RTW Evidence Scans-1</h3>
+                                            <p>Please copy and paste an image of your scanned RTW documents into the grey form field below.</p>
+                                        </div>
+
+                                        <div class="scan-body" style="background: #edecec;">
+                                            <!--<embed src="" frameborder="0" width="100%" height="700px" id="imgeid">-->
+                                            @* <img name="imgeidsj" id="imgeidsj" width="50%" src="https://hrms.workpermitcloud.co.uk/public/employee_vis_doc/b1wcTY7jUmhOyWjwf5sKts6AfUuqWcq9gO7b9SWy.jpg"> *@
+                                            <div id="scan_nrse_id" style="margin-top: 20px;">
+                                                @* <img name="imgeidsjnew" id="imgeidsjnew" width="50%" src="https://hrms.workpermitcloud.co.uk/public/employee_vis_doc/lQmaP9kT7sLjajeekEuQC1eq9da8v1V6oQLBgj6n.jpg"> *@
+
+                                                <img name="imgeidsjnew" id="imgeidsjnew" width="50%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+                                <div class="col-lg-12">
+                                    <label>Select Documents</label>
+
+                                    @* <select class="form-control" id="scan_s" name="scan_s" onchange="checkscsns(this.value);"><option value="" selected="" disabled=""> &nbsp;</option><option value="pr_add_proof">Proof Of Correspondence   Address </option><option value="pass_docu">Passport Document </option><option value="visa_upload_doc">Visa Document </option><option value="RTW">RTW</option></select> *@
+                                    <select asp-for="Document_Select_2" class="form-control form-control-sm AllSelect2" onchange="checkscsnfTwo(this.value);">
+                                        <option value="">Select Doc Type</option>
+                                        <option value="Passport">Passport</option>
+                                        <option value="Visa">Visa/BRP</option>
+                                        <option value="Euss_Time_limit">EUSS/Time limit</option>
+                                        <option value="DBS">Disclosure and Barring Service (DBS)</option>
+                                        <option value="NationalID">National ID</option>
+                                        <option value="RWC">Right to work check (RWC)</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+                                    <input type="hidden" id="RTW_Evidence_Scans_2" asp-for="RTW_Evidence_Scans_2" name="RTW_Evidence_Scans_2">
+
+                                    <div class="text-center rtw-scan">
+                                        <div class="scan-hd">
+                                            <h3>RTW Evidence Scans-2 (If applicable)</h3>
+                                            <p>Please copy and paste an image of your scanned RTW documents into the blue form field below.</p>
+                                        </div>
+
+                                        <div class="scan-body" style="background: #e0f6ff;">
+
+                                            @* <img name="imgeidsj" id="imgeidsj" width="50%" src="https://hrms.workpermitcloud.co.uk/public/employee_vis_doc/b1wcTY7jUmhOyWjwf5sKts6AfUuqWcq9gO7b9SWy.jpg"> *@
+                                            <div id="scan_nrse_id" style="margin-top: 20px;">
+                                                <img name="imgeidsjnewTwo" id="imgeidsjnewTwo" width="50%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row form-group">
+                                <div class="col-lg-12">
+                                    <h4>Select Documents</h4>
+                                    <div class="col-lg-12">
+                                        @* <select class="form-control valid" id="scan_r" name="scan_r" onchange="checkscsnr(this.value);" aria-invalid="false"><option value="" selected="" disabled=""> &nbsp;</option><option value="pr_add_proof">Proof Of Correspondence   Address </option><option value="pass_docu">Passport Document </option><option value="visa_upload_doc">Visa Document </option><option value="RTW">RTW</option></select> *@
+                                        <select asp-for="Document_Select_3" class="form-control form-control-sm AllSelect2" onchange="checkscsnfthree(this.value);">
+                                            <option value="">Select Doc Type</option>
+                                            <option value="Passport">Passport</option>
+                                            <option value="Visa">Visa/BRP</option>
+                                            <option value="Euss_Time_limit">EUSS/Time limit</option>
+                                            <option value="DBS">Disclosure and Barring Service (DBS)</option>
+                                            <option value="NationalID">National ID</option>
+                                            <option value="RWC">Right to work check (RWC)</option>
+                                            <option value="Others">Others</option>
+                                        </select>
+                                        <input type="hidden" id="RTW_Report" asp-for="RTW_Report" name="RTW_Report">
+                                    </div>
+                                    <div class="text-center rtw-scan">
+                                        <div class="scan-hd">
+                                            <h3>RTW Report</h3>
+                                            <p>Please copy and paste a clear copy/image of RTW check result in the orange form below.</p>
+                                        </div>
+
+                                        <div class="scan-body" style="background: #ffedcb;">
+
+                                            @* <img name="imgeidsj" id="imgeidsj" width="50%" src="https://hrms.workpermitcloud.co.uk/public/employee_vis_doc/b1wcTY7jUmhOyWjwf5sKts6AfUuqWcq9gO7b9SWy.jpg"> *@
+                                            <div id="scan_nrse_id" style="margin-top: 20px;">
+                                                <img name="imgeidsjnewThree" id="imgeidsjnewThree" width="50%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row form-group">
+                                <div class="col-md-6">
+                                    <label>RTW check result</label>
+                                    <!-- <textarea rows="5" class="form-control" placeholder="Positive/Negative Verification" style="resize: none;"  name="result"></textarea> -->
+                                    <select class="form-control" id="result" asp-for="RTW_check_result">
+                                        <option value=""></option>
+                                        <option value="Positive">Positive</option>
+                                        <option value="Negative">Negative</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Remarks</label>
+                                    <textarea rows="5" class="form-control" asp-for="Remarks" placeholder="Example: No dentist/sports job, No recourse to public fund. Maximum 20
+hours weekly" style="resize: none;" name="remarks"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+                                <div class="col-md-6">
+                                    <label>Checker Name</label>
+                                    <input type="text" class="form-control" asp-for="Checker_Name" value="@ViewBag.CheckerName">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Contact No.</label>
+                                    <input type="text" class="form-control" asp-for="Contact_No" value="@ViewBag.Phone">
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+                                <div class="col-md-6">
+                                    <label>Designation</label>
+                                    <input type="text" class="form-control" asp-for="Designation" value="Owner/Supervisor">
+                                </div>
+                                <input type="hidden" class="form-control" asp-for="EmpId" value="" readonly="readonly">
+
+                                <div class="col-md-6">
+                                    <label>Email Address</label>
+                                    <input type="email" class="form-control" asp-for="Email_Address" name="email" id="email" value="@ViewBag.Email">
+                                </div>
+                            </div>
+
+
+                            <div class="clearfix" style="height: 10px;clear: both;"></div>
+
+                        </div>
+                        <!-- end message -->
+                    </fieldset>
+                    <!-- start response from server -->
+                    <div class="j-response"></div>
+                    <!-- end response from server -->
+                </div>
+                <!-- end /.content -->
+                <div class="j-footer">
+                     @* <input type="submit" value="Save" class="btn btn-primary waves-effect waves-light" /> *@
+                    <button type="submit" class="btn btn-primary j-multi-submit-btn">Submit</button>
+                    <button type="button" class="btn btn-primary j-multi-next-btn">Next</button>
+                    <button type="button" class="btn btn-default m-r-20 j-multi-prev-btn">Back</button>
+                </div>
+                <!-- end /.footer -->
+
+
+
+
+
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <!-- j-pro js -->
+    <script type="text/javascript" src="~/assets/pages/j-pro/js/jquery.ui.min.js"></script>
+    <script type="text/javascript" src="~/assets/pages/j-pro/js/jquery.maskedinput.min.js"></script>
+    @* <script type="text/javascript" src="~/assets/pages/j-pro/js/jquery.j-pro.js"></script> *@
+    <script type="text/javascript" src="~/assets/pages/j-pro/js/jquery.j-pro.min.js"></script>
+    <!-- Custom js -->
+    <script src="~/custom/js/j-pro/rtw_form.js"></script>
+
+    <script type="text/javascript">
+        function checkscsnf(val) {
+            //https://hrms.workpermitcloud.co.uk/pis/getEmployeedreportfileByInewscand/
+
+            console.log(val);
+            var emp_id = $("#EmpId").val();
+            $.ajax({
+                type: 'GET',
+                url: "@Url.Action("GetEmployeeDocFiles", "RTWC")",
+                data: { "EmpId": emp_id, "docType": val },
+                cache: false,
+                success: function (response) {
+
+                    if (response != '' && response != undefined) {
+
+                        var ggn = "https://workerpermituk.ultimateit-bd.com/" + response;
+
+                        $("#imgeidsjnew").attr("src", ggn);
+                        $("#RTW_Evidence_Scans_1").val(response);
+
+                    } else {
+
+                        $("#imgeidsjnew").attr("src", "");
+                        $("#RTW_Evidence_Scans_1").val("");
+                    }
+
+
+
+                    // if (val == 'visa_upload_doc') {
+                    //     var nameArr = response.split(',');
+                    //     var gg = "https://hrms.workpermitcloud.co.uk/public/" + nameArr[0];
+                    //     $("#imgeidsj").attr("src", gg);
+                    //     if (nameArr[1] != '' && nameArr[1] != undefined) {
+                    //         var ggn = "https://hrms.workpermitcloud.co.uk/public/" + nameArr[1];
+                    //         $("#imgeidsjnew").attr("src", ggn);
+                    //         $("#scan_nrse_id").show();
+                    //     }
+                    // } else {
+                    //     var gg = "https://hrms.workpermitcloud.co.uk/public/" + response;
+                    //     $("#imgeidsj").attr("src", gg);
+                    // }
+
+
+                    // $("#scan_r_img").val(response);
+
+
+                }
+            });
+        }
+
+
+        function checkscsnfTwo(val) {
+            //https://hrms.workpermitcloud.co.uk/pis/getEmployeedreportfileByInewscand/
+
+            console.log(val);
+            var emp_id = $("#EmpId").val();
+            $.ajax({
+                type: 'GET',
+                url: "@Url.Action("GetEmployeeDocFiles", "RTWC")",
+                data: { "EmpId": emp_id, "docType": val },
+                cache: false,
+                success: function (response) {
+
+                    if (response != '' && response != undefined) {
+
+                        var ggn = "https://workerpermituk.ultimateit-bd.com/" + response;
+
+                        $("#imgeidsjnewTwo").attr("src", ggn);
+                        $("#RTW_Evidence_Scans_2").val(response);
+
+                    } else {
+
+                        $("#imgeidsjnewTwo").attr("src", "");
+                        $("#RTW_Evidence_Scans_2").val("");
+                    }
+
+
+
+                    // if (val == 'visa_upload_doc') {
+                    //     var nameArr = response.split(',');
+                    //     var gg = "https://hrms.workpermitcloud.co.uk/public/" + nameArr[0];
+                    //     $("#imgeidsj").attr("src", gg);
+                    //     if (nameArr[1] != '' && nameArr[1] != undefined) {
+                    //         var ggn = "https://hrms.workpermitcloud.co.uk/public/" + nameArr[1];
+                    //         $("#imgeidsjnew").attr("src", ggn);
+                    //         $("#scan_nrse_id").show();
+                    //     }
+                    // } else {
+                    //     var gg = "https://hrms.workpermitcloud.co.uk/public/" + response;
+                    //     $("#imgeidsj").attr("src", gg);
+                    // }
+
+
+                    // $("#scan_r_img").val(response);
+
+
+                }
+            });
+
+        }
+
+
+        function checkscsnfthree(val) {
+            //https://hrms.workpermitcloud.co.uk/pis/getEmployeedreportfileByInewscand/
+
+            console.log(val);
+            var emp_id = $("#EmpId").val();
+            $.ajax({
+                type: 'GET',
+                url: "@Url.Action("GetEmployeeDocFiles", "RTWC")",
+                data: { "EmpId": emp_id, "docType": val },
+                cache: false,
+                success: function (response) {
+
+                    if (response != '' && response != undefined) {
+
+                        var ggn = "https://workerpermituk.ultimateit-bd.com/" + response;
+
+                        $("#imgeidsjnewThree").attr("src", ggn);
+                        $("#RTW_Report").val(response);
+
+                    } else {
+
+                        $("#imgeidsjnewThree").attr("src", "");
+                        $("#RTW_Report").val("");
+                    }
+
+
+
+                    // if (val == 'visa_upload_doc') {
+                    //     var nameArr = response.split(',');
+                    //     var gg = "https://hrms.workpermitcloud.co.uk/public/" + nameArr[0];
+                    //     $("#imgeidsj").attr("src", gg);
+                    //     if (nameArr[1] != '' && nameArr[1] != undefined) {
+                    //         var ggn = "https://hrms.workpermitcloud.co.uk/public/" + nameArr[1];
+                    //         $("#imgeidsjnew").attr("src", ggn);
+                    //         $("#scan_nrse_id").show();
+                    //     }
+                    // } else {
+                    //     var gg = "https://hrms.workpermitcloud.co.uk/public/" + response;
+                    //     $("#imgeidsj").attr("src", gg);
+                    // }
+
+
+                    // $("#scan_r_img").val(response);
+
+
+                }
+            });
+
+        }
+
+
+        function setEmpID(val) {
+            var empID = $("#EmpId").val();
+            $("#EmpId").val(empID);
+        }
+    </script>
+}

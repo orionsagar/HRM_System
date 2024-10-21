@@ -1,0 +1,38 @@
+﻿@{
+    PageHeaderProps bcdata = ViewBag.PageHeaderBagData;
+}
+
+<div class="row">
+    <div class="breadCrumContainer col-xl-12 col-md-12 ">
+        <div class="breadCrumWrapper">
+            <div class="pageName">
+                <span>@ViewBag.Title</span>
+            </div>
+            <div class="breadCrum">
+                <i class="fa fa-home"></i>
+                <span class="Divider">/</span>
+                <span class="section activeCrum">Form Page</span>
+
+                @* @{
+
+                    if (bcdata.BreadcrumbText != null && bcdata.BreadcrumbLink != null)
+                    {
+                        for (var i = 0; i < bcdata.BreadcrumbText.Length; i++)
+                        {
+                            <li class="breadcrumb-item">
+                                @if (bcdata.BreadcrumbLink[i] == "#")
+                                {
+                                    <a href="@Url.PageLink()">@bcdata.BreadcrumbText[i]</a>
+                                }
+                                else
+                                {
+                                    <a href="~/@bcdata.BreadcrumbLink[i]">@bcdata.BreadcrumbText[i]</a>
+                                }
+                            </li>
+                        }
+                    }
+                } *@
+            </div>
+        </div>
+    </div>
+</div>

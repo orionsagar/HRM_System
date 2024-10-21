@@ -1,0 +1,264 @@
+﻿@using Domains.Models;
+@using UKHRM.Extensions;
+@{
+    //var submodule_menu = (SubModule_Menu_VM)ViewBag.SubModule_Menu;
+    var routeData = ViewContext.RouteData;
+    var routeAction = routeData.Values["action"].ToString().ToLower();
+    var routeController = routeData.Values["controller"].ToString().ToLower();
+    //var menus = submodule_menu.Menu;
+
+    var modulesubmodule = (HomeMenuVM)ViewBag.ModuleSubModule;
+    var Module = modulesubmodule.MainModule;
+    var SubModule = modulesubmodule.SubModule;
+    var ChildMenuList = (List<UserAccessTools>)ViewBag.GetMenuPageName;
+    int RoleId = Convert.ToInt32(ViewBag.UserRoleID);
+
+    var preModuleName = "";
+    var controllerpage = "";
+    var actionPage = "";
+}
+
+<nav class="pcoded-navbar">
+    <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
+    <div class="pcoded-inner-navbar main-menu">
+        @* <div class="pcoded-navigation-label m-t-15"></div> *@
+        <span style="color: white; font-size: .4rem;">Navigation</span>
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="active">
+                <a href="/dashboard/index" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext">Dashboard</span>
+                    <span class=""></span>
+                </a>
+                
+                @{
+                    var link = "";
+                    var mmenucount = 0;
+                    var smenucount = 0;
+                    foreach (var item in Module)
+                    {
+                        var subModules = SubModule.Where(s => s.ModuleID == item.ModuleID).ToList();
+                        var menus = ChildMenuList.Where(m => m.ModuleID == item.ModuleID && m.RoleID == RoleId).Distinct().ToList();
+                        mmenucount = menus.Count;
+                        var data = ChildMenuList.Where(x => x.ModuleID == item.ModuleID && x.RoleID == Convert.ToInt32(ViewBag.UserRoleID)).OrderBy(x => x.SortIndex);
+                        @foreach (var childItemO in data)
+                        {
+                             link = !string.IsNullOrEmpty(childItemO.UAPage) ? childItemO.UAPage.ToString().ToLower() : "";
+                            if (!string.IsNullOrEmpty(link))
+                            {
+                                var routelink = routeController + "/" + routeAction;
+                                if (routelink.Contains(link))
+                                {
+                                    if (link.Contains("/") == true)
+                                    {
+                                        var pageSplit = link.Split("/");
+                                        controllerpage = pageSplit[0].ToString();
+                                        actionPage = pageSplit[1].ToString();
+                                    }
+                                    else
+                                    {
+                                        controllerpage = "";
+                                        actionPage = "";
+                                    }
+                                    break;
+                                }
+                                else
+                                {
+                                    controllerpage = "";
+                                    actionPage = "";
+                                }
+
+                            }
+                        }
+
+
+                        if (subModules.Any() && menus.Any())
+                        {
+                        <li class="pcoded-hasmenu @Html.ActiveClass(controllerpage,actionPage)">
+                            <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                <span class="pcoded-micon"><i class="ti-layout"></i><b>P</b></span>
+                                <span class="pcoded-mtext">@item.ModuleName</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+                                @{
+                                    foreach (var sm in subModules)
+                                    {
+                                            @foreach (var childItemO in ChildMenuList.Where(x => x.ModuleID == sm.ModuleID && x.SubModuleID == sm.SubModuleID && x.RoleID == Convert.ToInt32(ViewBag.UserRoleID)).OrderBy(x => x.SortIndex))
+                                            {
+                                                link = !string.IsNullOrEmpty(childItemO.UAPage) ? childItemO.UAPage.ToString().ToLower() : "";
+                                                if (!string.IsNullOrEmpty(link))
+                                                {
+                                                    var routelink = routeController + "/" + routeAction;
+                                                    if (routelink.Contains(link))
+                                                    {
+                                                        if (link.Contains("/") == true)
+                                                        {
+                                                            var pageSplit = link.Split("/");
+                                                            controllerpage = pageSplit[0].ToString();
+                                                            actionPage = pageSplit[1].ToString();
+                                                        }
+                                                        else
+                                                        {
+                                                            controllerpage = "";
+                                                            actionPage = "";
+                                                        }
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        controllerpage = "";
+                                                        actionPage = "";
+                                                    }
+
+                                                }
+                                            }
+
+
+                                        var menus1 = menus.Where(m => m.ModuleID == sm.ModuleID && sm.SubModuleID == m.SubModuleID && m.RoleID == RoleId).Distinct().OrderBy(o=>o.SortIndex).ToList();
+                                        smenucount = menus1.Count;
+                                        if (menus1.Count > 0)
+                                        {
+                                            mmenucount = mmenucount - smenucount;
+                                            <li class=" pcoded-hasmenu @Html.ActiveClass(controllerpage,actionPage)">
+                                                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="icon-pie-chart"></i></span>
+                                                    <span class="pcoded-mtext">@sm.SubModuleName</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                                <ul class="pcoded-submenu">
+                                                    @{
+
+                                                        foreach (var menu in menus1)
+                                                        {
+                                                                link = menu.UAPage;
+                                                                if (!string.IsNullOrEmpty(link))
+                                                                {
+                                                                    if (link.Contains("/") == true)
+                                                                    {
+                                                                        var pageSplit = link.Split("/");
+                                                                        controllerpage = pageSplit[0].ToString();
+                                                                        actionPage = pageSplit[1].ToString();
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        controllerpage = "";
+                                                                        actionPage = "";
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    controllerpage = "";
+                                                                    actionPage = "";
+                                                                }
+
+
+                                                            <li class="@Html.IsActive(controllerpage,actionPage)">
+                                                                <a href="/@menu.UAPage" class="waves-effect waves-dark">
+                                                                    <span class="pcoded-micon"><i class="icon-chart"></i></span>
+                                                                    <span class="pcoded-mtext">@menu.UseraccesstoolNM</span>
+                                                                    <span class="pcoded-mcaret"></span>
+                                                                </a>
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            var modulemenus = ChildMenuList.Where(m => m.SubModuleID == sm.SubModuleID && m.RoleID == RoleId).Distinct().ToList();
+                                            if (modulemenus.Count > 0)
+                                            {
+                                                foreach (var mmenu in modulemenus)
+                                                {
+                                                    <li class="@Html.IsActive(controllerpage,actionPage)">
+                                                        <a href="/@mmenu.UAPage" class="waves-effect waves-dark">
+                                                            <span class="pcoded-micon"><i class="icon-chart"></i></span>
+                                                            <span class="pcoded-mtext">@mmenu.UseraccesstoolNM</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        if (mmenucount > 0)
+                                                        {
+                                                            var menu = menus
+                                                                .Where(m => m.ModuleID == item.ModuleID && (m.SubModuleID == null) && m.RoleID == RoleId)
+                                                                .Distinct().OrderBy(o => o.SortIndex)
+                                                                .ToList();
+
+                                                            foreach (var m in menu)
+                                                            {
+                                            <li class="@Html.IsActive(controllerpage,actionPage)">
+                                                <a href="/@m.UAPage" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="icon-chart"></i></span>
+                                                    <span class="pcoded-mtext">@m.UseraccesstoolNM</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                }
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        menus = ChildMenuList.Where(m => m.ModuleID == item.ModuleID && m.RoleID == RoleId).Distinct().ToList();
+                        if (menus.Any())
+                        {
+                            if (menus.Count > 1)
+                            {
+                                <li class=" pcoded-hasmenu @Html.ActiveClass(controllerpage,actionPage)">
+                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="ti-layout"></i></span>
+                                        <span class="pcoded-mtext">@item.ModuleName</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                    <ul class="pcoded-submenu">
+                                        @{
+
+                                            foreach (var menu in menus)
+                                            {
+                                                <li class="@Html.IsActive(controllerpage,actionPage)">
+                                                    <a href="/@menu.UAPage" class="waves-effect waves-dark">
+                                                        <span class="pcoded-micon"><i class="icon-chart"></i></span>
+                                                        <span class="pcoded-mtext">@menu.UseraccesstoolNM</span>
+                                                        <span class="pcoded-mcaret"></span>
+                                                    </a>
+                                                </li>
+                                            }
+
+
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                            else
+                            {
+                                foreach (var menu in menus)
+                                {
+                                    <li class="@Html.IsActive(controllerpage,actionPage)">
+                                        <a href="/@menu.UAPage" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-layout-cta-right"></i><b>N</b></span>
+                                            <span class="pcoded-mtext">@menu.UseraccesstoolNM</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                }
+                            }
+
+                        }
+                    }
+                }
+                }
+            </ul>
+        </div>
+    </nav>
+
+
+
+ 

@@ -1,0 +1,97 @@
+﻿@model PasswordInvitationViewModel
+
+@{
+    ViewData["Title"] = "Password Setup";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+@{
+}
+
+<div class="rightSignInWrapper">
+    <div class="rightContentWrapper">
+        <div class="logo">
+            <img src="/Images/assets/Logo/WP-l.png" alt="Company Logo">
+        </div>
+        <div class="SignInContainer">
+            <div class="signInHeader">
+                <span>Password Setup</span>
+            </div>
+
+            <form asp-action="InvitePost" asp-controller="Invite" asp-route-ReturnUrl="@ViewBag.ReturnUrl" method="post" autocomplete="off">
+                <div class="formContainer">
+
+                    <input type="hidden" asp-for="Hashkey" />
+                    <input type="hidden" asp-for="UserID" />
+                    <input type="hidden" asp-for="InviteFrom" />
+
+                    <div class="msg">
+                        @if (ViewBag.errormessage != null)
+                        {
+                            <Span class="messageServe" data-Error="ServerError">@ViewBag.errormessage</Span>
+                        }
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    </div>
+
+                    <div class="signInTextGroup disabledField">
+                        <input type="text" asp-for="Email" name="Email" class="form-control" required="" disabled />
+                        <span class="form-bar"></span>
+                        <label class="float-label">Disabled</label>
+                    </div>
+
+                    @*<div class="signInTextGroup">
+            <input asp-for="Password" type="password" name="password" placeholder="Password" data-Field="password" required="">
+        </div>
+
+        <div class="signInTextGroup">
+            <input type="password" asp-for="ConfirmPassword" placeholder="Confirm Password" data-name="ConfirmPassword">
+        </div>*@
+                    @*<div class="colbased">*@
+                        <div class="registerTextGroup">
+                            <label>Password</label>
+                            <div class="inputSetup">
+                                <input type="password" asp-for="Password" placeholder="Password" required data-toggle="password-toggle" data-password="master" />
+                                <div class="faicons isInteract" data-toggle="passwordicon-toggle"><i class="fa-regular fa-eye-slash fa-2xs"></i></div>
+                            </div>
+                            <span class="fieldError" data-result="Error"></span>
+                            <div class="PassRegexStyle" hidden>
+                                <div class="PassRegexContainer">
+                                    <ul id="addRegexList">
+                                        <!-- Password rules will be dynamically added here -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="registerTextGroup IsInputInactive">
+                            <label>Confirm Password</label>
+                            <div class="inputSetup">
+                                <input type="password" asp-for="ConfirmPassword" placeholder="Confirm Password" required data-toggle="password-toggle" data-password="confirm" />
+                                <div class="faicons isInteract" data-toggle="passwordicon-toggle"><i class="fa-regular fa-eye-slash fa-2xs"></i></div>
+                            </div>
+                            <span data-notmatch="Error" id="confirmPasswordError" class="fieldError"></span>
+                        </div>
+                    @*</div>*@
+                    <div class="recaptchaGroup">
+                        <script src='https://www.google.com/recaptcha/api.js'></script>
+                        <div class="g-recaptcha" data-theme="light" data-type="image" data-sitekey="6LfhUYEpAAAAAIkIG4IEcWY6Nuui2EsQidwQXJYo"></div>
+                    </div>
+
+                    @* <div class="forgotPass">
+            <a href="#">Forgot your Password?</a>
+        </div> *@
+                    <!-- <div class="captcha">
+        <div class="signinCheck">
+            <input type="checkbox">
+            <label for="">Please Verify on captcha</label>
+        </div>
+    </div> -->
+                    <div class="signInBtn">
+                        <button type="submit" data-trigger="Validate">Save</button>
+                        @* <input type="submit" data-trigger="Validate" value="Sign in"/> *@
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    <script src="~/js/RegisterValidate.js"></script>

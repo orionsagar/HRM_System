@@ -1,0 +1,219 @@
+﻿@{
+    var sysdata = ViewBag.EmpInfo as CardVM;
+}
+
+<div class="row">
+    <!-- task, page, download counter  start -->
+    <div class="col-xl-3 col-md-3 text-center">
+        <a href="/organisation/index">
+            <div class="card">
+                <div class="card-block">
+                    <div class="row align-items-center m-l-0">
+                        <div class="col-auto">
+                            <i class="fa fa-building f-28"></i>
+                        </div>
+                        <div class="col-auto">
+                            <h6 class="text-muted m-b-10">Total Organisation</h6>
+                            <h2 class="m-b-0">@sysdata.TotalOrganisation</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-xl-3 col-md-3 text-center">
+        <a href="/dashboard/activeclient">
+            <div class="card">
+                <div class="card-block">
+                    <div class="row align-items-center m-l-0">
+                        <div class="col-auto">
+                            <i class="fa fa-user f-28"></i>
+                        </div>
+                        <div class="col-auto">
+                            <h6 class="text-muted m-b-10">Active Client</h6>
+                            <h2 class="m-b-0">@sysdata.TotalActiveClient</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+    <div class="col-xl-3 col-md-3 text-center">
+        <a href="/dashboard/inactiveclient">
+            <div class="card">
+                <div class="card-block">
+                    <div class="row align-items-center m-l-0">
+                        <div class="col-auto">
+                            <i class="fa fa-street-view f-28"></i>
+                        </div>
+                        <div class="col-auto">
+                            <h6 class="text-muted m-b-10">Inactive Client</h6>
+                            <h2 class="m-b-0">@sysdata.TotalInactiveClient</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-xl-3 col-md-3 text-center">
+        <a href="/dashboard/pendingclient">
+            <div class="card">
+                <div class="card-block">
+                    <div class="row align-items-center m-l-0">
+                        <div class="col-auto">
+                            <i class="fa fa-user-circle f-28"></i>
+                        </div>
+                        <div class="col-auto">
+                            <h6 class="text-muted m-b-10">Pending Client</h6>
+                            <h2 class="m-b-0">@sysdata.TotalPendingClient</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <!--  project and team member start -->
+    <div class="col-xl-12 col-md-12">
+        <div class="card table-card">
+            <div class="card-header">
+                <div class="row">
+
+                    <div class="col-md-6 ">
+                        <h4>Registered Client/Solicitor</h4>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        @*<a href="/client/create" class="btn btn-primary btn-sm">Invite New Client</a>*@
+                        <button type="button" class="btn btn-primary btn-sm waves-effect" data-toggle="modal" data-target="#invite">Invite New Client</button>
+                        <a href="/client/create" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>Add New client</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="dt-client-sysdashboard">
+                        <thead>
+                            <tr>
+                                <th>Client Id</th>
+                                <th>Client Name</th>
+                                <th>Number Of Org</th>
+                                <th>Contact</th>
+                                <th>Email</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-12 col-md-12">
+        <div class="card table-card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Organisation Information</h5>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a href="/organisation/create" class="btn btn-sm waves-effect waves-dark btn-primary btn-outline-primary"><i class="icofont icofont-plus"></i></a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="dt-dashOrg">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Org Name</th>
+                                <th>Subscription Type</th>
+                                <th>Number of Employee</th>
+                                <th>Contact</th>
+                                <th>Status</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="col-md-12 text-right">
+                    <a href="/organisation/index" class="btn btn-sm waves-effect waves-dark btn-primary btn-outline-primary">View All</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-12 col-md-12">
+        <div class="card table-card">
+            <div class="card-header">
+                <h4>Summary / Status</h4>
+            </div>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="nav nav-pills">
+                            <a href="#tmonth" class="nav-link active" data-toggle="pill" id="textsize">
+                                This Month
+                            </a>
+                            <a href="#lmonth" class="nav-link" data-toggle="pill" id="textsize">
+                                Last Month
+                            </a>
+                        </div>
+                        <br />
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tmonth">
+                                <div class="table-responsive dt-responsive">
+                                    <table id="dt-client-earning" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Gross Earning</th>
+                                                <th>Due Amount</th>
+                                                <th>New Registration</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>$1000</td>
+                                                <td>$800</td>
+                                                <td>2</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="lmonth">
+                                <div class="table-responsive dt-responsive">
+                                    <table id="dt-org-earning" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Gross Earning</th>
+                                                <th>Due Amount</th>
+                                                <th>New Registration</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>$8000</td>
+                                                <td>$200</td>
+                                                <td>6</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+    
+
+

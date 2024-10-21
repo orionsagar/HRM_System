@@ -1,0 +1,108 @@
+﻿@{
+    ViewData["Title"] = "Module Menu";
+}
+@{
+
+    string[] BCText = new string[] { "Module Menu List" };
+    string[] BCLink = new string[] { "menu/index" };
+    string createlink = "menu/create";
+    string linkname = "Add New";
+    PageHeaderProps pageHeader = new PageHeaderProps
+    {
+        PageTitle = "Sub Module Info",
+        PageDesc = "Sub Module Info",
+        PageCreateLink = createlink,
+        PageCreateLinkName = linkname,
+        BreadcrumbText = BCText,
+        BreadcrumbLink = BCLink,
+        IsAdd = ViewBag.IsAdd
+    };
+}
+
+
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Ajax data source (Arrays) table start -->
+            <div class="card">
+                <div class="card-header">
+                    @await Component.InvokeAsync("PageHeader", pageHeader)
+                </div>
+                <div class="card-block">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3">Module:</label>
+                                    <div class="col-md-9">
+                                        <select id="ModuleID" asp-items="ViewBag.ModuleId" class="form-control">
+                                            <option value="0">Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3">Sub Module:</label>
+                                    <div class="col-md-9">
+                                        <select id="SubModuleID" asp-items="ViewBag.SubModuleId" class="form-control">
+                                            <option value="">Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="col-md-4">
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3">Module:</label>
+                                        <div class="col-md-9">
+                                            <select id="RoleId" asp-items="ViewBag.RoleId" class="form-control">
+                                                <option value="0">Select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <button id="btnMenuSearch" class="btn btn-info btn-sm waves-effect waves-light">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive dt-responsive">
+                        <table id="dt-Menu" class="table table-striped table-bordered nowrap">
+                            <thead>
+                                <tr>
+                                    <th>uaToolid</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Menu Name</th>
+                                    <th>SubModule Name</th>
+                                    <th>Module</th>
+                                    <th>Page Link</th>
+                                    <th>Is Menu</th>
+                                    <th>SortIndex</th>
+                                    <th>Role Name</th>
+                                    <th>Company Name</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Ajax data source (Arrays) table end -->
+        </div>
+    </div>
+</div>
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+
+    <script src="~/custom/js/menu.js"></script>
+    <script>
+        $('#ModuleID').select2();
+        $('#SubModuleID').select2();
+    </script>
+}

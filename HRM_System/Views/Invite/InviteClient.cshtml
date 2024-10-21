@@ -1,0 +1,366 @@
+﻿@model ClientViewModel
+@inject IGlobalHelper _global;
+
+
+@{
+    ViewData["Title"] = "Client Registration";
+    Layout = null;
+}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="~/css/login.css">
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/minify/css/minifyedpnotify.css" rel="stylesheet" />
+<link href="~/custom/css/HoldOn.min.css" rel="stylesheet" />
+
+<div class="RegisterBodyContainer">
+    <div class="RegisterWrapper">
+        <div class="RegisterContentWrapper">
+            <div class="logo">
+                <img src="/Images/assets/Logo/WP-l.png" alt="Company Logo">
+            </div>
+            <div class="RegisterContainer">
+                <div class="RegisterHeader">
+                    <span>Client Registration</span>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="InnerWrapper_invite">
+
+                                    <form id="main" asp-action="InviteClient" asp-controller="Invite" method="post" enctype="multipart/form-data" class="j-pro border-0 ml-2" novalidate>
+
+                                        <p>(<span class="text-danger">*</span>) marked are all madatory fields.</p>
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+
+                                        <h4 class="sub-title">Client Information</h4>
+                                        <input type="hidden" asp-for="ClientID" />
+                                        <div class="form-group row">
+                                            <div class="col-sm-12" id="divclienttype">
+                                                <label asp-for="ClientType" class="form-label">Client Type</label><span class="text-danger"> *</span>
+                                                <select asp-for="ClientType" class="form-control form-control">
+                                                    <option selected>Law Firm</option>
+                                                    <option>Individual Solicitor</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                                <span asp-validation-for="ClientType" class="text-danger form-bar"></span>
+                                            </div>
+                                            <div class="col-sm-6 d-none" id="divclienttype1">
+                                                <label asp-for="ClientType1" class="float-label">Client Type</label><span class="text-danger"> *</span>
+                                                <input asp-for="ClientType1" class="form-control form-control" />
+                                                <span asp-validation-for="ClientType1" class="text-danger form-bar"></span>
+                                                <span id="erroremail" class="text-danger" style="display:none;"></span>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-sm-6">
+                                                <label asp-for="Name" class="float-label"></label><span class="text-danger"> *</span>
+                                                <input asp-for="Name" class="form-control form-control name" />
+                                                <span asp-validation-for="Name" class="text-danger form-bar"></span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label asp-for="Logo" class="form-label"></label>
+                                                <div class="input-group">
+                                                    <input type="file" id="Logofile" name="Logofile" class="custom-file-input form-control-lg" accept="image/*" onchange="return fileValidation()">
+                                                    <label class="custom-file-label" for="Logo">Upload image</label>
+                                                </div>
+                                                <span asp-validation-for="Logo" class="text-danger form-bar"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-sm-6">
+                                                <label asp-for="Email1" class="float-label"></label><span class="text-danger"> *</span>
+                                                <input asp-for="Email1" class="form-control form-control name" readonly />
+                                                <span asp-validation-for="Email1" class="text-danger form-bar"></span>
+                                                <span id="erroremail" class="text-danger" style="display:none;"></span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label asp-for="Phone1" class="float-label"></label><span class="text-danger"> *</span>
+                                                <input asp-for="Phone1" class="form-control form-control PN" />
+                                                <span asp-validation-for="Phone1" class="text-danger form-bar"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-sm-6">
+                                                <label asp-for="Address" class="form-label"></label><span class="text-danger"> *</span>
+                                                <textarea asp-for="Address" class="form-control form-control"></textarea>
+                                                <span asp-validation-for="Address" class="text-danger form-bar"></span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label asp-for="City" class="form-label"></label><span class="text-danger"> *</span>
+                                                <input asp-for="City" class="form-control form-control" />
+                                                <span asp-validation-for="City" class="text-danger form-bar"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-sm-6">
+                                                <label asp-for="State" class="form-label"></label><span class="text-danger"> *</span>
+                                                <input asp-for="State" class="form-control form-control" />
+                                                <span asp-validation-for="State" class="text-danger form-bar"></span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label asp-for="PostCode" class="form-label"></label><span class="text-danger"> *</span>
+                                                <input asp-for="PostCode" class="form-control form-control" />
+                                                <span asp-validation-for="PostCode" class="text-danger form-bar"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+
+                                            <div class="col-sm-6">
+                                                <label asp-for="Country" class="form-label"></label>
+                                                <select class="form-control form-control" asp-for="Country">
+                                                    <option value="Austria">Austria</option>
+                                                    <option value="Belgium">Belgium</option>
+                                                    <option value="Denmark">Denmark</option>
+                                                    <option value="Finland">Finland</option>
+                                                    <option value="France">France</option>
+                                                    <option value="Germany">Germany</option>
+                                                    <option value="Ireland">Ireland</option>
+                                                    <option value="Italy">Italy</option>
+                                                    <option value="Liechtenstein">Liechtenstein</option>
+                                                    <option value="Lithuania">Lithuania</option>
+                                                    <option value="Luxembourg">Luxembourg</option>
+                                                    <option value="Netherlands">Netherlands</option>
+                                                    <option value="Norway">Norway</option>
+                                                    <option value="Poland">Poland</option>
+                                                    <option value="Portugal">Portugal</option>
+                                                    <option value="Spain">Spain</option>
+                                                    <option value="Sweden">Sweden</option>
+                                                    <option value="Switzerland">Switzerland</option>
+                                                    <option value="United Kingdom" selected>United Kingdom</option>
+                                                </select>
+                                                <span asp-validation-for="Country" class="text-danger form-bar"></span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label asp-for="Email2" class="form-label"></label>
+                                                <input asp-for="Email2" class="form-control form-control" />
+                                                <span asp-validation-for="Email2" class="text-danger form-bar"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-sm-6">
+                                                <label asp-for="Phone2" class="form-label"></label>
+                                                <input asp-for="Phone2" class="form-control form-control PN" />
+                                                <span asp-validation-for="Phone2" class="text-danger form-bar"></span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="form-label" asp-for="Establishment_Year"></label>
+                                                <input asp-for="Establishment_Year" class="form-control form-control" />
+                                                <span asp-validation-for="Establishment_Year" class="text-danger form-bar"></span>
+                                            </div>
+                                        </div>
+
+
+                                        <h4 class="sub-title"> Login Information </h4>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <label asp-for="ClientSAEmail" class="float-label"></label>
+                                                        <input type="email" asp-for="ClientSAEmail" class="form-control form-control" readonly />
+                                                        <span asp-validation-for="ClientSAEmail" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*<div class="col-sm-6">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <label asp-for="Password" class="float-label"></label>
+                                                        <input type="password" asp-for="Password" class="form-control form-control" data-password="master" />
+                                                        <span asp-validation-for="Password" class="text-danger form-bar"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <label asp-for="ConfirmPassword" class="float-label"></label>
+                                                        <input type="password" asp-for="ConfirmPassword" class="form-control form-control" data-password="confirm" />
+                                                        <span asp-validation-for="ConfirmPassword" class="text-danger form-bar" data-notmatch="Error"></span>
+                                                        <span id="errorsaemail" class="text-c-red" style="display:none;"></span>
+                                                    </div>
+                                                </div>
+                                            </div>*@
+                                    <div class="colbased">
+                                        <div class="registerTextGroup">
+                                            <label>Password</label>
+                                            <div class="inputSetup">
+                                                <input type="password" asp-for="Password" placeholder="Password" required data-toggle="password-toggle" data-password="master" />
+                                                <div class="faicons isInteract" data-toggle="passwordicon-toggle"><i class="fa-regular fa-eye-slash fa-2xs"></i></div>
+                                            </div>
+                                            <span class="fieldError" data-result="Error"></span>
+                                            <div class="PassRegexStyle" hidden>
+                                                <div class="PassRegexContainer">
+                                                    <ul id="addRegexList">
+                                                        <!-- Password rules will be dynamically added here -->
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="registerTextGroup IsInputInactive">
+                                            <label>Confirm Password</label>
+                                            <div class="inputSetup">
+                                                <input type="password" asp-for="ConfirmPassword" placeholder="Confirm Password" required data-toggle="password-toggle" data-password="confirm" />
+                                                <div class="faicons isInteract" data-toggle="passwordicon-toggle"><i class="fa-regular fa-eye-slash fa-2xs"></i></div>
+                                            </div>
+                                            <span data-notmatch="Error" id="confirmPasswordError" class="fieldError"></span>
+                                        </div>
+                                    </div>
+
+                                        <!-- manual code to this action btn are available in the Manual Update CSS -->
+                                        <div class="row pt-4">
+                                            <div class="col-md-12">
+                                                <div class="card-block actionBtnRight ">
+                                                    <input type="submit" value="Submit" class="btn btn-primary waves-effect waves-light" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/loginValidate.js"></script>
+<script src="~/js/RegisterValidate.js"></script>
+<script src="~/bower_components/jquery/js/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/minify/js/minifyedpnotify.js"></script>
+<script src="~/custom/js/HoldOn.min.js"></script>
+
+
+@*<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the password fields
+            const passwordField = document.querySelector('[data-password="master"]');
+            const confirmPasswordField = document.querySelector('[data-password="confirm"]');
+            const passwordMatchMessage = document.querySelector('[data-notmatch="Error"]');
+
+            function checkPasswordMatch() {
+                if (passwordField.value === confirmPasswordField.value) {
+                    passwordMatchMessage.innerText = "Password matched";
+                    passwordMatchMessage.classList.remove("text-danger");
+                    passwordMatchMessage.classList.add("text-success");
+                } else {
+                    passwordMatchMessage.innerText = "Passwords do not match";
+                    passwordMatchMessage.classList.remove("text-success");
+                    passwordMatchMessage.classList.add("text-danger");
+                }
+                if (passwordField.value == "" && confirmPasswordField.value == "") {
+                    passwordMatchMessage.innerText = "";
+                }
+            }
+
+            passwordField.addEventListener("keyup", function () {
+                if (passwordField.value.length > 5) {
+                    passwordField.value = passwordField.value.slice(0, 5);
+                }
+                checkPasswordMatch();
+            });
+
+            confirmPasswordField.addEventListener("keyup", function () {
+                if (confirmPasswordField.value.length > 5) {
+                    confirmPasswordField.value = confirmPasswordField.value.slice(0, 5);
+
+                }
+                checkPasswordMatch();
+            });
+        });
+    </script>*@
+<script>
+    $(document).on('change', '#ClientType', function () {
+        let Type = $(this).val();
+        if (Type == 'Others') {
+            $('#divclienttype').removeClass('col-sm-12').show();
+            $('#divclienttype').addClass('col-sm-6').show();
+            $('#divclienttype1').removeClass('d-none').show();
+        } else {
+            $('#divclienttype1').addClass('d-none').hide();
+            $('#divclienttype').removeClass('col-sm-6').show();
+            $('#divclienttype').addClass('col-sm-12').show();
+        }
+    })
+
+    function fileValidation() {
+        const fileInput = document.getElementById('Logofile');
+        const file = fileInput.files[0];
+
+        if (!file) {
+            alert("Please select a file.");
+            const label = document.querySelector('.custom-file-label');
+            label.innerText = "Upload image";
+            return false;
+        }
+
+        const fileName = file.name;
+        const fileURL = URL.createObjectURL(file);
+        const label = document.querySelector('.custom-file-label');
+        label.innerText = fileName;
+        label.dataset.fileUrl = fileURL;
+
+        return true;
+    }
+</script>
+<script>
+    //---------------- duplicate email check -----------------//
+    $('#Email1').blur(function () {
+        let email = $(this).val();
+        $.get('/client/checkemail', { Email: email }, function (data, success, xhr) {
+            if (success == 'success') {
+                if (data != "") {
+                    $('#erroremail').text(data).show();
+                    $('#Email1').val('');
+
+                } else {
+                    $('#erroremail').text('');
+                    $('#erroremail').hide();
+                }
+            }
+        })
+    });
+    $('#ClientSAEmail').blur(function () {
+        let email = $(this).val();
+        $.get('/client/checkemail', { Email: email }, function (data, success, xhr) {
+            if (success == 'success') {
+                if (data != "") {
+                    $('#errorsaemail').text(data).show();
+                    $('#ClientSAEmail').val('');
+
+                } else {
+                    $('#errorsaemail').text('');
+                    $('#errorsaemail').hide();
+                }
+            }
+        })
+    });
+
+</script>

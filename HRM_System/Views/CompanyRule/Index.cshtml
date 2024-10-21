@@ -1,0 +1,371 @@
+﻿@model CompanyRule
+
+@{
+    ViewData["Title"] = "Company Rules";
+    List<RuleDefined> rulesDefined = ViewBag.RuleDefineds as List<RuleDefined> ?? new();
+    List<CompanyRule> companyRules = ViewBag.CompanyRules as List<CompanyRule> ?? new();
+}
+
+
+@section PageName {
+    Company Rules
+}
+@section Breadcrumb {
+    <a href="/CompanyRule/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">Company Rules</span>
+}
+
+
+@*@{
+    string[] BCText = new string[] { "Company Rules" };
+    string[] BCLink = new string[] { "CompanyRule/index" };
+    PageHeaderProps pageHeader = new PageHeaderProps
+    {
+        PageTitle = "Company Rules",
+        PageDesc = "Company Rules",
+        BreadcrumbText = BCText,
+        BreadcrumbLink = BCLink,
+        IsAdd = ViewBag.IsAdd
+    };
+}
+@await Component.InvokeAsync("NewPageHeader", pageHeader)*@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label asp-for="OrgID" class="float-label">Organisation</label><span class="text-danger"> *</span>
+                        <select asp-for="OrgID" asp-items="ViewBag.OrgId" class="form-control form-control-lg" required>
+                            <option value="">Select</option>
+                        </select>
+                        <span asp-validation-for="OrgID" class="text-danger form-bar"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row">
+
+                    @*----------- One Day Salary ---------------*@
+                    <div class="col-sm-12 col-md-12 col-xl-12 m-b-30">
+                        <h4 class="sub-title">One Day Salary</h4>
+                        <div class="form-radio">
+
+                            @foreach (var item in rulesDefined.Where(a => a.RuleGroup.ToLower() == "one day salary"))
+                            {
+                                var chk = companyRules.Any(a => a.RuleID == item.RuleID) ? "checked" : "";
+                                <div class="radio radiofill radio-inline col-sm-6">
+                                    <label>
+                                        <input type="radio" name="OneDaySalary" id="@item.RuleCode" value="@item.RuleID" @chk />
+                                        <i class="helper"></i>@item.RuleName
+                                    </label>
+
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+
+                    @*----------- Lunch Absent ---------------*@
+                    <div class="col-sm-12 col-md-12 col-xl-12 m-b-30">
+                        <h4 class="sub-title">Lunch Absent</h4>
+                        @{
+                            var lunchAbsRuleId = rulesDefined.FirstOrDefault(a => a.RuleCode.ToLower() == "ln-001")?.RuleID;
+                            var lunchAbs = companyRules.FirstOrDefault(a => a.RuleID == lunchAbsRuleId)?.ParamValue ?? 0;
+                        }
+
+                        <input type="hidden" name="LunchAbsentId" id="LunchAbsentId" value="@lunchAbsRuleId" />
+                        <label for="LunchAbsent">Lunch Absent =1/<input type="number" style="width:100px;" name="LunchAbsent" id="LunchAbsent" value="@lunchAbs" /> Present Days</label>
+                    </div>
+
+                    @*----------- Late Absent ---------------*@
+                    <div class="col-sm-12 col-md-12 col-xl-12 m-b-30">
+                        <h4 class="sub-title">Late Absent</h4>
+                        @{
+                            var lateAbsRuleId = rulesDefined.FirstOrDefault(a => a.RuleCode.ToLower() == "la-001")?.RuleID;
+                            var lateAbs = companyRules.FirstOrDefault(a => a.RuleID == lateAbsRuleId)?.ParamValue ?? 0;
+                        }
+
+                        <input type="hidden" name="LateAbsentId" id="LateAbsentId" value="@lateAbsRuleId" />
+                        <label for="LateAbsent"><input type="number" style="width:100px;" name="LateAbsent" id="LateAbsent" value="@lateAbs" /> Days Late = 1 Day Absent</label>
+                        <label class="d-block text-danger">Note: 0 means Late allow</label>
+                    </div>
+
+                    @*----------- Grade Setup ---------------*@
+                    <div class="col-sm-12 col-md-12 col-xl-12 m-b-30">
+                        <h4 class="sub-title">Grade Setup</h4>
+                        <div class="form-radio">
+                            @foreach (var item in rulesDefined.Where(a => a.RuleGroup.ToLower() == "grade setup"))
+                            {
+                                var chk = companyRules.Any(a => a.RuleID == item.RuleID) ? "checked" : "";
+                                <div class="radio radiofill radio-inline col-sm-6">
+                                    <label for="@item.RuleCode">
+                                        <input type="radio" name="GradeSetup" id="@item.RuleCode" value="@item.RuleID" @chk />
+                                        <i class="helper"></i>@item.RuleName
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row">
+
+                    @*----------- Attendance Bonus ---------------*@
+                    <div class="col-sm-12 col-md-12 col-xl-12 m-b-30">
+                        <h4 class="sub-title">Attendance Bonus</h4>
+                        <div class="border-checkbox-section">
+                            @foreach (var item in rulesDefined.Where(a => a.RuleGroup.ToLower() == "attendance bonus" && a.RuleCode.ToLower() != "ab-003"))
+                            {
+                                var chk = companyRules.Any(a => a.RuleID == item.RuleID) ? "checked" : "";
+                                <div class="border-checkbox-group border-checkbox-group-primary">
+                                    <input class="border-checkbox" type="checkbox" name="@item.RuleCode" id="@item.RuleCode" value="@item.RuleID" @chk />
+                                    <label class="border-checkbox-label" for="@item.RuleCode">@item.RuleName</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    @*----------- Working Day Count ---------------*@
+                    <div class="col-sm-12 col-md-12 col-xl-12 m-b-30">
+                        <h4 class="sub-title">Working Day Count</h4>
+                        <div class="form-radio">
+                            @foreach (var item in rulesDefined.Where(a => a.RuleGroup.ToLower() == "working day count"))
+                            {
+                                var chk = companyRules.Any(a => a.RuleID == item.RuleID) ? "checked" : "";
+                                <div class="radio radiofill radio-inline">
+                                    <label for="@item.RuleCode">
+                                        <input type="radio" name="WorkingDayCount" id="@item.RuleCode" value="@item.RuleID" @chk />
+                                        <i class="helper"></i>@item.RuleName
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    @*------------ Pay Holiday -------------*@
+                    <div class="col-sm-12 col-md-12 col-xl-12 m-b-30">
+                        <h4 class="sub-title">Pay Holiday</h4>
+                        <div class="form-radio">
+                            @foreach (var item in rulesDefined.Where(a => a.RuleGroup.ToLower() == "pay holiday"))
+                            {
+                                var chk = companyRules.Any(a => a.RuleID == item.RuleID) ? "checked" : "";
+                                <div class="radio radiofill radio-inline">
+                                    <label for="@item.RuleCode">
+                                        <input type="radio" name="PayHoliday" id="@item.RuleCode" value="@item.RuleID" @chk />
+                                        <i class="helper"></i>@item.RuleName
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    @*------------ Leave between holidays count as -------------*@
+                    <div class="col-sm-12 col-md-12 col-xl-12 m-b-30">
+                        <h4 class="sub-title">Pay Holiday</h4>
+                        <div class="form-radio">
+                            @foreach (var item in rulesDefined.Where(a => a.RuleGroup.ToLower() == "leave between holiday"))
+                            {
+                                var chk = companyRules.Any(a => a.RuleID == item.RuleID) ? "checked" : "";
+                                <div class="radio radiofill radio-inline">
+                                    <label for="@item.RuleCode">
+                                        <input type="radio" name="LeaveBetweenHoliday" id="@item.RuleCode" value="@item.RuleID" @chk />
+                                        <i class="helper"></i>@item.RuleName
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-block actionBtnRight">
+                <button id="btnSubmit" class="btn btn-primary waves-effect waves-light m-r-20">Submit</button>
+                @* <button class="btn btn-primary waves-effect waves-light m-r-20">Save</button>*@
+                @*<button type="button" class="btn btn-danger btn-link">Cancel</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $("#btnSubmit").click(function () {
+
+                if (!confirm("Are sure to submit company rules?")) {
+                    return;
+                }
+
+                let rules = [];
+                /*-------- Organisation ----------*/
+                let OrgID = $('#OrgID').val() || 0;
+                if (OrgID == 0) {
+                    WarningPNotify('Organisation not selected.');
+                    return;
+                }
+                /*------ One Day Salary --------*/
+                let oneDaySalary = {
+                    '@nameof(CompanyRule.RuleID)': $("input[name='OneDaySalary']:checked").val() || 0,
+                    '@nameof(CompanyRule.ParamValue)': 0,
+                    '@nameof(CompanyRule.OrgID)': OrgID,
+                }
+                rules.push(oneDaySalary);
+
+                /*------  Lunch Absent --------*/
+                let lAbsent = $("#LunchAbsent").val() || 0;
+                if (lAbsent <= 0) {
+                    WarningPNotify('Lunch absent should be greater than 0 !!');
+                    return;
+                }
+                let lunchAbsent = {
+                    '@nameof(CompanyRule.RuleID)': $("#LunchAbsentId").val(),
+                    '@nameof(CompanyRule.ParamValue)': lAbsent,
+                    '@nameof(CompanyRule.OrgID)': OrgID,
+                }
+                rules.push(lunchAbsent);
+
+                /*------  Late Absent --------*/
+                let lateDays = $("#LateAbsent").val() || 0;
+                if (lateDays < 0) {
+                    WarningPNotify('Late absent should be non negative number !!');
+                    return;
+                }
+                let lateAbsent = {
+                    '@nameof(CompanyRule.RuleID)': $("#LateAbsentId").val(),
+                    '@nameof(CompanyRule.ParamValue)': lateDays,
+                    '@nameof(CompanyRule.OrgID)': OrgID,
+                }
+                rules.push(lateAbsent);
+
+                /*------ Grade Setup --------*/
+                let gradeSetup = {
+                    '@nameof(CompanyRule.RuleID)': $("input[name='GradeSetup']:checked").val() || 0,
+                    '@nameof(CompanyRule.ParamValue)': 0,
+                    '@nameof(CompanyRule.OrgID)': OrgID,
+                }
+                rules.push(gradeSetup);
+
+
+                /*------ Attendance Bonus --------*/
+                let AB001 = $("#AB-001").is(":checked");
+                let AB002 = $("#AB-002").is(":checked");
+
+                if (AB001) {
+                    let attBonus1Setup = {
+                        '@nameof(CompanyRule.RuleID)': $("#AB-001").val() || 0,
+                        '@nameof(CompanyRule.ParamValue)': 0,
+                        '@nameof(CompanyRule.OrgID)': OrgID,
+                    }
+                    rules.push(attBonus1Setup);
+                }
+
+                if (AB002) {
+                    let attBonus2Setup = {
+                        '@nameof(CompanyRule.RuleID)': $("#AB-002").val() || 0,
+                        '@nameof(CompanyRule.ParamValue)': 0,
+                        '@nameof(CompanyRule.OrgID)': OrgID,
+                    }
+                    rules.push(attBonus2Setup);
+                }
+                /*----------------- End ----------------------*/
+
+
+                /*------  Working Day Count --------*/
+                let workingDayCount = {
+                    '@nameof(CompanyRule.RuleID)': $("input[name='WorkingDayCount']:checked").val() || 0,
+                    '@nameof(CompanyRule.ParamValue)': 0,
+                    '@nameof(CompanyRule.OrgID)': OrgID,
+                }
+                rules.push(workingDayCount);
+
+                /*------  Extra OT Deduction --------*/
+        @*let extraOT = $("#ExtraOTDeduction").val() || 0;
+                if (extraOT < 0) {
+                WarningPNotify('Extra OT should be non negative number !!');
+                return;
+                }
+                let extraOTDeduction = {
+                '@nameof(CompanyRule.RuleID)': $("#ExtraOTDeductionId").val(),
+                '@nameof(CompanyRule.ParamValue)': extraOT,
+                }
+                rules.push(extraOTDeduction);*@
+
+
+                    /*------ Pay Holiday --------*/
+                    let payHoliday = {
+                        '@nameof(CompanyRule.RuleID)': $("input[name='PayHoliday']:checked").val() || 0,
+                        '@nameof(CompanyRule.ParamValue)': 0,
+                        '@nameof(CompanyRule.OrgID)': OrgID,
+                    }
+                rules.push(payHoliday);
+
+                /*------ Leave Between Holiday --------*/
+
+                let leaveHoliday = {
+                    '@nameof(CompanyRule.RuleID)': $("input[name='LeaveBetweenHoliday']:checked").val() || 0,
+                    '@nameof(CompanyRule.ParamValue)': 0,
+                    '@nameof(CompanyRule.OrgID)': OrgID,
+                }
+                rules.push(leaveHoliday);
+
+                // Filter only those Rules where ruleId assign
+                rules = rules.filter(a => a.RuleID != 0);
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Index", "CompanyRule")",
+                    data: { rules },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                            SuccessPNotify(res.message);
+                            window.location.reload();
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+            });
+        });
+
+
+    </script>
+
+}

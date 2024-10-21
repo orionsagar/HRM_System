@@ -1,0 +1,1599 @@
+﻿@model CompanyViewModel
+
+
+@{
+    ViewData["Title"] = "Company Create";
+    Layout = "~/Views/Shared/_Main_Layout.cshtml";
+}
+
+
+
+<!-- PROFILE TAB STARTS -->
+<section>
+    <div class="contentSection">
+        <div class="breadCrumHeaders">
+            <p>Organization Registration</p>
+        </div>
+
+        <!-- PROFILE TAB STARTS -->
+        <div class="allFormContainer">
+            <div class="OrganizationTabs">
+                <ul>
+                    <li id="pro" class="tabItem tabActive">Profile</li>
+                    <li id="ool" class="tabItem">Organization Outlook</li>
+                    <li id="rto" class="tabItem">Real Time Outlook</li>
+                    <li id="ao" class="tabItem">Authorising Officer</li>
+                    <li id="kc" class="tabItem">Key Contact</li>
+                    <li id="l1u" class="tabItem">Level 1 User</li>
+                    <li id="odoc" class="tabItem">Organization DOC</li>
+
+                </ul>
+            </div>
+            <div id="ProfileContainer" class="tabFormContainer tabFormContainerShow">
+
+                <div class="mainFormContainer">
+
+                    <div class="col1">
+
+                        <div class="colHeader">
+                            <span>General Information</span>
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="Name">Organization Registered Name</label></span>
+                            <input type="text" asp-for="Name" placeholder="Johnson&sons" readonly>
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="TradeName">Trading Name</label></span>
+                            <input type="text" asp-for="TradeName" placeholder="BabyPaw">
+                            <div class="infocircile">
+                                <i class="fa-solid fa-info"></i>
+                                <span class="tooltiptext">If trading name not available, Use company name</span>
+                            </div>
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="RegitrationNumber">Registration Number</label></span>
+                            <input type="text" asp-for="RegitrationNumber" placeholder="UAEFX12">
+                            <div class="infocircile">
+                                <i class="fa-solid fa-question"></i>
+                            </div>
+                        </div>
+
+                        <div class="formSelectGroup">
+                            <span class="selectlabel"><label asp-for="OrganizationType">Type of Organization</label></span>
+                            <select asp-for="OrganizationType">
+                                <option value="PrivateCompanyLimitedbyshares">Private Company Limited by shares</option>
+                                <option value="CharitableIncorporatedOrganization">Charitable Incorporated Organization</option>
+                                <option value="IndustrialandProvidentSociety">Industrial and Provident Society</option>
+                                <option value="GeneralPartnership">General Partnership</option>
+                                <option value="LimitedLiabilityPartnershipLLP">Limited Liability Partnership-LLP</option>
+                                <option value="ScottishLimitedPartnership">Scottish Limited Partnership</option>
+                                <option value="LimitedPartnershiplc">Limited Partnership-LP</option>
+                                <option value="communityinterestcompany">Community Interest Company</option>
+                                <option value="PrivateCompanyLimitedByGuarantee">Private Company Limited by guarantee</option>
+                                <option value="PublicLimitedCompany">Public Limited Company</option>
+                                <option value="soleproprietorship">Sole Proprietorship</option>
+                                <option value="Others">Others</option>
+
+
+                            </select>
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="OrganizationSize">Organization Size</label></span>
+                            <input type="text" asp-for="OrganizationSize" placeholder="Large" readonly>
+                        </div>
+
+
+                        <div class="formSelectGroup">
+                            <span class="selectlabel"><label asp-for="SectorName">Sector Name</label></span>
+                            <select asp-for="SectorName">
+                                <option value="1">Accomodation and Food Service Activities</option>
+                                <option value="2">Activities of extraterritorial organizations and bodies</option>
+                                <option value="3">Activities of households as employers; undifferentiated goods-andservices-products</option>
+                                <option value="4">Administrative and Support Service Activities</option>
+                                <option value="5">Agriculture, Forestry and Fishing</option>
+                                <option value="6">Arts, Entertainment and Recreation</option>
+                                <option value="7">Construction</option>
+                                <option value="8">Education</option>
+                                <option value="9">Electricity, Gas, Steam and Air Conditioning Supply</option>
+                                <option value="10">Financial and Insurance Activities</option>
+                                <option value="11">Human Health and Social Work Activities</option>
+                                <option value="12">Information and Communication</option>
+                                <option value="13">Manufacturing</option>
+                                <option value="14">Mining and Quarrying</option>
+                                <option value="15">Other Service Activities</option>
+                                <option value="16">Professional, Scientific and Technical Activities</option>
+                                <option value="17">Public Administration and Defence; Compulsory social security</option>
+                                <option value="18">Real Estate Activities</option>
+                                <option value="19">Transportation and Storage</option>
+                            </select>
+                        </div>
+
+                        <div class="formSelectGroup">
+                            <span class="selectlabel"><label asp-for="TradingPeriod">Trading Period</label></span>
+                            <select asp-for="TradingPeriod">
+                                <option value="0-6months">0-6 months</option>
+                                <option value="6-12months">6-12 months</option>
+                                <option value="12-18months">12-18 months</option>
+                                <option value="18-36months">18-36 months</option>
+                                <option value="36monthsabove">36 months+ </option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="col2">
+
+                        <div class="colHeader">
+                            <span>Contact Details</span>
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="ContactNumber">Contact Number</label></span>
+                            <input type="text" asp-for="ContactNumber" placeholder="+8801984347334">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="LandlineNumber">Landline Number</label></span>
+                            <input type="text" asp-for="LandlineNumber" placeholder="+8801984347334">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="WebsiteAddress">Website Address</label></span>
+                            <input type="text" asp-for="WebsiteAddress" placeholder="www.johnsons.com">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="OrganizationMail">Organization Mail</label></span>
+                            <input type="text" asp-for="OrganizationMail" placeholder="info@johnson.com">
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="addressContainer">
+                    <div class="col1">
+
+                        <div class="colHeader">
+                            <span>Registered Address</span>
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="RegAddressL1">Address Line 1</label></span>
+                            <input type="text" asp-for="RegAddressL1" placeholder="594 Fulham Rd">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="RegAddressL2">Address Line 2</label></span>
+                            <input type="text"asp-for="RegAddressL2" placeholder="Fulham">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="RegAddressL3">Address Line 3</label></span>
+                            <input type="text" asp-for="RegAddressL3" placeholder="London">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="RegCity">City or Country</label></span>
+                            <input type="text" asp-for="RegCity" placeholder="Fulham">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="RegPost">Post Code</label></span>
+                            <input type="text" asp-for="RegPost" placeholder="SW6 5NT">
+                        </div>
+
+
+                        <div class="formSelectGroup">
+                            <span class="selectlabel"><label asp-for="RegCountry">Country</label></span>
+                            <select asp-for="RegCountry">
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="col2">
+
+                        <div class="colHeader">
+                            <span>Trading Address</span>
+                            <div class="formcheckgroup">
+                                <input type="checkbox" asp-for="SameAsReg">
+                                <label asp-for="SameAsReg">Same As Registered Address</label>
+                            </div>
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="TradeAddressL1">Address Line 1</label></span>
+                            <input type="text" asp-for="TradeAddressL1" placeholder="594 Fulham Rd">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="TradeAddressL2">Address Line 2</label></span>
+                            <input type="text" asp-for="TradeAddressL2" placeholder="Fulham">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="TradeAddressL3">Address Line 3</label></span>
+                            <input type="text" asp-for="TradeAddressL3" placeholder="London">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="TradeCity">City or Country</label></span>
+                            <input type="text" asp-for="TradeCity" placeholder="Fulham">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label asp-for="TradePost">Post Code</label></span>
+                            <input type="text" asp-for="TradePost" placeholder="SW6 5NT">
+                        </div>
+
+
+                        <div class="formSelectGroup">
+                            <span class="selectlabel"><label asp-for="TradeCountry">Country</label></span>
+                            <select asp-for="TradeCountry">
+                            </select>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="optionSelectContainer">
+                    <div class="questionLabel">
+                        <div class="radioLabel">
+                            <p> Have you changed Organisation /Trading name in last 5 years? </p>
+                        </div>
+                        <div class="boolRadiobtn">
+                            <div class="yesRadio">
+                                <input type="radio" id="changedyes" name="changedorganization" value="Yes">
+                                <label for="yes">YES</label>
+                            </div>
+                            <div class="noRadio">
+                                <input type="radio" id="changedno" name="changedorganization" value="No">
+                                <label for="No">NO</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="questionLabel">
+                        <div class="radioLabel">
+                            <p> Did your organisation faced penalty (e.g., recruiting illegal employee) in last 3 years? </p>
+                        </div>
+                        <div class="boolRadiobtn">
+                            <div class="yesRadio">
+                                <input type="radio" asp-for="OrganizationPenalty" value="Yes">
+                                <label asp-for="OrganizationPenalty">YES</label>
+                            </div>
+                            <div class="noRadio">
+                                <input type="radio" asp-for="OrganizationPenalty" value="No">
+                                <label asp-for="OrganizationPenalty">NO</label>
+                            </div>
+                        </div>
+                    </div>
+                     
+                </div>
+                <div class="formActionBtn">
+                        <div class="formSaveBtn">
+                            <button class="button">Save</button>
+                        </div>
+
+                        <div class="formSaveBtn">
+                            <button class="button">Exit</button>
+                        </div>
+                    </div>
+
+            </div>
+
+            <!-- PROFILE TAB ENDS -->
+            <!-- ORGANIZATION OUTLOOK -->
+
+            <div id="OrganziationContainer" class="tabFormContainer">
+
+                <div class="tableHeader">
+                    <div class="tableHeaderData">
+                        <label for="">Working Day</label>
+                    </div>
+
+                    <div class="tableHeaderData">
+                        <label for="">Status</label>
+                    </div>
+
+                    <div class="tableHeaderData">
+                        <label for="">Openning Time</label>
+                    </div>
+
+                    <div class="tableHeaderData">
+                        <label for="">Closing Time</label>
+                    </div>
+
+                    <div class="tableHeaderData">
+                        <label for="">Duration Hours</label>
+                    </div>
+                </div>
+
+                <div class="tableRowData">
+                    <div class="tableDataRow">
+                        <input type="text" name="" id="" placeholder="Monday" readonly>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="closed">Close</option>
+                            <option value="open">Open</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="01:00am">01:00 am</option>
+                            <option value="01:30am">01:30 am</option>
+                            <option value="02:00am">02:00 am</option>
+                            <option value="02:30am">02:30 am</option>
+                            <option value="03:00am">03:00 am</option>
+                            <option value="03:30am">03:30 am</option>
+                            <option value="04:00am">04:00 am</option>
+                            <option value="04:30am">04:30 am</option>
+                            <option value="05:00am">05:00 am</option>
+                            <option value="05:30am">05:30 am</option>
+                            <option value="06:00am">06:00 am</option>
+                            <option value="06:30am">06:30 am</option>
+                            <option value="07:00am">07:00 am</option>
+                            <option value="07:30am">07:30 am</option>
+                            <option value="08:00am">08:00 am</option>
+                            <option value="08:30am">08:30 am</option>
+                            <option value="09:00am">09:00 am</option>
+                            <option value="09:30am">09:30 am</option>
+                            <option value="10:00am">10:00 am</option>
+                            <option value="10:30am">10:30 am</option>
+                            <option value="11:00am">11:00 am</option>
+                            <option value="11:30am">11:30 am</option>
+                            <option value="12:00am">12:00 am</option>
+                            <option value="12:30am">12:30 am</option>
+                            <option value="01:00pm">01:00 pm</option>
+                            <option value="01:30pm">01:30 pm</option>
+                            <option value="02:00pm">02:00 pm</option>
+                            <option value="02:30pm">02:30 pm</option>
+                            <option value="03:00pm">03:00 pm</option>
+                            <option value="03:30pm">03:30 pm</option>
+                            <option value="04:00pm">04:00 pm</option>
+                            <option value="04:30pm">04:30 pm</option>
+                            <option value="05:00pm">05:00 pm</option>
+                            <option value="05:30pm">05:30 pm</option>
+                            <option value="06:00pm">06:00 pm</option>
+                            <option value="06:30pm">06:30 pm</option>
+                            <option value="07:00pm">07:00 pm</option>
+                            <option value="07:30pm">07:30 pm</option>
+                            <option value="08:00pm">08:00 pm</option>
+                            <option value="08:30pm">08:30 pm</option>
+                            <option value="09:00pm">09:00 pm</option>
+                            <option value="09:30pm">09:30 pm</option>
+                            <option value="10:00pm">10:00 pm</option>
+                            <option value="10:30pm">10:30 pm</option>
+                            <option value="11:00pm">11:00 pm</option>
+                            <option value="11:30pm">11:30 pm</option>
+                            <option value="12:00pm">12:00 pm</option>
+                            <option value="12:30pm">12:30 pm</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="01:00am">01:00 am</option>
+                            <option value="01:30am">01:30 am</option>
+                            <option value="02:00am">02:00 am</option>
+                            <option value="02:30am">02:30 am</option>
+                            <option value="03:00am">03:00 am</option>
+                            <option value="03:30am">03:30 am</option>
+                            <option value="04:00am">04:00 am</option>
+                            <option value="04:30am">04:30 am</option>
+                            <option value="05:00am">05:00 am</option>
+                            <option value="05:30am">05:30 am</option>
+                            <option value="06:00am">06:00 am</option>
+                            <option value="06:30am">06:30 am</option>
+                            <option value="07:00am">07:00 am</option>
+                            <option value="07:30am">07:30 am</option>
+                            <option value="08:00am">08:00 am</option>
+                            <option value="08:30am">08:30 am</option>
+                            <option value="09:00am">09:00 am</option>
+                            <option value="09:30am">09:30 am</option>
+                            <option value="10:00am">10:00 am</option>
+                            <option value="10:30am">10:30 am</option>
+                            <option value="11:00am">11:00 am</option>
+                            <option value="11:30am">11:30 am</option>
+                            <option value="12:00am">12:00 am</option>
+                            <option value="12:30am">12:30 am</option>
+                            <option value="01:00pm">01:00 pm</option>
+                            <option value="01:30pm">01:30 pm</option>
+                            <option value="02:00pm">02:00 pm</option>
+                            <option value="02:30pm">02:30 pm</option>
+                            <option value="03:00pm">03:00 pm</option>
+                            <option value="03:30pm">03:30 pm</option>
+                            <option value="04:00pm">04:00 pm</option>
+                            <option value="04:30pm">04:30 pm</option>
+                            <option value="05:00pm">05:00 pm</option>
+                            <option value="05:30pm">05:30 pm</option>
+                            <option value="06:00pm">06:00 pm</option>
+                            <option value="06:30pm">06:30 pm</option>
+                            <option value="07:00pm">07:00 pm</option>
+                            <option value="07:30pm">07:30 pm</option>
+                            <option value="08:00pm">08:00 pm</option>
+                            <option value="08:30pm">08:30 pm</option>
+                            <option value="09:00pm">09:00 pm</option>
+                            <option value="09:30pm">09:30 pm</option>
+                            <option value="10:00pm">10:00 pm</option>
+                            <option value="10:30pm">10:30 pm</option>
+                            <option value="11:00pm">11:00 pm</option>
+                            <option value="11:30pm">11:30 pm</option>
+                            <option value="12:00pm">12:00 pm</option>
+                            <option value="12:30pm">12:30 pm</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <input type="text" name="" id="" placeholder="--" readonly>
+                    </div>
+                </div>
+
+                <div class="tableRowData" style="margin-top: 5px;">
+                    <div class="tableDataRow">
+                        <input type="text" name="" id="" placeholder="Tuesday" readonly>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="closed">Close</option>
+                            <option value="open">Open</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="01:00am">01:00 am</option>
+                            <option value="01:30am">01:30 am</option>
+                            <option value="02:00am">02:00 am</option>
+                            <option value="02:30am">02:30 am</option>
+                            <option value="03:00am">03:00 am</option>
+                            <option value="03:30am">03:30 am</option>
+                            <option value="04:00am">04:00 am</option>
+                            <option value="04:30am">04:30 am</option>
+                            <option value="05:00am">05:00 am</option>
+                            <option value="05:30am">05:30 am</option>
+                            <option value="06:00am">06:00 am</option>
+                            <option value="06:30am">06:30 am</option>
+                            <option value="07:00am">07:00 am</option>
+                            <option value="07:30am">07:30 am</option>
+                            <option value="08:00am">08:00 am</option>
+                            <option value="08:30am">08:30 am</option>
+                            <option value="09:00am">09:00 am</option>
+                            <option value="09:30am">09:30 am</option>
+                            <option value="10:00am">10:00 am</option>
+                            <option value="10:30am">10:30 am</option>
+                            <option value="11:00am">11:00 am</option>
+                            <option value="11:30am">11:30 am</option>
+                            <option value="12:00am">12:00 am</option>
+                            <option value="12:30am">12:30 am</option>
+                            <option value="01:00pm">01:00 pm</option>
+                            <option value="01:30pm">01:30 pm</option>
+                            <option value="02:00pm">02:00 pm</option>
+                            <option value="02:30pm">02:30 pm</option>
+                            <option value="03:00pm">03:00 pm</option>
+                            <option value="03:30pm">03:30 pm</option>
+                            <option value="04:00pm">04:00 pm</option>
+                            <option value="04:30pm">04:30 pm</option>
+                            <option value="05:00pm">05:00 pm</option>
+                            <option value="05:30pm">05:30 pm</option>
+                            <option value="06:00pm">06:00 pm</option>
+                            <option value="06:30pm">06:30 pm</option>
+                            <option value="07:00pm">07:00 pm</option>
+                            <option value="07:30pm">07:30 pm</option>
+                            <option value="08:00pm">08:00 pm</option>
+                            <option value="08:30pm">08:30 pm</option>
+                            <option value="09:00pm">09:00 pm</option>
+                            <option value="09:30pm">09:30 pm</option>
+                            <option value="10:00pm">10:00 pm</option>
+                            <option value="10:30pm">10:30 pm</option>
+                            <option value="11:00pm">11:00 pm</option>
+                            <option value="11:30pm">11:30 pm</option>
+                            <option value="12:00pm">12:00 pm</option>
+                            <option value="12:30pm">12:30 pm</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="01:00am">01:00 am</option>
+                            <option value="01:30am">01:30 am</option>
+                            <option value="02:00am">02:00 am</option>
+                            <option value="02:30am">02:30 am</option>
+                            <option value="03:00am">03:00 am</option>
+                            <option value="03:30am">03:30 am</option>
+                            <option value="04:00am">04:00 am</option>
+                            <option value="04:30am">04:30 am</option>
+                            <option value="05:00am">05:00 am</option>
+                            <option value="05:30am">05:30 am</option>
+                            <option value="06:00am">06:00 am</option>
+                            <option value="06:30am">06:30 am</option>
+                            <option value="07:00am">07:00 am</option>
+                            <option value="07:30am">07:30 am</option>
+                            <option value="08:00am">08:00 am</option>
+                            <option value="08:30am">08:30 am</option>
+                            <option value="09:00am">09:00 am</option>
+                            <option value="09:30am">09:30 am</option>
+                            <option value="10:00am">10:00 am</option>
+                            <option value="10:30am">10:30 am</option>
+                            <option value="11:00am">11:00 am</option>
+                            <option value="11:30am">11:30 am</option>
+                            <option value="12:00am">12:00 am</option>
+                            <option value="12:30am">12:30 am</option>
+                            <option value="01:00pm">01:00 pm</option>
+                            <option value="01:30pm">01:30 pm</option>
+                            <option value="02:00pm">02:00 pm</option>
+                            <option value="02:30pm">02:30 pm</option>
+                            <option value="03:00pm">03:00 pm</option>
+                            <option value="03:30pm">03:30 pm</option>
+                            <option value="04:00pm">04:00 pm</option>
+                            <option value="04:30pm">04:30 pm</option>
+                            <option value="05:00pm">05:00 pm</option>
+                            <option value="05:30pm">05:30 pm</option>
+                            <option value="06:00pm">06:00 pm</option>
+                            <option value="06:30pm">06:30 pm</option>
+                            <option value="07:00pm">07:00 pm</option>
+                            <option value="07:30pm">07:30 pm</option>
+                            <option value="08:00pm">08:00 pm</option>
+                            <option value="08:30pm">08:30 pm</option>
+                            <option value="09:00pm">09:00 pm</option>
+                            <option value="09:30pm">09:30 pm</option>
+                            <option value="10:00pm">10:00 pm</option>
+                            <option value="10:30pm">10:30 pm</option>
+                            <option value="11:00pm">11:00 pm</option>
+                            <option value="11:30pm">11:30 pm</option>
+                            <option value="12:00pm">12:00 pm</option>
+                            <option value="12:30pm">12:30 pm</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <input type="text" name="" id="" placeholder="--" readonly>
+                    </div>
+                </div>
+
+                <div class="tableRowData" style="margin-top: 5px;">
+                    <div class="tableDataRow">
+                        <input type="text" name="" id="" placeholder="Wednesday" readonly>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="closed">Close</option>
+                            <option value="open">Open</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="01:00am">01:00 am</option>
+                            <option value="01:30am">01:30 am</option>
+                            <option value="02:00am">02:00 am</option>
+                            <option value="02:30am">02:30 am</option>
+                            <option value="03:00am">03:00 am</option>
+                            <option value="03:30am">03:30 am</option>
+                            <option value="04:00am">04:00 am</option>
+                            <option value="04:30am">04:30 am</option>
+                            <option value="05:00am">05:00 am</option>
+                            <option value="05:30am">05:30 am</option>
+                            <option value="06:00am">06:00 am</option>
+                            <option value="06:30am">06:30 am</option>
+                            <option value="07:00am">07:00 am</option>
+                            <option value="07:30am">07:30 am</option>
+                            <option value="08:00am">08:00 am</option>
+                            <option value="08:30am">08:30 am</option>
+                            <option value="09:00am">09:00 am</option>
+                            <option value="09:30am">09:30 am</option>
+                            <option value="10:00am">10:00 am</option>
+                            <option value="10:30am">10:30 am</option>
+                            <option value="11:00am">11:00 am</option>
+                            <option value="11:30am">11:30 am</option>
+                            <option value="12:00am">12:00 am</option>
+                            <option value="12:30am">12:30 am</option>
+                            <option value="01:00pm">01:00 pm</option>
+                            <option value="01:30pm">01:30 pm</option>
+                            <option value="02:00pm">02:00 pm</option>
+                            <option value="02:30pm">02:30 pm</option>
+                            <option value="03:00pm">03:00 pm</option>
+                            <option value="03:30pm">03:30 pm</option>
+                            <option value="04:00pm">04:00 pm</option>
+                            <option value="04:30pm">04:30 pm</option>
+                            <option value="05:00pm">05:00 pm</option>
+                            <option value="05:30pm">05:30 pm</option>
+                            <option value="06:00pm">06:00 pm</option>
+                            <option value="06:30pm">06:30 pm</option>
+                            <option value="07:00pm">07:00 pm</option>
+                            <option value="07:30pm">07:30 pm</option>
+                            <option value="08:00pm">08:00 pm</option>
+                            <option value="08:30pm">08:30 pm</option>
+                            <option value="09:00pm">09:00 pm</option>
+                            <option value="09:30pm">09:30 pm</option>
+                            <option value="10:00pm">10:00 pm</option>
+                            <option value="10:30pm">10:30 pm</option>
+                            <option value="11:00pm">11:00 pm</option>
+                            <option value="11:30pm">11:30 pm</option>
+                            <option value="12:00pm">12:00 pm</option>
+                            <option value="12:30pm">12:30 pm</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="01:00am">01:00 am</option>
+                            <option value="01:30am">01:30 am</option>
+                            <option value="02:00am">02:00 am</option>
+                            <option value="02:30am">02:30 am</option>
+                            <option value="03:00am">03:00 am</option>
+                            <option value="03:30am">03:30 am</option>
+                            <option value="04:00am">04:00 am</option>
+                            <option value="04:30am">04:30 am</option>
+                            <option value="05:00am">05:00 am</option>
+                            <option value="05:30am">05:30 am</option>
+                            <option value="06:00am">06:00 am</option>
+                            <option value="06:30am">06:30 am</option>
+                            <option value="07:00am">07:00 am</option>
+                            <option value="07:30am">07:30 am</option>
+                            <option value="08:00am">08:00 am</option>
+                            <option value="08:30am">08:30 am</option>
+                            <option value="09:00am">09:00 am</option>
+                            <option value="09:30am">09:30 am</option>
+                            <option value="10:00am">10:00 am</option>
+                            <option value="10:30am">10:30 am</option>
+                            <option value="11:00am">11:00 am</option>
+                            <option value="11:30am">11:30 am</option>
+                            <option value="12:00am">12:00 am</option>
+                            <option value="12:30am">12:30 am</option>
+                            <option value="01:00pm">01:00 pm</option>
+                            <option value="01:30pm">01:30 pm</option>
+                            <option value="02:00pm">02:00 pm</option>
+                            <option value="02:30pm">02:30 pm</option>
+                            <option value="03:00pm">03:00 pm</option>
+                            <option value="03:30pm">03:30 pm</option>
+                            <option value="04:00pm">04:00 pm</option>
+                            <option value="04:30pm">04:30 pm</option>
+                            <option value="05:00pm">05:00 pm</option>
+                            <option value="05:30pm">05:30 pm</option>
+                            <option value="06:00pm">06:00 pm</option>
+                            <option value="06:30pm">06:30 pm</option>
+                            <option value="07:00pm">07:00 pm</option>
+                            <option value="07:30pm">07:30 pm</option>
+                            <option value="08:00pm">08:00 pm</option>
+                            <option value="08:30pm">08:30 pm</option>
+                            <option value="09:00pm">09:00 pm</option>
+                            <option value="09:30pm">09:30 pm</option>
+                            <option value="10:00pm">10:00 pm</option>
+                            <option value="10:30pm">10:30 pm</option>
+                            <option value="11:00pm">11:00 pm</option>
+                            <option value="11:30pm">11:30 pm</option>
+                            <option value="12:00pm">12:00 pm</option>
+                            <option value="12:30pm">12:30 pm</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <input type="text" name="" id="" placeholder="--" readonly>
+                    </div>
+                </div>
+
+                <div class="tableRowData" style="margin-top: 5px;">
+                    <div class="tableDataRow">
+                        <input type="text" name="" id="" placeholder="Thursday" readonly>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="closed">Close</option>
+                            <option value="open">Open</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="01:00am">01:00 am</option>
+                            <option value="01:30am">01:30 am</option>
+                            <option value="02:00am">02:00 am</option>
+                            <option value="02:30am">02:30 am</option>
+                            <option value="03:00am">03:00 am</option>
+                            <option value="03:30am">03:30 am</option>
+                            <option value="04:00am">04:00 am</option>
+                            <option value="04:30am">04:30 am</option>
+                            <option value="05:00am">05:00 am</option>
+                            <option value="05:30am">05:30 am</option>
+                            <option value="06:00am">06:00 am</option>
+                            <option value="06:30am">06:30 am</option>
+                            <option value="07:00am">07:00 am</option>
+                            <option value="07:30am">07:30 am</option>
+                            <option value="08:00am">08:00 am</option>
+                            <option value="08:30am">08:30 am</option>
+                            <option value="09:00am">09:00 am</option>
+                            <option value="09:30am">09:30 am</option>
+                            <option value="10:00am">10:00 am</option>
+                            <option value="10:30am">10:30 am</option>
+                            <option value="11:00am">11:00 am</option>
+                            <option value="11:30am">11:30 am</option>
+                            <option value="12:00am">12:00 am</option>
+                            <option value="12:30am">12:30 am</option>
+                            <option value="01:00pm">01:00 pm</option>
+                            <option value="01:30pm">01:30 pm</option>
+                            <option value="02:00pm">02:00 pm</option>
+                            <option value="02:30pm">02:30 pm</option>
+                            <option value="03:00pm">03:00 pm</option>
+                            <option value="03:30pm">03:30 pm</option>
+                            <option value="04:00pm">04:00 pm</option>
+                            <option value="04:30pm">04:30 pm</option>
+                            <option value="05:00pm">05:00 pm</option>
+                            <option value="05:30pm">05:30 pm</option>
+                            <option value="06:00pm">06:00 pm</option>
+                            <option value="06:30pm">06:30 pm</option>
+                            <option value="07:00pm">07:00 pm</option>
+                            <option value="07:30pm">07:30 pm</option>
+                            <option value="08:00pm">08:00 pm</option>
+                            <option value="08:30pm">08:30 pm</option>
+                            <option value="09:00pm">09:00 pm</option>
+                            <option value="09:30pm">09:30 pm</option>
+                            <option value="10:00pm">10:00 pm</option>
+                            <option value="10:30pm">10:30 pm</option>
+                            <option value="11:00pm">11:00 pm</option>
+                            <option value="11:30pm">11:30 pm</option>
+                            <option value="12:00pm">12:00 pm</option>
+                            <option value="12:30pm">12:30 pm</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="01:00am">01:00 am</option>
+                            <option value="01:30am">01:30 am</option>
+                            <option value="02:00am">02:00 am</option>
+                            <option value="02:30am">02:30 am</option>
+                            <option value="03:00am">03:00 am</option>
+                            <option value="03:30am">03:30 am</option>
+                            <option value="04:00am">04:00 am</option>
+                            <option value="04:30am">04:30 am</option>
+                            <option value="05:00am">05:00 am</option>
+                            <option value="05:30am">05:30 am</option>
+                            <option value="06:00am">06:00 am</option>
+                            <option value="06:30am">06:30 am</option>
+                            <option value="07:00am">07:00 am</option>
+                            <option value="07:30am">07:30 am</option>
+                            <option value="08:00am">08:00 am</option>
+                            <option value="08:30am">08:30 am</option>
+                            <option value="09:00am">09:00 am</option>
+                            <option value="09:30am">09:30 am</option>
+                            <option value="10:00am">10:00 am</option>
+                            <option value="10:30am">10:30 am</option>
+                            <option value="11:00am">11:00 am</option>
+                            <option value="11:30am">11:30 am</option>
+                            <option value="12:00am">12:00 am</option>
+                            <option value="12:30am">12:30 am</option>
+                            <option value="01:00pm">01:00 pm</option>
+                            <option value="01:30pm">01:30 pm</option>
+                            <option value="02:00pm">02:00 pm</option>
+                            <option value="02:30pm">02:30 pm</option>
+                            <option value="03:00pm">03:00 pm</option>
+                            <option value="03:30pm">03:30 pm</option>
+                            <option value="04:00pm">04:00 pm</option>
+                            <option value="04:30pm">04:30 pm</option>
+                            <option value="05:00pm">05:00 pm</option>
+                            <option value="05:30pm">05:30 pm</option>
+                            <option value="06:00pm">06:00 pm</option>
+                            <option value="06:30pm">06:30 pm</option>
+                            <option value="07:00pm">07:00 pm</option>
+                            <option value="07:30pm">07:30 pm</option>
+                            <option value="08:00pm">08:00 pm</option>
+                            <option value="08:30pm">08:30 pm</option>
+                            <option value="09:00pm">09:00 pm</option>
+                            <option value="09:30pm">09:30 pm</option>
+                            <option value="10:00pm">10:00 pm</option>
+                            <option value="10:30pm">10:30 pm</option>
+                            <option value="11:00pm">11:00 pm</option>
+                            <option value="11:30pm">11:30 pm</option>
+                            <option value="12:00pm">12:00 pm</option>
+                            <option value="12:30pm">12:30 pm</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <input type="text" name="" id="" placeholder="--" readonly>
+                    </div>
+                </div>
+
+                <div class="tableRowData" style="margin-top: 5px;">
+                    <div class="tableDataRow">
+                        <input type="text" name="" id="" placeholder="Friday" readonly>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="closed">Close</option>
+                            <option value="open">Open</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="01:00am">01:00 am</option>
+                            <option value="01:30am">01:30 am</option>
+                            <option value="02:00am">02:00 am</option>
+                            <option value="02:30am">02:30 am</option>
+                            <option value="03:00am">03:00 am</option>
+                            <option value="03:30am">03:30 am</option>
+                            <option value="04:00am">04:00 am</option>
+                            <option value="04:30am">04:30 am</option>
+                            <option value="05:00am">05:00 am</option>
+                            <option value="05:30am">05:30 am</option>
+                            <option value="06:00am">06:00 am</option>
+                            <option value="06:30am">06:30 am</option>
+                            <option value="07:00am">07:00 am</option>
+                            <option value="07:30am">07:30 am</option>
+                            <option value="08:00am">08:00 am</option>
+                            <option value="08:30am">08:30 am</option>
+                            <option value="09:00am">09:00 am</option>
+                            <option value="09:30am">09:30 am</option>
+                            <option value="10:00am">10:00 am</option>
+                            <option value="10:30am">10:30 am</option>
+                            <option value="11:00am">11:00 am</option>
+                            <option value="11:30am">11:30 am</option>
+                            <option value="12:00am">12:00 am</option>
+                            <option value="12:30am">12:30 am</option>
+                            <option value="01:00pm">01:00 pm</option>
+                            <option value="01:30pm">01:30 pm</option>
+                            <option value="02:00pm">02:00 pm</option>
+                            <option value="02:30pm">02:30 pm</option>
+                            <option value="03:00pm">03:00 pm</option>
+                            <option value="03:30pm">03:30 pm</option>
+                            <option value="04:00pm">04:00 pm</option>
+                            <option value="04:30pm">04:30 pm</option>
+                            <option value="05:00pm">05:00 pm</option>
+                            <option value="05:30pm">05:30 pm</option>
+                            <option value="06:00pm">06:00 pm</option>
+                            <option value="06:30pm">06:30 pm</option>
+                            <option value="07:00pm">07:00 pm</option>
+                            <option value="07:30pm">07:30 pm</option>
+                            <option value="08:00pm">08:00 pm</option>
+                            <option value="08:30pm">08:30 pm</option>
+                            <option value="09:00pm">09:00 pm</option>
+                            <option value="09:30pm">09:30 pm</option>
+                            <option value="10:00pm">10:00 pm</option>
+                            <option value="10:30pm">10:30 pm</option>
+                            <option value="11:00pm">11:00 pm</option>
+                            <option value="11:30pm">11:30 pm</option>
+                            <option value="12:00pm">12:00 pm</option>
+                            <option value="12:30pm">12:30 pm</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="01:00am">01:00 am</option>
+                            <option value="01:30am">01:30 am</option>
+                            <option value="02:00am">02:00 am</option>
+                            <option value="02:30am">02:30 am</option>
+                            <option value="03:00am">03:00 am</option>
+                            <option value="03:30am">03:30 am</option>
+                            <option value="04:00am">04:00 am</option>
+                            <option value="04:30am">04:30 am</option>
+                            <option value="05:00am">05:00 am</option>
+                            <option value="05:30am">05:30 am</option>
+                            <option value="06:00am">06:00 am</option>
+                            <option value="06:30am">06:30 am</option>
+                            <option value="07:00am">07:00 am</option>
+                            <option value="07:30am">07:30 am</option>
+                            <option value="08:00am">08:00 am</option>
+                            <option value="08:30am">08:30 am</option>
+                            <option value="09:00am">09:00 am</option>
+                            <option value="09:30am">09:30 am</option>
+                            <option value="10:00am">10:00 am</option>
+                            <option value="10:30am">10:30 am</option>
+                            <option value="11:00am">11:00 am</option>
+                            <option value="11:30am">11:30 am</option>
+                            <option value="12:00am">12:00 am</option>
+                            <option value="12:30am">12:30 am</option>
+                            <option value="01:00pm">01:00 pm</option>
+                            <option value="01:30pm">01:30 pm</option>
+                            <option value="02:00pm">02:00 pm</option>
+                            <option value="02:30pm">02:30 pm</option>
+                            <option value="03:00pm">03:00 pm</option>
+                            <option value="03:30pm">03:30 pm</option>
+                            <option value="04:00pm">04:00 pm</option>
+                            <option value="04:30pm">04:30 pm</option>
+                            <option value="05:00pm">05:00 pm</option>
+                            <option value="05:30pm">05:30 pm</option>
+                            <option value="06:00pm">06:00 pm</option>
+                            <option value="06:30pm">06:30 pm</option>
+                            <option value="07:00pm">07:00 pm</option>
+                            <option value="07:30pm">07:30 pm</option>
+                            <option value="08:00pm">08:00 pm</option>
+                            <option value="08:30pm">08:30 pm</option>
+                            <option value="09:00pm">09:00 pm</option>
+                            <option value="09:30pm">09:30 pm</option>
+                            <option value="10:00pm">10:00 pm</option>
+                            <option value="10:30pm">10:30 pm</option>
+                            <option value="11:00pm">11:00 pm</option>
+                            <option value="11:30pm">11:30 pm</option>
+                            <option value="12:00pm">12:00 pm</option>
+                            <option value="12:30pm">12:30 pm</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <input type="text" name="" id="" placeholder="--" readonly>
+                    </div>
+                </div>
+
+                <div class="tableRowData" style="margin-top: 5px;">
+                    <div class="tableDataRow">
+                        <input type="text" name="" id="" placeholder="Saturday" readonly>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="closed">Close</option>
+                            <option value="open">Open</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="01:00am">01:00 am</option>
+                            <option value="01:30am">01:30 am</option>
+                            <option value="02:00am">02:00 am</option>
+                            <option value="02:30am">02:30 am</option>
+                            <option value="03:00am">03:00 am</option>
+                            <option value="03:30am">03:30 am</option>
+                            <option value="04:00am">04:00 am</option>
+                            <option value="04:30am">04:30 am</option>
+                            <option value="05:00am">05:00 am</option>
+                            <option value="05:30am">05:30 am</option>
+                            <option value="06:00am">06:00 am</option>
+                            <option value="06:30am">06:30 am</option>
+                            <option value="07:00am">07:00 am</option>
+                            <option value="07:30am">07:30 am</option>
+                            <option value="08:00am">08:00 am</option>
+                            <option value="08:30am">08:30 am</option>
+                            <option value="09:00am">09:00 am</option>
+                            <option value="09:30am">09:30 am</option>
+                            <option value="10:00am">10:00 am</option>
+                            <option value="10:30am">10:30 am</option>
+                            <option value="11:00am">11:00 am</option>
+                            <option value="11:30am">11:30 am</option>
+                            <option value="12:00am">12:00 am</option>
+                            <option value="12:30am">12:30 am</option>
+                            <option value="01:00pm">01:00 pm</option>
+                            <option value="01:30pm">01:30 pm</option>
+                            <option value="02:00pm">02:00 pm</option>
+                            <option value="02:30pm">02:30 pm</option>
+                            <option value="03:00pm">03:00 pm</option>
+                            <option value="03:30pm">03:30 pm</option>
+                            <option value="04:00pm">04:00 pm</option>
+                            <option value="04:30pm">04:30 pm</option>
+                            <option value="05:00pm">05:00 pm</option>
+                            <option value="05:30pm">05:30 pm</option>
+                            <option value="06:00pm">06:00 pm</option>
+                            <option value="06:30pm">06:30 pm</option>
+                            <option value="07:00pm">07:00 pm</option>
+                            <option value="07:30pm">07:30 pm</option>
+                            <option value="08:00pm">08:00 pm</option>
+                            <option value="08:30pm">08:30 pm</option>
+                            <option value="09:00pm">09:00 pm</option>
+                            <option value="09:30pm">09:30 pm</option>
+                            <option value="10:00pm">10:00 pm</option>
+                            <option value="10:30pm">10:30 pm</option>
+                            <option value="11:00pm">11:00 pm</option>
+                            <option value="11:30pm">11:30 pm</option>
+                            <option value="12:00pm">12:00 pm</option>
+                            <option value="12:30pm">12:30 pm</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="01:00am">01:00 am</option>
+                            <option value="01:30am">01:30 am</option>
+                            <option value="02:00am">02:00 am</option>
+                            <option value="02:30am">02:30 am</option>
+                            <option value="03:00am">03:00 am</option>
+                            <option value="03:30am">03:30 am</option>
+                            <option value="04:00am">04:00 am</option>
+                            <option value="04:30am">04:30 am</option>
+                            <option value="05:00am">05:00 am</option>
+                            <option value="05:30am">05:30 am</option>
+                            <option value="06:00am">06:00 am</option>
+                            <option value="06:30am">06:30 am</option>
+                            <option value="07:00am">07:00 am</option>
+                            <option value="07:30am">07:30 am</option>
+                            <option value="08:00am">08:00 am</option>
+                            <option value="08:30am">08:30 am</option>
+                            <option value="09:00am">09:00 am</option>
+                            <option value="09:30am">09:30 am</option>
+                            <option value="10:00am">10:00 am</option>
+                            <option value="10:30am">10:30 am</option>
+                            <option value="11:00am">11:00 am</option>
+                            <option value="11:30am">11:30 am</option>
+                            <option value="12:00am">12:00 am</option>
+                            <option value="12:30am">12:30 am</option>
+                            <option value="01:00pm">01:00 pm</option>
+                            <option value="01:30pm">01:30 pm</option>
+                            <option value="02:00pm">02:00 pm</option>
+                            <option value="02:30pm">02:30 pm</option>
+                            <option value="03:00pm">03:00 pm</option>
+                            <option value="03:30pm">03:30 pm</option>
+                            <option value="04:00pm">04:00 pm</option>
+                            <option value="04:30pm">04:30 pm</option>
+                            <option value="05:00pm">05:00 pm</option>
+                            <option value="05:30pm">05:30 pm</option>
+                            <option value="06:00pm">06:00 pm</option>
+                            <option value="06:30pm">06:30 pm</option>
+                            <option value="07:00pm">07:00 pm</option>
+                            <option value="07:30pm">07:30 pm</option>
+                            <option value="08:00pm">08:00 pm</option>
+                            <option value="08:30pm">08:30 pm</option>
+                            <option value="09:00pm">09:00 pm</option>
+                            <option value="09:30pm">09:30 pm</option>
+                            <option value="10:00pm">10:00 pm</option>
+                            <option value="10:30pm">10:30 pm</option>
+                            <option value="11:00pm">11:00 pm</option>
+                            <option value="11:30pm">11:30 pm</option>
+                            <option value="12:00pm">12:00 pm</option>
+                            <option value="12:30pm">12:30 pm</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <input type="text" name="" id="" placeholder="--" readonly>
+                    </div>
+                </div>
+
+                <div class="tableRowData" style="margin-top: 5px;">
+                    <div class="tableDataRow">
+                        <input type="text" name="" id="" placeholder="Sunday" readonly>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="closed">Close</option>
+                            <option value="open">Open</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="01:00am">01:00 am</option>
+                            <option value="01:30am">01:30 am</option>
+                            <option value="02:00am">02:00 am</option>
+                            <option value="02:30am">02:30 am</option>
+                            <option value="03:00am">03:00 am</option>
+                            <option value="03:30am">03:30 am</option>
+                            <option value="04:00am">04:00 am</option>
+                            <option value="04:30am">04:30 am</option>
+                            <option value="05:00am">05:00 am</option>
+                            <option value="05:30am">05:30 am</option>
+                            <option value="06:00am">06:00 am</option>
+                            <option value="06:30am">06:30 am</option>
+                            <option value="07:00am">07:00 am</option>
+                            <option value="07:30am">07:30 am</option>
+                            <option value="08:00am">08:00 am</option>
+                            <option value="08:30am">08:30 am</option>
+                            <option value="09:00am">09:00 am</option>
+                            <option value="09:30am">09:30 am</option>
+                            <option value="10:00am">10:00 am</option>
+                            <option value="10:30am">10:30 am</option>
+                            <option value="11:00am">11:00 am</option>
+                            <option value="11:30am">11:30 am</option>
+                            <option value="12:00am">12:00 am</option>
+                            <option value="12:30am">12:30 am</option>
+                            <option value="01:00pm">01:00 pm</option>
+                            <option value="01:30pm">01:30 pm</option>
+                            <option value="02:00pm">02:00 pm</option>
+                            <option value="02:30pm">02:30 pm</option>
+                            <option value="03:00pm">03:00 pm</option>
+                            <option value="03:30pm">03:30 pm</option>
+                            <option value="04:00pm">04:00 pm</option>
+                            <option value="04:30pm">04:30 pm</option>
+                            <option value="05:00pm">05:00 pm</option>
+                            <option value="05:30pm">05:30 pm</option>
+                            <option value="06:00pm">06:00 pm</option>
+                            <option value="06:30pm">06:30 pm</option>
+                            <option value="07:00pm">07:00 pm</option>
+                            <option value="07:30pm">07:30 pm</option>
+                            <option value="08:00pm">08:00 pm</option>
+                            <option value="08:30pm">08:30 pm</option>
+                            <option value="09:00pm">09:00 pm</option>
+                            <option value="09:30pm">09:30 pm</option>
+                            <option value="10:00pm">10:00 pm</option>
+                            <option value="10:30pm">10:30 pm</option>
+                            <option value="11:00pm">11:00 pm</option>
+                            <option value="11:30pm">11:30 pm</option>
+                            <option value="12:00pm">12:00 pm</option>
+                            <option value="12:30pm">12:30 pm</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <select name="" id="">
+                            <option value="01:00am">01:00 am</option>
+                            <option value="01:30am">01:30 am</option>
+                            <option value="02:00am">02:00 am</option>
+                            <option value="02:30am">02:30 am</option>
+                            <option value="03:00am">03:00 am</option>
+                            <option value="03:30am">03:30 am</option>
+                            <option value="04:00am">04:00 am</option>
+                            <option value="04:30am">04:30 am</option>
+                            <option value="05:00am">05:00 am</option>
+                            <option value="05:30am">05:30 am</option>
+                            <option value="06:00am">06:00 am</option>
+                            <option value="06:30am">06:30 am</option>
+                            <option value="07:00am">07:00 am</option>
+                            <option value="07:30am">07:30 am</option>
+                            <option value="08:00am">08:00 am</option>
+                            <option value="08:30am">08:30 am</option>
+                            <option value="09:00am">09:00 am</option>
+                            <option value="09:30am">09:30 am</option>
+                            <option value="10:00am">10:00 am</option>
+                            <option value="10:30am">10:30 am</option>
+                            <option value="11:00am">11:00 am</option>
+                            <option value="11:30am">11:30 am</option>
+                            <option value="12:00am">12:00 am</option>
+                            <option value="12:30am">12:30 am</option>
+                            <option value="01:00pm">01:00 pm</option>
+                            <option value="01:30pm">01:30 pm</option>
+                            <option value="02:00pm">02:00 pm</option>
+                            <option value="02:30pm">02:30 pm</option>
+                            <option value="03:00pm">03:00 pm</option>
+                            <option value="03:30pm">03:30 pm</option>
+                            <option value="04:00pm">04:00 pm</option>
+                            <option value="04:30pm">04:30 pm</option>
+                            <option value="05:00pm">05:00 pm</option>
+                            <option value="05:30pm">05:30 pm</option>
+                            <option value="06:00pm">06:00 pm</option>
+                            <option value="06:30pm">06:30 pm</option>
+                            <option value="07:00pm">07:00 pm</option>
+                            <option value="07:30pm">07:30 pm</option>
+                            <option value="08:00pm">08:00 pm</option>
+                            <option value="08:30pm">08:30 pm</option>
+                            <option value="09:00pm">09:00 pm</option>
+                            <option value="09:30pm">09:30 pm</option>
+                            <option value="10:00pm">10:00 pm</option>
+                            <option value="10:30pm">10:30 pm</option>
+                            <option value="11:00pm">11:00 pm</option>
+                            <option value="11:30pm">11:30 pm</option>
+                            <option value="12:00pm">12:00 pm</option>
+                            <option value="12:30pm">12:30 pm</option>
+                        </select>
+                    </div>
+
+                    <div class="tableDataRow">
+                        <input type="text" name="" id="" placeholder="--" readonly>
+                    </div>
+                </div>
+
+                <div class="formActionBtn" style="margin: 20px 0px 30px 0px;">
+                    <div class="formSaveBtn">
+                        <button class="button">Save</button>
+                    </div>
+
+                    <div class="formSaveBtn">
+                        <button class="button">Exit</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ORGANIZATION OUTLOOK ENDS -->
+            <!-- Real Time Information -->
+
+            <div id="RealTime" class="tabFormContainer">
+
+                <div class="employeeTableHeader">
+                    <div class="employeeTableHeaderData">
+                        <label for="">Employee Name</label>
+                    </div>
+
+                    <div class="employeeTableHeaderData">
+                        <label for="">Department</label>
+                    </div>
+
+                    <div class="employeeTableHeaderData">
+                        <label for="">Job Location</label>
+                    </div>
+
+                    <div class="employeeTableHeaderData">
+                        <label for="">Job Type</label>
+                    </div>
+
+                    <div class="employeeTableHeaderData">
+                        <label for="">Job Title</label>
+                    </div>
+
+                    <div class="employeeTableHeaderData">
+                        <label for="">Immigration Status</label>
+                    </div>
+                </div>
+
+                <div class="employeeTableRowData">
+                    <div class="employeeTableDataRow">
+                        <input type="text" name="" id="" placeholder="John">
+                    </div>
+
+                    <div class="employeeTableDataRow">
+                        <input type="text" name="" id="" placeholder="IT">
+                    </div>
+
+                    <div class="employeeTableDataRow">
+                        <select name="" id="">
+                            <option value="">Choose</option>
+                        </select>
+                    </div>
+
+                    <div class="employeeTableDataRow">
+                        <select name="" id="">
+                            <option value="">Full Time</option>
+                            <option value="">Part Time</option>
+                            <option value="">Contractual</option>
+                            <option value="">Self Employed</option>
+                            <option value="">FreeLancer</option>
+                        </select>
+                    </div>
+
+                    <div class="employeeTableDataRow">
+                        <input type="text" name="" id="" placeholder="TECH">
+                    </div>
+
+                    <div class="employeeTableDataRow">
+                        <select name="" id="">
+                            <option value="">British Citizen</option>
+                            <option value="">Indefinite Leave to remain</option>
+                            <option value="">Eu Citizenship</option>
+                            <option value="">Leave to Remain(student visa)</option>
+                            <option value="">Leave to Remain(spouse visa)</option>
+                            <option value="">Leave to Remain(Human Right visa)</option>
+                            <option value="">Other Leave to remain</option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+                <div class="addFieldButton">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+
+                <div class="formActionBtn" style="margin: 20px 0px 30px 0px;">
+                    <div class="formSaveBtn">
+                        <button class="button">Save</button>
+                    </div>
+
+                    <div class="formSaveBtn">
+                        <button class="button">Exit</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Real Time Information Ends-->
+            <!-- Authorising Officers -->
+            <div id="AuthorisingOfficer" class="tabFormContainer">
+                <div class="authorisingOfficers">
+                    <div class="col1">
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">First Name</label></span>
+                            <input type="text" name="" id="" placeholder="John">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">Designation</label></span>
+                            <input type="text" name="" id="" placeholder="PRO">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">E-Mail</label></span>
+                            <input type="text" name="" id="" placeholder="Johnreacher@gmail.com">
+                        </div>
+                        <div class="questionLabel">
+                            <div class="radioLabel">
+                                <p> Do you have a history of Criminal conviction/Bankruptcy/Disqualification? </p>
+                            </div>
+                            <div class="boolRadiobtn">
+                                <div class="yesRadio">
+                                    <input type="radio" id="changedyes" name="Criminal_conviction" value="Yes">
+                                    <label for="yes">YES</label>
+                                </div>
+                                <div class="noRadio">
+                                    <input type="radio" id="changedno" name="Criminal_conviction" value="No">
+                                    <label for="No">NO</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col2">
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">Last Name</label></span>
+                            <input type="text" name="" id="" placeholder="Reacher">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">Phone Number</label></span>
+                            <input type="text" name="" id="" placeholder="01984347334">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">Date</label></span>
+                            <input type="date" name="" id="" placeholder="johnreadcher@gmail.om">
+                        </div>
+
+                        <div class="questionLabel">
+                            <div class="radioLabel">
+                                <p> What is your Immigration Status? </p>
+                            </div>
+                            <div class="boolRadiobtn">
+                                <div class="Radio">
+                                    <input type="radio" id="immigrationStatus" name="immigrationEligible" value="British Citizen">
+                                    <label for="BritishCitizen">British Citizen</label><br>
+
+                                    <input type="radio" id="iltr" name="immigrationEligible" value="Indefinite Leave to Remain (LR)">
+                                    <label for="iltr">Indefinite Leave to Remain (LR)</label><br>
+
+                                    <input type="radio" id="settledinuk" name="immigrationEligible" value="Setteled in UK">
+                                    <label for="settledinuk">Setteled in UK</label><br>
+
+                                    <input type="radio" id="tier1" name="immigrationEligible" value="Tier 1">
+                                    <label for="tier1">Tier 1</label><br>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="eligibleLabel">
+                            <label for="">Eligible</label>
+                        </div>
+
+
+
+                        <!-- input file ID Professional -->
+                        <!-- input file signature -->
+                        <div class="formActionBtn" style="margin-top: 20px;">
+                            <div class="formSaveBtn">
+                                <button class="button">Save</button>
+                            </div>
+
+                            <div class="formSaveBtn">
+                                <button class="button">Exit</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Contact -->
+            <div id="KeyContact" class="tabFormContainer">
+
+                <div class="formcheckgroupabove">
+                    <input type="checkbox" name="" id="">
+                    <label for="">Same As Authorised Person</label>
+                </div>
+
+                <div class="keyContact">
+
+                    <div class="col1">
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">First Name</label></span>
+                            <input type="text" name="" id="" placeholder="John">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">Designation</label></span>
+                            <input type="text" name="" id="" placeholder="IT TECH">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">E-Mail</label></span>
+                            <input type="text" name="" id="" placeholder="John@johnsonmail.com">
+                        </div>
+
+
+                        <div class="questionLabel">
+                            <div class="radioLabel">
+                                <p> Do you have a history of Criminal conviction/Bankruptcy/Disqualification? </p>
+                            </div>
+                            <div class="boolRadiobtn">
+                                <div class="yesRadio">
+                                    <input type="radio" id="changedyes" name="Criminal_conviction" value="Yes">
+                                    <label for="yes">YES</label>
+                                </div>
+                                <div class="noRadio">
+                                    <input type="radio" id="changedno" name="Criminal_conviction" value="No">
+                                    <label for="No">NO</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col2">
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">Last Name</label></span>
+                            <input type="text" name="" id="" placeholder="Reaper">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">Phone Number</label></span>
+                            <input type="text" name="" id="" placeholder="01984347334">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">Birth Day</label></span>
+                            <input type="date" name="" id="" placeholder="12/11/2012">
+                        </div>
+
+                        <div class="questionLabel">
+                            <div class="radioLabel">
+                                <p> What is your Immigration Status? </p>
+                            </div>
+                            <div class="boolRadiobtn">
+                                <div class="Radio">
+                                    <input type="radio" id="immigrationStatus" name="immigrationEligible" value="British Citizen">
+                                    <label for="BritishCitizen">British Citizen</label><br>
+
+                                    <input type="radio" id="iltr" name="immigrationEligible" value="Indefinite Leave to Remain (LR)">
+                                    <label for="iltr">Indefinite Leave to Remain (LR)</label><br>
+
+                                    <input type="radio" id="settledinuk" name="immigrationEligible" value="Setteled in UK">
+                                    <label for="settledinuk">Setteled in UK</label><br>
+
+                                    <input type="radio" id="tier1" name="immigrationEligible" value="Tier 1">
+                                    <label for="tier1">Tier 1</label><br>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="eligibleLabel">
+                            <label for="">Eligible</label>
+                        </div>
+
+                        <!-- input file ID Professional -->
+                        <!-- input file signature -->
+                        <div class="formActionBtn" style="margin-top: 20px;">
+                            <div class="formSaveBtn">
+                                <button class="button">Save</button>
+                            </div>
+
+                            <div class="formSaveBtn">
+                                <button class="button">Exit</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Level 1 user -->
+            <div id="LevelUser" class="tabFormContainer">
+                <div class="formcheckgroupabove">
+                    <input type="checkbox" name="" id="">
+                    <label for="">Same As Authorised Person</label>
+                </div>
+                <div class="level1User">
+                    <div class="col1">
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">First Name</label></span>
+                            <input type="text" name="" id="" placeholder="John">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">Designation</label></span>
+                            <input type="text" name="" id="" placeholder="G.Manager">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">E-Mail</label></span>
+                            <input type="text" name="" id="" placeholder="John@somemail.com">
+                        </div>
+
+
+                        <div class="questionLabel">
+                            <div class="radioLabel">
+                                <p> Do you have a history of Criminal conviction/Bankruptcy/Disqualification? </p>
+                            </div>
+                            <div class="boolRadiobtn">
+                                <div class="yesRadio">
+                                    <input type="radio" id="changedyes" name="Criminal_conviction" value="Yes">
+                                    <label for="yes">YES</label>
+                                </div>
+                                <div class="noRadio">
+                                    <input type="radio" id="changedno" name="Criminal_conviction" value="No">
+                                    <label for="No">NO</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col2">
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">Last Name</label></span>
+                            <input type="text" name="" id="" placeholder="smith">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">Phone Number</label></span>
+                            <input type="text" name="" id="" placeholder="01984347334">
+                        </div>
+
+                        <div class="formTextGroup">
+                            <span class="inputlabel"><label for="">E-Mail</label></span>
+                            <input type="text" name="" id="" placeholder="JohnSmilth@gmail.com">
+                        </div>
+
+                        <div class="questionLabel">
+                            <div class="radioLabel">
+                                <p> What is your Immigration Status? </p>
+                            </div>
+                            <div class="boolRadiobtn">
+                                <div class="Radio">
+                                    <input type="radio" id="immigrationStatus" name="userlevel1immigrationEligible" value="British Citizen">
+                                    <label for="BritishCitizen">British Citizen</label><br>
+
+                                    <input type="radio" id="ilr" name="userlevel1immigrationEligible" value="Indefinite Leave to Remain (ILR)">
+                                    <label for="ilr">Indefinite Leave to Remain (ILR)</label><br>
+
+                                    <input type="radio" id="settledinuk" name="userlevel1immigrationEligible" value="Setteled in UK">
+                                    <label for="settledinuk">Setteled in UK</label><br>
+
+                                    <input type="radio" id="rob" name="userlevel1immigrationEligible" value="Rob">
+                                    <label for="rob">Representative of an Overseas Business</label><br>
+
+                                    <input type="radio" id="startup" name="userlevel1immigrationEligible" value="Start Up">
+                                    <label for="startup">Start-up</label><br>
+
+                                    <input type="radio" id="innovator" name="userlevel1immigrationEligible" value="innovator">
+                                    <label for="innovator">Innovator</label><br>
+
+                                    <input type="radio" id="global_Talent" name="userlevel1immigrationEligible" value="Global Talent">
+                                    <label for="global_Talent">Global Talent</label><br>
+
+                                </div>
+
+                            </div>
+                            <div class="eligibleLabel">
+                                <label for="">Eligible</label>
+                            </div>
+                        </div>
+
+                        <!-- input file ID Professional -->
+                        <!-- input file signature -->
+                        <div class="formActionBtn" style="margin: 20px 0px 30px 0px;">
+                            <div class="formSaveBtn">
+                                <button class="button">Save</button>
+                            </div>
+
+                            <div class="formSaveBtn">
+                                <button class="button">Exit</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

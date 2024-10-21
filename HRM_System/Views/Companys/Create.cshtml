@@ -1,0 +1,280 @@
+﻿@model CompanyViewModel
+
+
+@{
+    ViewData["Title"] = "Company Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+
+    string[] BCText = new string[] { "Company List", "Company Add" };
+    string[] BCLink = new string[] { "companys/index", "companys/create" };
+
+    PageHeaderProps pageHeader = new PageHeaderProps
+    {
+        PageTitle = "Company Add",
+        PageDesc = "Company Add",
+        BreadcrumbText = BCText,
+        BreadcrumbLink = BCLink
+    };
+}
+
+<style>
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        background-color: none !important;
+        padding: 0px;
+    }
+</style>
+
+
+@*<link href="~/bower_components/select2/css/select2.min.css" rel="stylesheet" />*@
+
+
+<!-- Page body start -->
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Basic Inputs Validation start -->
+            <div class="card">
+                <div class="card-header">
+                    @await Component.InvokeAsync("PageHeader", pageHeader)
+
+                </div>
+                <div class="card-block">
+                    <form asp-action="Create" method="post" enctype="multipart/form-data" novalidate>
+                        <div class="row">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="col-sm-4">
+                                <div class="form-group row">
+                                    <input type="hidden" asp-for="CompID" />
+                                    <label asp-for="Name" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="Name" id="name" name="name" class="form-control form-control-sm" />
+                                        <span asp-validation-for="Name" class="text-danger messages"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="BKashNumber" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="BKashNumber" class="form-control form-control-sm" />
+                                        <span asp-validation-for="BKashNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="Phone2" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="Phone2" class="form-control form-control-sm" />
+                                        <span asp-validation-for="Phone2" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="Email2" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="Email2" class="form-control form-control-sm" />
+                                        <span asp-validation-for="Email2" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <label asp-for="State" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <select asp-for="State" class="form-control form-control-sm">
+                                            <option value="0">Select</option>
+                                        </select>
+                                        <span asp-validation-for="State" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label asp-for="Facebook" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="Facebook" class="form-control form-control-sm" />
+                                        <span asp-validation-for="Facebook" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+                                    <label asp-for="GooglePlus" class="col-sm-6 control-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="GooglePlus" class="form-control form-control-sm" />
+                                        <span asp-validation-for="GooglePlus" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="Logo" class="col-sm-6 control-label"></label>
+                                    <div class="col-sm-12">
+                                        <input type="file" id="Logofile" name="Logofile" accept="image/*" class="form-control form-control-sm" onchange="return fileValidation()">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group row">
+                                    <label asp-for="CompType" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <select asp-for="CompType" class="form-control form-control-sm">
+                                            <option value="0">Select</option>
+                                        </select>
+                                        <span asp-validation-for="CompType" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="HotNumber" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="HotNumber" class="form-control form-control-sm" />
+                                        <span asp-validation-for="HotNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="Attention" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="Attention" class="form-control form-control-sm" />
+                                        <span asp-validation-for="Attention" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="Address" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <textarea asp-for="Address" class="form-control form-control-sm"></textarea>
+                                        <span asp-validation-for="Address" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="Country" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <select asp-for="Country" class="form-control form-control-sm">
+                                            <option value="0">Select</option>
+                                        </select>
+                                        <span asp-validation-for="Country" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="Instagram" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="Instagram" class="form-control form-control-sm" />
+                                        <span asp-validation-for="Instagram" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="twitter" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="twitter" class="form-control form-control-sm" />
+                                        <span asp-validation-for="twitter" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group row">
+                                    <label asp-for="BusinessType" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <select asp-for="BusinessType" class="form-control form-control-sm">
+                                            <option value="value">Select</option>
+                                        </select>
+                                        <span asp-validation-for="BusinessType" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label asp-for="Phone1" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="Phone1" class="form-control form-control-sm" />
+                                        <span asp-validation-for="Phone1" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label asp-for="Email1" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="Email1" class="form-control form-control-sm" />
+                                        <span asp-validation-for="Email1" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="City" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <select asp-for="City" class="form-control form-control-sm">
+                                            <option value="0">Select</option>
+                                        </select>
+                                        <span asp-validation-for="City" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="BusinessHour" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="BusinessHour" class="form-control form-control-sm" />
+                                        <span asp-validation-for="BusinessHour" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="Website" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="Website" class="form-control form-control-sm" />
+                                        <span asp-validation-for="Website" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="Linkedin" class="col-sm-6 col-form-label"></label>
+                                    <div class="col-sm-12">
+                                        <input asp-for="Linkedin" class="form-control form-control-sm" />
+                                        <span asp-validation-for="Linkedin" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-5"></label>
+                                    <div class="col-sm-7">
+                                        <input type="submit" value="Submit" class="btn btn-primary m-b-0" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Basic Inputs Validation end -->
+        </div>
+    </div>
+</div>
+<!-- Page body end -->
+
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @*<script src="~/bower_components/select2/js/select2.full.min.js"></script>*@
+    <script type="text/javascript">
+        $('#CompType').select2();
+        $('#BusinessType').select2();
+        $('#City').select2();
+        $('#Country').select2();
+        $('#State').select2();
+        /// Check Upload file extensions.
+        function fileValidation() {
+            var fileInput = document.getElementById('files');
+            var filePath = fileInput.value;
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+            if (!allowedExtensions.exec(filePath)) {
+                alert('Please upload file having extensions .jpeg/.jpg/.png only.');
+                fileInput.value = '';
+                return false;
+            } else {
+                //Image preview
+                //if (fileInput.files && fileInput.files[0]) {
+                //    var reader = new FileReader();
+                //    reader.onload = function (e) {
+                //        document.getElementById('imagePreview').innerHTML = '<img src="' + e.target.result + '"/>';
+                //    };
+                //    reader.readAsDataURL(fileInput.files[0]);
+                //}
+            }
+        }
+    </script>
+}

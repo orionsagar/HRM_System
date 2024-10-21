@@ -1,0 +1,1489 @@
+﻿@model RightToWorkCheck;
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        .pxSize {
+            width: 20px;
+        }
+
+        .rtw-form-view td {
+            font-size: 13.5px;
+            padding: 4px 6px !important;
+        }
+    </style>
+</head>
+<body>
+    <table class="rtw-form-view" style="border-collapse:collapse;max-width: 900px;width:100%;margin:auto;font-family: calibri;">
+        <tbody>
+            <tr><th style="text-align: center;"><h3>Right to Work Checklist (RTW)</h3><h4>()</h4> </th></tr>
+        </tbody>
+    </table>
+    <table border="1" class="rtw-form-view" style="border-collapse:collapse;max-width: 900px;width:100%;margin:auto;font-family: calibri;margin-bottom:10px;border: 1px solid #fff;">
+        <tbody>
+
+            <tr>
+                <td style="width: 200px; padding: 8px; background: #bbe1f8;font-weight: 600;">Name of person:</td>
+                <td style="background: #edf0f6;padding: 8px;">@Model.Name</td>
+            </tr>
+            <tr>
+                <td style="width: 200px; padding: 8px; background: #bbe1f8;font-weight: 600;">Work start date:</td>
+                <td style="background: #edf0f6;padding: 8px;">@Model.WorkStartTime </td>
+            </tr>
+            <tr>
+                <td style="width: 200px; padding: 8px; background: #bbe1f8;font-weight: 600;">Date &amp; Time of Check:</td>
+                <td style="background: #edf0f6;padding: 8px;">
+                    @{
+                        if (!String.IsNullOrEmpty(Model.TimeOfCheck))
+                        {
+                            Convert.ToDateTime(Model.TimeOfCheck).ToString("dd/MM/yyyy");
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 200px; padding: 8px; background: #bbe1f8;font-weight: 600;">Type of check:</td>
+                <td style="background: #edf0f6;padding: 8px;">
+                    <div>
+                        @{
+                            if (Model.TypeOfCheck1 == "false")
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                        }
+
+                        <label>
+                            Initial check before employment
+                        </label>
+
+                    </div>
+
+
+                    <div>
+                        @{
+                            if (Model.TypeOfCheck2 == "false")
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>Follow-up check on an employee  </label>
+
+                    </div>
+
+
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width: 200px; padding: 8px; background: #bbe1f8;font-weight: 600;">Medium of check:</td>
+                <td style="background: #edf0f6;padding: 8px;">
+
+                    <div>
+                        @{
+                            if (Model.MediumOfCheck1 == "false")
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            In-person manual check with original documents
+                        </label>
+
+                    </div>
+
+                    <div>
+                        @{
+                            if (Model.MediumOfCheck2 == "false")
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            Online right to work check
+                        </label>
+
+                    </div>
+
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width: 200px; padding: 8px; background: #bbe1f8;font-weight: 600;">Evidence Presented:</td>
+                <td style="background: #edf0f6;padding: 8px;">@Model.EvidencePresented Document</td>
+            </tr>
+            <!-- <tr>
+                <td style="width: 200px; padding: 8px; background: #bbe1f8;font-weight: 600;">Work start time:</td>
+                <td style="background: #edf0f6;padding: 8px;"> 01/11/2023 </td>
+            </tr> -->
+            <!-- <tr>
+                <td style="width: 200px; padding: 8px; background: #bbe1f8;font-weight: 600;">Time of check:</td>
+                <td style="background: #edf0f6;padding: 8px;"></td>
+            </tr> -->
+        </tbody>
+    </table>
+
+
+    <table class="rtw-form-view" border="1" style="margin-bottom:10px !important;border-collapse:collapse;max-width: 900px;width:100%;
+	margin:auto;font-family: calibri;border: 1px solid #fff;background: #edf0f6;">
+        <tbody>
+            <tr>
+                <td style="padding: 5px;">
+                    You may conduct a physical document check or perform an online check to establish
+                    a right to work. Where a right to work check has been conducted using the online
+                    service, the information is provided in real-time, directly from Home Office systems
+                    and there is no requirement to see the documents listed below.
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="background: #bbe1f8;text-align: center;color: #13335a;font-weight:600;padding: 3px;">
+                    Step 1 for physical check
+                </td>
+
+            </tr>
+            <tr>
+                <td style="padding: 5px;">You must <b>obtain original</b> documents from either List A or List B of acceptable documents for a manual right to work check.</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="background: #bbe1f8;text-align: center;color: #13335a;font-weight:600;padding: 3px;">
+                    List A
+                </td>
+
+            </tr>
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_Right_To_Abod == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            1.   A passport <b>(current or expired)</b> showing the holder, or a person named in the
+                            passport as the child of the holder, is a British citizen or a citizen of the UK and
+                            Colonies having the right of abode in the UK.
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_Republic_Of_Ireland == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            2.    A passport or passport card <b>(current or expired)</b> showing that the holder is a
+                            national of the Republic of Ireland.
+
+                        </label>
+
+                    </div>
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_United_Kingdom_In_definitely == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            3.      A <b>current</b> document issued by the Home Office to a family member of an EEA
+                            or Swiss citizen, and which indicates that the holder is permitted to stay in the
+                            United Kingdom indefinitely.
+                        </label>
+
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_Appendix_EU_to_the_Isle_of_Man_Immigration_Rules == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            4.       A document issued by the Bailiwick of Jersey, the Bailiwick of Guernsey or the
+                            Isle of Man, which has been verified as valid by the Home Office Employer
+                            Checking Service, showing that the holder has been granted unlimited
+                            leave to enter or remain under Appendix EU to the Jersey Immigration
+                            Rules, Appendix EU to the Immigration (Bailiwick of Guernsey) Rules 2008 or
+                            Appendix EU to the Isle of Man Immigration Rules.
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_has_no_time_limit_on_their_stay_in_the_UK == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            5.    A <b>current</b> Biometric Immigration Document (biometric residence permit)
+                            issued by the Home Office to the holder indicating that the person named is
+                            allowed to stay indefinitely in the UK, or has no time limit on their stay in the
+                            UK.
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_allowed_to_stay_indefinitely_in_the_UK == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            6.      A <b>current</b> passport endorsed to show that the holder is exempt from
+                            immigration control, is allowed to stay indefinitely in the UK, has the right of
+                            abode in the UK, or has no time limit on their stay in the UK.
+                        </label>
+
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_name_issued_by_a_government_agency_or_a_previous_employer == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                        7.     A <b>current</b> Immigration Status Document issued by the Home Office to the holder
+                        with an endorsement indicating that the named person is allowed to stay
+                        indefinitely in the UK or has no time limit on their stay in the UK, together with an
+                        official document giving the person’s permanent National Insurance number
+                        and their name issued by a government agency or a previous employer.
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_birth_or_adoption_certificate_issued_in_the_UK == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            8.       A birth or adoption certificate issued in the UK, <b>together with</b> an official
+                            document giving the person’s permanent National Insurance number and their
+                            name issued by a government agency or a previous employer
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_birth_or_adoption_certificate_issued_in_the_Channel_Islands == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            9.     A birth or adoption certificate issued in the Channel Islands, the Isle of Man
+                            or Ireland, <b>together with</b> an official document giving the person’s permanent
+                            National Insurance number and their name issued by a government agency or
+                            a previous employer.
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_certificate_of_registration_or_naturalisation_as_a_British_citizen == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            10.  A certificate of registration or naturalisation as a British citizen, <b>together with</b> an
+                            official document giving the person’s permanent National Insurance number
+                            and their name issued by a government agency or a previous employer.
+                        </label>
+
+                    </div>
+
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="background: #bbe1f8;text-align: center;color: #13335a;font-weight: 600;padding: 3px;">
+                    List B Group 1
+                </td>
+
+            </tr>
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_current_passport_endorsed_to_show == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            1.   A <b>current</b> passport endorsed to show that the holder is allowed to stay in the
+                            UK and is currently allowed to do the type of work in question.
+
+
+                        </label>
+
+                    </div>
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_current_Biometric_Immigration_Document == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            2.  A <b>current</b> Biometric Immigration Document (biometric residence permit)
+                            issued by the Home Office to the holder which indicates that the named
+                            person can currently stay in the UK and is allowed to do the work in question.
+
+                        </label>
+
+                    </div>
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+
+                    <div>
+                        @{
+                            if (Model.Is_current_document_issued_by_the_Home_Office == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            3.    A <b>current</b> document issued by the Home Office to a family member of an
+                            EEA or Swiss citizen, and which indicates that the holder is permitted to stay
+                            in the United Kingdom for a time-limited period and to do the type of work in
+                            question.
+
+                        </label>
+
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_document_issued_by_the_Bailiwick_of_Jersey == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            4.
+                            A document issued by the Bailiwick of Jersey, the Bailiwick of Guernsey or the
+                            Isle of Man, which has been verified as valid by the Home Office Employer
+                            Checking Service, showing that the holder has been granted limited leave to
+                            enter or remain under Appendix EU to the Jersey Immigration Rules, Appendix
+                            EU to the Immigration (Bailiwick of Guernsey) Rules 2008 or Appendix EU to the
+                            Isle of Man Immigration Rules.
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_document_issued_by_the_Bailiwick_of_Jersey_before_30_June_2021 == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            5.
+                            A document issued by the Bailiwick of Jersey or the Bailiwick of Guernsey,
+                            which has been verified as valid by the Home Office Employer Checking
+                            Service, showing that the holder has made an application for leave to enter or
+                            remain under Appendix EU to the Jersey Immigration Rules or Appendix EU to
+                            the Immigration (Bailiwick of Guernsey) Rules 2008, on or before 30 June 2021.
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_frontier_worker_permit_issued_under_regulation == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            6.
+                            A frontier worker permit issued under regulation 8 of the Citizens’ Rights
+                            (Frontier Workers) (EU Exit) Regulations 2020.
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_current_immigration_status_document_containing_a_photograph == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            7.
+                            A <b>current</b> immigration status document containing a photograph issued by
+                            the Home Office to the holder with a valid endorsement indicating that the
+                            named person may stay in the UK, and is allowed to do the type of work in
+                            question, together with an official document giving the person’s permanent
+                            National Insurance number and their name issued by a government agency
+                            or a previous employer.
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" style="background: #bbe1f8;text-align: center;color: #13335a;font-weight: 600;padding: 3px;">
+                    List B Group 2
+                </td>
+
+            </tr>
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_document_issued_by_the_Home_Office == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            1.  A document issued by the Home Office showing that the holder has made an
+                            application for leave to enter or remain under Appendix EU to the immigration
+                            rules on or before 30 June 2021 <b>together with a Positive Verification Notice</b>
+                            from the Home Office Employer Checking Service.
+                        </label>
+
+                    </div>
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_Appendix_EU_to_the_Jersey_Immigration_Rules == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            2.   A document issued by the Bailiwick of Jersey or the Bailiwick of Guernsey,
+                            showing that the holder has made an application for leave to enter or remain
+                            under Appendix EU to the Jersey Immigration Rules or Appendix EU to the
+                            Immigration (Bailiwick of Guernsey) Rules 2008 on or before 30 June 2021
+                            <b>together with a Positive Verification Notice</b> from the Home Office Employer
+                            Checking Service.
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_holder_is_permitted_to_take_the_employment == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            3.    An application registration card issued by the Home Office stating that the
+                            holder is permitted to take the employment in question, <b>
+                                together with a
+                                Positive Verification Notice
+                            </b> from the Home Office Employer Checking Service.
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 5px;border-bottom: 1px solid #fff;">
+                    <div>
+                        @{
+                            if (Model.Is_Positive_Verification_Notice_issued_by_the_Home_Office_Employer == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/checkbox.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            4.    A <b>Positive Verification Notice </b> issued by the Home Office Employer Checking
+                            Service to the employer or prospective employer, which indicates that the
+                            named person may stay in the UK and is permitted to do the work in question.
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <table border="1" class="rtw-form-view" style="margin-bottom:10px !important;border-collapse:collapse;max-width: 900px;width:100%;
+margin:auto;font-family: calibri;border: 1px solid #fff;background: #edf0f6;">
+
+
+        <tbody>
+            <tr>
+                <td colspan="2" style="background: #b5d8ac;text-align: center;color: #13335a;    font-weight: 600;padding: 3px;">
+                    Step 2 Check
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="2" style="padding: 5px;">
+                    You must <b>check</b>  that the documents are genuine and that the person presenting
+                    them is the prospective employee or employee, the rightful holder and allowed to
+                    do the type of work you are offering.
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;width: 650px;">
+                    1. Are photographs consistent across documents
+                    and with the person’s appearance?
+                </td>
+
+
+
+                <td style="padding: 5px;background:#f8fcfe;">
+                    @{
+                        <div>
+                            @if (Model.Photographs_consistent_across_documents == "Yes")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                Yes
+                            </label>
+                        </div>
+
+                        <div>
+                            @if (Model.Photographs_consistent_across_documents == "No")
+                            {
+
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                No
+                            </label>
+                        </div>
+
+                        <div>
+                            @if (Model.Photographs_consistent_across_documents == "N/A")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                N/A
+                            </label>
+                        </div>
+
+                    }
+
+                </td>
+            </tr>
+
+
+            <tr>
+                <td style="padding: 5px;width: 650px;">
+                    2. Are dates of birth correct and consistent
+                    across documents?
+                </td>
+                <td style="padding: 5px;background:#f8fcfe;">
+                    @{
+                        <div>
+                            @if (Model.Dates_of_birth_correct_and_consistent_across_documentss == "Yes")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+                            <label>
+                                Yes
+                            </label>
+                        </div>
+                        <div>
+                            @if (Model.Dates_of_birth_correct_and_consistent_across_documentss == "No")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                No
+                            </label>
+                        </div>
+
+
+                        <div>
+                            @if (Model.Dates_of_birth_correct_and_consistent_across_documentss == "N/A")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                N/A
+                            </label>
+                        </div>
+
+                    }
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;width: 650px;">
+                    3. Are expiry dates for time-limited permission
+                    to be in the UK in the future i.e. they have not
+                    passed (if applicable)?
+                </td>
+                <td style="padding: 5px;background:#f8fcfe;">
+                    @{
+                        <div>
+                            @if (Model.Expiry_dates_for_time_limited_permission == "Yes")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                Yes
+                            </label>
+                        </div>
+
+                        <div>
+                            @if (Model.Expiry_dates_for_time_limited_permission == "No")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                No
+                            </label>
+                        </div>
+
+                        <div>
+                            @if (Model.Expiry_dates_for_time_limited_permission == "N/A")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                N/A
+                            </label>
+                        </div>
+                    }
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;width: 650px;">
+                    4. Have you checked work restrictions to determine
+                    if the person is able to work for you and do the
+                    type of work you are offering? (For <b>students</b> who
+                    have limited permission to work during termtime, you <b>must</b> also obtain, copy and retain
+                    details of their academic term and vacation
+                    times covering the duration of their period of
+                    study in the UK for which they will be employed.)
+                </td>
+                <td style="padding: 5px;background:#f8fcfe;">
+                    @{
+                        <div>
+                            @if (Model.Checked_work_restrictions == "Yes")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                Yes
+                            </label>
+                        </div>
+
+                        <div>
+                            @if (Model.Checked_work_restrictions == "No")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                No
+                            </label>
+                        </div>
+
+                        <div>
+                            @if (Model.Checked_work_restrictions == "N/A")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                N/A
+                            </label>
+                        </div>
+
+                        // if (Model.Checked_work_restrictions == "Yes")
+                        // {
+                        // }
+                        // else if (Model.Photographs_consistent_across_documents == "No")
+                        // {
+                        // }
+                        // else
+                        // {
+                        // }
+                    }
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;width: 650px;">
+                    5. Are you satisfied the document is genuine,
+                    has not been tampered with and belongs to
+                    the holder?
+                </td>
+                <td style="padding: 5px;background:#f8fcfe;">
+                    @{
+                        <div>
+                            @if (Model.You_satisfied_the_document_is_genuine == "Yes")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                Yes
+                            </label>
+                        </div>
+
+                        <div>
+                            @if (Model.You_satisfied_the_document_is_genuine == "No")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                No
+                            </label>
+                        </div>
+
+                        <div>
+                            @if (Model.You_satisfied_the_document_is_genuine == "N/A")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                N/A
+                            </label>
+                        </div>
+
+                        // if (Model.You_satisfied_the_document_is_genuine == "Yes")
+                        // {
+                        // }
+                        // else if (Model.Photographs_consistent_across_documents == "No")
+                        // {
+                        // }
+                        // else
+                        // {
+                        // }
+                    }
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;width: 650px;">
+                    6. Have you checked the reasons for any
+                    different names across documents (e.g.
+                    marriage certificate, divorce decree, deed
+                    poll)? (Supporting documents should also be
+                    photocopied and a copy retained.)
+                </td>
+                <td style="padding: 5px;background:#f8fcfe;">
+                    @{
+                        <div>
+                            @if (Model.You_checked_the_reasons_for_any_different_names == "Yes")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                Yes
+                            </label>
+                        </div>
+
+                        <div>
+                            @if (Model.You_checked_the_reasons_for_any_different_names == "No")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                No
+                            </label>
+                        </div>
+
+                        <div>
+                            @if (Model.You_checked_the_reasons_for_any_different_names == "N/A")
+                            {
+                                <img src="/img/radio-check.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/radio-uncheck.png" class="pxSize" alt="">
+                            }
+
+                            <label>
+                                N/A
+                            </label>
+                        </div>
+                    }
+
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table border="1" class="rtw-form-view" style="margin-bottom: :10px !important;border-collapse:collapse;max-width: 900px;
+width:100%;margin:auto;font-family: calibri;border: 1px solid #fff;background: #edf0f6;">
+
+
+        <tbody>
+            <tr>
+                <td style="padding: 5px;text-align: center;background:#eaa893;color: #13335a;font-weight: 600;">
+                    Step 3 Copy
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;">
+                    You <b>must</b> make a clear copy of each document in a format which cannot later be
+                    altered, and retain the copy securely; electronically or in hardcopy. You must copy
+                    and retain:
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;">
+                    <div>
+                        @{
+                            if (Model.Passports_any_page_with_the_document_expiry_date == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/check.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            1.  <b> Passports</b>: any page with the document expiry date, nationality, date of birth,
+                            signature, leave expiry date, biometric details and photograph, and any page
+                            containing information indicating the holder has an entitlement to enter or
+                            remain in the UK and undertake the work in question.
+
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;">
+                    <div>
+                        @{
+                            if (Model.Other_documents_the_document_in_full == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/check.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            2.     <b>All other documents</b>:the document in full, both sides of a biometric residence
+                            permit. <b>You must also record and retain the date on which the check was made.</b>
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <table border="1" class="rtw-form-view" style="margin-bottom: :10px !important;border-collapse:collapse;max-width: 900px;
+width:100%;margin:auto;font-family: calibri;border: 1px solid #fff;background: #edf0f6;">
+
+
+        <tbody>
+            <tr>
+                <td style="padding: 5px;text-align: center;background:#bbe1f8;color: #13335a;
+    font-weight: 600;">
+                    Know the type of excuse you have
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 5px;">
+                    If you have correctly carried out the above 3 steps you will have an excuse against
+                    liability for a civil penalty if the above named person is found working for you
+                    illegally. However, you need to be aware of the type of excuse you have as this
+                    determines how long it lasts for, and if, and when you are required to do a followup check.<br>The documents that you have checked and copied are from:<p></p>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td style="padding: 5px;">
+                    <div class="excuselist" style="padding-left:0;">
+                        <label> 1.  <b> List A </b> </label>
+                    </div>
+                    <div class="excuselist">
+                        @{
+                            if (Model.Continuous_statutory_excuse == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/check.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            You have a <b>continuous statutory excuse</b> for the <b>full duration</b> of the
+                            person’s employment with you. You are not required to carry out any repeat right
+                            to work checks on this.
+
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 5px;">
+                    <div class="excuselist" style="padding-left:0;">
+                        <label> 2.   <b>List B: Group 1 </b></label>
+                    </div>
+                    <div class="excuselist">
+                        @{
+                            if (Model.Time_limited_statutory_excuse == false)
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/check.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            You have a <b>time-limited statutory</b> excuse which expires when
+                            the person’s permission to be in the UK expires. You should carry out a <b>
+                                follow-up
+                                check when the document evidencing their permission to work expires
+                            </b>.
+
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 5px;">
+                    <div class="excuselist" style="padding-left:0;">
+                        <label> 3.   <b>List B: Group 2 </b></label>
+                    </div>
+                    <div class="excuselist">
+                        @{
+                            if (Model.Time_limited_statutory_excuse_which_expires_six_months == "false")
+                            {
+                                <img src="/img/uncheck.png" class="pxSize" alt="">
+                            }
+                            else
+                            {
+                                <img src="/img/check.png" class="pxSize" alt="">
+                            }
+                        }
+                        <label>
+                            You have a <b>time-limited statutory excuse</b> which expires six
+                            months from the date specified in your Positive Verification Notice. <b>
+                                This means that
+                                you should carry out a follow-up check when this notice expires
+                            </b>.
+
+                        </label>
+
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table border="1" style="margin-bottom: :10px !important;border-collapse:collapse;max-width: 900px;width:100%;margin:auto;
+overflow-x:scroll;font-family: calibri;border: 1px solid #fff;">
+
+        <tbody>
+            <tr>
+                <th style="background:#bbe1f8;padding: 8px;">Know the type of excuse you have</th>
+
+                <th style="background:#bbe1f8;padding: 8px;">Date followup required</th>
+            </tr>
+
+
+            <tr>
+                <td style="background: #bbe1f8;">List B: (Group 1)</td>
+
+                <td style="background: #f0f6f9;">
+                    @{
+                        if (!String.IsNullOrEmpty(Model.List_B_Group_1_Date_followup))
+                        {
+                            Convert.ToDateTime(Model.List_B_Group_1_Date_followup).ToString("dd/MM/yyyy hh:mm tt");
+                        }
+                    }
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="background: #bbe1f8;">List B: (Group 2)</td>
+
+                <td style="background: #f0f6f9;">
+                    @{
+                        if (!String.IsNullOrEmpty(Model.List_B_Group_2_Date_followup))
+                        {
+                            Convert.ToDateTime(Model.List_B_Group_2_Date_followup).ToString("dd/MM/yyyy hh:mm tt");
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="background: #bbe1f8;">EUSS</td>
+
+                <td style="background: #f0f6f9;">
+                    @{
+                        if (!String.IsNullOrEmpty(Model.EUSS_Date_followup))
+                        {
+                            Convert.ToDateTime(Model.EUSS_Date_followup).ToString("dd/MM/yyyy hh:mm tt");
+                        }
+                    }
+
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <table style="max-width: 900px;width:100%;margin:10px auto;">
+        <tbody>
+            <tr>
+                <td>
+                    @{
+                        if (!String.IsNullOrEmpty(Model.RTW_Evidence_Scans_1))
+                        {
+                            var scansImg1 = "https://workerpermituk.ultimateit-bd.com/" + Model.RTW_Evidence_Scans_1;
+                            <div class="text-center rtw-scan" style="font-family: calibri;padding-left: 0;">
+                                <div class="scan-hd" style="background:#bbe1f8;">
+                                    <h3 style="text-align: center;margin: 0;font-size: 30px;">RTW Evidence Scans-1</h3>
+                                    <p style="text-align: center;margin: 0;">Please copy and paste an image of your scanned RTW documents into the grey form field below.</p>
+                                </div>
+
+                                <div class="scan-body" style="background: #f0f6f9;padding-left: 0;">
+
+                                    <embed src="@scansImg1" frameborder="0" width="100%" height="auto" style="text-align:center;">
+
+
+
+
+                                    <div id="scan_nse_id" style="display:block;margin-top:20px;padding-left:0;">
+                                        <embed src="@scansImg1" frameborder="0" width="100%" height="auto" style="text-align:center;">
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        }
+                    }
+
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    @{
+                        if (!String.IsNullOrEmpty(Model.RTW_Evidence_Scans_2))
+                        {
+                            var scansImg2 = "https://workerpermituk.ultimateit-bd.com/" + Model.RTW_Evidence_Scans_1;
+                            <div class="text-center rtw-scan" style="font-family: calibri;">
+                                <div class="scan-hd" style="background:#bbe1f8;">
+                                    <h3 style="text-align: center;margin: 0;font-size: 30px;">RTW Evidence Scans-2 (If applicable)</h3>
+                                    <p style="text-align: center;margin: 0;">Please copy and paste an image of your scanned RTW documents into the blue form field below.</p>
+                                </div>
+
+                                <div class="scan-body" style="background: #e0f6ff;">
+
+                                    <embed src="@scansImg2" frameborder="0" width="100%" height="auto" style="text-align:center;">
+
+
+
+
+                                    <div id="scan_nrse_id" style="display:none; margin-top:20px;padding-left:0;">
+                                        <embed src="@scansImg2" frameborder="0" width="100%" height="auto" style="text-align:center;">
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @{
+                        if (!String.IsNullOrEmpty(Model.RTW_Report))
+                        {
+                            var scansImg3 = "https://workerpermituk.ultimateit-bd.com/" + Model.RTW_Evidence_Scans_1;
+                            <div class="text-center rtw-scan" style="font-family: calibri;">
+                                <div class="scan-hd" style="background:#bbe1f8;">
+                                    <h3 style="text-align: center;margin: 0;font-size: 30px;">RTW Report (If applicable)</h3>
+                                    <p style="text-align: center;margin: 0;">Please copy and paste an image of your scanned RTW documents into the blue form field below.</p>
+                                </div>
+
+                                <div class="scan-body" style="background: #e0f6ff;">
+
+                                    <embed src="@scansImg3" frameborder="0" width="100%" height="auto" style="text-align:center;">
+
+
+
+
+                                    <div id="scan_nrse_id" style="display:none; margin-top:20px;padding-left:0;">
+                                        <embed src="@scansImg3" frameborder="0" width="100%" height="auto" style="text-align:center;">
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table style="max-width: 900px;width:100%;margin:10px auto;">
+    </table>
+
+    <table border="1" style="margin-top:10px !important;border-collapse:collapse;max-width: 900px;width:100%;margin:10px auto;">
+    </table>
+    <table border="1" style="margin-top:10px !important;border-collapse:collapse;max-width: 900px;width:100%;margin:10px auto;border:1px solid #fff;">
+        <tbody>
+            <tr>
+                <td style="background: #bbe1f8;padding:10px;width:250px">
+                    RTW check result
+                </td>
+                <td style="width:250px;background: #f0f6f9;">@Model.RTW_check_result</td>
+                <td style="background: #bbe1f8;padding:10px;width:250px">Remarks</td>
+                <td style="background: #f0f6f9;">@Html.Raw(@Model.Remarks)</td>
+            </tr>
+
+            <!-- </table>
+
+            <table border="1" style="margin-top:10px !important;border-collapse:collapse;max-width: 900px;width:100%;margin:10px auto;border:1px solid #fff;"> -->
+            <tr>
+                <td style="width:250px;padding:10px;background: #bbe1f8;">Checker's Name</td>
+                <td width="250;" style="background: #f0f6f9;">@Model.Checker_Name</td>
+                <td style="width:250px;background: #bbe1f8;padding:10px;">Contact No.</td>
+                <td style="background: #f0f6f9;">@Model.Contact_No</td>
+            </tr>
+
+
+            <tr>
+                <td style="width:250px;background: #bbe1f8;padding:10px;background: #bbe1f8">Designation </td>
+                <td style="background: #f0f6f9;">@Model.Designation </td>
+                <td style="width:250px;padding:10px; background: #bbe1f8;">Email Address</td>
+                <td style="background: #f0f6f9;">@Model.Email_Address</td>
+            </tr>
+
+
+        </tbody>
+    </table>
+
+</body>
+</html>

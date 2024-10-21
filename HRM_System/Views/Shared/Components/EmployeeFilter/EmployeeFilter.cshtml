@@ -1,0 +1,142 @@
+﻿@model EmployeeFilterVM
+
+@*<style>
+    @@media only screen and (min-width : 991px) {
+        label {
+            text-align: right;
+        }
+    }    
+</style>*@
+
+
+<div class="row">
+    @*<div class="col-sm-3 d-none">
+            <div class="form-group row">
+                <label asp-for="OrgId" class="col-sm-12 col-form-label">ORG</label>
+                <div class="col-sm-12">
+                    <select asp-for="OrgId" asp-items="ViewBag.OrgId" class="form-control form-control-sm OrgId">
+
+                    </select>
+                    <span asp-validation-for="OrgId" class="text-danger"></span>
+                </div>
+            </div>
+        </div>*@
+    @*<div class="col-sm-3">
+            <div class="form-group">
+                <label asp-for="EmpCategoryId_Filter" class="col-sm-12 control-label"></label>
+                <div class="col-sm-12 pl-0">
+                    <select asp-for="EmpCategoryId_Filter" asp-items="ViewBag.EmpCategory" class="form-control form-control-sm">
+                        <option value="">Select</option>
+                    </select>
+                    <span asp-validation-for="EmpCategoryId_Filter" class="text-danger"></span>
+                </div>
+            </div>
+        </div>*@
+
+   
+    <div class="col-sm-3">
+        <div class="form-group row">
+            <label asp-for="DepartmentId_Filter" class="col-sm-12 control-label"></label>
+            <div class="col-sm-11 p-0">
+                <select asp-for="DepartmentId_Filter" asp-items="ViewBag.Department" class="form-control form-control-sm">
+                    <option value="">Select</option>
+                </select>
+                <span asp-validation-for="DepartmentId_Filter" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group row">
+            <label asp-for="SectionId_Filter" class="col-sm-12 control-label"></label>
+            <div class="col-sm-11 p-0">
+                <select asp-for="SectionId_Filter" asp-items="ViewBag.Section" class="form-control form-control-sm">
+                    <option value="">Select</option>
+                </select>
+                <span asp-validation-for="SectionId_Filter" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group row">
+            <label asp-for="DesignationId_Filter" class="col-sm-12 control-label"></label>
+            <div class="col-sm-11 p-0">
+                <select asp-for="DesignationId_Filter" asp-items="ViewBag.Designation" class="form-control form-control-sm">
+                    <option value="">Select</option>
+                </select>
+                <span asp-validation-for="DesignationId_Filter" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group row">
+            <label asp-for="CardNo_Filter" class="col-sm-12 control-label">Card No</label>
+            <div class="col-sm-11 p-0">
+                <input asp-for="CardNo_Filter" class="form-control form-control-sm" />
+                <span asp-validation-for="CardNo_Filter" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group row">
+            <label asp-for="EmpName_Filter" class="col-sm-12 control-label">Name</label>
+            <div class="col-sm-11 p-0">
+
+                <input asp-for="EmpName_Filter" class="form-control form-control-sm" />
+                <span asp-validation-for="EmpName_Filter" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    @if (Model != null)
+    {
+        // if any extra HTML found
+        if (Model.HTML != null)
+        {
+            foreach (var item in Model.HTML)
+            {
+                <partial name="@item" />
+            }
+        }
+        if (Model.HasCheckBox_Filter)
+        {
+            @*<div class="col-sm-4">
+                    <div class="form-group row mt-2">
+
+                        <div class="col-sm-12 row m-0">
+                            <div class="checkbox-fade fade-in-primary">
+                                <label>
+                                    <input type="checkbox" id="HasCheckBox_Filter" name="HasCheckBox_Filter">
+                                    <span class="cr">
+                                        <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                    </span>
+                                </label>
+                            </div>
+                            <label asp-for="HasCheckBox_Filter" class=" control-label text-left">@Model?.CheckBoxName_Filter</label>
+                        </div>
+                    </div>
+                </div>*@
+            <div class="col-sm-4 d-flex justify-content-start align-items-center">
+                <div class="form-group row mt-2 mb-0">
+
+                    <div class="col-sm-12 row m-0">
+                        <div class="checkbox-fade fade-in-primary">
+                            <label>
+                                <input type="checkbox" id="HasCheckBox_Filter" name="HasCheckBox_Filter">
+                                <span class="cr">
+                                    <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                </span>
+                            </label>
+                        </div>
+                        <label class=" control-label text-left" asp-for="HasCheckBox_Filter">@Model?.CheckBoxName_Filter</label>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    <div class="col-sm-2 d-flex justify-content-start align-items-center" style="padding-left: 30px;">
+        <div class="form-group mb-0">
+            <button type="button" id="btnEmpFilter" class="btn btn-md btn-primary">Search</button>
+        </div>
+    </div>
+</div>
+

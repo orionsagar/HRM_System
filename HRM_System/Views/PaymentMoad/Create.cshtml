@@ -1,0 +1,102 @@
+﻿@model PaymentMoad
+@inject IGlobalHelper _global;
+
+@{
+    var action = ViewBag.Action;
+    if (action == "Add")
+    {
+        ViewData["Title"] = "Payment Mode Add";
+    }
+    else
+    {
+        ViewData["Title"] = "Payment Mode Edit";
+    }
+    Layout = "~/Views/Shared/_Main_Layout.cshtml";
+}
+
+@section PageName {
+    @ViewData["Title"]
+}
+@section Breadcrumb {
+    <a href="/dashboard/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <a href="/PaymentMoad/index">Payment Mode List</a>
+
+    <span class="Divider">/</span>
+    @* <span class="section activeCrum">Payment Mode Add</span> *@
+    <span class="section activeCrum">@ViewData["Title"]</span>
+}
+
+
+@{
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+    var OrgId = _global.GetOrgId();
+    var ClientId = _global.GetClientId();
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <form id="main" asp-action="Create" method="post" class="j-pro border-0" novalidate>
+            <div class="card">
+                <div class="card-block">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row justify-content-center">
+                        <div class="col-sm-6">
+                            @if (Model == null)
+                            {
+                                <input type="hidden" asp-for="OrgId" value="@OrgId" />
+                                <input type="hidden" asp-for="ClientId" value="@ClientId" />
+                                <input type="hidden" asp-for="AddedBy" value="@UserId" />
+                                <input type="hidden" asp-for="UpdatedBy" />
+                                <input type="hidden" asp-for="AddedDate" value="@DateTime.Now" />
+                                <input type="hidden" asp-for="UpdatedDate" />
+                            }
+                            else
+                            {
+                                <input type="hidden" asp-for="OrgId" />
+                                <input type="hidden" asp-for="ClientId" />
+                                <input type="hidden" asp-for="PaymentMoadId" />
+                                <input type="hidden" asp-for="AddedBy" />
+                                <input type="hidden" asp-for="UpdatedBy" value="@UserId" />
+                                <input type="hidden" asp-for="AddedDate" />
+                                <input type="hidden" asp-for="UpdatedDate" value="@DateTime.Now" />
+                            }
+                            <div class="form-group row">
+                                <label asp-for="PaymentModeName" class="col-sm-6 control-label">Payment Type</label>
+                                <div class="col-sm-12">
+                                    <input asp-for="PaymentModeName" class="form-control" />
+                                    <span asp-validation-for="PaymentModeName" class="text-danger"></span>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-block actionBtnRight">
+                            <input type="submit" value="Submit" class="btn btn-primary waves-effect waves-light m-r-20" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Basic Inputs Validation end -->
+    </div>
+</div>
+
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

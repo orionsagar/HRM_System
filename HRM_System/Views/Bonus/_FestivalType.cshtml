@@ -1,0 +1,212 @@
+﻿@model FestivalType
+@{
+
+}
+<!-- Required Fremwork -->
+<!--<link rel="stylesheet" type="text/css" href="~/bower_components/bootstrap/css/bootstrap.min.css">-->
+<!-- waves.css -->
+<!--<link rel="stylesheet" href="~/assets/pages/waves/css/waves.min.css" type="text/css" media="all">-->
+<!-- themify-icons line icon -->
+<!--<link rel="stylesheet" type="text/css" href="~/assets/icon/themify-icons/themify-icons.css">-->
+<!-- Style.css -->
+<!--<link href="~/bower_components/jquery-ui/css/jquery-ui.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="~/assets/css/style.css">
+<link rel="stylesheet" type="text/css" href="~/assets/css/jquery.mCustomScrollbar.css">
+<link rel="stylesheet" type="text/css" href="~/assets/css/pcoded-horizontal.min.css">-->
+
+<!-- Custom Css File Minified css file -->
+<!--<link href="~/custom/css/custom.min.css" rel="stylesheet" />-->
+<!-- notify alert -->
+<!--<link href="~/minify/css/minifyedpnotify.css" rel="stylesheet" />
+<style>
+    .custom-textbox {
+        /* Add your custom styles for text boxes */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    .custom-select {
+        /* Add your custom styles for select elements */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    .submit-button {
+        /* Add your custom styles for the submit button */
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+        .submit-button:hover {
+            background-color: #45a049;
+        }
+</style>-->
+@*<div class="container" style="padding: 10px;">
+    <div class="row justify-content-center">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">*@
+                    <div class="col-sm-3">
+                        <!-- Form code -->
+                        <div class="form-group row mt-1">
+                            @*<input type="hidden" asp-for="FestivalTypeId" />*@
+                            <label asp-for="FestivalName" class="col-sm-12 col-form-label">Festival Name</label>
+                            <div class="col-sm-12">
+                                <input asp-for="FestivalName" type="text" class="form-control form-control-sm custom-textbox" />
+                                <span asp-validation-for="FestivalName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <!-- Rest of the code -->
+                        <br />
+                        <div class="form-group row justify-content-center mt-1 ml-0">
+                            <button type="button" id="btnCreateFestivalType" class="btn btn-sm btn-primary submit-button">Create</button>
+                        </div>
+                        
+                    </div>
+                @*</div>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+<!-- Required Jquery -->
+<script type="text/javascript" src="~/bower_components/jquery/js/jquery.min.js"></script>
+<script type="text/javascript" src="~/bower_components/jquery-ui/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="~/bower_components/popper.js/js/popper.min.js"></script>
+<script type="text/javascript" src="~/bower_components/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/assets/pages/widget/excanvas.js"></script>
+ @*Select2 js*@
+<script src="~/SelectTwo/dist/js/select2.full.js"></script>
+
+ @*notify alert*@ 
+<script src="~/minify/js/minifyedpnotify.js"></script>
+
+<script>
+    $("#btnCreateFestivalType").click(function () {
+
+                const FestivalName = $("#FestivalName").val();
+                //const CalcRuleID = $("#CalcRuleID").val();
+                let FestivalType = {
+                    FestivalTypeId:  0,
+                    FestivalName: $("#FestivalName").val(),
+                    //CalcRuleID: $("#CalcRuleID").val()
+
+                }
+          if (FestivalName == "") {
+              WarningPNotify("Please fill FestivalName");
+              return;
+          }
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("CreateFestivalType", "Bonus")",
+                    data: FestivalType,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                           // SuccessPNotify("Employee Job Calender Updated");
+                            SuccessPNotify(res.message);
+                            //clearData();
+                            $("#FestivalName").val("");
+                            location.reload();
+                            
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+
+      })
+
+
+
+
+    function clearData() {
+        //$("#FestivalTypeId").val("");
+        $("#FestivalName").val("");
+
+        updateSelectOptions(@Html.Raw(Json.Serialize(ViewBag.Festival)));
+        // recall employee list for update emp history id
+        //$("#btnEmpFilter").click();
+    }
+
+    function updateSelectOptions(data) {
+        var selectElement = $("#FestivalTypeId");
+        selectElement.empty(); // Clear existing options
+
+        for (var i = 0; i < data.length; i++) {
+            var option = $("<option>");
+            option.val(data[i].value);
+            option.text(data[i].text);
+            selectElement.append(option);
+        }
+    }
+
+
+    $(document).on({
+        ajaxStart: function () {
+            $("#loader").addClass("loading");
+        },
+        ajaxComplete: function () {
+            $("#loader").removeClass("loading");
+        }
+    });
+
+
+
+
+    function SuccessPNotify(msg) {
+        new PNotify({
+            //title: 'Sticky notice',
+            text: '' + msg,
+            addclass: 'bg-sucess',
+            //hide: true,
+            icon: 'icofont icofont-info-circle',
+            type: 'success'
+        });
+    }
+    function WarningPNotify(msg) {
+        new PNotify({
+            //title: 'Sticky notice',
+            text: '' + msg,
+            addclass: 'bg-warning',
+            //hide: true,
+            icon: 'icofont icofont-info-circle',
+            type: 'warning'
+        });
+    }
+    function DangerPNotify(msg) {
+        new PNotify({
+            //title: 'Sticky notice',
+            text: '' + msg,
+            addclass: 'bg-danger',
+            //hide: true,
+            icon: 'icofont icofont-info-circle',
+            type: 'danger'
+        });
+    }
+</script>
+

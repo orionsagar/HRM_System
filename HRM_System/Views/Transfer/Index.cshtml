@@ -1,0 +1,390 @@
+﻿@model TransferVM
+
+@inject IGlobalHelper _global;
+@{
+    //var action = ViewBag.Action;
+    var title = "Employee Transfer";
+
+    ViewData["Title"] = $"{title}";
+}
+
+@{
+
+    string[] BCText = new string[] { $"{title}" };
+    string[] BCLink = new string[] { $"Transfer/index" };
+    //string createlink = "Section/create";
+    //string linkname = "Add New";
+    PageHeaderProps pageHeader = new PageHeaderProps
+    {
+        PageTitle = $"{title} List",
+        PageDesc = $"{title} List",
+        //PageCreateLink = createlink,
+        //PageCreateLinkName = linkname,
+        BreadcrumbText = BCText,
+        BreadcrumbLink = BCLink
+    };
+    var ComId = _global.GetCompID();
+    var UserId = _global.GetUserID();
+}
+
+<style>
+    label {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    table {
+        display: block;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>
+
+@Html.AntiForgeryToken()
+<!-- Page-body start -->
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Ajax data source (Arrays) table start -->
+            <div id="loader">
+                <div class="overlay"></div>
+                <div class="card">
+                    <div class="card-header">
+                        @await Component.InvokeAsync("PageHeader", pageHeader)
+                    </div>
+                    <div class="card-block">
+                        @await Component.InvokeAsync("EmployeeFilter")
+                        <hr />
+
+                        <div class="row mt-2 justify-content-center">
+
+                            <div class="col-sm-7">
+                                <div class="p-3">
+                                    <div class="row mb-2 ">
+
+
+                                        <div class="col-sm-6 ">
+                                            <div class="form-group  row">
+                                                <label asp-for="SectId" class="col-sm-4 col-form-label">New Section</label>
+                                                <div class="col-sm-8">
+                                                    <select asp-for="SectId" asp-items="ViewBag.Section" required class="form-control form-control-sm">
+                                                    </select>
+                                                    <span asp-validation-for="SectId" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6 ">
+                                            <div class="form-group  row">
+                                                <label asp-for="DeptId" class="col-sm-4 col-form-label">New Department</label>
+                                                <div class="col-sm-8">
+                                                    <select asp-for="DeptId" asp-items="ViewBag.Department" required class="form-control form-control-sm">
+                                                    </select>
+                                                    <span asp-validation-for="DeptId" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group row">
+                                                <label asp-for="DecisionDate" class="col-sm-4 col-form-label">Decision Date</label>
+                                                <div class="col-sm-8">
+                                                    <input asp-for="DecisionDate" type="text" class="form-control form-control-sm" required />
+                                                    <span asp-validation-for="DecisionDate" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group row">
+                                                <label asp-for="EffectiveDate" class="col-sm-4 col-form-label">Effective Date</label>
+                                                <div class="col-sm-8">
+                                                    <input asp-for="EffectiveDate" type="text" class="form-control form-control-sm" required />
+                                                    <span asp-validation-for="EffectiveDate" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group row">
+                                                <label asp-for="Remarks" class="col-sm-4 col-form-label"></label>
+                                                <div class="col-sm-8">
+                                                    <textarea asp-for="Remarks" class="form-control form-control-sm"></textarea>
+                                                    <span asp-validation-for="Remarks" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-center">
+                                        <div class="">
+                                            <button class="btn btn-sm btn-success" id="btnSave">Save</button>
+                                            @*<button class="btn btn-sm btn-warning d-none" id="btnUpdate">Update</button>*@
+                                            @*<button class="btn btn-sm btn-danger" id="btnDelete">Delete</button>*@
+                                            <button class="btn btn-sm btn-light btn-outline-info" id="btnClear">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-12">
+                                @*<p class="m-1 font-weight-bold">Employee List</p>*@
+
+                                <div class="table-responsive dt-responsive">
+
+                                    <table id="dt-emp-list" class="table table-hover table-striped  table-bordered nowrap w-100">
+                                        <thead>
+                                            <tr>
+                                                @*<th>All<input type="checkbox" id="empAllCheck" /></th>*@
+                                                <th>
+
+                                                    <div class="checkbox-fade fade-in-primary ml-3">
+                                                        <label class="m-0">
+                                                            <input type="checkbox" id="empAllCheck" name="empAllCheck">
+                                                            <span class="cr">
+                                                                <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </th>
+                                                <th>HistoryId</th>
+                                                <th>Employee</th>
+                                                <th>Card No</th>
+                                                <th>Designation</th>
+                                                <th>Salary</th>
+                                                <th>Joining Date</th>
+                                                <th>Section</th>
+                                                <th>Department</th>
+                                                <th>Category</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Ajax data source (Arrays) table end -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page-body end -->
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        let empSelectedShift = [];
+        let shiftIdForSelectOption="0";
+
+        $(document).ready(function () {
+            emp_list_table.column(1).visible(false); // Emp History Id hide
+            //$('#dt-emp-list tbody').on('click', 'tr td:not(:first-child)', function () {
+            //    const tr = $(this).closest('tr')
+
+            //    if ($(this).hasClass('selected')) {
+            //        //$(tr).find('td:not(:first-child)').removeClass('selected');
+            //    } else {
+            //        emp_list_table.$('tr').find('td:not(:first-child)').removeClass('selected');
+            //        $(tr).find('td:not(:first-child)').addClass('selected');
+            //        const currRow = $(this).closest('tr');
+            //        const empid = emp_list_table.row(currRow).data()[0];
+            //        //const empid = $(this).closest('tr').find("td:eq(0)").find("input[name='empCheckbox']").val();
+            //        empShift(empid);
+            //    }
+
+            //});
+
+
+            $("#DeptId, #SectId").select2();
+
+            $("#EffectiveDate,#DecisionDate").datepicker({
+                dateFormat: 'dd-mm-yy',
+                changeYear: true,
+                changeMonth: true,
+            });
+
+            $("#EffectiveDate,#DecisionDate").datepicker("setDate", new Date());
+
+            $("#btnSave").click(function () {
+                let employees = [];
+
+
+                const DeptId = $("#DeptId").val()||0;
+                const SectId = $("#SectId").val()||0;
+                const DecisionDate = $("#DecisionDate").val()||"";
+                const EffectiveDate = $("#EffectiveDate").val() || "";
+
+
+                if (DeptId == 0 || SectId==0) {
+                    WarningPNotify("Please select Section & Department.");
+                    return;
+                }
+
+                 if (EffectiveDate == "") {
+                    WarningPNotify("Please select Effective Date");
+                    return;
+                }
+
+
+                $("input[name='empCheckbox']:checked").each(function () {
+                    //console.log($(this).val());
+                    let currRow = $(this).closest('tr');
+                    let historyId = emp_list_table.row(currRow).data()[1];
+                    employees.push(
+                        {
+                            @nameof(TransferVM.EmpId) : $(this).val(),
+                            @nameof(TransferVM.EmpHistoryId) : historyId,
+                            @nameof(TransferVM.SectId) : SectId,
+                            @nameof(TransferVM.DeptId) : DeptId,
+                            @nameof(TransferVM.DecisionDate) : DecisionDate,
+                            @nameof(TransferVM.EffectiveDate) : EffectiveDate,
+                            @nameof(EmployeeShift.Remarks) : $("#Remarks").val(),
+                        });
+                });
+
+                if (employees.length<1) {
+                    WarningPNotify("Please select Employee");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Create", "Transfer")",
+                    data: {model:employees},
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (!res.isError) {
+                           // SuccessPNotify("Employee Job Calender Updated");
+                            SuccessPNotify(res.message);
+                            clearData();
+                        } else {
+                            DangerPNotify(res.message);
+                        }
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+
+            })
+
+            $("#btnEmpFilter").click(function () {
+                let filter = {
+                    ScheduleId: $("#ScheduleId").val(),
+                    ShiftId: $("#ShiftId").val(),
+                    EffectiveDate: $("#EffectiveDate").val(),
+                    IsNoShift: $("#HasCheckBox_Filter").is(":checked"),
+                    EmpCategoryId_Filter: $("#EmpCategoryId_Filter").val(),
+                    DesignationId_Filter: $("#DesignationId_Filter").val(),
+                    SectionId_Filter: $("#SectionId_Filter").val(),
+                    DepartmentId_Filter: $("#DepartmentId_Filter").val(),
+                    CardNo_Filter: $("#CardNo_Filter").val()||"",
+                    EmpName_Filter: $("#EmpName_Filter").val() || "",
+                    CompId: '@ComId',
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("LoadEmployee", "Transfer")",
+                    data: filter,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        HTMLEmployeeList(response)
+                    },
+                    failure: function (response) {
+                        DangerPNotify(response.responseText);
+                    },
+                    error: function (response) {
+                        DangerPNotify(response.responseText);
+                    }
+                });
+
+            });
+
+            $("#empAllCheck").click(function () {
+                let check = $(this).is(":checked");
+                if (check) {
+                    $("input[name='empCheckbox']").prop('checked', true);
+                } else {
+                    $("input[name='empCheckbox']").prop('checked', false);
+                }
+            });
+
+            $("#btnClear").click(function () {
+                clearData();
+                //showSaveButton();
+            });
+
+
+            $("#btnEmpFilter").click();
+
+        });
+
+        function HTMLEmployeeList(tr) {
+            tr = tr || [];
+
+            emp_list_table.clear().draw();
+            //console.log(tr);
+            tr.map(a => {
+                a.joiningDate = getDateString(a.joiningDate);
+                emp_list_table.row.add([
+                    a.empId,
+                    a.empHistoryId,
+                    a.name,
+                    a.cardNo,
+                    a.designationName,
+                    a.salary,
+                    a.joiningDate,
+                    a.sectionName,
+                    a.departmentName,
+                    a.categoryName,
+                ]);
+            });
+
+            emp_list_table.draw();
+        }
+
+        function clearData() {
+            $("#SectId").prop("selectedIndex", 0).change();
+            $("#DeptId").prop("selectedIndex", 0).change();
+
+            $("#DecisionDate").val("");
+            $("#EffectiveDate").val("");
+            $("#Remarks").val("");
+
+            // recall employee list for update emp history id
+            $("#btnEmpFilter").click();
+        }
+
+
+
+    </script>
+}

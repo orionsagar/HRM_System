@@ -1,0 +1,94 @@
+﻿@model List<PaymentMoad>
+
+@{
+    ViewData["Title"] = "Designation List";
+}
+
+@section PageName {
+    Payment Mode List
+}
+@section Breadcrumb {
+    <a href="/designation/index">
+        <i class="fa fa-home"></i>
+    </a>
+    <span class="Divider">/</span>
+    <span class="section activeCrum">Payment Mode List</span>
+}
+@{
+    int serialNumber = 1;
+}
+
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- Ajax data source (Arrays) table start -->
+            <div class="card">
+                <div class="card-header">
+                    <a asp-action="Create" class="btn waves-effect waves-light btn-sm btn-outline-primary @ViewBag.IsAdd"><i class="icofont icofont-ui-add"></i> Create New</a>
+                </div>
+                <div class="card-block">
+                    <div class="form-group d-none">
+                        <label class="control-label col-md-6">Organisation</label>
+                        <div class="col-md-12">
+                            <select class="form-control" id="OrgId" asp-items="ViewBag.OrgId">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive dt-responsive">
+                        @if (ViewBag.Error != null)
+                        {
+                        <div class="alert alert-danger background-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <i class="icofont icofont-close-line-circled text-white"></i>
+                            </button>
+                            <strong>@ViewBag.Error!</strong>
+                        </div>
+                        }
+                        <table id="dt-pmode" class="table table-striped table-bordered nowrap">
+                            <thead>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Payment Mode</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <th>@serialNumber</th>
+                                        <th>@item.PaymentModeName</th>
+                                        <th>
+                                            <a asp-action="Edit" asp-route-id="@item.PaymentMoadId" class="@ViewBag.IsEdit"><i class="fa fa-edit"></i></a>
+
+                                            <form asp-action="Delete" asp-route-id="@item.PaymentMoadId" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                                <button type="submit" class="@ViewBag.IsDelete" style="border:none; background:none;">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                                <input name="_method" type="hidden" value="DELETE" />
+                                            </form>
+                                        </th>
+                                    </tr>
+                                    serialNumber++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Ajax data source (Arrays) table end -->
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="IsView" name="IsView" value="@ViewBag.IsView" />
+<input type="hidden" id="IsAdd" name="IsAdd" value="@ViewBag.IsAdd" />
+<input type="hidden" id="IsDelete" name="IsDelete" value="@ViewBag.IsDelete" />
+<input type="hidden" id="IsEdit" name="IsEdit" value="@ViewBag.IsEdit" />
+
+@section Scripts {
+    <script>
+        $('#dt-pmode').DataTable();
+    </script>
+}
